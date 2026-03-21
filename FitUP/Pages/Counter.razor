@@ -1,18 +1,120 @@
-@page "/counter"
+@page "/indicacoes"
 
-<PageTitle>Counter</PageTitle>
+<PageTitle>Indicações</PageTitle>
 
-<MudText Typo="Typo.h3" GutterBottom="true">Counter</MudText>
+<MudText Typo="Typo.h1" GutterBottom="true">Sua Jornada Começa Aqui!!</MudText>
 
-<MudText Class="mb-4">Current count: @currentCount</MudText>
+<MudStack Row="true" AlignItems="AlignItems.Center" Spacing="6" Class="mb-8">
+    
+    <MudLink Href="https://www.smartfit.com.br/" Target="_blank">
+        <MudImage Fluid="true" Src="img/Smart.png" Alt="Smart Fit" Class="rounded-lg" Width="250" />
+    </MudLink>
 
-<MudButton Color="Color.Primary" Variant="Variant.Filled" @onclick="IncrementCount">Click me</MudButton>
+    <MudStack Row="true" Spacing="2" AlignItems="AlignItems.Center">
+        <MudTooltip Text="Fale conosco via zap">
+            <MudIconButton Color="Color.Inherit"
+                           Href="https://api.whatsapp.com/send/?phone=5511998079600"
+                           Target="_blank">
+                <MudImage Src="img/Whats.webp" Width="45" Height="45" Alt="WhatsApp" />
+            </MudIconButton>
+        </MudTooltip>
 
-@code {
-    private int currentCount = 0;
+        <MudTooltip Text="Encontrenos na sua city">
+            <MudIconButton Color="Color.Inherit"
+                           Href="https://www.smartfit.com.br/academias"
+                           Target="_blank">
+                <MudImage Src="img/mapps.png" Width="45" Height="45" Alt="Maps" />
+            </MudIconButton>
+        </MudTooltip>
 
-    private void IncrementCount()
-    {
-        currentCount++;
-    }
-}
+        <MudTooltip Text="Be yourself">
+            <MudIconButton Color="Color.Inherit"
+                           Href="https://www.instagram.com/smartfit/?hl=pt"
+                           Target="_blank">
+                <MudImage Src="img/Insta.png" Width="55" Height="55" Alt="Instagram" />
+            </MudIconButton>
+        </MudTooltip>
+    </MudStack>
+</MudStack>
+
+<br />
+<MudStack Row="true" AlignItems="AlignItems.Center" Spacing="6" Class="mb-8">
+<MudText Typo="Typo.h3" GutterBottom="true"></MudText>
+<MudLink Href="https://www.formulaacademia.com.br/" Target="_blank">
+    <MudImage Fluid="true" Src="img/Formula.png" Alt="Swedish Farm House" Class="rounded-lg" Width="150" Height="150" />
+</MudLink>
+    <MudStack Row="true" Spacing="2" AlignItems="AlignItems.Center">
+        <MudTooltip Text="Fale conosco via zap">
+            <MudIconButton Color="Color.Inherit"
+                           Href="https://api.whatsapp.com/send/?phone=5521978763147&text&type=phone_number&app_absent=0"
+                           Target="_blank">
+                <MudImage Src="img/Whats.webp"
+                          Width="45"
+                          Height="45"
+                          Alt="WhatsApp" />
+            </MudIconButton>
+        </MudTooltip>
+        <MudTooltip Text="Encontrenos na sua city">
+            <MudIconButton Color="Color.Inherit"
+                           Href="https://www.formulaacademia.com.br/academias"
+                           Target="_blank">
+                <MudImage Src="img/mapps.png"
+                          Width="45"
+                          Height="45"
+                          Alt="Maps" />
+            </MudIconButton>
+        </MudTooltip>
+        <MudTooltip Text="Be yourself">
+            <MudIconButton Color="Color.Inherit"
+                           Href="https://www.instagram.com/academiaformula_/"
+                           Target="_blank">
+                <MudImage Src="img/Insta.png"
+                          Width="55"
+                          Height="55"
+                          Alt="Instagram" />
+            </MudIconButton>
+        </MudTooltip>
+    </MudStack>
+</MudStack>
+
+<br />
+<MudStack Row="true" AlignItems="AlignItems.Center" Spacing="6" Class="mb-8">
+<MudText Typo="Typo.h3" GutterBottom="true"></MudText>
+<MudLink Href="https://www.instagram.com/moving.academia/" Target="_blank">
+    <MudImage Fluid="true" Src="img/move.jpg" Alt="Swedish Farm House" Class="rounded-lg" Width="150" Height="150" />
+</MudLink>
+    <MudStack Row="true" Spacing="2" AlignItems="AlignItems.Center">
+        <MudTooltip Text="Fale conosco via zap">
+            <MudIconButton Color="Color.Inherit"
+                           Href="https://api.whatsapp.com/send/?phone=5521960165331&text&type=phone_number&app_absent=0&utm_source=ig"
+                           Target="_blank">
+                <MudImage Src="img/Whats.webp"
+                          Width="45"
+                          Height="45"
+                          Alt="WhatsApp" />
+            </MudIconButton>
+
+        </MudTooltip>
+        <MudTooltip Text="Encontrenos na sua city">
+            <MudIconButton Color="Color.Inherit"
+                           Href="https://www.instagram.com/stories/highlights/17920964732945358/"
+                           Target="_blank">
+                <MudImage Src="img/mapps.png"
+                          Width="45"
+                          Height="45"
+                          Alt="Maps" />
+            </MudIconButton>
+
+        </MudTooltip>
+        <MudTooltip Text="Be yourself">
+            <MudIconButton Color="Color.Inherit"
+                           Href="https://www.instagram.com/moving.academia?igsh=ZmswNnV5eHduYXcx"
+                           Target="_blank">
+                <MudImage Src="img/Insta.png"
+                          Width="55"
+                          Height="55"
+                          Alt="Instagram" />
+            </MudIconButton>
+        </MudTooltip>
+    </MudStack>
+</MudStack>
