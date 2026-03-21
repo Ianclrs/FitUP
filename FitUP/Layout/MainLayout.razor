@@ -1,32 +1,84 @@
 @inherits LayoutComponentBase
 
-<MudThemeProvider Theme="@_theme" IsDarkMode="_isDarkMode" />
+<MudThemeProvider Theme="@_theme" IsDarkMode="_isDarkMode" /> 
 <MudPopoverProvider />
 <MudDialogProvider />
 <MudSnackbarProvider />
 
-<MudLayout>
-    <MudAppBar Elevation="1">
-        <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@DrawerToggle" />
-        <MudText Typo="Typo.h6" Class="ml-2">Application</MudText>
+<MudLayout> 
+    <MudAppBar Elevation="0" Style="height: 70px" Color="Color.Transparent">
+        @*O menu so aparecera quando o site estiver na metade ou menor.*@
+         <MudIconButton Class="d-flex d-md-none" Icon="@Icons.Material.Filled.Menu" Style="color:coral" Edge="Edge.Start" OnClick="@DrawerToggle" /> 
+        
+         @*Foi colocado um retorno pra home atras da Logo da pagina, junto com a estilização.*@
+        <div class="home-link d-flex flex-column justify-center ml-2" >
+        <MudLink Href="/" Underline="Underline.None" Typo="Typo.h4" Style=" color: coral !important;line-height: 1.2; font-weight: bold;">FitUP</MudLink>
+        <MudText Typo="Typo.caption" Style=" color: coral;line-height:1;">Evoluindo com você!</MudText>
+        </div>
+        @*aqui é o inverso, os botões abaixo só aparecem quando a tela estiver maior e todos os botões tem os links das paginas. *@
+        <div class="d-none d-md-inline-flex">
+        <MudButton Class="ms-14 mt-2"Size="Size.Small" Style="color:coral; font-weight: bold;" Href="MonteoSeuTreino">Monte o seu Treino</MudButton>
+        <MudButton Class="ms-6 mt-2" Size="Size.Small" Style="color:coral; font-weight: bold;" Href="counter">Dicas de Treino</MudButton>
+        <MudButton Class="ms-6 mt-2" Size="Size.Small" Style="color:coral; font-weight: bold;" Href="weather">Ganho Máximo</MudButton>
+        </div>
         <MudSpacer />
-        <MudIconButton Icon="@(DarkLightModeButtonIcon)" Color="Color.Inherit" OnClick="@DarkModeToggle" />
-        <MudLink Href="https://learn.microsoft.com/aspnet/core/" Target="_blank" Color="Color.Inherit" Underline="Underline.None">
-            About
-        </MudLink>
+        @*Botões*@
+        <MudButton Class="mt-2 ms-2" Style="color:coral;font-weight: bold;" Size="Size.Small">Entrar</MudButton>
+        <MudButton Class="mt-2 ms-2" Style="color:coral; font-weight: bold" Size="Size.Small">Cadastrar</MudButton>
+
+        <MudIconButton Icon="@(DarkLightModeButtonIcon)" Style="color:coral;" Class="mt-2"OnClick="@DarkModeToggle" />
     </MudAppBar>
 
-    <MudDrawer @bind-Open="_drawerOpen" ClipMode="DrawerClipMode.Always" Elevation="2">
+    @*Função do menu de navegação onde ira aparecer quando tiver o botão Menu ativo. p*@
+    <MudDrawer  @bind-Open="_open" ClipMode="DrawerClipMode.Always" Elevation="0" Variant="@DrawerVariant.Temporary" Color="Color.Transparent">
         <NavMenu />
-    </MudDrawer>
+    </MudDrawer> 
+    @*Imagem geral da pagina e responsivel nos tamanhos menores*@
+    <MudMainContent Style="background: url('/Home.png');background:cover; background-attachment:fixed; display: flex; flex-direction: column; min-height:100vh; ">
 
-    <MudMainContent Class="pt-16 pa-4">
-        @Body
+        <div style="flex-grow: 1">
+            @Body
+        </div>
+        
+        <footer class="py-4 mt-auto">
+        <MudContainer MaxWidth="MaxWidth.ExtraLarge">
+        <MudGrid Justify="Justify.Center">
+            <MudDivider Style="--mud-palette-divider:coral;" Class="d-flex flex-column ml-6"></MudDivider>
+            @* Seção 1: Branding e Redes Sociais *@
+            <MudItem xs="12" md="4" Class="d-flex flex-column align-center "  >
+                <div class ="home-link d-flex flex-column justify-center ml-2 ">
+                <MudLink Href="/"  Underline="Underline.None" Typo="Typo.h4" Style="color:coral !important; line-height: 1.2; font-weight: bold; text-align:center">FitUP</MudLink>
+
+                </div>
+                <div class="d-flex gap-2">
+                    <MudIconButton Icon="@Icons.Custom.Brands.LinkedIn" Style="color:coral" Href="https://linktr.ee/LinkedInMembros" Target="_blank" />
+                    <MudIconButton Icon="@Icons.Custom.Brands.GitHub" Style="color:coral" Href="https://github.com/Ianclrs/FitUP" Target="_blank" />
+                    <MudIconButton Icon="@Icons.Custom.Brands.Instagram" Style="color:coral" Href="https://linktr.ee/MembrosFitUp" Target="_blank" />
+                </div>
+            </MudItem>
+            @* *@
+        </MudGrid>
+        @* Direitos Autorais *@
+        <div class="d-flex flex-column justify-center flex-wrap">
+            <MudText Typo="Typo.body2" Style="text-align:center; color:white">
+                © @DateTime.Now.Year FitUP. Todos os direitos reservados.
+            </MudText><br />
+            <div class="d-flex gap-4 justify-center">
+                <MudText Typo="Typo.body2" Style="color:white">Privacidade</MudText>
+                <MudText Typo="Typo.body2" Style="color:white">Termos de Uso</MudText>
+            </div>
+        </div>
+                
+        </MudContainer>
+        </footer>
+        
     </MudMainContent>
 </MudLayout>
+    
+
 
 @code {
-    private bool _drawerOpen = true;
+    private bool _open = false;
     private bool _isDarkMode = true;
     private MudTheme? _theme;
 
@@ -44,7 +96,7 @@
 
     private void DrawerToggle()
     {
-        _drawerOpen = !_drawerOpen;
+        _open = !_open;
     }
 
     private void DarkModeToggle()
@@ -54,7 +106,11 @@
 
     private readonly PaletteLight _lightPalette = new()
     {
-        Black = "#110e2d",
+        Primary = "#ededed",
+        Surface = "#ededed",
+        TextPrimary = "#000000",
+        DrawerIcon = "#ff7f50",
+        Black = "#000000",
         AppbarText = "#424242",
         AppbarBackground = "rgba(255,255,255,0.8)",
         DrawerBackground = "#ffffff",
@@ -64,9 +120,9 @@
 
     private readonly PaletteDark _darkPalette = new()
     {
-        Primary = "#7e6fff",
-        Surface = "#1e1e2d",
-        Background = "#1a1a27",
+        Primary = "#5e3103",
+        Surface = "#1f1d1b",
+        Background = "#000000",
         BackgroundGray = "#151521",
         AppbarText = "#92929f",
         AppbarBackground = "rgba(26,26,39,0.8)",
@@ -74,10 +130,10 @@
         ActionDefault = "#74718e",
         ActionDisabled = "#9999994d",
         ActionDisabledBackground = "#605f6d4d",
-        TextPrimary = "#b2b0bf",
+        TextPrimary = "#ffffff",
         TextSecondary = "#92929f",
         TextDisabled = "#ffffff33",
-        DrawerIcon = "#92929f",
+        DrawerIcon = "#ff7f50",
         DrawerText = "#92929f",
         GrayLight = "#2a2833",
         GrayLighter = "#1e1e2d",
@@ -93,7 +149,7 @@
 
     public string DarkLightModeButtonIcon => _isDarkMode switch
     {
-        true => Icons.Material.Rounded.AutoMode,
+        true => Icons.Material.Rounded.WbSunny,
         false => Icons.Material.Outlined.DarkMode,
     };
 }

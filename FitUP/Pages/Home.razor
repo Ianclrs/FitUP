@@ -2,13 +2,56 @@
 
 <PageTitle>Home</PageTitle>
 
-<MudText Typo="Typo.h3" GutterBottom="true">Hello, world!</MudText>
-<MudText Class="mb-8">Welcome to your new app, powered by MudBlazor and the .NET 10 Template!</MudText>
+<MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="mt-16 py-16 d-flex flex-column" Style="min-height:80vh">
+    <MudGrid Justify="Justify.Center" AlignItems="AlignItems.Center">
+        <MudItem xs="12" md="6">
+            <MudText Typo="Typo.h2" Color="Color.Primary" Class="font-weight-bold">Seu Título de Impacto</MudText>
+            <MudText Typo="Typo.h5" Class="mt-4 mb-8">Uma descrição clara do que seu sistema faz.</MudText>
+        </MudItem>
+    </MudGrid>
+        <div class="d-flex flex-wrap gap-5 justify-center  mt-auto">
+        <MudCard Elevation="12" Style="width: 280px;" Class="rounded-xl ">
+            <MudCardMedia Image="H.Lower.png" Height="150" />
+            <MudCardContent>   
+            <MudButton Style="background-color:coral; width: 100%;font-weight: bold" >UPPER/LOWER</MudButton>
+            <MudText Class="mt-1" Align="Align.Center" Typo="Typo.body2">Um treino dividido em membros superiores e inferiores consiste em separar os treinos das partes superior e inferior do corpo.</MudText>
+            </MudCardContent>
+        </MudCard>
+        
+        <MudCard Elevation="11" Style="width: 280px;" Class=" d-flex flex-column justify-center rounded-xl">
+            <MudCardMedia Image="H.Full.png" Height="150" />
+            <MudCardContent>
+                    <MudButton Style="background-color:coral; width: 100%;font-weight: bold">FULLBODY</MudButton>
+                    <MudText Class="mt-1" Align="Align.Center" Typo="Typo.body2">Treino focado para trabalhar os principais grupamentos musculares, em uma unica sessão.</MudText>
+            </MudCardContent>
+        </MudCard>
+         
+        <MudCard Elevation="11" Style="width: 280px;" Class=" d-flex flex-column justify-center rounded-xl">
+                <MudCardMedia Image="H.PPL.png" Height="150" />
+                <MudCardContent>
+                <MudButton Style="background-color:coral; width: 100%;font-weight: bold">PUSH/PULL/LEGS</MudButton>
+                <MudText Class="mt-1" Align="Align.Center" Typo="Typo.body2">Treino voltado em organizar os exercícios em três sessões distintas, e com grupamentos musculares distintos a cada dia.</MudText>
+                </MudCardContent>
+        </MudCard>
 
+        <MudCard Elevation="11" Style="width: 280px;" Class=" d-flex flex-column justify-center rounded-xl">
+            <MudCardMedia Image="H.ABCD.png" Height="150" />
+            <MudCardContent>
+                <MudButton Style="background-color:coral; width: 100%;font-weight: bold">A/B/C/D</MudButton>
+                <MudText Class="mt-1" Align="Align.Center" Typo="Typo.body2">Focado em 1 ou 2 grupos musculares por dia, indicado para avançados, pois permite mais volume e intensidade por músculo trabalhado .</MudText>
+            </MudCardContent>
+        </MudCard>
 
-<MudAlert Severity="Severity.Normal" ContentAlignment="HorizontalAlignment.Start">
-    You can find documentation and examples on our website here:
-    <MudLink Href="https://mudblazor.com" Target="_blank" Typo="Typo.body2" Color="Color.Primary">
-        <b>www.mudblazor.com</b>
-    </MudLink>
-</MudAlert>
+        <MudCard Elevation="11" Style="width: 280px;" Class=" d-flex flex-column justify-center rounded-xl">
+            <MudCardMedia Image="H.Alimentacao.png" Height="150" />
+            <MudCardContent>
+                <MudButton Style="background-color:coral; width: 100%;font-weight: bold">ALIMENTAÇÂO</MudButton>
+                <MudText Class="mt-1" Align="Align.Center" Typo="Typo.body2">Não adianta focar em treinar,<br /> se você não se atentar na alimentação<br /> correta.</MudText>
+            </MudCardContent>
+        </MudCard>
+            
+    </div>
+    <MudGrid Class="mt-3" Justify="Justify.Center" AlignItems="AlignItems.Center">
+        <MudButton Href="MonteoSeuTreino" Class=" ms-6 mt-2 rounded-xl" Style="background-color:coral; font-weight:bold; width:50% "> VENHA CONHECER NOSSOS TREINOS!</MudButton>
+    </MudGrid>
+</MudContainer>
