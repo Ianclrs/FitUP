@@ -1,0 +1,171 @@
+﻿@page "/login"
+@using System.ComponentModel.DataAnnotations
+
+<style>
+    :root {
+        --mud-palette-primary: #ff5a1f;
+        --mud-palette-primary-hover: #ff703d;
+        --mud-palette-primary-darken: #e63e00;
+        --mud-palette-primary-lighten: #ff8557;
+    }
+
+    html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+        background-color: #f5f5f5;
+    }
+
+    .login-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        width: 100%;
+    }
+
+    .login-card {
+        border-radius: 4px;
+        border: 1px solid #e0e0e0;
+        background-color: white !important;
+        width: 100%;
+        max-width: 450px;
+    }
+
+    .mud-input > input.mud-input-root {
+        color: #000000 !important;
+    }
+
+    .mud-input-outlined.mud-input-outlined-border.mud-input-state-active .mud-input-outlined-border,
+    .mud-input-outlined:focus-within .mud-input-outlined-border {
+        border-color: #ff5a1f !important;
+        border-width: 2px;
+    }
+
+    .btn-principal {
+        background-color: #ff5a1f !important;
+        color: white !important;
+        font-weight: 700;
+        text-transform: uppercase;
+    }
+    
+        .btn-principal:hover {
+            background-color: #ff703d !important;
+        }
+
+    .btn-secundario {
+        background-color: #000000 !important;
+        color: #e0e0e0 !important;
+        font-weight: 700;
+        text-transform: none;
+    }
+
+        .btn-secundario:hover {
+            background-color: #333333 !important;
+        }
+
+    .link-ajuda {
+        color: #000000 !important;
+        font-size: 13px;
+        text-decoration: none;
+    }
+
+        .link-ajuda span {
+            color: #ff5a1f;
+            font-weight: 600;
+        }
+</style>
+
+<div class="login-wrapper pa-4">
+    <MudPaper Elevation="5" Class="login-card pa-10">
+        <MudStack Spacing="2">
+            
+            <MudText Typo="Typo.h5" Align="Align.Center" Style="font-weight: 700; color: #333;">
+                Bem-vindo(a) de volta
+            </MudText>
+            <MudText Typo="Typo.body2" Align="Align.Center" Class="mb-6" Style="color: #666;">
+                Olá! Entre com suas credenciais para acessar o sistema.
+            </MudText>
+
+            <EditForm Model="@loginModel" OnValidSubmit="HandleLogin">
+                <DataAnnotationsValidator />
+
+                <MudTextField T="string"
+                              Label="Seu e-mail"
+                              Variant="Variant.Outlined"
+                              @bind-Value="loginModel.Identity"
+                              For="@(() => loginModel.Identity)"
+                              Class="mb-4" />
+
+                <MudTextField T="string"
+                              Label="Sua senha"
+                              Variant="Variant.Outlined"
+                              @bind-Value="loginModel.Password"
+                              For="@(() => loginModel.Password)"
+                              InputType="@_passwordInput"
+                              Adornment="Adornment.End"
+                              AdornmentIcon="@_passwordInputIcon"
+                              OnAdornmentClick="TogglePasswordVisibility"
+                              Class="mb-6" />
+
+                <MudButton ButtonType="ButtonType.Submit"
+                           Variant="Variant.Filled"
+                           Class="btn-principal mb-3 py-3"
+                           FullWidth="true">
+                    ENTRAR
+                </MudButton>
+
+                <MudButton Variant="Variant.Filled"
+                           Class="btn-secundario mb-6 py-3"
+                           FullWidth="true">
+                    CRIAR CONTA
+                </MudButton>
+
+                <div class="d-flex justify-center">
+                    <MudLink href="/esqueceu-senha" Underline="Underline.None" Class="link-ajuda">
+                        Esqueceu a senha? <span>Clique aqui</span>
+                    </MudLink>
+                </div>
+            </EditForm>
+
+        </MudStack>
+    </MudPaper>
+</div>
+
+@code {
+    private LoginRequest loginModel = new();
+
+    bool _isPasswordVisible;
+    InputType _passwordInput = InputType.Password;
+    string _passwordInputIcon = Icons.Material.Filled.VisibilityOff;
+
+    void TogglePasswordVisibility()
+    {
+        if (_isPasswordVisible)
+        {
+            _isPasswordVisible = false;
+            _passwordInputIcon = Icons.Material.Filled.VisibilityOff;
+            _passwordInput = InputType.Password;
+        }
+        else
+        {
+            _isPasswordVisible = true;
+            _passwordInputIcon = Icons.Material.Filled.Visibility;
+            _passwordInput = InputType.Text;
+        }
+    }
+
+    private async Task HandleLogin()
+    {
+        Console.WriteLine($"Tentativa de login para: {loginModel.Identity}");
+    }
+
+    public class LoginRequest
+    {
+        [Required(ErrorMessage = "O e-mail é obrigatório")]
+        public string Identity { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "A senha é obrigatória")]
+        public string Password { get; set; } = string.Empty;
+    }
+}
