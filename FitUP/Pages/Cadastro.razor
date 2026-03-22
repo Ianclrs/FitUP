@@ -1,0 +1,67 @@
+﻿@page "/cadastro"
+@layout LoginLayout
+@using System.ComponentModel.DataAnnotations
+
+<style>
+    :root { --mud-palette-primary: #ff5a1f; --mud-palette-primary-hover: #ff703d; }
+    .reg-wrap { display: flex; justify-content: center; align-items: center; min-height: 100vh; background: #f5f5f5; padding: 20px; }
+    .reg-card { border-radius: 8px; background: white !important; width: 100%; max-width: 750px; }
+    .mud-input > input.mud-input-root { color: #000 !important; }
+    
+    .btn-pri { background: #ff5a1f !important; color: #fff !important; font-weight: 700; }
+    
+    .btn-sec { background: #000 !important; color: #ffffff !important; font-weight: 700; }
+    .btn-sec:hover { background: #212121 !important; }
+
+    .orange-link { color: #ff5a1f; font-weight: 600; text-decoration: none; }
+</style>
+
+<div class="reg-wrap">
+    <MudPaper Elevation="4" Class="reg-card pa-10">
+        <div class="text-center mb-6">
+            <MudText Typo="Typo.h5" Style="font-weight:700">Crie sua conta pessoal</MudText>
+            <MudText Typo="Typo.body2" Class="mud-text-secondary">Confirmação enviada por e-mail.</MudText>
+        </div>
+
+        <EditForm Model="@cadModel" OnValidSubmit="HandleCadastro">
+            <DataAnnotationsValidator />
+            <MudGrid Spacing="2">
+                <MudItem xs="12" sm="6"><MudTextField Label="Nome" Variant="Variant.Outlined" Margin="Margin.Dense" @bind-Value="cadModel.FirstName" For="@(()=>cadModel.FirstName)"/></MudItem>
+                <MudItem xs="12" sm="6"><MudTextField Label="Sobrenome" Variant="Variant.Outlined" Margin="Margin.Dense" @bind-Value="cadModel.LastName" For="@(()=>cadModel.LastName)"/></MudItem>
+                <MudItem xs="12" sm="6"><MudTextField Label="Nascimento" Variant="Variant.Outlined" Margin="Margin.Dense" InputType="InputType.Date" @bind-Value="cadModel.BirthDate"/></MudItem>
+                <MudItem xs="12" sm="6"><MudTextField Label="Telefone(Opcional)" Variant="Variant.Outlined" Margin="Margin.Dense" @bind-Value="cadModel.Phone"/></MudItem>
+                <MudItem xs="12"><MudTextField Label="CPF" Variant="Variant.Outlined" Margin="Margin.Dense" @bind-Value="cadModel.CPF" For="@(()=>cadModel.CPF)"/></MudItem>
+                <MudItem xs="12" sm="6"><MudTextField Label="E-mail" Variant="Variant.Outlined" Margin="Margin.Dense" @bind-Value="cadModel.Email" For="@(()=>cadModel.Email)"/></MudItem>
+                <MudItem xs="12" sm="6"><MudTextField Label="Confirmar E-mail" Variant="Variant.Outlined" Margin="Margin.Dense" @bind-Value="cadModel.ConfirmEmail" For="@(()=>cadModel.ConfirmEmail)"/></MudItem>
+                <MudItem xs="12" sm="6"><MudTextField Label="Senha" Variant="Variant.Outlined" Margin="Margin.Dense" InputType="InputType.Password" @bind-Value="cadModel.Password" For="@(()=>cadModel.Password)"/></MudItem>
+                <MudItem xs="12" sm="6"><MudTextField Label="Confirmar Senha" Variant="Variant.Outlined" Margin="Margin.Dense" InputType="InputType.Password" @bind-Value="cadModel.ConfirmPassword" For="@(()=>cadModel.ConfirmPassword)"/></MudItem>
+                
+                <MudItem xs="12" Class="mt-2 text-center">
+                    <MudText Typo="Typo.caption">Ao criar, aceita os <a href="#" class="orange-link">Termos</a> e <a href="#" class="orange-link">Privacidade</a>.</MudText>
+                </MudItem>
+
+                <MudItem xs="12" Class="mt-4">
+                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" FullWidth="true" Class="btn-pri py-3 mb-3">CRIAR CONTA</MudButton>
+                    <MudButton Variant="Variant.Filled" FullWidth="true" href="/login" Class="btn-sec py-3">LOGIN</MudButton>
+                </MudItem>
+            </MudGrid>
+        </EditForm>
+    </MudPaper>
+</div>
+
+@code {
+    private CadastroModel cadModel = new();
+    public async Task HandleCadastro() { await Task.Delay(500); }
+
+    public class CadastroModel {
+        [Required(ErrorMessage="Nome é obrigatório")] public string FirstName { get; set; } = "";
+        [Required(ErrorMessage="Sobrenome é obrigatório")] public string LastName { get; set; } = "";
+        [Required(ErrorMessage="CPF é obrigatório")] public string CPF { get; set; } = "";
+        [Required(ErrorMessage="E-mail é obrigatório"), EmailAddress] public string Email { get; set; } = "";
+        [Compare(nameof(Email), ErrorMessage="E-mails diferentes")] public string ConfirmEmail { get; set; } = "";
+        [Required(ErrorMessage="Senha é obrigatória"), MinLength(6)] public string Password { get; set; } = "";
+        [Compare(nameof(Password), ErrorMessage="Senhas diferentes")] public string ConfirmPassword { get; set; } = "";
+        public string Phone { get; set; } = "";
+        public DateTime? BirthDate { get; set; }
+    }
+}
