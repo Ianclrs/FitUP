@@ -27,22 +27,22 @@
     .login-card {
         width: 100%;
         max-width: 450px;
-        position: relative; 
+        position: relative;
     }
 
     .btn-close {
         position: absolute;
         top: 12px;
         right: 12px;
-        color: #f44336 !important; 
+        color: #f44336 !important;
         transition: transform 0.2s ease-in-out, opacity 0.2s;
         opacity: 0.7;
     }
     
         .btn-close:hover {
-            color: #d32f2f !important; 
+            color: #d32f2f !important;
             opacity: 1;
-            transform: scale(1.1); 
+            transform: scale(1.1);
         }
 
     .btn-principal {
@@ -67,15 +67,12 @@
             background-color: #333333 !important;
         }
 
-    .link-ajuda {
-        font-size: 13px;
-        text-decoration: none;
+    .texto-esqueceu {
+        font-size: 14px;
+        font-weight: 600;
+        color: #ff5a1f; 
+        cursor: default; 
     }
-
-        .link-ajuda span {
-            color: #ff5a1f;
-            font-weight: 600;
-        }
 </style>
 
 <div class="login-wrapper pa-4">
@@ -132,9 +129,9 @@
                 </MudButton>
 
                 <div class="d-flex justify-center">
-                    <MudLink href="/esqueceu-senha" Underline="Underline.None" Class="link-ajuda">
-                        Esqueceu a senha? <span>Clique aqui</span>
-                    </MudLink>
+                    <MudText Class="texto-esqueceu">
+                        Esqueceu a senha?
+                    </MudText>
                 </div>
             </EditForm>
 
@@ -144,7 +141,6 @@
 
 @code {
     private LoginRequest loginModel = new();
-
     bool _isPasswordVisible;
     InputType _passwordInput = InputType.Password;
     string _passwordInputIcon = Icons.Material.Filled.VisibilityOff;
@@ -170,7 +166,6 @@
     private async Task HandleLogin()
     {
         await Task.Delay(500);
-        Console.WriteLine($"Tentativa de login para: {loginModel.Identity}");
     }
 
     public class LoginRequest

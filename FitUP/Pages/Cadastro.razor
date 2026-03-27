@@ -41,10 +41,22 @@
         transform: scale(1.1);
     }
 
-    .btn-pri { background: #ff5a1f !important; color: #fff !important; font-weight: 700; }
-    .btn-sec { background: #000 !important; color: #ffffff !important; font-weight: 700; }
-    .btn-sec:hover { background: #212121 !important; }
-    .orange-link { color: #ff5a1f; font-weight: 600; text-decoration: none; }
+    .btn-pri { 
+        background: #ff5a1f !important; 
+        color: #fff !important; 
+        font-weight: 700; 
+    }
+
+    .orange-link { 
+        color: #ff5a1f !important; 
+        font-weight: 700; 
+        text-decoration: none; 
+    }
+    
+    .orange-link:hover {
+        color: #ff703d !important;
+        text-decoration: underline;
+    }
 </style>
 
 <div class="reg-wrap">
@@ -99,7 +111,7 @@
                                   Margin="Margin.Dense" 
                                   @bind-Value="cadModel.CPF" 
                                   For="@(()=>cadModel.CPF)" 
-                                  Mask="@(new PatternMask("00000000000"))" 
+                                  Mask="@(new PatternMask("000.000.000-00"))" 
                                   Clearable="true" />
                 </MudItem>
                 
@@ -118,12 +130,18 @@
                 </MudItem>
 
                 <MudItem xs="12" Class="mt-2 text-center">
-                    <MudText Typo="Typo.caption">Ao criar, aceita os <a href="#" class="orange-link">Termos</a> e <a href="#" class="orange-link">Privacidade</a>.</MudText>
+                    <MudText Typo="Typo.caption">
+                        Ao criar, aceita os <a href="#" class="orange-link">Termos</a> e <a href="#" class="orange-link">Privacidade</a>.
+                    </MudText>
                 </MudItem>
 
                 <MudItem xs="12" Class="mt-4">
-                    <MudButton ButtonType="ButtonType.Submit" Variant="Variant.Filled" FullWidth="true" Class="btn-pri py-3 mb-3">CRIAR CONTA</MudButton>
-                    <MudButton Variant="Variant.Filled" FullWidth="true" href="/login" Class="btn-sec py-3">LOGIN</MudButton>
+                    <MudButton ButtonType="ButtonType.Submit" 
+                               Variant="Variant.Filled" 
+                               FullWidth="true" 
+                               Class="btn-pri py-3">
+                        CRIAR CONTA
+                    </MudButton>
                 </MudItem>
             </MudGrid>
         </EditForm>
@@ -136,22 +154,23 @@
     void IrParaLogin() => NavigationManager.NavigateTo("/login");
     void VoltarHome() => NavigationManager.NavigateTo("/");
     
-    public async Task HandleCadastro() => await Task.Delay(500);
+    public async Task HandleCadastro() 
+    { 
+        await Task.Delay(500); 
+    }
 
     public class CadastroModel 
     {
         [Required(ErrorMessage = "Nome é obrigatório")] public string FirstName { get; set; } = "";
         [Required(ErrorMessage = "Sobrenome é obrigatório")] public string LastName { get; set; } = "";
-        [Required(ErrorMessage = "CPF é obrigatório")]
-        [RegularExpression(@"^\d{11}$", ErrorMessage = "O CPF deve conter exatamente 11 números")]
-        public string CPF { get; set; } = "";
+        [Required(ErrorMessage = "CPF é obrigatório")] public string CPF { get; set; } = "";
         [Required(ErrorMessage = "E-mail é obrigatório"), EmailAddress(ErrorMessage = "E-mail inválido")] public string Email { get; set; } = "";
         [Required(ErrorMessage = "Confirmação de e-mail é obrigatória")]
         [Compare(nameof(Email), ErrorMessage = "E-mails diferentes")] public string ConfirmEmail { get; set; } = "";
         [Required(ErrorMessage = "Senha é obrigatória"), MinLength(6, ErrorMessage = "Mínimo 6 caracteres")] public string Password { get; set; } = "";
         [Required(ErrorMessage = "Confirmação de senha é obrigatória")]
         [Compare(nameof(Password), ErrorMessage = "Senhas diferentes")] public string ConfirmPassword { get; set; } = "";
-        [RegularExpression(@"^\d{11}$", ErrorMessage = "Telefone inválido (deve ter 11 dígitos)")] public string? Phone { get; set; }
+        public string? Phone { get; set; }
         public DateTime? BirthDate { get; set; }
     }
 }
