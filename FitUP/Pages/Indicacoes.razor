@@ -2,13 +2,19 @@
 
 <PageTitle>Indicações</PageTitle>
 
-<MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="mt-8 py-10 d-flex flex-column" Style="min-height:80vh">
-   <div class="d-flex flex-wrap gap-5 justify-center  mt-0">
-        <MudCard Elevation="12" Style="width: 320px;" Class="rounded-xl ">
+<MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="mt-8 py-10 d-flex flex-column">
+    <style>
+            .scale-hover:hover {
+                transform: scale(1.05);
+                transition: transform 0.3s ease-in-out
+            }
+    </style>
+    <div class="d-flex flex-wrap gap-8 justify-center  mt-0">
+        <MudCard Elevation="17" Style="width: 320px;" Class="rounded-xl trasition-fast-out-slow-in scale-hover ">
             <MudCardMedia Image="img/sm.jpg" Height="260" />
             <MudCardContent>
-            <MudButton Style="background-color:coral; width: 100%;font-weight: bold" Href="https://www.smartfit.com.br/" target="_blank" >Smart Fit</MudButton>
-                <MudText Class="mt-1" Align="Align.Center" Typo="Typo.body1">Contatos:</MudText>
+            <MudButton Class="transition-fast-out-slow-in scale-hover" Style="background-color:coral; width: 100%;font-weight: 900" Href="https://www.smartfit.com.br/" target="_blank" >Smart Fit</MudButton>
+                <MudText Class="mt-1" Align="Align.Center" Typo="Typo.body1" Style="font-weight:700">Contatos:</MudText>
                 <div class="d-flex justify-center" > 
                 <MudIconButton Href="https://api.whatsapp.com/send/?phone=5511998079600" Target="_blank" Icon="@Icons.Custom.Brands.WhatsApp"  Size="Size.Large" Style="color:coral">
                     </MudIconButton>
@@ -18,11 +24,11 @@
             </MudCardContent>
         </MudCard>
 
-    <MudCard Elevation="12" Style="width: 320px;" Class="rounded-xl ">
-        <MudCardMedia Image="img/Formula.png" Height="260" />
+    <MudCard Elevation="17" Style="width: 320px;" Class="rounded-xl transition-fast-out-slow-in scale-hover ">
+        <MudCardMedia Image="img/Formula2.png" Height="260"/>
         <MudCardContent>
-            <MudButton Style="background-color:coral; width: 100%;font-weight: bold" Href="https://www.formulaacademia.com.br/" target="_blank">Formula</MudButton>
-            <MudText Class="mt-1" Align="Align.Center" Typo="Typo.body1">Contatos:</MudText>
+            <MudButton Class="transition-fast-out-slow-in scale-hover" Style="background-color:coral; width: 100%;font-weight: 900" Href="https://www.formulaacademia.com.br/" target="_blank">Formula</MudButton>
+            <MudText Class="mt-1" Align="Align.Center" Typo="Typo.body1" Style="font-weight:700">Contatos:</MudText>
             <div class="d-flex justify-center">
                     <MudIconButton Href="https://api.whatsapp.com/send/?phone=5521978763147&text&type=phone_number&app_absent=0" Target="_blank" Icon="@Icons.Custom.Brands.WhatsApp" Size="Size.Large" Style="color:coral">
             </MudIconButton>
@@ -32,11 +38,11 @@
         </MudCardContent>
     </MudCard>
 
-    <MudCard Elevation="12" Style="width: 320px;" Class="rounded-xl ">
+    <MudCard Elevation="17" Style="width: 320px;" Class="rounded-xl transition-fast-out-slow-in scale-hover">
         <MudCardMedia Image="img/move.jpg" Height="260" />
         <MudCardContent>
-            <MudButton Style="background-color:coral; width: 100%;font-weight: bold" Href="https://www.instagram.com/moving.academia/" target="_blank">Moving</MudButton>
-            <MudText Class="mt-1" Align="Align.Center" Typo="Typo.body1">Contatos:</MudText>
+            <MudButton Class="transition-fast-out-slow-in scale-hover" Style="background-color:coral; width: 100%;font-weight: 900" Href="https://www.instagram.com/moving.academia/" target="_blank">Moving</MudButton>
+            <MudText Class="mt-1" Align="Align.Center" Typo="Typo.body1" Style="font-weight:700">Contatos:</MudText>
             <div class="d-flex justify-center">
                     <MudIconButton Href="https://api.whatsapp.com/send/?phone=5521960165331&text&type=phone_number&app_absent=0&utm_source=ig" Target="_blank" Icon="@Icons.Custom.Brands.WhatsApp" Size="Size.Large" Style="color:coral">
             </MudIconButton>
