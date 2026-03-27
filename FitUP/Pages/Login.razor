@@ -6,8 +6,8 @@
 
 <style>
     :root {
-        --mud-palette-primary: #ff5a1f;
-        --mud-palette-primary-hover: #ff703d;
+        --mud-palette-primary: coral;
+        --mud-palette-primary-hover: #ff8e61;
     }
 
     html, body {
@@ -46,15 +46,11 @@
         }
 
     .btn-principal {
-        background-color: #ff5a1f !important;
+        background-color: coral !important; 
         color: white !important;
         font-weight: 700;
         text-transform: uppercase;
     }
-    
-        .btn-principal:hover {
-            background-color: coral !important;
-        }
 
     .btn-secundario {
         background-color: #000000 !important;
@@ -70,8 +66,8 @@
     .texto-esqueceu {
         font-size: 14px;
         font-weight: 600;
-        color: #ff5a1f; 
-        cursor: default; 
+        color: coral; 
+        cursor: default;
     }
 </style>
 
@@ -116,7 +112,8 @@
 
                 <MudButton ButtonType="ButtonType.Submit"
                            Variant="Variant.Filled"
-                           Class="btn-principal mb-3 py-3"
+                           Style="background-color:coral; font-weight: 700;"
+                           Class="mb-3 py-3"
                            FullWidth="true">
                     ENTRAR
                 </MudButton>
@@ -129,7 +126,7 @@
                 </MudButton>
 
                 <div class="d-flex justify-center">
-                    <MudText Class="texto-esqueceu">
+                    <MudText Style="color: coral; font-weight: 600; font-size: 14px;">
                         Esqueceu a senha?
                     </MudText>
                 </div>
@@ -162,11 +159,7 @@
     }
 
     void VoltarHome() => NavigationManager.NavigateTo("/");
-
-    private async Task HandleLogin()
-    {
-        await Task.Delay(500);
-    }
+    private async Task HandleLogin() => await Task.Delay(500);
 
     public class LoginRequest
     {

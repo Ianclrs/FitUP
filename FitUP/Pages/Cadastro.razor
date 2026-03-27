@@ -8,8 +8,8 @@
 
 <style>
     :root { 
-        --mud-palette-primary: #ff5a1f; 
-        --mud-palette-primary-hover: #ff703d; 
+        --mud-palette-primary: coral; 
+        --mud-palette-primary-hover: #ff8e61; 
     }
     
     .reg-wrap { 
@@ -42,19 +42,19 @@
     }
 
     .btn-pri { 
-        background: #ff5a1f !important; 
+        background-color: coral !important; 
         color: #fff !important; 
         font-weight: 700; 
     }
 
     .orange-link { 
-        color: #ff5a1f !important; 
+        color: coral !important; 
         font-weight: 700; 
         text-decoration: none; 
     }
     
     .orange-link:hover {
-        color: #ff703d !important;
+        color: #ff8e61 !important;
         text-decoration: underline;
     }
 </style>
@@ -130,16 +130,19 @@
                 </MudItem>
 
                 <MudItem xs="12" Class="mt-2 text-center">
+                    @* Links agora em Coral *@
                     <MudText Typo="Typo.caption">
                         Ao criar, aceita os <a href="#" class="orange-link">Termos</a> e <a href="#" class="orange-link">Privacidade</a>.
                     </MudText>
                 </MudItem>
 
                 <MudItem xs="12" Class="mt-4">
+                    @* Botão principal em Coral *@
                     <MudButton ButtonType="ButtonType.Submit" 
                                Variant="Variant.Filled" 
                                FullWidth="true" 
-                               Class="btn-pri py-3">
+                               Style="background-color: coral; font-weight: 700;"
+                               Class="py-3">
                         CRIAR CONTA
                     </MudButton>
                 </MudItem>
