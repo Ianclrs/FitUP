@@ -1,7 +1,7 @@
 @page "/GanhoMaximo"
 
 <PageTitle>GanhoMaximo</PageTitle>
-<MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="mt-8 py-0  d-flex flex-column justify-center">
+<MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="mt-6 py-0 mb-8  d-flex flex-column justify-center">
     <MudStack AlignItems="AlignItems.Center" Spacing="0">
 
     <div class="d-flex align-center justify-center">
@@ -11,18 +11,506 @@
 
     <MudDivider Style="--mud-palette-divider:coral; width:455px"></MudDivider>
 
-    <MudCard Elevation="12" Style="width:455px;height:52px"Class="rounded-sm" >
-            <MudText Align="Align.Center" Style="font-family:Calibri">
-        Aqui você aprendera um pouco do mundo da alimentação e<br /> como isso poderá ajudar nos treinos!
+    <MudCard Elevation="12" Style="width:455px;height:78px"Class="rounded-sm" >
+            <MudText Align="Align.Center" >
+        Aqui você aprendera um pouco do mundo da alimentação e<br /> como isso poderá ajudar nos treinos! <br />Basta clicar em um dos botões!
     </MudText>
+    <style>
+          .scale-hover:hover {
+           transform: scale(1.05);
+           transition: transform 0.3s ease-in-out
+          }
+    </style>
     </MudCard>
     <div class="mt-2 d-flex gap-1">
-    <MudButton Style="background-color:darkred;font-weight:bold;font-family:Cambria">Proteinas</MudButton>
-    <MudButton Style="background-color:sandybrown;font-weight:bold;font-family:Cambria">Carboidratos</MudButton>
-    <MudButton Style="background-color:darkcyan;font-weight:bold;font-family:Cambria">Frutas</MudButton>
-    <MudButton Style="background-color:seagreen;font-weight:bold;font-family:Cambria">Verduras</MudButton>
-    <MudButton Style="background-color:saddlebrown; font-weight:bold;font-family:Cambria">Gorduras</MudButton>
+    <MudButton Class="transition-fast-out-slow-in scale-hover" OnClick="ExibirProteinas" Style="background-color:darkred;font-weight:bold;font-family:Cambria">Proteinas</MudButton>
+    <MudButton Class="transition-fast-out-slow-in scale-hover" OnClick="ExibirCarboidratos" Style="background-color:sandybrown;font-weight:bold;font-family:Cambria">Carboidratos</MudButton>
+    <MudButton Class="transition-fast-out-slow-in scale-hover" OnClick="ExibirFrutas" Style="background-color:darkcyan;font-weight:bold;font-family:Cambria">Frutas</MudButton>
+    <MudButton Class="transition-fast-out-slow-in scale-hover" OnClick="ExibirVegetais" Style="background-color:seagreen;font-weight:bold;font-family:Cambria">Vegetais</MudButton>
+    <MudButton Class="transition-fast-out-slow-in scale-hover" OnClick="ExibirGorduras" Style="background-color:saddlebrown; font-weight:bold;font-family:Cambria">Gorduras</MudButton>
     </div>
-    </MudStack>
     
+    <MudCard Elevation="12" Class="mt-2">
+        <MudText Align="Align.Center" Class="flex-column d-flex" Style="width:480px">
+            Para alcançar a máxima hipertrofia e performance, não basta apenas "comer limpo"; é preciso entender a função bioquímica de cada substrato que você ingere. Abaixo, apresentaremos o guia técnico dos macronutrientes e micronutrientes essenciais para o seu desenvolvimento físico.
+        </MudText>
+    </MudCard>
+    
+    </MudStack>
+    @if (_mostrarProteinas){
+    <MudCard Elevation="12" Class="mt-1 rounded" Style="background-color:darkred;width:193px; height:42px">
+    <MudText Class="ms-1" Style="font-weight:bold; font-family:Cambria" Typo="Typo.h4" Align="Align.Left">PROTEINAS</MudText>
+    </MudCard>
+    <MudPaper Elevation="12" Class="mt-1 mb-1">
+        <MudStepper NonLinear ShowResetButton CurrentStepColor="Color.Error" CompletedStepColor="Color.Error">
+        <MudStep Style="font-size:medium" Title="Proteínas: O Bloco de Construção">
+                Tecnicamente, as proteínas são polímeros de aminoácidos ligados por ligações peptídicas. Na musculação, sua principal função é o <b>reparo tecidual e a síntese proteica muscular</b>. 
+                Sem o aporte adequado de aminoácidos essenciais (que o corpo não produz), o balanço nitrogenado torna-se negativo, levando ao catabolismo.
+                <article /><br />No contexto da musculação avançada, a proteína deve ser analisada sob a ótica da <b>biodisponibilidade</b>, do <b>perfil de aminoácidos</b> e da <b>cinética de absorção</b>.
+                <article /><br />O corpo vive em um estado constante de renovação. O <b>Turnover Proteico</b> é a relação entre a síntese de novas proteínas e a degradação das existentes.
+                <article /><br /><b>Balanço Nitrogenado Positivo</b> ocorre quando a ingestão de nitrogênio (via proteína) é maior que a excreção. É o estado obrigatório para a hipertrofia.
+                <article/><br />A proteína é o único macronutriente que contém nitrogênio. Se você não consome o suficiente, o corpo retira esse nitrogênio do tecido muscular para manter funções vitais (como órgãos e sistema imune), gerando o catabolismo.
+        </MudStep>
+        <MudStep Style="font-size:medium" Title="Aminoácidos: A Hierarquia">
+                As proteínas são compostas por 20 aminoácidos,
+                mas para quem busca performance, o foco deve estar nos <b>Aminoácidos Essenciais (EAAs)</b>.
+                <article /><br /><b>EAAs (Essential Amino Acids)</b>: São 9 aminoácidos que o corpo não produz, sendo eles: leucina, isoleucina, valina, lisina, fenilalanina, treonina, histidina, triptofano e metionina. Sem eles, a síntese muscular simplesmente para.
+                <article /><br /><b>O "Gatilho" da Leucina</b>: Dentre os BCAAs, a Leucina é o aminoácido mais importante para a musculação. Ela atua como uma chave mestre que liga a via mTOR( é uma proteína quinase central que regula o crescimento celular, metabolismo e síntese proteica em resposta a nutrientes), a principal via de sinalização de crescimento celular no corpo.
+                <article /><b>Dica Técnica</b>: Para disparar a síntese proteica, uma refeição deve conter entre <b>2,5g a 3g de Leucina</b>.
+        </MudStep>
+        <MudStep Style="font-size:medium" Title="Classificação por Velocidade de Absorção">
+                Dependendo do seu momento do dia, o tipo de proteína importa:
+                <article /><br /><b>Absorção Rápida (Whey Protein Isolado/Hidrolisado)</b>: Ideal para momentos onde o corpo precisa de aminoácidos no sangue rapidamente, como no pós-treino ou logo ao acordar.
+                <article /><br /><b>Absorção Lenta (Caseína, Albumina ou Proteína da Carne Vermelha)</b>: Possuem uma digestão mais demorada, liberando aminoácidos de forma gradual. Excelentes para a ceia (antes de dormir) para evitar longos períodos de jejum sem suporte proteico.
+                <article/><br />Melhores Fontes para a Musculação (Tabela de Referência)
+                <MudSimpleTable Style="border: 2px solid #8B0000;" Bordered="true" Hover="true">
+                    <thead>
+                        <tr>
+                            <th><b>Fonte</b></th>
+                            <th><b>Vantagem Técnica</b></th>
+                            <th><b>Uso Sugerido</b></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><b>Ovos Inteiros</b></td>
+                            <td>Maior Valor Biológico (VB 100). Gordura da gema ajuda na produção hormonal.</td>
+                            <td>Café da manhã ou Ceia.</td>
+                        </tr>
+                        <tr>
+                            <td><b>Peito de Frango</b></td>
+                            <td>Altíssima densidade proteica com quase zero de gordura.</td>
+                            <td>Refeições principais (Almoço/Jantar).</td>
+                        </tr>
+                        <tr>
+                            <td><b>Peixes (Tilápia/Atum)</b></td>
+                            <td>Digestão muito leve e rápida. Ótimo para quem faz muitas refeições.</td>
+                            <td>Refeições intermediárias.</td>
+                        </tr>
+                        <tr>
+                            <td><b>Carne Bovina Magra</b></td>
+                            <td>Rica em Creatina natural, Zinco e Vitamina B12.</td>
+                            <td>Almoço (máximo 1x ao dia pela digestão lenta).</td>
+                        </tr>
+                        <tr>
+                            <td><b>Proteínas Vegetais (Soja/Ervilha)</b></td>
+                            <td>Boa opção para variação de microbiota, mas exigem combinação (Arroz + Feijão) para fechar o perfil de aminoácidos.</td>
+                            <td>Variação de cardápio.</td>
+                        </tr>
+                    </tbody>
+                </MudSimpleTable>
+        </MudStep>
+            <MudStep Style="font-size:medium" Title="Estratégias de Distribuição">
+                Não adianta comer 200g de proteína em uma única refeição. O corpo possui um limite de oxidação e utilização por vez para fins de hipertrofia.
+                <article /><br /><b>Fracionamento</b>: O ideal é dividir sua meta diária em <b>4 a 6 refeições</b> contendo de 20g a 40g de proteína cada. Isso mantém a síntese proteica elevada (o chamado "Janela Anabólica") durante as 24 horas do dia.
+                <article /><br /><b>O Mito da Janela de 30 min</b>: A janela pós-treino existe, mas dura horas. O mais importante é garantir que, em até 2h após o treino, você tenha ingerido uma fonte de proteína de alta qualidade combinada com carboidratos para repor o glicogênio.
+                <article /><br /><b>Resumo</b>: Trate a proteína como o seu "salário muscular". Se você não deposita o suficiente e com frequência, sua conta (músculos) não cresce. Procure variar as fontes para evitar sensibilidades alimentares e garantir um espectro completo de micronutrientes.
+        </MudStep>
+    </MudStepper>
+        </MudPaper>
+    }
+    
+    @if(_mostrarCarboidratos){
+    <MudCard Elevation="12" Class="mt-1 rounded" Style="background-color:sandybrown;width:261px; height:42px">
+        <MudText Class="ms-1" Style="font-weight:bold;font-family:Cambria" Typo="Typo.h4" Align="Align.Left">CARBOIDRATOS</MudText>
+    </MudCard>
+
+    <MudPaper Elevation="12" Class="mt-1 mb-1">
+        <MudStepper NonLinear ShowResetButton CurrentStepColor="Color.Warning" CompletedStepColor="Color.Warning">
+            <MudStep Style="font-size:medium" Title="Carboidratos: A Moeda Energética">
+                No meio da musculação, infelizmente, o carboidrato é muitas vezes demonizado,
+                mas para quem busca hipertrofia, ele é o seu melhor aliado. Sem carboidratos, você não treina com
+                intensidade, não sinaliza crescimento e não recupera o tecido adequadamente. Os carboidratos
+                são convertidos em <b>glicose</b>, que é armazenada nos músculos e no fígado sob a forma de <b>glicogênio</b>. Eles são o combustível primário para treinos de alta intensidade (via glicolítica).
+                Além disso, o carboidrato tem um efeito "poupador de proteína", impedindo que o corpo use
+                seus músculos como fonte de energia.
+            </MudStep>
+            <MudStep Style="font-size:medium" Title="A Bioenergética do Carboidrato">
+                Tecnicamente, os carboidratos são moléculas orgânicas formadas por carbono, hidrogênio e oxigênio. No organismo, eles desempenham o papel de glicogênio muscular e hepático.
+                <article /><br /><b>O "Poupador de Proteínas"</b>: Quando os níveis de glicogênio estão altos, o corpo entende que tem energia de sobra e não precisa converter aminoácidos (músculos) em glicose para sobreviver. Ou seja, o carboidrato protege sua massa muscular.
+                <article /><br /><b>Volumização Celular</b>: Cada grama de glicogênio armazenado no músculo carrega consigo cerca de 3g a 4g de água. Isso é o que dá o aspecto de "músculo cheio" e denso que o fisiculturista busca.
+            </MudStep>
+            <MudStep Style="font-size:medium" Title="Índice Glicêmico (IG) vs. Carga Glicêmica (CG)">
+                Para um entusiasta na musculação, entender a velocidade com que o açúcar entra no sangue é estratégico:
+                <article /><br /><b>Baixo/Médio IG</b> (Batata doce, Aveia, Arroz Integral, Macarrão Integral): Liberam energia de forma gradual. São a base da dieta para manter a insulina estável e evitar picos de fome ou acúmulo de gordura.
+                <article /><br /><b>Alto IG</b> (Arroz Branco, Malto/Dextrose, Pão Branco, Mel): Causam um pico rápido de insulina. Isso é perigoso em momentos de sedentarismo, mas extremamente útil no pós-treino para "abrir as portas" das células e empurrar nutrientes para dentro do músculo.
+            </MudStep>
+            <MudStep Style="font-size:medium" Title="Estratégias de Ciclagem e Timing">
+                A manipulação dos carboidratos é a ferramenta mais poderosa para mudar a composição corporal:
+                <article/><br /><b>Pré-Treino</b> (O estoquista): Deve ser consumido entre 1h30 a 2h antes, preferencialmente de baixo/médio IG, para garantir que durante a última série do agachamento você ainda tenha força.
+                <article/><br /><b>Intra-Treino</b> (O suporte): Em treinos muito longos (acima de 1h15), carboidratos líquidos (como a Ciclodextrina) ajudam a manter a performance e diminuir o cortisol.
+                <article /><br /><b>Pós-Treino</b> (A reposição): É o momento de repor o que foi gasto. Carboidratos de fácil digestão aqui aceleram a recuperação e interrompem o processo catabólico do treino.
+                <article/><br />Melhores Fontes para Cada Objetivo:
+                <MudSimpleTable Style="border: 2px solid #f4a460;" Bordered="true" Hover="true">
+                    <thead>
+                        <tr>
+                            <th><b>Fonte</b></th>
+                            <th><b>Por que usar?</b></th>
+                            <th><b>Melhor Momento</b></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><b>Aveia</b></td>
+                            <td>Rica em fibras (beta-glucanas) e vitaminas do complexo B.</td>
+                            <td>Café da manhã / Pré-treino.</td>
+                        </tr>
+                        <tr>
+                            <td><b>Arroz Branco</b></td>
+                            <td>Baixíssima fibra, digestão rápida, excelente para bater calorias sem estufar.</td>
+                            <td>Almoço / Pós-treino</td>
+                        </tr>
+                        <tr>
+                            <td><b>Batata Doce</b></td>
+                            <td>Baixo IG e rica em Vitamina A. Clássica pela saciedade.</td>
+                            <td>Refeições ao longo do dia.</td>
+                        </tr>
+                        <tr>
+                            <td><b>Frutas (Banana/Uva)</b></td>
+                            <td>Fonte de frutose e glicose. Repõe o glicogênio hepático rapidamente.</td>
+                            <td>Pré ou Pós-treino imediato</td>
+                        </tr>
+                        <tr>
+                            <td><b>Macarrão (Grão Duro)</b></td>
+                            <td>Ótima densidade calórica para quem tem dificuldade em ganhar peso.</td>
+                            <td>Almoço.</td>
+                        </tr>
+                    </tbody>
+                </MudSimpleTable>
+                <article /><br /><b><h3>Indicação de Consumo :</h3></b>
+                Diferente da proteína, que é mais estável, o carboidrato é totalmente dependente do seu nível de atividade e objetivo:
+                <article /><br /><b>Em Cutting</b> (Definição): Geralmente entre <b>2g a 3g</b> por kg.
+                <article /><br /><b>Em Bulking</b> (Ganho de Massa): Pode chegar a <b>5g, 7g</b> ou até mais por kg, dependendo do metabolismo.
+                <article /><br /><b>Dica</b>: Se você treina pernas hoje (o treino que mais consome energia), seus carboidratos devem estar mais altos do que no dia de descanso. Aprenda a "merecer" seu carboidrato.
+            </MudStep>
+            </MudStepper>    
+        </MudPaper>
+    }
+    @if(_mostrarFrutas){
+    <MudCard Elevation="12" Class="mt-1 rounded" Style="background-color:darkcyan;width:130px; height:42px">
+        <MudText Class="ms-1" Style="font-weight:bold;font-family:Cambria" Typo="Typo.h4" Align="Align.Left">FRUTAS</MudText>
+    </MudCard>
+    <MudPaper Elevation="12" Class="mt-1 mb-1">
+        <MudStepper NonLinear ShowResetButton CurrentStepColor="Color.Success" CompletedStepColor="Color.Success">
+            <MudStep Style="font-size:medium" Title="Frutas: Micronutrientes e Antioxidantes">
+                Frutas fornecem frutose para o estoque de glicogênio hepático e são ricas em <b>fito químicos
+                e antioxidantes
+            </b>. Estes combatem os radicais livres gerados pelo estresse
+                oxidativo do treino intenso, acelerando a recuperação celular. As frutas são, muitas vezes,
+                o "ponto cego" de quem faz musculação. Existe um mito de que o açúcar das frutas (frutose) engorda ou atrapalha a definição, 
+            mas a ciência da nutrição esportiva mostra o contrário: elas são fundamentais para o <b>metabolismo energético</b> e a <b>recuperação oxidativa</b>.
+            </MudStep>
+        <MudStep Style="font-size:medium" Title="O Metabolismo da Frutose e o Glicogênio Hepático">
+            Diferente da glicose (arroz, batata), a frutose é metabolizada quase exclusivamente no fígado para repor o <b>glicogênio hepático</b>.
+            <article /><br /><b>Por que isso importa?</b> O glicogênio hepático é o responsável por manter seus níveis de açúcar no sangue (glicemia) estáveis. Se o fígado está "abastecido", o corpo sinaliza um estado de saciedade e preserva o glicogênio dos músculos para o treino.
+            <article /><br /><b>O limite:</b> O fígado tem uma capacidade limitada. Por isso, não usamos frutas como fonte única de carbo, mas como um complemento estratégico.
+        </MudStep>
+        <MudStep Style="font-size:medium" Title="Densidade de Micronutrientes e Enzimas">
+            Frutas não são apenas açúcar; são pacotes biológicos de suporte:
+            <article /><br /><b>Antioxidantes:</b> O treino de alta intensidade gera radicais livres. Frutas cítricas e vermelhas são ricas em Vitamina C e antocianinas, que combatem a inflamação excessiva, permitindo que você treine pesado novamente mais rápido.
+            <article /><br /><b>Enzimas Digestivas:</b> Algumas frutas auxiliam diretamente na quebra de outros macros. O abacaxi contém <b>bromelina</b> e o mamão contém <b>papaína</b>, ambas enzimas que facilitam a digestão das proteínas, evitando o estufamento de dietas hipercalóricas.
+            <article /><br /><h3>Frutas Estratégicas para o Atleta :</h3>
+            <MudSimpleTable Style="border: 2px solid #008B8B;" Bordered="true" Hover="true">
+                <thead>
+                    <tr>
+                        <th><b>Fruta</b></th>
+                        <th><b>Função Principal</b></th>
+                        <th><b>Momento Ideal</b></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><b>Banana</b></td>
+                        <td>Rica em potássio e carboidratos de absorção média.</td>
+                        <td>Pré-treino (evita cãibras e dá energia).</td>
+                    </tr>
+                    <tr>
+                        <td><b>Abacaxi / Mamão</b></td>
+                        <td>Melhora a digestão proteica e reduz inflamação.</td>
+                        <td>Pós-almoço ou Pós-jantar.</td>
+                    </tr>
+                    <tr>
+                        <td><b>Frutas Vermelhas</b></td>
+                        <td>Baixíssimo índice glicêmico e altíssimos antioxidantes.</td>
+                        <td>Em cutting (perda de gordura) ou ceia.</td>
+                    </tr>
+                    <tr>
+                        <td><b>Laranja / Kiwi</b></td>
+                        <td>Altíssima Vitamina C para suporte imunológico e colágeno.</td>
+                        <td>Manhã ou logo após o treino.</td>
+                    </tr>
+                    <tr>
+                        <td><b>Melancia</b></td>
+                        <td>Rica em citrulina, que auxilia na vasodilatação (pump).</td>
+                        <td>1h antes do treino.</td>
+                    </tr>
+                </tbody>
+            </MudSimpleTable>
+        </MudStep>
+        <MudStep Style="font-size:medium" Title="O Impacto das Fibras (Pectina e Solúveis)">
+            As frutas fornecem fibras que controlam a velocidade com que o açúcar entra no sangue. Comer a fruta inteira (com bagaço e casca, quando possível) é sempre superior ao suco, pois a fibra reduz o impacto insulínico e melhora a saúde da sua microbiota intestinal.
+            <article /><br /><b>Nota Técnica:</b> Um intestino saudável é o que garante que os <b>2g/kg de proteína</b> que você come sejam realmente absorvidos e não apenas eliminados.
+            <article /><br /><h3>Indicação e Quantidade</h3>
+            <article/>Para quem busca hipertrofia e performance:<article/><br />
+            <b>Indicação:</b> Consumir de <b>2 a 4 porções de frutas variadas</b> por dia.
+            <article /><br /><b>Dica de Ouro:</b> Tente "comer o arco-íris". Cada cor de fruta representa um fitoquímico diferente (Licopeno no vermelho, Betacaroteno no laranja, etc.).
+        </MudStep>
+        </MudStepper>
+    </MudPaper>
+}
+@if(_mostrarVegetais){
+<MudCard Elevation="12" Class="mt-1 rounded" Style="background-color:seagreen;width:163px; height:42px">
+    <MudText Class="ms-1" Style="font-weight:bold;font-family:Cambria" Typo="Typo.h4" Align="Align.Left">VEGETAIS</MudText>
+</MudCard>
+
+<MudPaper Elevation="12" Class="mt-1 mb-1">
+    <MudStepper NonLinear ShowResetButton CurrentStepColor="Color.Secondary" CompletedStepColor="Color.Secondary">
+        <MudStep Style="font-size:medium" Title="Vegetais: Densidade e Fibras">
+            Os vegetais garantem a saúde intestinal através das fibras, permitindo que você absorva melhor os macronutrientes. Além disso, vegetais como o brócolis e o espinafre contêm minerais como magnésio e cálcio, fundamentais para a <b>contração muscular</b>. Na nutrição esportiva de elite, não olhamos para os vegetais apenas como "salada", mas como <b>moduladores metabólicos</b>. Eles são a base que permite que todo o resto (proteínas, carbos e gorduras) funcione sem sobrecarregar o seu sistema.
+            <article /><br /><b>A função dos vegetais:</b> Eles são predominantemente <b>alcalinizantes</b>. Ao consumir vegetais, você neutraliza essa carga ácida, o que é vital para a saúde óssea e para manter a eficiência das enzimas que promovem a síntese proteica. Um corpo excessivamente ácido pode aumentar a excreção de nitrogênio e cálcio, prejudicando a performance.
+        </MudStep>
+        <MudStep Style="font-size:medium" Title="Micronutrientes e Contração Muscular">
+            Os vegetais são as minas de ouro de minerais que a maioria dos atletas esquece:
+            <article/><br /><b>Magnésio e Cálcio:</b> Cruciais para a transmissão do impulso nervoso e para a contração/relaxamento muscular. Sem eles, você terá tremores, cãibras e perda de força.<br />
+            <b>Potássio:</b> Trabalha junto com o sódio para regular a hidratação intracelular (o "pump" muscular).<br />
+            <b>Nitratos Naturais:</b> Vegetais como o espinafre e a beterraba são ricos em nitratos que aumentam a produção de <b>Óxido Nítrico</b>, melhorando o fluxo sanguíneo e a entrega de oxigênio aos músculos durante o treino.
+            <article/><br /><h3>Saúde Intestinal e Microbiota</h3>
+            Você não é o que você come, você é o que você absorve.
+            <article/><br /><b>Fibras Insolúveis e Solúveis:</b> Os vegetais limpam as paredes intestinais e servem de alimento para as bactérias boas (probióticos). Um intestino inflamado por falta de vegetais impede a absorção eficiente de aminoácidos e pode causar letargia.
+        </MudStep>
+        <MudStep Style="font-size:medium" Title="Vegetais Estratégicos para Musculação">
+            <MudSimpleTable Style="border: 2px solid #2e8b57;" Bordered="true" Hover="true">
+                <thead>
+                    <tr>
+                        <th><b>Vegetal</b></th>
+                        <th><b>Benefício Técnico</b></th>
+                        <th><b>Componente Chave</b></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><b>Brócolis / Couve-flor</b></td>
+                        <td>Auxilia na modulação do estrogênio.</td>
+                        <td>Indol-3-Carbinol</td>
+                    </tr>
+                    <tr>
+                        <td><b>Espinafre</b></td>
+                        <td>Melhora a eficiência mitocondrial e oxigenação.</td>
+                        <td>Nitratos e Ecdisterona natural</td>
+                    </tr>
+                    <tr>
+                        <td><b>Aspargos</b></td>
+                        <td>Atua como um diurético natural suave, ajudando na definição.</td>
+                        <td>Asparagina</td>
+                    </tr>
+                    <tr>
+                        <td><b>Cenoura</b></td>
+                        <td>Saúde da pele e suporte ao sistema imune (essencial no bulking).</td>
+                        <td>Betacaroteno</td>
+                    </tr>
+                    <tr>
+                        <td><b>Abobrinha/Berinjela</b></td>
+                        <td>Volume alimentar com baixíssima caloria.</td>
+                        <td>Fibras e Água</td>
+                    </tr>
+                </tbody>
+            </MudSimpleTable>
+            <br /><h3>Indicação e Quantidade</h3>
+            <article /><br /><b>A Regra do Prato Colorido:</b> Pelo menos <b>metade do seu prato</b> nas grandes refeições (almoço e jantar) deve ser composta por vegetais.
+            <article /><br /><b>Variedade:</b> Não coma apenas alface. Busque vegetais crucíferos (brócolis, couve), folhosos escuros (rúcula, espinafre) e raízes (cenoura, beterraba).
+        </MudStep>
+    </MudStepper>
+</MudPaper>
+}
+@if(_mostrarGorduras){
+    <MudCard Elevation="12" Class="mt-1 rounded" Style="background-color:saddlebrown;width:188px; height:42px">
+        <MudText Class="ms-1" Style="font-weight:bold;font-family:Cambria" Typo="Typo.h4" Align="Align.Left">GORDURAS</MudText>
+    </MudCard>
+    <MudPaper Elevation="12" Class="mt-1 mb-1">
+        <MudStepper NonLinear ShowResetButton CurrentStepColor="Color.Tertiary" CompletedStepColor="Color.Tertiary">
+            <MudStep Style="font-size:medium" Title="Gorduras: O Suporte Hormonal">
+            As <b>gorduras</b> (ou lipídios) são, talvez, o macronutriente mais incompreendido na musculação. Muitos atletas as evitam por medo do ganho de gordura corporal, mas, do ponto de vista fisiológico, elas são o "painel de controle" do seu organismo. Sem gordura, sua engenharia hormonal desmorona. Lipídios são essenciais para a <b>produção de hormônios esteroides</b>, como a testosterona, e para a absorção de vitaminas lipossolúveis (A, D, E, K). Uma dieta com gordura excessivamente baixa pode arruinar seu perfil hormonal e prejudicar a recuperação.
+            <article/><br /><h3>A Função Hormonal e Estrutural</h3>
+            Diferente dos carboidratos que servem como energia rápida, as gorduras têm um papel regulador e estrutural:
+            <article /><br /><b>Precursoras de Hormônios:</b> O colesterol (um tipo de lipídio) é a matéria-prima básica para a síntese de testosterona. Dietas extremamente baixas em gordura (abaixo de 15% das calorias totais) resultam invariavelmente em queda na libido, fadiga e perda de massa muscular devido ao crash hormonal.
+            <article /><b>Saúde das Membranas:</b> Cada célula do seu músculo é envolvida por uma bicamada lipídica. Gorduras de boa qualidade garantem que essa membrana seja fluida, facilitando a entrada de nutrientes e a sinalização da insulina.
+            <article /><b>Absorção de Vitaminas:</b> As vitaminas <b>A, D, E e K</b> são lipossolúveis. Se você come uma salada rica em nutrientes mas não adiciona uma fonte de gordura, seu corpo não consegue absorver o que está ali.
+            </MudStep>
+            <MudStep Style="font-size:medium" Title="Tipos de Gorduras: Onde Focar">
+            <b>Gorduras Monoinsaturadas (Azeite de Oliva, Abacate, Oleaginosas):</b> São as "queridinhas" da dieta. Ajudam na saúde cardiovascular e não promovem inflamação, sendo excelentes para manter o aporte calórico alto no bulking.
+            <article /><br /><b>Gorduras Poli-insaturadas (Ômega-3 e Ômega-6):</b> O Ômega-3 (peixes gordos, linhaça) é altamente anti-inflamatório. Ele auxilia na recuperação muscular e melhora a sensibilidade à insulina.
+            <article /><br /><b>Gorduras Saturadas (Gordura animal, Óleo de Coco):</b> Devem ser consumidas com moderação. Embora importantes para a testosterona, o excesso pode aumentar a resistência à insulina e marcadores inflamatórios.
+            <article /><br /><b>Gorduras Trans (Processados, Margarina):</b> Estas devem ser <b>zero</b> na sua dieta. Elas destroem a saúde metabólica e aumentam a gordura visceral.
+           <article/><br><h3>Estratégia de Digestão e "Emptying" Gástrico</h3>
+            Um ponto técnico vital para quem treina pesado é a velocidade de esvaziamento gástrico.
+            As gorduras retardam a digestão. Isso é ótimo em certos momentos e péssimo em outros:
+            <article /><br /><b>Evite no Pré e Pós-Treino imediato:</b> Nestes horários, queremos que os aminoácidos e a glicose cheguem ao músculo o mais rápido possível. A gordura "atrasaria a entrega".
+            <article /><br /><b>Use na Ceia ou Refeições Afastadas do Treino:</b> Ao adicionar gordura na última refeição, você garante uma liberação mais lenta de aminoácidos durante o sono, combatendo o catabolismo noturno.
+            </MudStep>
+            <MudStep Style="font-size:medium" Title="Melhores Fontes e Indicações">
+            <MudSimpleTable Style="border: 2px solid #8B4513;" Bordered="true" Hover="true">
+                <thead>
+                    <tr>
+                        <th><b>Fonte</b></th>
+                        <th><b>Benefício para o Atleta</b></th>
+                        <th><b>Recomendação</b></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><b>Azeite de Oliva Extra Virgem</b></td>
+                        <td>Rico em polifenóis e gordura monoinsaturada.</td>
+                        <td>1 a 2 colheres de sopa no almoço/jantar.</td>
+                    </tr>
+                    <tr>
+                        <td><b>Abacate</b></td>
+                        <td>Ótima fonte de potássio (evita cãibras) e gorduras boas.</td>
+                        <td>Excelente em shakes ou com ovos.</td>
+                    </tr>
+                    <tr>
+                        <td><b>Pasta de Amendoim</b></td>
+                        <td>Alta densidade calórica e prática para bater macros.</td>
+                        <td>Cuidado com o excesso (muito calórica).</td>
+                    </tr>
+                    <tr>
+                        <td><b>Ovos Inteiros</b></td>
+                        <td>A gema contém colina e gorduras saturadas essenciais.</td>
+                        <td>2 a 4 ovos por dia (ajustando os macros).</td>
+                    </tr>
+                    <tr>
+                        <td><b>Castanhas/Nozes</b></td>
+                        <td>Ricas em minerais como Zinco e Magnésio.</td>
+                        <td>Ótimo lanche intermediário.</td>
+                    </tr>
+                </tbody>
+            </MudSimpleTable>
+            <br /><h3>Indicação de Consumo</h3>
+            A gordura é o macronutriente mais denso: <b>9 kcal por grama</b> (contra 4 kcal das proteínas e carboidratos). Por isso, qualquer erro na pesagem pode estagnar sua perda de gordura.
+            <br /><b>Padrão Ouro:</b> Entre <b>0,8g e 1,2g por kg de peso</b>.
+            <br /><b>Exemplo:</b> Se você pesa 80kg, deve ingerir cerca de 64g a 80g de gordura por dia.
+        </MudStep>
+    </MudStepper>
+    </MudPaper>
+}
+<MudCard Elevation="0" Class="mt-1 mb-1 rounded" Style="width:499px; height:42px">
+    <MudText Class="ms-1" Style="font-weight:bold;font-family:Cambria" Typo="Typo.h4" Align="Align.Left">Exemplos de Dietas Completas:</MudText>
+</MudCard>
+
+
+<MudStack AlignItems="AlignItems.Center">
+    <div class="align-center justify-center mt-1">
+  <MudText Inline="true" Style="font-weight:bold;font-family:Cambria;color:coral" Typo="Typo.h4" Align="Align.Center">Bulking </MudText>
+  <MudText Inline="true" Style="font-weight:bold;font-family:Cambria" Typo="Typo.h4" Align="Align.Center">Limpo</MudText>
+
+    </div>
+</MudStack>
+
+<div class="d-flex flex-wrap gap-5 justify-center mt-2">
+<MudCard Elevation="11" Style="width: 280px;" Class="rounded-xl trasition-fast-out-slow-in scale-hover mb-1">
+    <MudCardMedia  Image="img-gm/cafe1.png" Height="150" />
+    <MudCardContent>
+        <MudButton Style="background-color:coral; width: 100%;font-weight: 800">Café da Manhã</MudButton>
+        <MudText Align="Align.Start" Typo="Typo.body2">
+            <article/><br /><b>Proteína:</b> Ovos mexidos ou Whey Protein.<br />
+            <article /><b>Carboidrato:</b> Aveia em flocos.
+                <article /><b>Fruta:</b> Banana picada.
+                <article /><b>Gordura:</b> A gordura natural da gema ou 1 colher de pasta de amendoim.
+        </MudText>
+    </MudCardContent>
+</MudCard>
+<MudCard Elevation="11" Style="width: 280px;" Class="rounded-xl trasition-fast-out-slow-in scale-hover mb-1">
+    <MudCardMedia Image="img-gm/almoco1.png" Height="150" />
+    <MudCardContent>
+            <MudButton Style="background-color:coral; width: 100%;font-weight: 800">Almoço</MudButton>
+        <MudText Class="mt-1" Align="Align.Start" Typo="Typo.body2">
+                <b>Proteína:</b> 150g-200g de Peito de Frango ou Patinho.<br />
+                <b>Carboidrato:</b> 200g-250g de Arroz Branco ou Batata.<br />
+                <b>Vegetais:</b> Grande porção de Brócolis e Cenoura no vapor.<br />
+                <b>Gordura:</b> 1 colher de sopa de Azeite de Oliva Extra Virge
+        </MudText>
+    </MudCardContent>
+    </MudCard>
+    <MudCard Elevation="11" Style="width: 280px;" Class="rounded-xl trasition-fast-out-slow-in scale-hover mb-1">
+        <MudCardMedia Image="img-gm/pretrei1.png" Height="150" />
+        <MudCardContent>
+            <MudButton Style="background-color:coral; width: 100%;font-weight: 800">Pré-Treino</MudButton>
+            <MudText Class="mt-1" Align="Align.Start" Typo="Typo.body2">
+                <b>Carboidrato:</b> 200g de Batata Doce ou Macarrão integral.<br />
+                <b>Proteína:</b> 100g de Tilápia ou Frango.<br />
+                <b>Fruta:</b> 1 rodela de abacaxi (ajuda na digestão para não treinar pesado com o estômago cheio).<br />
+            </MudText>
+        </MudCardContent>
+    </MudCard>
+    <MudCard Elevation="11" Style="width: 280px;" Class="rounded-xl trasition-fast-out-slow-in scale-hover mb-1">
+        <MudCardMedia Image="img-gm/pos1.png" Height="150" />
+        <MudCardContent>
+            <MudButton Style="background-color:coral; width: 100%;font-weight: 800">Pós-Treino</MudButton>
+            <MudText Class="mt-1" Align="Align.Start" Typo="Typo.body2">
+                <b>Carboidrato:</b> Suco de uva integral ou Maltodextrina.<br />
+                <b>Proteína:</b> Whey Protein Isolado.<br />
+            </MudText>
+        </MudCardContent>
+    </MudCard>
+    <MudCard Elevation="11" Style="width: 280px;" Class="rounded-xl trasition-fast-out-slow-in scale-hover mb-1">
+        <MudCardMedia Image="img-gm/janta1.png" Height="150" />
+        <MudCardContent>
+            <MudButton Style="background-color:coral; width: 100%;font-weight: 800">Janta</MudButton>
+            <MudText Class="mt-1" Align="Align.Start" Typo="Typo.body2">
+                <b>Carboidrato:</b> 150g de Mandioca ou Arroz.<br />
+                <b>Proteína:</b> 150g de Salmão ou Carne Vermelha magra.<br />
+                <b>Vegetais:</b> Salada de folhas verdes escuras (Espinafre/Rúcula).<br />
+            </MudText>
+        </MudCardContent>
+    </MudCard>
+    <MudCard Elevation="11" Style="width: 280px;" Class="rounded-xl trasition-fast-out-slow-in scale-hover mb-1">
+        <MudCardMedia Image="img-gm/ceia1.png" Height="150" />
+        <MudCardContent>
+            <MudButton Style="background-color:coral; width: 100%;font-weight: 800">Ceia</MudButton>
+            <MudText Class="mt-1" Align="Align.Start" Typo="Typo.body2">
+                <b>Gordura:</b> Um punhado de Castanhas do Pará ou Abacate.<br />
+                <b>Proteína:</b> Iogurte Grego ou Albumina.<br />
+                <b>Fruta:</b> Morangos (baixo IG).<br />
+            </MudText>
+        </MudCardContent>
+    </MudCard>
+</div>
 </MudContainer>
+
+
+@code {
+
+    private bool _mostrarProteinas = false;
+
+    private void ExibirProteinas()
+    {
+        _mostrarProteinas = !_mostrarProteinas;
+    }
+
+    private bool _mostrarCarboidratos = false;
+
+    private void ExibirCarboidratos()
+    {
+        _mostrarCarboidratos = !_mostrarCarboidratos;
+    }
+
+    private bool _mostrarFrutas = false;
+
+    private void ExibirFrutas()
+    {
+        _mostrarFrutas = !_mostrarFrutas;
+    }
+
+    private bool _mostrarVegetais = false;
+
+    private void ExibirVegetais()
+    {
+        _mostrarVegetais = !_mostrarVegetais;
+    }
+
+    private bool _mostrarGorduras = false;
+
+    private void ExibirGorduras()
+    {
+        _mostrarGorduras = !_mostrarGorduras;
+    }
+}

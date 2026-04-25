@@ -18,7 +18,7 @@
     }
     
     .reg-card { 
-        border-radius: 8px; 
+        border-radius: 28px; 
         width: 100%; 
         max-width: 750px; 
         position: relative;
@@ -60,7 +60,7 @@
 </style>
 
 <div class="reg-wrap">
-    <MudPaper Elevation="4" Class="reg-card pa-10 mt-5">
+    <MudPaper Elevation="4" Class="reg-card pa-10 mt-5 ">
         
         <MudIconButton Icon="@Icons.Material.Filled.ArrowBack" 
                        Class="btn-back" 
@@ -157,20 +157,20 @@
     
     public async Task HandleCadastro() 
     { 
-        await Task.Delay(500); 
+        await Task.Delay(50); 
     }
 
     public class CadastroModel 
     {
-        [Required(ErrorMessage = "Nome é obrigatório")] public string FirstName { get; set; } = "";
-        [Required(ErrorMessage = "Sobrenome é obrigatório")] public string LastName { get; set; } = "";
-        [Required(ErrorMessage = "CPF é obrigatório")] public string CPF { get; set; } = "";
-        [Required(ErrorMessage = "E-mail é obrigatório"), EmailAddress(ErrorMessage = "E-mail inválido")] public string Email { get; set; } = "";
-        [Required(ErrorMessage = "Confirmação de e-mail é obrigatória")]
-        [Compare(nameof(Email), ErrorMessage = "E-mails diferentes")] public string ConfirmEmail { get; set; } = "";
-        [Required(ErrorMessage = "Senha é obrigatória"), MinLength(6, ErrorMessage = "Mínimo 6 caracteres")] public string Password { get; set; } = "";
-        [Required(ErrorMessage = "Confirmação de senha é obrigatória")]
-        [Compare(nameof(Password), ErrorMessage = "Senhas diferentes")] public string ConfirmPassword { get; set; } = "";
+        [Required(ErrorMessage = "Nome é obrigatório!")] public string FirstName { get; set; } = "";
+        [Required(ErrorMessage = "Sobrenome é obrigatório!")] public string LastName { get; set; } = "";
+        [Required(ErrorMessage = "CPF é obrigatório!")] public string CPF { get; set; } = "";
+        [Required(ErrorMessage = "E-mail é obrigatório!"), EmailAddress(ErrorMessage = "E-mail inválido")] public string Email { get; set; } = "";
+        [Required(ErrorMessage = "Confirmação de e-mail é obrigatória!")]
+        [Compare(nameof(Email), ErrorMessage = "E-mails diferentes!")] public string ConfirmEmail { get; set; } = "";
+        [Required(ErrorMessage = "Senha é obrigatória!"), MinLength(6, ErrorMessage = "Mínimo 6 caracteres")] public string Password { get; set; } = "";
+        [Required(ErrorMessage = "Confirmação de senha é obrigatória!")]
+        [Compare(nameof(Password), ErrorMessage = "Senhas diferentes!")] public string ConfirmPassword { get; set; } = "";
         public string? Phone { get; set; }
         public DateTime? BirthDate { get; set; }
     }
