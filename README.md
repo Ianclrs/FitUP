@@ -69,6 +69,16 @@
              alt=""/><br>
           <sub><b>Pedro Henrique como PO</b></sub>
       </a>
+        <td align="center">
+    <a>
+    <img src="https://avatars.githubusercontent.com/u/213353198?v=4"
+             width="150"
+             height="150"
+             style="object-fit: cover; border-radius: 50%;"
+             alt=""/><br>
+          <sub><b>Gabriel Castor como QA</b></sub>
+      </a>
+     </td>
   </tr>  
 </table>
 
