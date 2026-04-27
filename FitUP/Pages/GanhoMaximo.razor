@@ -1,4 +1,5 @@
 @page "/GanhoMaximo"
+@using MudBlazor.Charts
 
 <PageTitle>GanhoMaximo</PageTitle>
 <MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="mt-6 py-0 mb-8  d-flex flex-column justify-center">
@@ -396,13 +397,19 @@
     <MudText Class="ms-1" Style="font-weight:bold;font-family:Cambria" Typo="Typo.h4" Align="Align.Left">Exemplos de Dietas Completas:</MudText>
 </MudCard>
 
-
+@*Primeira Dieta*@
 <MudStack AlignItems="AlignItems.Center">
     <div class="align-center justify-center mt-1">
   <MudText Inline="true" Style="font-weight:bold;font-family:Cambria;color:coral" Typo="Typo.h4" Align="Align.Center">Bulking </MudText>
   <MudText Inline="true" Style="font-weight:bold;font-family:Cambria" Typo="Typo.h4" Align="Align.Center">Limpo</MudText>
 
     </div>
+
+    <MudCard>
+        <MudText Align="Align.Center">
+            Foco no superávit calórico controlado. O aporte de carboidratos é alto para fornecer energia para treinos intensos e sinalizar a via mTOR (crescimento muscular).
+        </MudText>
+    </MudCard>
 </MudStack>
 
 <div class="d-flex flex-wrap gap-5 justify-center mt-2">
@@ -470,6 +477,210 @@
                 <b>Gordura:</b> Um punhado de Castanhas do Pará ou Abacate.<br />
                 <b>Proteína:</b> Iogurte Grego ou Albumina.<br />
                 <b>Fruta:</b> Morangos (baixo IG).<br />
+            </MudText>
+        </MudCardContent>
+    </MudCard>
+</div>
+<MudDivider Class="mt-3 mb-3" Style="--mud-palette-divider:coral"></MudDivider>
+@*Segunda Dieta*@
+<MudStack AlignItems="AlignItems.Center">
+    <div class="align-center justify-center mt-1">
+        <MudText Inline="true" Style="font-weight:bold;font-family:Cambria;color:coral" Typo="Typo.h4" Align="Align.Center">Cutting</MudText>
+        <MudText Inline="true" Style="font-weight:bold;font-family:Cambria" Typo="Typo.h4" Align="Align.Center">/Secar</MudText>
+
+    </div>
+
+    <MudCard>
+        <MudText Align="Align.Center">
+            O objetivo aqui é o déficit calórico preservando a massa magra. Aumentamos a ingestão de proteínas para manter o balanço nitrogenado positivo e utilizamos carboidratos complexos de baixo índice glicêmico para controle da saciedade.
+        </MudText>
+    </MudCard>
+
+</MudStack>
+
+<div class="d-flex flex-wrap gap-5 justify-center mt-2">
+<MudCard Elevation="11" Style="width: 280px;" Class="rounded-xl trasition-fast-out-slow-in scale-hover mb-1">
+    <MudCardMedia Image="img-gm/cafe2.png" Height="150" />
+    <MudCardContent>
+            <MudButton Style="background-color:coral; width: 100%;font-weight: 800">Café da Manhã</MudButton>
+        <MudText Class="mt-1" Align="Align.Start" Typo="Typo.body2">
+            <b>Vegetais:</b>Espinafre à vontade.<br />
+                <b>Proteína:</b> Omelete (4 ovos inteiros)<br />
+                <b>Carboidrato:</b> 30g de aveia em flocos.<br />
+        </MudText>
+    </MudCardContent>
+</MudCard>
+<MudCard Elevation="11" Style="width: 280px;" Class="rounded-xl trasition-fast-out-slow-in scale-hover mb-1">
+    <MudCardMedia Image="img-gm/almoco2.png" Height="150" />
+    <MudCardContent>
+        <MudButton Style="background-color:coral; width: 100%;font-weight: 800">Almoço</MudButton>
+        <MudText Class="mt-1" Align="Align.Start" Typo="Typo.body2">
+                <b>Carboidrato:</b> 150g de batata-doce.<br />
+                <b>Proteína:</b> 200g de peito de frango grelhado<br />
+                <b>Vegetais:</b> Brócolis à vontade.<br />
+        </MudText>
+    </MudCardContent>
+</MudCard>
+    <MudCard Elevation="11" Style="width: 280px;" Class="rounded-xl trasition-fast-out-slow-in scale-hover mb-1">
+        <MudCardMedia Image="img-gm/lanch2.png" Height="150" />
+        <MudCardContent>
+            <MudButton Style="background-color:coral; width: 100%;font-weight: 800">Lanche da Tarde</MudButton>
+            <MudText Class="mt-1" Align="Align.Start" Typo="Typo.body2">
+                <b>Gordura:</b> 20g de castanhas do pará.<br />
+                <b>Proteína:</b> 1 dose de Whey Protein.<br />
+            </MudText>
+        </MudCardContent>
+    </MudCard>
+    <MudCard Elevation="11" Style="width: 280px;" Class="rounded-xl trasition-fast-out-slow-in scale-hover mb-1">
+        <MudCardMedia Image="img-gm/janta2.png" Height="150" />
+        <MudCardContent>
+            <MudButton Style="background-color:coral; width: 100%;font-weight: 800">Janta</MudButton>
+            <MudText Class="mt-1" Align="Align.Start" Typo="Typo.body2">
+                <b>Vegetais:</b> salada verde variada com 1 colher de sopa de azeite de oliva extra virgem.<br />
+                <b>Proteína:</b> 200g de filé de tilápia ou pescada.<br />
+            </MudText>
+        </MudCardContent>
+    </MudCard>
+</div>
+
+<MudDivider Class="mt-3 mb-3" Style="--mud-palette-divider:coral"></MudDivider>
+@*Terceira dieta*@
+<MudStack AlignItems="AlignItems.Center">
+    <div class="align-center justify-center mt-1">
+        <MudText Inline="true" Style="font-weight:bold;font-family:Cambria;color:coral" Typo="Typo.h4" Align="Align.Center">Bulking</MudText>
+        <MudText Inline="true" Style="font-weight:bold;font-family:Cambria" Typo="Typo.h4" Align="Align.Center">Limpo</MudText>
+
+    </div>
+
+    <MudCard>
+        <MudText Align="Align.Center">
+            Outra dieta também voltada superávit calórico controlado. Com bastante carboidrato para fornecer energia para treinos intensos e sinalizar a via mTOR (crescimento muscular).
+        </MudText>
+    </MudCard>
+</MudStack>
+
+<div class="d-flex  flex-wrap gap-5 justify-center mt-2">
+<MudCard Elevation="11" Style="width: 280px;" Class="rounded-xl trasition-fast-out-slow-in scale-hover mb-1">
+    <MudCardMedia Image="img-gm/cafe3.png" Height="150" />
+    <MudCardContent>
+        <MudButton Style="background-color:coral; width: 100%;font-weight: 800">Café da Manhã</MudButton>
+        <MudText Class="mt-1" Align="Align.Start" Typo="Typo.body2">
+            <b>Carboidratos:</b>400ml de leite integral e 60g de aveia .<br />
+            <b>Frutas:</b>  2 bananas.<br />
+            <b>Proteína:</b> 1 dose de Whey.<br />
+            <b>Gorduras:</b>1 colher de pasta de amendoim.
+        </MudText>
+    </MudCardContent>
+</MudCard>
+<MudCard Elevation="11" Style="width: 280px;" Class="rounded-xl trasition-fast-out-slow-in scale-hover mb-1">
+    <MudCardMedia Image="img-gm/almoco3.png" Height="150" />
+    <MudCardContent>
+        <MudButton Style="background-color:coral; width: 100%;font-weight: 800">Almoço</MudButton>
+        <MudText Class="mt-1" Align="Align.Start" Typo="Typo.body2">
+            <b>Carboidratos:</b>300g de arroz branco e 100g de feijão.<br />
+            <b>Proteína:</b>200g de patinho moído ou bife magro.<br />
+        </MudText>
+    </MudCardContent>
+</MudCard>
+<MudCard Elevation="11" Style="width: 280px;" Class="rounded-xl trasition-fast-out-slow-in scale-hover mb-1">
+    <MudCardMedia Image="img-gm/lanch3.png" Height="150" />
+    <MudCardContent>
+            <MudButton Style="background-color:coral; width: 100%;font-weight: 800">Lanche da Tarde</MudButton>
+        <MudText Class="mt-1" Align="Align.Start" Typo="Typo.body2">
+            <b>Carboidratos:</b> 2 fatias de pão de forma integral.<br />
+                <b>Proteína:</b> 1 latinha de atum.<br />
+                <b>Gorduras:</b> Creme de ricota light.<br />
+                <b>Frutas:</b> 1 Maçã.
+        </MudText>
+    </MudCardContent>
+</MudCard>
+<MudCard Elevation="11" Style="width: 280px;" Class="rounded-xl trasition-fast-out-slow-in scale-hover mb-1">
+    <MudCardMedia Image="img-gm/janta3.png" Height="150" />
+    <MudCardContent>
+        <MudButton Style="background-color:coral; width: 100%;font-weight: 800">Jantar</MudButton>
+        <MudText Class="mt-1" Align="Align.Start" Typo="Typo.body2">
+                <b>Carboidratos:</b> 250g de macarrão integral com molho de tomate natural.<br />
+                <b>Proteína:</b>200g de sobrecoxa de frango (sem pele).<br />
+        </MudText>
+    </MudCardContent>
+</MudCard>
+<MudCard Elevation="11" Style="width: 280px;" Class="rounded-xl trasition-fast-out-slow-in scale-hover mb-1">
+    <MudCardMedia Image="img-gm/ceia3.png" Height="150" />
+    <MudCardContent>
+        <MudButton Style="background-color:coral; width: 100%;font-weight: 800">Ceia</MudButton>
+        <MudText Class="mt-1" Align="Align.Start" Typo="Typo.body2">
+            <b>Gorduras:</b>1 iogurte grego natural com 30g de mix de sementes (girassol/abóbora).<br />
+        </MudText>
+    </MudCardContent>
+    </MudCard>
+</div>
+
+<MudDivider Class="mt-3 mb-3" Style="--mud-palette-divider:coral"></MudDivider>
+@*Quarta Dieta*@
+<MudStack AlignItems="AlignItems.Center">
+    <div class="align-center justify-center mt-1">
+        <MudText Inline="true" Style="font-weight:bold;font-family:Cambria;color:coral" Typo="Typo.h4" Align="Align.Center">Carb</MudText>
+        <MudText Inline="true" Style="font-weight:bold;font-family:Cambria" Typo="Typo.h4" Align="Align.Center">Cycling</MudText>
+    </div>
+        <MudCard>
+            <MudText Align="Align.Center">
+            Esta estratégia alterna dias de alto carboidrato (em treinos pesados de pernas ou costas) com dias de baixo carboidrato.<br />Uma excelente variação
+            por ser excelente para quem quer ganhar massa muscular com o mínimo de ganho de gordura.
+            </MudText>
+        </MudCard>
+    
+
+</MudStack>
+
+<div class="d-flex  flex-wrap gap-5 justify-center mt-2">
+    <MudCard Elevation="11" Style="width: 280px;" Class="rounded-xl trasition-fast-out-slow-in scale-hover mb-1">
+        <MudCardMedia Image="img-gm/cafe4.png" Height="150" />
+        <MudCardContent>
+            <MudButton Style="background-color:coral; width: 100%;font-weight: 800">Café da Manhã</MudButton>
+            <MudText Class="mt-1" Align="Align.Start" Typo="Typo.body2">
+                <b>Carboidratos:</b>2 fatias de pão de forma integral com sementes.<br />
+                <b>Proteína:</b>4 ovos mexidos.<br />
+            </MudText>
+        </MudCardContent>
+    </MudCard>
+    <MudCard Elevation="11" Style="width: 280px;" Class="rounded-xl trasition-fast-out-slow-in scale-hover mb-1">
+        <MudCardMedia Image="img-gm/almoco4.png" Height="150" />
+        <MudCardContent>
+            <MudButton Style="background-color:coral; width: 100%;font-weight: 800">Almoço</MudButton>
+            <MudText Class="mt-1" Align="Align.Start" Typo="Typo.body2">
+                <b>Carboidratos:</b>200g de mandioca cozida.<br />
+                <b>Proteína:</b>200g de sobrecoxa de frango grelhado.<br />
+                <b>Vegetais:</b>Salada de folhas.
+            </MudText>
+        </MudCardContent>
+    </MudCard>
+    <MudCard Elevation="11" Style="width: 280px;" Class="rounded-xl trasition-fast-out-slow-in scale-hover mb-1">
+        <MudCardMedia Image="img-gm/pretrei4.png" Height="150" />
+        <MudCardContent>
+            <MudButton Style="background-color:coral; width: 100%;font-weight: 800">Pré-Treino</MudButton>
+            <MudText Class="mt-1" Align="Align.Start" Typo="Typo.body2">
+                <b>Carboidratos:</b>30g de aveia.<br />
+                <b>Frutas:</b> 1 Banana.
+            </MudText>
+        </MudCardContent>
+    </MudCard>
+    <MudCard Elevation="11" Style="width: 280px;" Class="rounded-xl trasition-fast-out-slow-in scale-hover mb-1">
+        <MudCardMedia Image="img-gm/janta4.png" Height="150" />
+        <MudCardContent>
+            <MudButton Style="background-color:coral; width: 100%;font-weight: 800">Jantar</MudButton>
+            <MudText Class="mt-1" Align="Align.Start" Typo="Typo.body2">
+                <b>Carboidratos:</b> 150g de arroz.<br />
+                <b>Vegetais:</b>Legumes salteados na manteiga<br />
+                <b>Proteína:</b>200g de carne bovina magra (alcatra/mignon).<br />
+            </MudText>
+        </MudCardContent>
+    </MudCard>
+    <MudCard Elevation="11" Style="width: 280px;" Class="rounded-xl trasition-fast-out-slow-in scale-hover mb-1">
+        <MudCardMedia Image="img-gm/ceia4.png" Height="150" />
+        <MudCardContent>
+            <MudButton Style="background-color:coral; width: 100%;font-weight: 800">Ceia</MudButton>
+            <MudText Class="mt-1" Align="Align.Start" Typo="Typo.body2">
+                <b>Proteinas:</b>30g de albumina ou caseína.<br />
             </MudText>
         </MudCardContent>
     </MudCard>
