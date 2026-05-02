@@ -2,53 +2,85 @@
 
 <PageTitle>Indicações</PageTitle>
 
-<MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="mt-8 py-10 d-flex flex-column">
+<MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="mt-6 py-10 d-flex flex-column">
     <style>
             .scale-hover:hover {
                 transform: scale(1.05);
                 transition: transform 0.3s ease-in-out
             }
     </style>
-    <div class="d-flex flex-wrap gap-8 justify-center  mt-0">
-        <MudCard Elevation="17" Style="width: 320px;" Class="rounded-xl trasition-fast-out-slow-in scale-hover ">
+    <MudStack AlignItems="AlignItems.Center">
+    <div class="d-flex flex-wrap gap-1">
+    <MudText Align="Align.Center" Typo="Typo.h4" Style="font-family:Cambria;color:coral" Inline="true">Indicações </MudText>
+    <MudText Align="Align.Center" Typo="Typo.h4" Style="font-family:Cambria" Inline="true"> & Parceiros</MudText>
+    
+    </div>
+    <div class="d-flex flex-wrap">
+    <MudPaper Square>
+        <MudText Typo="Typo.body2" Align="Align.Center" Style="font-size:medium;margin-bottom:-5px">Aqui você irá encontrar as principais academias que achamos válido conhecer</MudText>
+        <MudDivider Style="--mud-palette-divider:coral; width:100%; max-width:569px; height:1px;" />
+    </MudPaper>
+    </div>
+    </MudStack>
+
+    <div class="d-flex flex-wrap gap-8 justify-center mt-8">
+        <MudCard Elevation="17" Style="width: 320px; height:438px" Class="rounded-xl trasition-fast-out-slow-in scale-hover ">
             <MudCardMedia Image="img/sm.jpg" Height="260" />
             <MudCardContent>
             <MudButton Class="transition-fast-out-slow-in scale-hover" Style="background-color:coral; width: 100%;font-weight: 900" Href="https://www.smartfit.com.br/" target="_blank" >Smart Fit</MudButton>
-                <MudText Class="mt-1" Align="Align.Center" Typo="Typo.body1" Style="font-weight:700">Contatos:</MudText>
-                <div class="d-flex justify-center" > 
+                <MudText Class="mt-2" Align="Align.Center" Typo="Typo.body1" Style="font-weight:700">Contatos:</MudText>
+                <div class="d-flex justify-center mt-1" >
+                    <MudTooltip Style="background-color:transparent;color:coral" Text="WhatsApp">
                 <MudIconButton Href="https://api.whatsapp.com/send/?phone=5511998079600" Target="_blank" Icon="@Icons.Custom.Brands.WhatsApp"  Size="Size.Large" Style="color:coral">
                     </MudIconButton>
+                    </MudTooltip>
+                    <MudTooltip Style="background-color:transparent;color:coral" Text="Instagram">
                     <MudIconButton href="https://www.instagram.com/smartfit/?hl=pt" Target="_blank" Icon="@Icons.Custom.Brands.Instagram" Size="Size.Large" Style="color:coral"></MudIconButton>
+                    </MudTooltip>
+                    <MudTooltip Style="background-color:transparent;color:coral" Text="Localização">
                     <MudIconButton href="https://www.smartfit.com.br/academias" Target="_blank" Icon="@Icons.Custom.Brands.Google" Size="Size.Large" Style="color:coral"></MudIconButton>
-               </div>
+                    </MudTooltip>
+                </div>
             </MudCardContent>
         </MudCard>
 
-    <MudCard Elevation="17" Style="width: 320px;" Class="rounded-xl transition-fast-out-slow-in scale-hover ">
+    <MudCard Elevation="17" Style="width: 320px; height:438px" Class="rounded-xl transition-fast-out-slow-in scale-hover ">
         <MudCardMedia Image="img/Formula2.png" Height="260"/>
         <MudCardContent>
             <MudButton Class="transition-fast-out-slow-in scale-hover" Style="background-color:coral; width: 100%;font-weight: 900" Href="https://www.formulaacademia.com.br/" target="_blank">Formula</MudButton>
-            <MudText Class="mt-1" Align="Align.Center" Typo="Typo.body1" Style="font-weight:700">Contatos:</MudText>
-            <div class="d-flex justify-center">
+            <MudText Class="mt-2" Align="Align.Center" Typo="Typo.body1" Style="font-weight:700">Contatos:</MudText>
+            <div class="d-flex justify-center mt-1">
+                    <MudTooltip Style="background-color:transparent;color:coral" Text="WhatsApp">
                     <MudIconButton Href="https://api.whatsapp.com/send/?phone=5521978763147&text&type=phone_number&app_absent=0" Target="_blank" Icon="@Icons.Custom.Brands.WhatsApp" Size="Size.Large" Style="color:coral">
             </MudIconButton>
+                    </MudTooltip>
+                    <MudTooltip Style="background-color:transparent;color:coral" Text="Instagram">
                     <MudIconButton href="https://www.instagram.com/academiaformula_/" Target="_blank" Icon="@Icons.Custom.Brands.Instagram" Size="Size.Large" Style="color:coral"></MudIconButton>
+                    </MudTooltip>
+                    <MudTooltip Style="background-color:transparent;color:coral" Text="Localização">
                     <MudIconButton href="https://www.formulaacademia.com.br/academias" Target="_blank" Icon="@Icons.Custom.Brands.Google" Size="Size.Large" Style="color:coral" ></MudIconButton>
+                    </MudTooltip>
             </div>
         </MudCardContent>
     </MudCard>
 
-    <MudCard Elevation="17" Style="width: 320px;" Class="rounded-xl transition-fast-out-slow-in scale-hover">
+    <MudCard Elevation="17" Style="width: 320px; height:438px" Class="rounded-xl transition-fast-out-slow-in scale-hover">
         <MudCardMedia Image="img/move.jpg" Height="260" />
         <MudCardContent>
             <MudButton Class="transition-fast-out-slow-in scale-hover" Style="background-color:coral; width: 100%;font-weight: 900" Href="https://www.instagram.com/moving.academia/" target="_blank">Moving</MudButton>
-            <MudText Class="mt-1" Align="Align.Center" Typo="Typo.body1" Style="font-weight:700">Contatos:</MudText>
-            <div class="d-flex justify-center">
+            <MudText Class="mt-2" Align="Align.Center" Typo="Typo.body1" Style="font-weight:700">Contatos:</MudText>
+            <div class="d-flex justify-center mt-1">
+                    <MudTooltip Style="background-color:transparent;color:coral" Text="WhatsApp">
                     <MudIconButton Href="https://api.whatsapp.com/send/?phone=5521960165331&text&type=phone_number&app_absent=0&utm_source=ig" Target="_blank" Icon="@Icons.Custom.Brands.WhatsApp" Size="Size.Large" Style="color:coral">
             </MudIconButton>
+                    </MudTooltip>
+                    <MudTooltip Style="background-color:transparent;color:coral" Text="Instagram">
                     <MudIconButton href="https://www.instagram.com/moving.academia/" Target="_blank" Icon="@Icons.Custom.Brands.Instagram" Size="Size.Large" Style="color:coral"></MudIconButton>
+                    </MudTooltip>
+                    <MudTooltip Style="background-color:transparent;color:coral" Text="Localização">
                     <MudIconButton href="https://www.instagram.com/stories/highlights/17920964732945358/" Target="_blank" Icon="@Icons.Custom.Brands.Google" Size="Size.Large" Style="color:coral"></MudIconButton>
-            </div>
+                    </MudTooltip>
+            </div>    
         </MudCardContent>
     </MudCard>
  </div>

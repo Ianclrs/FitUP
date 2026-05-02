@@ -4,7 +4,7 @@
 <PageTitle>GanhoMaximo</PageTitle>
 <MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="mt-6 py-0 mb-8  d-flex flex-column justify-center">
     <MudStack AlignItems="AlignItems.Center" Spacing="0">
-
+    @*Titulo da pg*@
     <div class="d-flex align-center justify-center">
             <MudText Typo="Typo.h4" Style="font-weight:bold;color:coral;font-family:Cambria" Align="Align.Center" Inline="true">Ganho</MudText>
             <MudText Typo="Typo.h4" Style="font-weight:bold;font-family:Cambria" Align="Align.Center" Inline="true">Máximo</MudText>
@@ -23,6 +23,7 @@
           }
     </style>
     </MudCard>
+    @*Botoes de ativacao*@
     <div class="mt-2 d-flex gap-1">
     <MudButton Class="transition-fast-out-slow-in scale-hover" OnClick="ExibirProteinas" Style="background-color:darkred;font-weight:bold;font-family:Cambria">Proteinas</MudButton>
     <MudButton Class="transition-fast-out-slow-in scale-hover" OnClick="ExibirCarboidratos" Style="background-color:sandybrown;font-weight:bold;font-family:Cambria">Carboidratos</MudButton>
@@ -393,16 +394,16 @@
     </MudStepper>
     </MudPaper>
 }
-<MudCard Elevation="0" Class="mt-1 mb-1 rounded" Style="width:499px; height:42px">
-    <MudText Class="ms-1" Style="font-weight:bold;font-family:Cambria" Typo="Typo.h4" Align="Align.Left">Exemplos de Dietas Completas:</MudText>
-</MudCard>
+    <div>
+        <MudText Class="ms-1 mt-2" Style="font-weight:bold;font-family:Cambria;color:coral" Typo="Typo.h4" Align="Align.Start" Inline="true">Dietas</MudText>
+        <MudText Class="ms-1 mt-2" Style="font-weight:bold;font-family:Cambria" Typo="Typo.h4" Align="Align.Start" Inline="true"> Completas:</MudText>
+    </div>
 
 @*Primeira Dieta*@
 <MudStack AlignItems="AlignItems.Center">
     <div class="align-center justify-center mt-1">
   <MudText Inline="true" Style="font-weight:bold;font-family:Cambria;color:coral" Typo="Typo.h4" Align="Align.Center">Bulking </MudText>
   <MudText Inline="true" Style="font-weight:bold;font-family:Cambria" Typo="Typo.h4" Align="Align.Center">Limpo</MudText>
-
     </div>
 
     <MudCard>

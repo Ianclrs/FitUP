@@ -62,7 +62,7 @@
 <div class="reg-wrap">
     <MudPaper Elevation="4" Class="reg-card pa-10 mt-5 ">
         
-        <MudIconButton Icon="@Icons.Material.Filled.ArrowBack" 
+        <MudIconButton Icon="@Icons.Material.Filled.ArrowBackIosNew" 
                        Class="btn-back" 
                        OnClick="IrParaLogin" 
                        Size="Size.Medium" 
@@ -75,8 +75,8 @@
                        Title="Fechar" />
 
         <div class="mb-6">
-            <MudText Align="Align.Center" Typo="Typo.h5" Style="font-weight:bold">Crie sua conta pessoal</MudText>
-            <MudText Align="Align.Center" Typo="Typo.body2" Class="mud-text-secondary">Venha Fazer Parte do Nosso Time!</MudText>
+            <MudText Align="Align.Center" Typo="Typo.h5" Style="font-weight:bold">Crie sua conta</MudText>
+            <MudText Align="Align.Center" Typo="Typo.body2" Class="mud-text-secondary">Venha fazer parte do nosso Time!</MudText>
         </div>
 
         <EditForm Model="@cadModel" OnValidSubmit="HandleCadastro">
@@ -90,7 +90,7 @@
                 </MudItem>
                 
                 <MudItem xs="12" sm="6">
-                    <MudDatePicker Label="Nascimento" Variant="Variant.Filled" Margin="Margin.Dense" @bind-Date="cadModel.BirthDate" DateFormat="dd/MM/yyyy" Editable="true" Placeholder="Ex: 25/11/2004" />
+                    <MudDatePicker AdornmentColor="Color.Inherit" Label="Nascimento" Variant="Variant.Filled" Margin="Margin.Dense" @bind-Date="cadModel.BirthDate" DateFormat="dd/MM/yyyy" Editable="true" Placeholder="Ex: 25/11/2004" />
                 </MudItem>
 
                 <MudItem xs="12" sm="6">
