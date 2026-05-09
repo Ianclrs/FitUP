@@ -12,9 +12,10 @@
 
     <MudDivider Style="--mud-palette-divider:coral; width:455px"></MudDivider>
 
-    <MudCard Elevation="12" Style="width:455px;height:78px"Class="rounded-sm" >
+    <MudCard Elevation="12" Style="width:455px;height:171px"Class="rounded-sm" >
             <MudText Align="Align.Center" >
-        Aqui você aprendera um pouco do mundo da alimentação e<br /> como isso poderá ajudar nos treinos! <br />Basta clicar em um dos botões!
+        Aqui você aprendera um pouco do mundo da alimentação e<br /> como isso poderá ajudar nos treinos!<br />
+        Para alcançar a máxima hipertrofia e performance, não basta apenas "comer limpo"; é preciso entender a função bioquímica de cada substrato que você ingere.<br /> Abaixo, apresentaremos o guia técnico dos macronutrientes e micronutrientes essenciais para o seu desenvolvimento físico.
     </MudText>
     <style>
           .scale-hover:hover {
@@ -32,11 +33,6 @@
     <MudButton Class="transition-fast-out-slow-in scale-hover" OnClick="ExibirGorduras" Style="background-color:saddlebrown; font-weight:bold;font-family:Cambria">Gorduras</MudButton>
     </div>
     
-    <MudCard Elevation="12" Class="mt-2">
-        <MudText Align="Align.Center" Class="flex-column d-flex" Style="width:480px">
-            Para alcançar a máxima hipertrofia e performance, não basta apenas "comer limpo"; é preciso entender a função bioquímica de cada substrato que você ingere. Abaixo, apresentaremos o guia técnico dos macronutrientes e micronutrientes essenciais para o seu desenvolvimento físico.
-        </MudText>
-    </MudCard>
     
     </MudStack>
     @if (_mostrarProteinas){
@@ -44,7 +40,7 @@
     <MudText Class="ms-1" Style="font-weight:bold; font-family:Cambria" Typo="Typo.h4" Align="Align.Left">PROTEINAS</MudText>
     </MudCard>
     <MudPaper Elevation="12" Class="mt-1 mb-1">
-        <MudStepper NonLinear ShowResetButton CurrentStepColor="Color.Error" CompletedStepColor="Color.Error">
+        <MudStepper  NonLinear ScrollableNavigation="false" ShowResetButton CurrentStepColor="Color.Error" CompletedStepColor="Color.Error">
         <MudStep Style="font-size:medium" Title="Proteínas: O Bloco de Construção">
                 Tecnicamente, as proteínas são polímeros de aminoácidos ligados por ligações peptídicas. Na musculação, sua principal função é o <b>reparo tecidual e a síntese proteica muscular</b>. 
                 Sem o aporte adequado de aminoácidos essenciais (que o corpo não produz), o balanço nitrogenado torna-se negativo, levando ao catabolismo.
@@ -118,7 +114,7 @@
     </MudCard>
 
     <MudPaper Elevation="12" Class="mt-1 mb-1">
-        <MudStepper NonLinear ShowResetButton CurrentStepColor="Color.Warning" CompletedStepColor="Color.Warning">
+            <MudStepper NonLinear ScrollableNavigation="false" ShowResetButton CurrentStepColor="Color.Warning" CompletedStepColor="Color.Warning">
             <MudStep Style="font-size:medium" Title="Carboidratos: A Moeda Energética">
                 No meio da musculação, infelizmente, o carboidrato é muitas vezes demonizado,
                 mas para quem busca hipertrofia, ele é o seu melhor aliado. Sem carboidratos, você não treina com
@@ -193,7 +189,7 @@
         <MudText Class="ms-1" Style="font-weight:bold;font-family:Cambria" Typo="Typo.h4" Align="Align.Left">FRUTAS</MudText>
     </MudCard>
     <MudPaper Elevation="12" Class="mt-1 mb-1">
-        <MudStepper NonLinear ShowResetButton CurrentStepColor="Color.Success" CompletedStepColor="Color.Success">
+            <MudStepper NonLinear ScrollableNavigation="false" ShowResetButton CurrentStepColor="Color.Success" CompletedStepColor="Color.Success">
             <MudStep Style="font-size:medium" Title="Frutas: Micronutrientes e Antioxidantes">
                 Frutas fornecem frutose para o estoque de glicogênio hepático e são ricas em <b>fito químicos
                 e antioxidantes
@@ -266,7 +262,7 @@
 </MudCard>
 
 <MudPaper Elevation="12" Class="mt-1 mb-1">
-    <MudStepper NonLinear ShowResetButton CurrentStepColor="Color.Secondary" CompletedStepColor="Color.Secondary">
+        <MudStepper NonLinear ScrollableNavigation="false" ShowResetButton CurrentStepColor="Color.Secondary" CompletedStepColor="Color.Secondary">
         <MudStep Style="font-size:medium" Title="Vegetais: Densidade e Fibras">
             Os vegetais garantem a saúde intestinal através das fibras, permitindo que você absorva melhor os macronutrientes. Além disso, vegetais como o brócolis e o espinafre contêm minerais como magnésio e cálcio, fundamentais para a <b>contração muscular</b>. Na nutrição esportiva de elite, não olhamos para os vegetais apenas como "salada", mas como <b>moduladores metabólicos</b>. Eles são a base que permite que todo o resto (proteínas, carbos e gorduras) funcione sem sobrecarregar o seu sistema.
             <article /><br /><b>A função dos vegetais:</b> Eles são predominantemente <b>alcalinizantes</b>. Ao consumir vegetais, você neutraliza essa carga ácida, o que é vital para a saúde óssea e para manter a eficiência das enzimas que promovem a síntese proteica. Um corpo excessivamente ácido pode aumentar a excreção de nitrogênio e cálcio, prejudicando a performance.
@@ -329,7 +325,7 @@
         <MudText Class="ms-1" Style="font-weight:bold;font-family:Cambria" Typo="Typo.h4" Align="Align.Left">GORDURAS</MudText>
     </MudCard>
     <MudPaper Elevation="12" Class="mt-1 mb-1">
-        <MudStepper NonLinear ShowResetButton CurrentStepColor="Color.Tertiary" CompletedStepColor="Color.Tertiary">
+        <MudStepper NonLinear ScrollableNavigation="false" ShowResetButton CurrentStepColor="Color.Tertiary" CompletedStepColor="Color.Tertiary">
             <MudStep Style="font-size:medium" Title="Gorduras: O Suporte Hormonal">
             As <b>gorduras</b> (ou lipídios) são, talvez, o macronutriente mais incompreendido na musculação. Muitos atletas as evitam por medo do ganho de gordura corporal, mas, do ponto de vista fisiológico, elas são o "painel de controle" do seu organismo. Sem gordura, sua engenharia hormonal desmorona. Lipídios são essenciais para a <b>produção de hormônios esteroides</b>, como a testosterona, e para a absorção de vitaminas lipossolúveis (A, D, E, K). Uma dieta com gordura excessivamente baixa pode arruinar seu perfil hormonal e prejudicar a recuperação.
             <article/><br /><h3>A Função Hormonal e Estrutural</h3>
@@ -394,9 +390,9 @@
     </MudStepper>
     </MudPaper>
 }
-    <div>
-        <MudText Class="ms-1 mt-2" Style="font-weight:bold;font-family:Cambria;color:coral" Typo="Typo.h4" Align="Align.Start" Inline="true">Dietas</MudText>
-        <MudText Class="ms-1 mt-2" Style="font-weight:bold;font-family:Cambria" Typo="Typo.h4" Align="Align.Start" Inline="true"> Completas:</MudText>
+    <div class="mt-2">
+        <MudText  Style="font-weight:bold;font-family:Cambria;color:coral" Typo="Typo.h4" Align="Align.Start" Inline="true">Dietas</MudText>
+        <MudText  Style="font-weight:bold;font-family:Cambria" Typo="Typo.h4" Align="Align.Start" Inline="true"> Completas:</MudText>
     </div>
 
 @*Primeira Dieta*@
