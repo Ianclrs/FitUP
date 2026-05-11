@@ -1,3 +1,262 @@
 ﻿@page "/DicasTreino"
-<PageTitle>DicasdeTreino</PageTitle>
-<h3>DicasTreino</h3>
+@using MudBlazor
+@inject IDialogService DialogService
+
+<MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="mt-8 mb-16 animate-fade-in">
+
+    <MudStack AlignItems="AlignItems.Center" Class="mb-16">
+        <MudText Typo="Typo.h2" Class="coral-text font-bold text-center">Dicas de Treino</MudText>
+        <MudText Typo="Typo.h6" Class="white-text text-center" Style="max-width: 620px;">
+            Escolha o método ideal para o seu objetivo. Compare divisões de treino,
+            frequência e benefícios para evoluir com inteligência.
+        </MudText>
+    </MudStack>
+
+    <MudGrid Spacing="10" Class="px-4">
+        @foreach (var treino in ListaTreinos)
+        {
+            <MudItem xs="12">
+                <MudGrid Class="@(treino.Inverter ? "flex-row-reverse align-center" : "align-center")">
+
+                    <MudItem xs="12" md="5">
+                        <MudPaper Elevation="4"
+                                  Class="training-card p-8 d-flex flex-column align-center justify-center"
+                                  Style="@($"background: {treino.CardGradient};")">
+                            <div class="icon-bubble">
+                                <MudIcon Icon="@treino.Icone" Style="font-size: 3rem; color: #fff;" />
+                            </div>
+                            <MudText Style="font-size:0.7rem;font-weight:700;letter-spacing:0.3em;text-transform:uppercase;color:rgba(255,255,255,0.6);" Class="mt-5">
+                                Treino
+                            </MudText>
+                            <MudText Typo="Typo.h4" Class="mt-1 white-text font-bold text-center">@treino.Nome</MudText>
+                            <MudText Typo="Typo.body2" Style="color:rgba(255,255,255,0.75);" Class="mt-2 text-center">@treino.Tagline</MudText>
+                            <MudChip T="string" Color="Color.Surface" Variant="Variant.Text" Class="coral-text mt-2">
+                                @treino.Frequencia
+                            </MudChip>
+                        </MudPaper>
+                    </MudItem>
+
+                    <MudItem xs="12" md="7" Class="d-flex flex-column justify-center">
+                        <div class="px-4">
+                            <MudChip T="string" Size="Size.Small" Class="coral-chip mb-3">Método</MudChip>
+
+                            <MudText Typo="Typo.h4" Class="coral-text mb-2">@treino.Nome</MudText>
+                            <MudText Typo="Typo.body1" Class="white-text mb-6">@treino.Descricao</MudText>
+
+                            <MudText Style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;" Class="coral-text mb-3">
+                                Benefícios
+                            </MudText>
+                            <MudGrid Spacing="2" Class="mb-6">
+                                @foreach (var b in treino.Beneficios)
+                                {
+                                    <MudItem xs="12" sm="6">
+                                        <div class="d-flex align-start gap-2">
+                                            <MudIcon Icon="@Icons.Material.Filled.CheckCircle"
+                                                     Style="color:#FF6B35;font-size:1.1rem;margin-top:2px;flex-shrink:0;" />
+                                            <MudText Typo="Typo.body2" Class="white-text">@b</MudText>
+                                        </div>
+                                    </MudItem>
+                                }
+                            </MudGrid>
+
+                            <MudGrid Spacing="3" Class="mb-6">
+                                <MudItem xs="12" sm="6">
+                                    <div class="info-chip">
+                                        <div class="d-flex align-center gap-2 mb-1">
+                                            <MudIcon Icon="@Icons.Material.Filled.CalendarMonth"
+                                                     Style="color:#FF6B35;font-size:1rem;" />
+                                            <MudText Class="white-text" Style="font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;">
+                                                Frequência
+                                            </MudText>
+                                        </div>
+                                        <MudText Typo="Typo.body2" Class="white-text" Style="font-weight:600;">@treino.Frequencia</MudText>
+                                    </div>
+                                </MudItem>
+                                <MudItem xs="12" sm="6">
+                                    <div class="info-chip">
+                                        <div class="d-flex align-center gap-2 mb-1">
+                                            <MudIcon Icon="@Icons.Material.Filled.Group"
+                                                     Style="color:#FF6B35;font-size:1rem;" />
+                                            <MudText Class="white-text" Style="font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;">
+                                                Indicado para
+                                            </MudText>
+                                        </div>
+                                        <MudText Typo="Typo.body2" Class="white-text" Style="font-weight:600;">@treino.Publico</MudText>
+                                    </div>
+                                </MudItem>
+                            </MudGrid>
+
+                            <MudButton Variant="Variant.Outlined"
+                                       Color="Color.Inherit"
+                                       Class="coral-border coral-text hover-fill"
+                                       EndIcon="@Icons.Material.Filled.ArrowForward"
+                                       OnClick="@(async () => await AbrirDetalhes(treino))">
+                                Saiba Mais
+                            </MudButton>
+                        </div>
+                    </MudItem>
+                </MudGrid>
+
+                <MudDivider Class="mt-10 opacity-20" />
+            </MudItem>
+        }
+    </MudGrid>
+</MudContainer>
+
+<style>
+    :root { --coral-orange: #FF6B35; }
+
+    .coral-text   { color: var(--coral-orange) !important; }
+    .coral-border { border-color: var(--coral-orange) !important; }
+
+    .white-text  { color: var(--mud-palette-text-secondary) !important; }
+    .white-text { color: var(--mud-palette-text-primary)   !important; }
+
+    .training-card {
+        border-radius: 20px;
+        transition: transform 0.3s, box-shadow 0.3s;
+        min-height: 300px;
+        position: relative;
+        overflow: hidden;
+    }
+    .training-card::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to bottom right, rgba(0,0,0,0.35), transparent, rgba(0,0,0,0.65));
+        pointer-events: none;
+    }
+    .training-card > * { position: relative; z-index: 1; }
+    .training-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 12px 40px -8px rgba(255,107,53,0.45) !important;
+        border: 1px solid var(--coral-orange);
+    }
+
+    .icon-bubble {
+        width: 88px;
+        height: 88px;
+        border-radius: 18px;
+        background: linear-gradient(135deg, #FF6B35, #FF9A6C);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        box-shadow: 0 8px 32px -8px rgba(255,107,53,0.5);
+        transition: transform 0.4s ease;
+    }
+    .training-card:hover .icon-bubble { transform: scale(1.08) rotate(3deg); }
+
+    .coral-chip {
+        background: rgba(255,107,53,0.12) !important;
+        color: var(--coral-orange) !important;
+        border: 1px solid rgba(255,107,53,0.38) !important;
+        font-weight: 700 !important;
+        font-size: 0.7rem !important;
+        letter-spacing: 0.15em !important;
+        text-transform: uppercase !important;
+        border-radius: 999px !important;
+    }
+
+    .info-chip {
+        border-radius: 14px;
+        border: 1px solid var(--mud-palette-divider);
+        background: var(--mud-palette-background-grey);
+        padding: 0.875rem 1rem;
+    }
+
+    .animate-fade-in { animation: fadeIn 0.8s ease-out; }
+    @@keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+</style>
+
+@code {
+    private async Task AbrirDetalhes(TreinoModel treino)
+    {
+        var options = new DialogOptions
+        {
+            CloseOnEscapeKey = true,
+            MaxWidth = MaxWidth.Small,
+            FullWidth = true
+        };
+
+        var parameters = new DialogParameters<MensagemCustomizada>
+        {
+            { x => x.Titulo,   treino.Nome      },
+            { x => x.Conteudo, treino.Explicacao }
+        };
+
+        await DialogService.ShowAsync<MensagemCustomizada>("Detalhes do Treino", parameters, options);
+    }
+
+    private List<TreinoModel> ListaTreinos = new()
+    {
+        new TreinoModel
+        {
+            Nome        = "Upper / Lower",
+            Tagline     = "Equilíbrio entre volume e recuperação",
+            Descricao   = "Divide os treinos em membros superiores e inferiores, alternando ao longo da semana. Excelente para quem treina 4 vezes por semana.",
+            Frequencia  = "4 dias/semana",
+            Publico     = "Intermediários e avançados",
+            Icone       = Icons.Material.Filled.FitnessCenter,
+            Inverter    = false,
+            CardGradient = "linear-gradient(135deg, #3a1f14 0%, #1c1008 100%)",
+            Beneficios  = new() { "Boa frequência por grupamento", "Recuperação adequada", "Volume bem distribuído", "Fácil de progredir" },
+            Explicacao  = "Treine membros superiores (peito, costas, ombros e braços) em um dia e membros inferiores (quadríceps, isquiotibiais, glúteos e panturrilha) no outro. Permite alta frequência e boa recuperação por grupamento."
+        },
+        new TreinoModel
+        {
+            Nome        = "Full Body",
+            Tagline     = "Corpo inteiro em cada sessão",
+            Descricao   = "Treina todos os principais grupamentos musculares no mesmo dia. Ideal para iniciantes e para quem tem agenda apertada.",
+            Frequencia  = "3 dias/semana",
+            Publico     = "Iniciantes e intermediários",
+            Icone       = Icons.Material.Filled.AccessibilityNew,
+            Inverter    = true,
+            CardGradient = "linear-gradient(135deg, #3d2010 0%, #1a0d06 100%)",
+            Beneficios  = new() { "Alta frequência muscular", "Ótimo para iniciantes", "Eficiente para quem tem pouco tempo", "Queima calórica elevada" },
+            Explicacao  = "Foco em exercícios compostos (agachamento, supino, levantamento terra, remada) que recrutam múltiplos grupos musculares ao mesmo tempo. Alta eficiência para ganho de força e condicionamento geral."
+        },
+        new TreinoModel
+        {
+            Nome        = "Push Pull Legs",
+            Tagline     = "Empurrar, puxar e pernas",
+            Descricao   = "Divide os treinos em movimentos de empurrar, puxar e membros inferiores. Permite treinar até 6 vezes por semana.",
+            Frequencia  = "3 a 6 dias/semana",
+            Publico     = "Intermediários e avançados",
+            Icone       = Icons.Material.Filled.DirectionsRun,
+            Inverter    = false,
+            CardGradient = "linear-gradient(135deg, #2e1a0e 0%, #150b04 100%)",
+            Beneficios  = new() { "Treinos focados e intensos", "Permite alta frequência", "Ótimo para hipertrofia", "Padrão de movimento lógico" },
+            Explicacao  = "Push: peito, ombros e tríceps. Pull: costas e bíceps. Legs: toda a musculatura das pernas. Separação por tipo de movimento que garante excelente recuperação e permite frequência elevada sem sobrecarga."
+        },
+        new TreinoModel
+        {
+            Nome        = "Treino A/B/C/D",
+            Tagline     = "Divisão clássica por grupamento",
+            Descricao   = "Cada dia foca em grupamentos específicos (ex: A peito/tríceps, B costas/bíceps, C pernas, D ombros). Volume máximo por músculo.",
+            Frequencia  = "4 a 5 dias/semana",
+            Publico     = "Avançados em hipertrofia",
+            Icone       = Icons.Material.Filled.Bolt,
+            Inverter    = true,
+            CardGradient = "linear-gradient(135deg, #381810 0%, #180c06 100%)",
+            Beneficios  = new() { "Volume máximo por grupamento", "Foco total em cada músculo", "Ideal para hipertrofia avançada", "Permite muitos exercícios" },
+            Explicacao  = "A divisão ABCD permite alto volume de treinamento por grupamento muscular. Com 4 ou mais dias na semana, cada músculo recebe atenção exclusiva, ideal para atletas avançados que buscam máxima hipertrofia e isolamento muscular."
+        },
+    };
+
+    public class TreinoModel
+    {
+        public string Nome         { get; set; } = "";
+        public string Tagline      { get; set; } = "";
+        public string Descricao    { get; set; } = "";
+        public string Frequencia   { get; set; } = "";
+        public string Publico      { get; set; } = "";
+        public string Icone        { get; set; } = "";
+        public bool   Inverter     { get; set; }
+        public string CardGradient { get; set; } = "";
+        public List<string> Beneficios { get; set; } = new();
+        public string Explicacao   { get; set; } = "";
+    }
+}

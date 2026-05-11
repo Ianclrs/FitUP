@@ -1,0 +1,23 @@
+﻿@using MudBlazor
+
+<MudDialog>
+    <TitleContent>
+        <MudText Typo="Typo.h5" Style="color: #FF6B35; font-weight: bold;">@Titulo</MudText>
+    </TitleContent>
+    <DialogContent>
+        <MudText Style="color: #B0B0B0; line-height: 1.6;">@Conteudo</MudText>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Fechar" Style="color: #FF6B35; font-weight: bold;">Entendido</MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [CascadingParameter]
+    IMudDialogInstance MudDialog { get; set; }
+
+    [Parameter] public string Titulo { get; set; }
+    [Parameter] public string Conteudo { get; set; }
+
+    private void Fechar() => MudDialog.Close(DialogResult.Ok(true));
+}
