@@ -1,0 +1,194 @@
+﻿@page "/CalculadoraBio"
+<PageTitle>Calculadora</PageTitle>
+
+<style>
+    .scale-hover:hover {
+        transform: scale(1.05);
+        transition: transform 0.3s ease-in-out;
+    }
+
+    .animate-fade-in {
+        animation: fadeIn 0.6s ease-out;
+    }
+
+    @@keyframes fadeIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+    }
+</style>
+
+<MudContainer MaxWidth="MaxWidth.Medium" Class="mt-12 animate-fade-in">
+    <MudGrid>
+        <MudItem xs="12" md="6">
+            <MudCard Style="border: 2px solid coral" Elevation="3" Class="pa-7 rounded-xl">
+
+                <MudIconButton Class="ms-2" Style="align-self:start; color:coral" Icon="@Icons.Material.Filled.ArrowBackIosNew" Href="/GanhoMaximo" Size="Size.Small" />
+
+                <MudCardContent>
+                    <MudForm @ref="form" @bind-IsValid="isFormValid">
+                        <MudRadioGroup @bind-Value="Model.Sexo" Class="mb-4">
+                            <MudRadio Value='"M"' Color="Color.Inherit">Masculino</MudRadio>
+                            <MudRadio Value='"F"' Color="Color.Inherit">Feminino</MudRadio>
+                        </MudRadioGroup>
+
+                        <MudNumericField @bind-Value="Model.Peso" Label="Peso (kg)" Variant="Variant.Text"
+                                         Format="F2" Step="0.1" Required="true" RequiredError="O peso é obrigatório."
+                                         Validation="@(new Func<double?, string?>(ValidationPeso))" Class="mb-3" />
+
+                        <MudNumericField @bind-Value="Model.Altura" Label="Altura (cm)" Variant="Variant.Text"
+                                         Step="1" Required="true" RequiredError="A altura é obrigatória."
+                                         Validation="@(new Func<double?, string?>(ValidationAltura))" Class="mb-3" />
+
+                        <MudNumericField @bind-Value="Model.Idade" Label="Idade (anos)" Variant="Variant.Text"
+                                         Step="1" Required="true" RequiredError="A idade é obrigatória."
+                                         Validation="@(new Func<int?, string?>(ValidationIdade))" Class="mb-3" />
+
+                        <MudNumericField @bind-Value="Model.PercentualGordura" Label="Percentual de Gordura informado (%)"
+                                         Variant="Variant.Text" Format="F1" Step="0.1" Required="true" RequiredError="O percentual de gordura é obrigatório."
+                                         Validation="@(new Func<double?, string?>(ValidationGordura))" Class="mb-4" />
+
+                        <MudSelect @bind-Value="Model.NivelAtividade" Label="Nível de Atividade Física" Variant="Variant.Text" Class="mb-4">
+                            <MudSelectItem Style="color:inherit!important" Value="@("Sedentario")"><strong>Sedentário</strong> (Pouco ou nenhum exercício)</MudSelectItem>
+                            <MudSelectItem Style="color:inherit!important" Value="@("Leve")"><strong>Levemente Ativo</strong> (1-3 dias/semana)</MudSelectItem>
+                            <MudSelectItem Style="color:inherit!important" Value="@("Moderado")"><strong>Ativo</strong> (3-5 dias/semana)</MudSelectItem>
+                            <MudSelectItem Style="color:inherit!important" Value="@("Intenso")"><strong>Altamente Ativo</strong> (6-7 dias/semana)</MudSelectItem>
+                        </MudSelect>
+                    </MudForm>
+                </MudCardContent>
+                <MudCardActions>
+                    <MudButton Class="transition-fast-out-slow-in scale-hover" Variant="Variant.Filled"
+                               Style="background-color:coral; font-weight:bold" FullWidth="true" OnClick="Calcular">
+                        Calcular
+                    </MudButton>
+                </MudCardActions>
+            </MudCard>
+        </MudItem>
+
+        <MudItem xs="12" md="6">
+            @if (ResultadoCalculado)
+            {
+                <MudCard Elevation="0" Class="pa-4" Style="height: 100%; background-color: var(--mud-palette-background-grey);">
+                    <MudCardContent>
+                        <MudPaper Class="mb-4" Style="border: 2px solid coral; height:35px">
+                            <MudText Typo="Typo.h5" Class="mb-4 ms-2 font-weight-bold text-center"><strong>Resultados:</strong></MudText>
+                        </MudPaper>
+                        <MudSimpleTable Style="overflow-x: auto; border: 2px solid coral" Dense="true" Hover="true" Striped="false">
+                            <tbody>
+                                <tr>
+                                    <td><strong>Massa Magra:</strong></td>
+                                    <td><MudText Typo="Typo.body2"><strong>@Resultado.MassaMagra.ToString("F2") kg</strong></MudText></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Massa Gorda:</strong></td>
+                                    <td><MudText Typo="Typo.body2"><strong>@Resultado.MassaGorda.ToString("F2") kg</strong></MudText></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Taxa Metabólica Basal:</strong></td>
+                                    <td><MudText><strong>@Resultado.TMB.ToString("N0") kcal</strong></MudText></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Gasto Energético Total:</strong></td>
+                                    <td><MudText Style="color:coral"><strong>@Resultado.GET.ToString("N0") kcal</strong></MudText></td>
+                                </tr>
+                            </tbody>
+                        </MudSimpleTable>
+                        <MudPaper>
+                            <MudAlert Style="border: 2px solid coral; color:inherit" Severity="Severity.Warning" Class="mt-4" Variant="Variant.Text">
+                                <MudText Typo="Typo.body2">
+                                    <strong>Observação:</strong> Não associe esses resultados como verdade absoluta, sempre procure um profissional.
+                                </MudText>
+                            </MudAlert>
+                        </MudPaper>
+                    </MudCardContent>
+                </MudCard>
+            }
+        </MudItem>
+    </MudGrid>
+</MudContainer>
+
+@code {
+    private MudForm form = default!;
+    private bool isFormValid;
+    private bool ResultadoCalculado { get; set; }
+
+    private BioimpedanciaModel Model { get; set; } = new();
+    private ResultadoBio Resultado { get; set; } = new();
+
+
+    private string? ValidationPeso(double? peso) => peso <= 0 ? "O peso deve ser maior que zero." : null;
+    private string? ValidationAltura(double? altura) => altura <= 0 ? "A altura deve ser maior que zero." : null;
+    private string? ValidationIdade(int? idade) => idade <= 0 ? "A idade deve ser maior que zero." : null;
+    private string? ValidationGordura(double? gordura) => gordura < 0 || gordura >= 100 ? "O percentual deve ser entre 0% e 99.9%." : null;
+
+    private async Task Calcular()
+    {
+        if (form is null) return;
+
+
+        await form.ValidateAsync();
+
+       
+        if (!isFormValid || !Model.Peso.HasValue || !Model.PercentualGordura.HasValue)
+        {
+            ResultadoCalculado = false;
+            return;
+        }
+
+
+        double massaGorda = Model.Peso.Value * (Model.PercentualGordura.Value / 100.0);
+        double massaMagra = Model.Peso.Value - massaGorda;
+
+
+        double tmb = 370 + (21.6 * massaMagra);
+
+
+        double fatorAtividade = Model.NivelAtividade switch
+        {
+            "Sedentario" => 1.2,
+            "Leve" => 1.375,
+            "Moderado" => 1.55,
+            "Intenso" => 1.725,
+            _ => 1.2
+        };
+
+        double get = tmb * fatorAtividade;
+
+        Resultado = new ResultadoBio
+        {
+            MassaMagra = massaMagra,
+            MassaGorda = massaGorda,
+            TMB = tmb,
+            GET = get
+        };
+
+        ResultadoCalculado = true;
+    }
+
+    public class BioimpedanciaModel
+    {
+        
+        public string Sexo { get; set; } = "M";
+        public double? Peso { get; set; }
+        public double? Altura { get; set; }
+        public int? Idade { get; set; }
+        public double? PercentualGordura { get; set; }
+        public string NivelAtividade { get; set; } = "Moderado";
+    }
+
+    public class ResultadoBio
+    {
+        public double MassaMagra { get; set; }
+        public double MassaGorda { get; set; }
+        public double TMB { get; set; }
+        public double GET { get; set; }
+    }
+
+}
