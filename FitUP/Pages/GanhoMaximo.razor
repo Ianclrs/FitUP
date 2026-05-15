@@ -2,7 +2,7 @@
 @using MudBlazor.Charts
 
 <PageTitle>GanhoMaximo</PageTitle>
-<MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="mt-6 py-0 mb-8  d-flex flex-column justify-center">
+<MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="mt-6 py-0 mb-8  d-flex flex-column justify-center animate-fade-in">
     <MudStack AlignItems="AlignItems.Center" Spacing="0">
     @*Titulo da pg*@
     <div class="d-flex align-center justify-center">
@@ -22,6 +22,11 @@
            transform: scale(1.05);
            transition: transform 0.3s ease-in-out
           }
+          .animate-fade-in { animation: fadeIn 0.8s ease-out; }
+    @@keyframes fadeIn {
+        from { opacity: 0; transform: translateY(20px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
     </style>
     </MudCard>
     @*Botoes de ativacao*@
