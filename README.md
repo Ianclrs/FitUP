@@ -1,22 +1,53 @@
-# 🏋🏽‍♂️FitUP
-- A FitUP é um projeto voltado para a criação de treinos personalizados e pré montados com ensino no âmbito da musculação. 
+# 🏋️‍♂️ FitUP
 
-# 💽Pré Requisitos:
+💥 **O FitUP é uma aplicação web completa de fitness e bem-estar projetada para ajudar usuários a gerenciarem seus planos de treino, guias de nutrição e evolução física de forma centralizada e intuitiva.**
 
-- Você ter instalado a versão mais recente de **C#.net 10 / MudBlazor**.
+Desenvolvido com uma arquitetura moderna e focado em alta performance, o projeto combina o poder do ecossistema .NET na sua versão mais recente com uma interface rica e responsiva.
 
-- Você estar usando um sistema operacional compatível, porém necessário que você possua o **Visual Studio 2026**.
+---
 
-# 🖥️Guia de Instalação e Uso:
+## 🚀 Tecnologias Utilizadas
 
-- Primeiro instale o **Visual Studio Community 2026**. 
+O projeto foi construído utilizando as melhores práticas de desenvolvimento de software e as tecnologias mais recentes do mercado:
 
-- Instale o ASP Net e desenvolvimento Web.
+- **Frontend:** [MudBlazor](https://mudblazor.com/) (Componentes UI para Blazor WebAssembly/Server)
+- **Backend:** [.NET 10](https://dotnet.microsoft.com/) & C#
+- **Persistência de Dados:** [Dapper ORM](https://github.com/DapperLib/Dapper) (Consultas de alta performance e mapeamento de dados)
+- **Banco de Dados:** Microsoft SQL Server
+- **Arquitetura:** Princípios de Clean Architecture / Domain-Driven Design (DDD) e modelagem relacional normalizada.
 
-- Após isso procure no seu navegador o instalador oficial do MudBlazor.
+---
 
-- Para finalizar, só baixar e iniciar o repositório.
+## ✨ Funcionalidades Principais
 
+### 📋 Gerenciamento de Treinos
+- Criação e customização de divisões de treino (Fullbody, PPL - Push/Pull/Legs, Upper/Lower, etc.).
+- Registro detalhado de exercícios, séries, repetições.
+
+### 🍎 Guias de Nutrição & Macronutrientes
+- Cálculo e distribuição automatizada de macronutrientes (Proteínas, Carboidratos e Gorduras) com base no objetivo (Hipertrofia, Definição, Manutenção).
+- Organização de diários alimentares ou planos estruturados.
+
+### 👤 Gestão de Usuários & Perfil
+- Controle de acessos e autenticação segura.
+- Painel de controle (Dashboard) interativo centralizado para visualização rápida do progresso e rotina diária.
+
+---
+
+## 🛠️ Como Executar o Projeto Localmente
+
+### Pré-requisitos
+Antes de começar, você vai precisar ter instalado em sua máquina:
+- [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0)
+- [SQL Server](https://www.microsoft.com/sql-server/) (ou localdb)
+- IDE de sua preferência (Visual Studio 2022, VS Code ou Rider)
+
+### Passos para Configuração
+
+1. **Clonar o Repositório:**
+   ```bash
+   git clone [https://github.com/Ianclrs/FitUP.git](https://github.com/Ianclrs/FitUP.git)
+   cd FitUP
 # 📝Colaboradores:
 
 <table>
