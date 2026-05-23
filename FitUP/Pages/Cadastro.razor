@@ -2,7 +2,10 @@
 @layout MainLayout
 @using System.ComponentModel.DataAnnotations
 @using MudBlazor
+@using FitUP.Services
 @inject NavigationManager NavigationManager
+@inject AuthService AuthService
+@inject ISnackbar Snackbar
 
 <PageTitle>Cadastrar</PageTitle>
 
@@ -138,8 +141,16 @@
                                Variant="Variant.Filled" 
                                FullWidth="true" 
                                Style="background-color: coral; font-weight: 700;"
-                               Class="py-3">
-                        CRIAR CONTA
+                               Class="py-3"
+                               Disabled="@_isLoading">
+                        @if (_isLoading)
+                        {
+                            <MudProgressCircular Size="Size.Small" Class="ms-2" Color="Color.Inherit" Indeterminate="true" />
+                        }
+                        else
+                        {
+                            <span>CRIAR CONTA</span>
+                        }
                     </MudButton>
                 </MudItem>
             </MudGrid>
@@ -149,13 +160,48 @@
 
 @code {
     private CadastroModel cadModel = new();
+    private bool _isLoading = false;
     
     void IrParaLogin() => NavigationManager.NavigateTo("/login");
     void VoltarHome() => NavigationManager.NavigateTo("/");
     
     public async Task HandleCadastro() 
     { 
-        await Task.Delay(50); 
+        _isLoading = true;
+        
+        try
+        {
+            var request = new RegistroRequest
+            {
+                Nome = cadModel.FirstName,
+                Sobrenome = cadModel.LastName,
+                Email = cadModel.Email,
+                Senha = cadModel.Password,
+                Telefone = string.IsNullOrWhiteSpace(cadModel.Phone) ? null : cadModel.Phone,
+                Cpf = string.IsNullOrWhiteSpace(cadModel.CPF) ? null : cadModel.CPF.Replace(".", "").Replace("-", ""),
+                DataNascimento = cadModel.BirthDate?.ToString("yyyy-MM-dd")
+            };
+
+            var result = await AuthService.RegistrarAsync(request);
+
+            if (result != null)
+            {
+                Snackbar.Add("Conta criada com sucesso! Faça login.", Severity.Success);
+                NavigationManager.NavigateTo("/login");
+            }
+            else
+            {
+                Snackbar.Add("Erro ao criar conta. Verifique os dados e tente novamente.", Severity.Error);
+            }
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Erro de conexão: {ex.Message}", Severity.Error);
+        }
+        finally
+        {
+            _isLoading = false;
+        }
     }
 
     public class CadastroModel 
