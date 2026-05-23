@@ -1,4 +1,5 @@
 using System.Text;
+using FitUP.WebApi.Service;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
@@ -84,10 +85,13 @@ builder.Services.AddCors(options =>
     });
 });
 
-// ─── Repositórios / Services (DI) ──────────────────────────────
-// NOTA: Os services serão registrados aqui conforme forem criados.
-// Exemplo:
-// builder.Services.AddScoped<IUsuarioService, UsuarioService>();
+// ─── Services (DI) ─────────────────────────────────────────────
+builder.Services.AddScoped<ITokenService, TokenService>();
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IUsuarioService, UsuarioService>();
+builder.Services.AddScoped<IPlanoTreinoService, PlanoTreinoService>();
+builder.Services.AddScoped<IPlanoAlimentarService, PlanoAlimentarService>();
+builder.Services.AddScoped<IRegistroBioimpedanciaService, RegistroBioimpedanciaService>();
 
 // ─── App ───────────────────────────────────────────────────────
 
