@@ -17,10 +17,168 @@
             </MudText>
         </MudCard>
 
+        <div class="d-flex gap-2 mt-2">
+        <MudMenu Class="rounded-sm" Style="background-color: coral " Label="Superiores">
+                <MudMenuItem OnClick="ExibirPeitoral" Label="Peito" />
+                <MudMenuItem OnClick="ExibirDorsal" Label="Costas" />
+                <MudMenuItem OnClick="ExibirOmbro" Label="Ombro" />
+                <MudMenuItem OnClick="ExibirBiceps" Label="Bíceps"/>
+                <MudMenuItem OnClick="ExibirTriceps" Label="Tríceps" />
+                <MudMenuItem OnClick="ExibirAntebraco" Label="Antebraços" />
+        </MudMenu>
+        <MudMenu Class="rounded-sm" Style="background-color:coral" Label="Central">
+                <MudMenuItem OnClick="ExibirAbdomen" Label="Abdômen" />
+                <MudMenuItem OnClick="ExibirLombar" Label="Lombar" />
+        </MudMenu>
+        <MudMenu Class="rounded-sm" Style="background-color:coral" Label="Inferiores">
+                <MudMenuItem OnClick="ExibirQuadri" Label="Quadríceps" />
+                <MudMenuItem OnClick="ExibirPosterior" Label="Posteriores" />
+                <MudMenuItem OnClick="ExibirPantu" Label="Panturrilha" />
+                <MudMenuItem OnClick="ExibirGluteo" Label="Glúteos" />
+        </MudMenu>
+        </div>
     </MudStack>
+    @*buttons para explicar os tipos de musculos*@
+    @if(_mostrarPeitoral){
+    <MudText>
+        Peitoral (Maior e Menor)
+        Função: O peitoral maior é o principal responsável pela adução horizontal do braço (trazer os braços em direção ao centro do corpo) e pela rotação interna do ombro. A porção superior (clavicular) ajuda na flexão do ombro (erguer o braço).
 
+        Visão de Treino: Deve ser estimulado em ângulos diferentes para um aspecto estético preenchido.
 
+        Exercícios-chave: Supino reto (base), supino inclinado (foco na porção superior), crucifixo e crossmover (foco no pico de contração por adução).
+    </MudText>
+    }
 
+    @if (_mostrarDorsal)
+    {
+        <MudText>
+            Dorsais / Costas (Latíssimo do Dorso, Trapézio, Romboides e Redondos)
+            Função: Um complexo de músculos gigante. O latíssimo do dorso ("asa") faz a extensão e adução do braço (puxar de cima para baixo). Os romboides e o trapézio médio/inferior fazem a retração das escápulas (esmagar as costas para trás). O trapézio superior eleva os ombros.
+
+            Visão de Treino: Dividimos o treino de costas em dois estímulos: puxadas (para dar largura/amplitude) e remadas (para dar densidade/espessura).
+
+            Exercícios-chave: Puxada alta (pulldown), barra fixa, remada curvada com barra, remada baixa no cabo e encolhimento (para trapézio).
+        </MudText>
+    }
+
+    @if (_mostrarOmbro)
+    {
+        <MudText>
+            Deltoides / Ombros (Anterior, Lateral e Posterior)
+            Função: O deltoide é dividido em três cabeças. A anterior (frente) eleva o braço para a frente; a lateral eleva o braço para os lados (dá o aspecto de "ombros largos" e cintura fina); a posterior (atrás) puxa o braço para trás horizontalmente.
+
+            Visão de Treino: A porção anterior já é muito exigida nos supinos de peito. Por isso, no treino isolado de ombro, o foco principal deve ser nas porções lateral e posterior para garantir simetria e proteger a articulação contra lesões.
+
+            Exercícios-chave: Desenvolvimento com halteres (geral), elevação lateral (foco em largura) e crucifixo inverso (foco em posterior).
+        </MudText>
+    }
+
+    @if (_mostrarBiceps)
+    {
+        <MudText>
+            Bíceps Braquial e Braquial
+            Função: O bíceps possui duas cabeças (longa e curta) e é o principal flexor do cotovelo, além de fazer a supinação do antebraço (girar a palma da mão para cima). O braquial fica abaixo do bíceps e ajuda a dar volume lateral ao braço.
+
+            Visão de Treino: Mudar a posição dos cotovelos em relação ao corpo altera a ênfase (cotovelos para trás do corpo focam na cabeça longa; cotovelos à frente focam na cabeça curta).
+
+            Exercícios-chave: Rosca direta (com barra ou halteres), rosca banco inclinado e rosca Scott.
+        </MudText>
+    }
+
+    @if (_mostrarTriceps)
+    {
+        <MudText>
+            Tríceps Braquial
+            Função: Composto por três cabeças (longa, lateral e medial), ele ocupa cerca de 60% do volume total do braço. Sua função exclusiva é a extensão do cotovelo (esticar o braço).
+
+            Visão de Treino: Para acionar a cabeça longa (a maior delas), o braço precisa ser posicionado acima da cabeça durante o movimento.
+
+            Exercícios-chave: Tríceps testa, tríceps na polia (corda ou barra) e tríceps francês.
+        </MudText>
+    }
+
+    @if (_mostrarAntebraco)
+    {
+        <MudText>
+            Antebraços (Flexores e Extensores do Punho)
+            Função: Controlam os movimentos do punho e dos dedos, além de serem fundamentais para a força de pegada (grip).
+
+            Visão de Treino: Geralmente já trabalham de forma isométrica intensa nos treinos de costas e bíceps, mas podem receber estímulo isolado se forem um ponto fraco.
+
+            Exercícios-chave: Rosca inversa e rosca punho.
+        </MudText>
+    }
+
+    @if (_mostrarAbdomen)
+    {
+        <MudText>
+            Abdômen (Reto Abdominal, Oblíquos e Transverso)
+            Função: O reto abdominal faz a flexão da coluna (trazer o tórax em direção ao quadril). Os oblíquos fazem a rotação e inclinação lateral do tronco. O transverso do abdômen funciona como uma cinta natural, gerando pressão intra-abdominal e estabilizando a coluna.
+
+            Visão de Treino: O abdômen é um músculo como qualquer outro; precisa de sobrecarga progressiva para hipertrofiar (ficar com os "gomos" aparentes) e não apenas de repetições infinitas.
+
+            Exercícios-chave: Abdominal na polia, elevação de pernas suspenso e prancha isométrica (foco em estabilização).
+        </MudText>
+    }
+
+    @if (_mostrarLombar)
+    {
+        <MudText>
+            Lombar / Eretores da Espinha
+            Função: Sustentar e estender a coluna vertebral. É a base de sustentação do tronco.
+
+            Exercícios-chave: Hiperextensão lombar no banco romano e levantamento terra.
+        </MudText>
+    }
+
+    @if (_mostrarQuadri)
+    {
+        <MudText>
+            Quadríceps (Reto Femoral, Vasto Lateral, Vasto Medial e Vasto Intermédio)
+            Função: Um grupo de quatro músculos na parte frontal da coxa. A principal função conjunta é a extensão do joelho (esticar a perna). O reto femoral também auxilia na flexão do quadril (trazer a coxa para cima).
+
+            Visão de Treino: Exige grande volume de oxigênio e energia por ser um grupo muscular massivo. O agachamento livre é o rei aqui, mas máquinas ajudam no isolamento.
+
+            Exercícios-chave: Agachamento livre, Leg Press, Hack Machine e Cadeira Extensora.
+        </MudText>
+    }
+
+    @if (_mostrarPosterior)
+    {
+        <MudText>
+            Posteriores de Coxa / Isquiotibiais (Bíceps Femoral, Semitendinoso e Semimembranoso)
+            Função: Localizados na parte de trás da coxa, realizam duas funções principais: a flexão do joelho (trazer o calcanhar em direção ao glúteo) e a extensão do quadril (empurrar a perna para trás).
+
+            Visão de Treino: Um erro comum na musculação é treinar menos o posterior do que o quadríceps, o que gera desequilíbrios e lesões no joelho (como o ligamento cruzado anterior). Seu treino deve conter exercícios de flexão de joelho e de extensão de quadril.
+
+            Exercícios-chave: Stiff (extensão de quadril), Mesa Flexora e Cadeira Flexora (flexão de joelho).
+        </MudText>
+    }
+
+        @if (_mostrarPantu)
+    {
+        <MudText>
+            Panturrilhas (Gastrocnêmio e Sóleo)
+            Função: Responsáveis pela flexão plantar (ficar na ponta dos pés). O gastrocnêmio é o músculo com duas "cabeças" visíveis e cruza a articulação do joelho. O sóleo fica por baixo e é um músculo mais profundo.
+
+            Visão de Treino: O sóleo é mais ativado com os joelhos flexionados (sentado). O gastrocnêmio exige os joelhos totalmente estendidos (em pé). Para desenvolver panturrilhas completas, você precisa treinar das duas formas.
+
+            Exercícios-chave: Panturrilha em pé (gastrocnêmio) e Panturrilha sentado / "Burrinho" (sóleo).
+        </MudText>
+    }
+
+    @if (_mostrarGluteo)
+    {
+        <MudText>
+            Glúteos (Máximo, Médio e Mínimo)
+            Função: O glúteo máximo é o maior músculo do corpo e o principal extensor do quadril. O glúteo médio e o mínimo ficam na lateral e são responsáveis pela abdução do quadril (abrir a perna) e pela estabilização da pélvis enquanto andamos ou corremos.
+
+            Visão de Treino: Para ativação máxima do glúteo máximo, são necessários exercícios com vetores de força horizontais e verticais.
+
+            Exercícios-chave: Elevação pélvica, agachamento búlgaro, cadeira abdutora (glúteo médio) e glúteo na polia.
+        </MudText>
+    }
     <MudGrid Spacing="5" Class="px-4">
         @foreach (var treino in ListaTreinos)
         {
@@ -279,5 +437,88 @@
         public string CardGradient { get; set; } = "";
         public List<string> Beneficios { get; set; } = new();
         public string Explicacao   { get; set; } = "";
+    }
+
+    private bool _mostrarPeitoral = false;
+
+    private void ExibirPeitoral()
+    {
+        _mostrarPeitoral = !_mostrarPeitoral;
+    }
+    private bool _mostrarDorsal = false;
+
+    private void ExibirDorsal()
+    {
+        _mostrarDorsal = !_mostrarDorsal;
+    }
+
+    private bool _mostrarOmbro = false;
+
+    private void ExibirOmbro()
+    {
+        _mostrarOmbro = !_mostrarOmbro;
+    }
+
+    private bool _mostrarBiceps = false;
+
+    private void ExibirBiceps()
+    {
+        _mostrarBiceps = !_mostrarBiceps;
+    }
+
+    private bool _mostrarTriceps = false;
+
+    private void ExibirTriceps()
+    {
+        _mostrarTriceps = !_mostrarTriceps;
+    }
+
+    private bool _mostrarAntebraco = false;
+
+    private void ExibirAntebraco()
+    {
+        _mostrarAntebraco = !_mostrarAntebraco;
+    }
+
+    private bool _mostrarAbdomen = false;
+
+    private void ExibirAbdomen()
+    {
+        _mostrarAbdomen = !_mostrarAbdomen;
+    }
+
+    private bool _mostrarLombar;
+
+    private void ExibirLombar()
+    {
+        _mostrarLombar = !_mostrarLombar;
+    }
+
+    private bool _mostrarQuadri;
+
+    private void ExibirQuadri()
+    {
+        _mostrarQuadri = !_mostrarQuadri;
+    }
+
+    private bool _mostrarPosterior;
+
+    private void ExibirPosterior()
+    {
+        _mostrarPosterior = !_mostrarPosterior;
+    }
+
+    private bool _mostrarPantu;
+
+    private void ExibirPantu()
+    {
+        _mostrarPantu = !_mostrarPantu;
+    }
+
+    private bool _mostrarGluteo;
+
+    private void ExibirGluteo()
+    {
+        _mostrarGluteo = !_mostrarGluteo;
     }
 }
