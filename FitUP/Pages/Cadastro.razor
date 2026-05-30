@@ -121,10 +121,10 @@
                 </MudItem>
                 
                 <MudItem xs="12" sm="6">
-                    <MudTextField Label="Senha" Variant="Variant.Filled" Margin="Margin.Dense" InputType="InputType.Password" @bind-Value="cadModel.Password" For="@(()=>cadModel.Password)" />
+                    <MudTextField InputType="@_passwordInput" Adornment="Adornment.End" AdornmentIcon="@_passwordInputIcon" AdornmentColor="Color.Inherit" OnAdornmentClick="TogglePasswordVisibility" Label="Senha" Variant="Variant.Filled" Margin="Margin.Dense"  @bind-Value="cadModel.Password" For="@(()=>cadModel.Password)" />
                 </MudItem>
                 <MudItem xs="12" sm="6">
-                    <MudTextField Label="Confirmar Senha" Variant="Variant.Filled" Margin="Margin.Dense" InputType="InputType.Password" @bind-Value="cadModel.ConfirmPassword" For="@(()=>cadModel.ConfirmPassword)" />
+                    <MudTextField InputType="@_passwordInput" AdornmentIcon="@_passwordInputIcon" Label="Confirmar Senha" Variant="Variant.Filled" Margin="Margin.Dense" @bind-Value="cadModel.ConfirmPassword" For="@(()=>cadModel.ConfirmPassword)" />
                 </MudItem>
 
                 <MudItem xs="12" Class="mt-2 text-center">
@@ -149,7 +149,9 @@
 
 @code {
     private CadastroModel cadModel = new();
-    
+    bool _isPasswordVisible;
+    InputType _passwordInput = InputType.Password;
+    string _passwordInputIcon = Icons.Material.Filled.VisibilityOff;
     void IrParaLogin() => NavigationManager.NavigateTo("/login");
     void VoltarHome() => NavigationManager.NavigateTo("/");
     
@@ -158,6 +160,21 @@
         await Task.Delay(50); 
     }
 
+    void TogglePasswordVisibility()
+    {
+        if (_isPasswordVisible)
+        {
+            _isPasswordVisible = false;
+            _passwordInputIcon = Icons.Material.Filled.VisibilityOff;
+            _passwordInput = InputType.Password;
+        }
+        else
+        {
+            _isPasswordVisible = true;
+            _passwordInputIcon = Icons.Material.Filled.Visibility;
+            _passwordInput = InputType.Text;
+        }
+    }
     public class CadastroModel 
     {
         [Required(ErrorMessage = "Nome é obrigatório!")] public string FirstName { get; set; } = "";
