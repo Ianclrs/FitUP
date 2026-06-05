@@ -1,5 +1,7 @@
 ﻿@page "/DicasTreino"
 @inject IDialogService DialogService
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JS
 
 <MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="mt-6 py-0 mb-8 animate-fade-in">
 
@@ -18,171 +20,570 @@
         </MudCard>
 
         <div class="d-flex gap-2 mt-2">
-        <MudMenu Class="rounded-sm" Style="background-color: coral " Label="Superiores">
-                <MudMenuItem OnClick="ExibirPeitoral" Label="Peito" />
-                <MudMenuItem OnClick="ExibirDorsal" Label="Costas" />
-                <MudMenuItem OnClick="ExibirOmbro" Label="Ombro" />
-                <MudMenuItem OnClick="ExibirBiceps" Label="Bíceps"/>
-                <MudMenuItem OnClick="ExibirTriceps" Label="Tríceps" />
-                <MudMenuItem OnClick="ExibirAntebraco" Label="Antebraços" />
-        </MudMenu>
-        <MudMenu Class="rounded-sm" Style="background-color:coral" Label="Central">
-                <MudMenuItem OnClick="ExibirAbdomen" Label="Abdômen" />
-                <MudMenuItem OnClick="ExibirLombar" Label="Lombar" />
-        </MudMenu>
-        <MudMenu Class="rounded-sm" Style="background-color:coral" Label="Inferiores">
-                <MudMenuItem OnClick="ExibirQuadri" Label="Quadríceps" />
-                <MudMenuItem OnClick="ExibirPosterior" Label="Posteriores" />
-                <MudMenuItem OnClick="ExibirPantu" Label="Panturrilha" />
-                <MudMenuItem OnClick="ExibirGluteo" Label="Glúteos" />
-        </MudMenu>
+            <MudMenu Class="rounded-sm" Style="background-color: coral " Label="Superiores">
+                <MudMenuItem OnClick='() => AlternarGrupamento("Peito")' Label="Peito" />
+                <MudMenuItem OnClick='() => AlternarGrupamento("Costas")' Label="Costas" />
+                <MudMenuItem OnClick='() => AlternarGrupamento("Ombro")' Label="Ombro" />
+                <MudMenuItem OnClick='() => AlternarGrupamento("Biceps")' Label="Bíceps" />
+                <MudMenuItem OnClick='() => AlternarGrupamento("Triceps")' Label="Tríceps" />
+                <MudMenuItem OnClick='() => AlternarGrupamento("Antebraco")' Label="Antebraços" />
+            </MudMenu>
+            <MudMenu Class="rounded-sm" Style="background-color:coral" Label="Central">
+                <MudMenuItem OnClick='() => AlternarGrupamento("Abdomen")' Label="Abdômen" />
+                <MudMenuItem OnClick='() => AlternarGrupamento("Lombar")' Label="Lombar" />
+            </MudMenu>
+            <MudMenu Class="rounded-sm" Style="background-color:coral" Label="Inferiores">
+                <MudMenuItem OnClick='() => AlternarGrupamento("Quadri")' Label="Quadríceps" />
+                <MudMenuItem OnClick='() => AlternarGrupamento("Posterior")' Label="Posteriores" />
+                <MudMenuItem OnClick='() => AlternarGrupamento("Pantu")' Label="Panturrilha" />
+                <MudMenuItem OnClick='() => AlternarGrupamento("Gluteo")' Label="Glúteos" />
+            </MudMenu>
         </div>
     </MudStack>
-    @*buttons para explicar os tipos de musculos*@
-    @if(_mostrarPeitoral){
-    <MudText>
-        Peitoral (Maior e Menor)
-        Função: O peitoral maior é o principal responsável pela adução horizontal do braço (trazer os braços em direção ao centro do corpo) e pela rotação interna do ombro. A porção superior (clavicular) ajuda na flexão do ombro (erguer o braço).
 
-        Visão de Treino: Deve ser estimulado em ângulos diferentes para um aspecto estético preenchido.
-
-        Exercícios-chave: Supino reto (base), supino inclinado (foco na porção superior), crucifixo e crossmover (foco no pico de contração por adução).
-    </MudText>
-    }
-
-    @if (_mostrarDorsal)
+    @* Container Elegante para os Textos Explicativos dos Músculos *@
+    @if (!string.IsNullOrEmpty(_grupamentoAtivo))
     {
-        <MudText>
-            Dorsais / Costas (Latíssimo do Dorso, Trapézio, Romboides e Redondos)
-            Função: Um complexo de músculos gigante. O latíssimo do dorso ("asa") faz a extensão e adução do braço (puxar de cima para baixo). Os romboides e o trapézio médio/inferior fazem a retração das escápulas (esmagar as costas para trás). O trapézio superior eleva os ombros.
+        <MudPaper Elevation="4" Class="pa-6 mb-8 coral-border" Style="border: 1px solid coral; border-radius: 12px;">
 
-            Visão de Treino: Dividimos o treino de costas em dois estímulos: puxadas (para dar largura/amplitude) e remadas (para dar densidade/espessura).
+            @if (_grupamentoAtivo == "Peito")
+            {
+                <!-- Bloco de Explicação Textual -->
+                <div class="mb-4">
+                    <MudText Typo="Typo.h5" Style="color:coral; font-weight:bold;" Class="mb-3">Peitoral (Maior e Menor)</MudText>
+                    <MudText Typo="Typo.body1" Class="mb-2"><strong>Função:</strong> O peitoral é um dos agrupamentos musculares mais visados na musculação, tanto pela estética quanto pela sua importância funcional no complexo do ombro. Para extrair o máximo de desenvolvimento desse músculo, é preciso entender como ele se divide, a orientação de suas fibras e a biomecânica por trás dos exercícios.</MudText>
+                    <MudText Typo="Typo.body1" Class="mb-2"><strong>Anatomia e Divisões Funcionais:</strong> O que chamamos popularmente de "peito" é composto por dois músculos principais: o peitoral maior (o músculo grande e superficial) e o peitoral menor (um músculo profundo, localizado abaixo do maior).</MudText>
+                    <MudDivider Class="my-4" Style="--mud-palette-divider:coral" />
+                    <MudText Typo="Typo.body1" Class="mb-2">
+                        <h2><strong>Peitoral Maior:</strong></h2> É um músculo em formato de leque. Embora seja uma peça única de tecido, ele é dividido funcionalmente em porções baseadas na origem de suas fibras, pois cada parte responde melhor a diferentes ângulos de movimento:
+                        <article><strong>Porção Clavicular (Superior):</strong></article> Origina-se na metade interna da clavícula. Suas fibras correm de cima para baixo e para fora, inserindo-se no braço (úmero).
 
-            Exercícios-chave: Puxada alta (pulldown), barra fixa, remada curvada com barra, remada baixa no cabo e encolhimento (para trapézio).
-        </MudText>
+                        <article><strong>Porção Esternocostal (Medial/Inferior):</strong></article> É a maior parte do peito. Origina-se no esterno (osso do centro do peito) e nas cartilagens das primeiras seis costelas. Suas fibras correm horizontalmente e de baixo para cima em direção ao braço.
+
+                        <article><strong>Porção Abdominal (Inferior):</strong></article> Uma subdivisão mais baixa que se origina na bainha do músculo reto do abdômen e puxa o braço para baixo e para dentro.
+
+                        <article><strong>O Ponto de Inserção:</strong></article> Todas as fibras do peitoral maior se convergem em um único tendão que se fixa na parte anterior do úmero (o osso do braço). Isso significa que a principal função do peito não é mover as mãos, mas sim mover o braço em direção ao centro do corpo.</MudText>
+                    <MudDivider Class="my-4" Style="--mud-palette-divider:coral" />
+                    <MudText Typo="Typo.body1" Class="mb-2"><h2><strong>Peitoral Menor:</strong></h2> Músculo plano e triangular que fica escondido abaixo do peitoral maior. Ele não se insere no braço, mas sim no processo coracoide da escápula (omoplata). Sua função é estabilizar, deprimir (puxar para baixo) e protrair (jogar para a frente) a escápula.
+                        <article><strong>Funções Biomecânicas (Ações Populares)</strong></article>
+                        Para recrutar o peitoral ao máximo, o foco deve ser realizar as ações anatômicas que ele comanda:
+
+                        <article><strong>Adução Horizontal:</strong></article> Trazer os braços que estão abertos em linha reta para a frente do corpo (ex: movimento do crucifixo ou voador).
+
+                        <article><strong>Flexão do Ombro:</strong></article> Levantar o braço para a frente (função principal da porção superior/clavicular).
+
+                        <article><strong>Extensão do Ombro:</strong></article> Trazer o braço de cima para baixo (função principal da porção inferior/abdominal).
+
+                        <article><strong>Rotação Interna:</strong></article> Girar o braço para dentro, em direção ao eixo do próprio corpo.</MudText>
+                    <MudDivider Class="my-4" Style="--mud-palette-divider:coral" />
+                    <MudText Typo="Typo.body1" Class="mb-2"><h2><strong>Maximizando a Hipertrofia: Seleção de Exercícios</strong></h2> Para construir um peitoral estético e proporcional, o treino deve estimular todas as subdivisões respeitando o alinhamento das fibras.
+                        <article><strong>Foco na Porção Superior (Clavicular)</strong></article> Para atingir o "peito alto", o braço precisa subir e entrar em direção ao centro. O ângulo ideal do banco geralmente fica entre 30° e 45°. Ângulos maiores que isso começam a transferir o esforço excessivamente para o deltoide anterior (frente do ombro).<br />
+
+                        <strong>Exercícios-chave:</strong> Supino inclinado (com halteres ou barra), crucifixo inclinado, e crossover com as polias posicionadas embaixo (puxando os cabos de baixo para cima).
+
+                        <article><strong>Foco na Porção Medial e Global (Esternocostal)</strong></article> Aqui as fibras correm na horizontal. Exercícios em bancos planos oferecem o melhor alinhamento mecânico para gerar força máxima.<br />
+
+                        <strong>Exercícios-chave:</strong> Supino reto (barra ou halteres), voador/peck deck, e supino articulado em máquina.
+                    
+
+                        <article><strong>Foco na Porção Inferior (Abdominal/Costal)</strong></article> Para desenhar a linha inferior do peitoral, o movimento deve empurrar para baixo ou trazer o braço de cima em direção à linha da cintura.<br />
+
+                        <strong>Exercícios-chave:</strong> Supino declinado, paralelas (com o tronco ligeiramente inclinado para a frente) e crossover com as polias posicionadas no alto (puxando de cima para baixo).
+                    </MudText>
+                    <MudText Typo="Typo.body1" Class="mb-4"><strong>Visão de Treino:</strong> Deve ser estimulado em ângulos diferentes para um aspect estético preenchido.</MudText>
+                </div>
+
+                <MudDivider Class="my-4" Style="--mud-palette-divider:coral" />
+
+                <!-- Bloco de Exercícios Chaves -->
+                <MudText Typo="Typo.h6" Class="mb-3" Style="font-weight:bold; color:coral;">Exercícios-chave:</MudText>
+                <MudGrid Spacing="3">
+                    <MudItem xs="12" sm="6" md="4" lg="3">
+                        <MudCard Elevation="2" Class="pa-3 d-flex flex-column h-100">
+                            <MudText Typo="Typo.body1" Class="mb-2"><strong>Supino Reto</strong> (Base)</MudText>
+                            <MudImage Src="img/H.Full.png" Alt="Supino Reto" ObjectFit="ObjectFit.Cover" MaxHeight="220" Class="rounded-lg mt-auto" />
+                        </MudCard>
+                    </MudItem>
+                    <MudItem xs="12" sm="6" md="4" lg="3">
+                        <MudCard Elevation="2" Class="pa-3 d-flex flex-column h-100">
+                            <MudText Typo="Typo.body1" Class="mb-2"><strong>Supino Inclinado</strong> (Foco na porção superior)</MudText>
+                            <MudImage Src="img/H.Full.png" Alt="Supino Inclinado" ObjectFit="ObjectFit.Cover" MaxHeight="220" Class="rounded-lg mt-auto" />
+                        </MudCard>
+                    </MudItem>
+                    <MudItem xs="12" sm="6" md="4" lg="3">
+                        <MudCard Elevation="2" Class="pa-3 d-flex flex-column h-100">
+                            <MudText Typo="Typo.body1" Class="mb-2"><strong>Crucifixo</strong> (Pico de contração)</MudText>
+                            <MudImage Src="img/H.Full.png" Alt="Crucifixo" ObjectFit="ObjectFit.Cover" MaxHeight="220" Class="rounded-lg mt-auto" />
+                        </MudCard>
+                    </MudItem>
+                    <MudItem xs="12" sm="6" md="4" lg="3">
+                        <MudCard Elevation="2" Class="pa-3 d-flex flex-column h-100">
+                            <MudText Typo="Typo.body1" Class="mb-2"><strong>Crossover</strong> (Foco em adução)</MudText>
+                            <MudImage Src="img/H.Full.png" Alt="Crossover" ObjectFit="ObjectFit.Cover" MaxHeight="220" Class="rounded-lg mt-auto" />
+                        </MudCard>
+                    </MudItem>
+                </MudGrid>
+            }
+
+            @if (_grupamentoAtivo == "Costas")
+            {
+                <div class="mb-4">
+                    <MudText Typo="Typo.h5" Style="color:coral; font-weight:bold;" Class="mb-3">Dorsais / Costas (Latíssimo do Dorso, Trapézio, Romboides e Redondos)</MudText>
+                    <MudText Typo="Typo.body1" Class="mb-2"><strong>Função:</strong> Um complexo de músculos gigante. O latíssimo do dorso ("asa") faz a extensão e adução do braço (puxar de cima para baixo). Os romboides e o trapézio médio/inferior fazem a retração das escápulas (esmagar as costas para trás). O trapézio superior eleva os ombros.</MudText>
+                    <MudText Typo="Typo.body1" Class="mb-4"><strong>Visão de Treino:</strong> Dividimos o treino de costas em dois estímulos: puxadas (para dar largura/amplitude) e remadas (para dar densidade/espessura).</MudText>
+                </div>
+
+                <MudDivider Class="my-4" Style="--mud-palette-divider:coral" />
+
+                <MudText Typo="Typo.h6" Class="mb-3" Style="font-weight:bold; color:coral;">Exercícios-chave:</MudText>
+                <MudGrid Spacing="3">
+                    <MudItem xs="12" sm="6" md="4" lg="3">
+                        <MudCard Elevation="2" Class="pa-3 d-flex flex-column h-100">
+                            <MudText Typo="Typo.body1" Class="mb-2"><strong>Puxada Alta</strong> (Pulldown)</MudText>
+                            <MudImage Src="img/H.Full.png" Alt="Puxada Alta" ObjectFit="ObjectFit.Cover" MaxHeight="220" Class="rounded-lg mt-auto" />
+                        </MudCard>
+                    </MudItem>
+                    <MudItem xs="12" sm="6" md="4" lg="3">
+                        <MudCard Elevation="2" Class="pa-3 d-flex flex-column h-100">
+                            <MudText Typo="Typo.body1" Class="mb-2"><strong>Barra Fixa</strong></MudText>
+                            <MudImage Src="img/H.Full.png" Alt="Barra Fixa" ObjectFit="ObjectFit.Cover" MaxHeight="220" Class="rounded-lg mt-auto" />
+                        </MudCard>
+                    </MudItem>
+                    <MudItem xs="12" sm="6" md="4" lg="3">
+                        <MudCard Elevation="2" Class="pa-3 d-flex flex-column h-100">
+                            <MudText Typo="Typo.body1" Class="mb-2"><strong>Remada Curvada</strong> (Com barra)</MudText>
+                            <MudImage Src="img/H.Full.png" Alt="Remada Curvada" ObjectFit="ObjectFit.Cover" MaxHeight="220" Class="rounded-lg mt-auto" />
+                        </MudCard>
+                    </MudItem>
+                    <MudItem xs="12" sm="6" md="4" lg="3">
+                        <MudCard Elevation="2" Class="pa-3 d-flex flex-column h-100">
+                            <MudText Typo="Typo.body1" Class="mb-2"><strong>Remada Baixa</strong> (No cabo)</MudText>
+                            <MudImage Src="img/H.Full.png" Alt="Remada Baixa" ObjectFit="ObjectFit.Cover" MaxHeight="220" Class="rounded-lg mt-auto" />
+                        </MudCard>
+                    </MudItem>
+                    <MudItem xs="12" sm="6" md="4" lg="3">
+                        <MudCard Elevation="2" Class="pa-3 d-flex flex-column h-100">
+                            <MudText Typo="Typo.body1" Class="mb-2"><strong>Encolhimento</strong> (Para trapézio)</MudText>
+                            <MudImage Src="img/H.Full.png" Alt="Encolhimento" ObjectFit="ObjectFit.Cover" MaxHeight="220" Class="rounded-lg mt-auto" />
+                        </MudCard>
+                    </MudItem>
+                </MudGrid>
+            }
+
+            @if (_grupamentoAtivo == "Ombro")
+            {
+                <div class="mb-4">
+                    <MudText Typo="Typo.h5" Style="color:coral; font-weight:bold;" Class="mb-3">Deltoides / Ombros (Anterior, Lateral e Posterior)</MudText>
+                    <MudText Typo="Typo.body1" Class="mb-2"><strong>Função:</strong> O deltoide é dividido em três cabeças. A anterior (frente) eleva o braço para a frente; a lateral eleva o braço para os lados (dá o aspecto de "ombros largos" e cintura fina); a posterior (atrás) puxa o braço para trás horizontalmente.</MudText>
+                    <MudText Typo="Typo.body1" Class="mb-4"><strong>Visão de Treino:</strong> A porção anterior já é muito exigida nos supinos de peito. Por isso, no treino isolado de ombro, o foco principal deve ser nas porções lateral e posterior para garantir simetria e proteger a articulação contra lesões.</MudText>
+                </div>
+
+                <MudDivider Class="my-4" Style="--mud-palette-divider:coral" />
+
+                <MudText Typo="Typo.h6" Class="mb-3" Style="font-weight:bold; color:coral;">Exercícios-chave:</MudText>
+                <MudGrid Spacing="3">
+                    <MudItem xs="12" sm="6" md="4" lg="3">
+                        <MudCard Elevation="2" Class="pa-3 d-flex flex-column h-100">
+                            <MudText Typo="Typo.body1" Class="mb-2"><strong>Desenvolvimento com Halteres</strong> (Geral)</MudText>
+                            <MudImage Src="img/H.Full.png" Alt="Desenvolvimento" ObjectFit="ObjectFit.Cover" MaxHeight="220" Class="rounded-lg mt-auto" />
+                        </MudCard>
+                    </MudItem>
+                    <MudItem xs="12" sm="6" md="4" lg="3">
+                        <MudCard Elevation="2" Class="pa-3 d-flex flex-column h-100">
+                            <MudText Typo="Typo.body1" Class="mb-2"><strong>Elevação Lateral</strong> (Foco em largura)</MudText>
+                            <MudImage Src="img/H.Full.png" Alt="Elevação Lateral" ObjectFit="ObjectFit.Cover" MaxHeight="220" Class="rounded-lg mt-auto" />
+                        </MudCard>
+                    </MudItem>
+                    <MudItem xs="12" sm="6" md="4" lg="3">
+                        <MudCard Elevation="2" Class="pa-3 d-flex flex-column h-100">
+                            <MudText Typo="Typo.body1" Class="mb-2"><strong>Crucifixo Inverso</strong> (Foco em posterior)</MudText>
+                            <MudImage Src="img/H.Full.png" Alt="Crucifixo Inverso" ObjectFit="ObjectFit.Cover" MaxHeight="220" Class="rounded-lg mt-auto" />
+                        </MudCard>
+                    </MudItem>
+                </MudGrid>
+            }
+
+            @if (_grupamentoAtivo == "Biceps")
+            {
+                <div class="mb-4">
+                    <MudText Typo="Typo.h5" Style="color:coral; font-weight:bold;" Class="mb-3">Bíceps Braquial e Braquial</MudText>
+                    <MudText Typo="Typo.body1" Class="mb-2"><strong>Função:</strong> O bíceps possui duas cabeças (longa e curta) e é o principal flexor do cotovelo, além de fazer a supinação do antebraço (girar a palma da mão para cima). O braquial fica abaixo do bíceps e ajuda a dar volume lateral ao braço.</MudText>
+                    <MudText Typo="Typo.body1" Class="mb-4"><strong>Visão de Treino:</strong> Mudar a posição dos cotovelos em relação ao corpo altera a ênfase (cotovelos para trás do corpo focam na cabeça longa; cotovelos à frente focam na cabeça curta).</MudText>
+                </div>
+
+                <MudDivider Class="my-4" Style="--mud-palette-divider:coral" />
+
+                <MudText Typo="Typo.h6" Class="mb-3" Style="font-weight:bold; color:coral;">Exercícios-chave:</MudText>
+                <MudGrid Spacing="3">
+                    <MudItem xs="12" sm="6" md="4" lg="3">
+                        <MudCard Elevation="2" Class="pa-3 d-flex flex-column h-100">
+                            <MudText Typo="Typo.body1" Class="mb-2"><strong>Rosca Direta</strong> (Barra ou Halteres)</MudText>
+                            <MudImage Src="img/H.Full.png" Alt="Rosca Direta" ObjectFit="ObjectFit.Cover" MaxHeight="220" Class="rounded-lg mt-auto" />
+                        </MudCard>
+                    </MudItem>
+                    <MudItem xs="12" sm="6" md="4" lg="3">
+                        <MudCard Elevation="2" Class="pa-3 d-flex flex-column h-100">
+                            <MudText Typo="Typo.body1" Class="mb-2"><strong>Rosca Banco Inclinado</strong> (Foco na cabeça longa)</MudText>
+                            <MudImage Src="img/H.Full.png" Alt="Rosca Banco Inclinado" ObjectFit="ObjectFit.Cover" MaxHeight="220" Class="rounded-lg mt-auto" />
+                        </MudCard>
+                    </MudItem>
+                    <MudItem xs="12" sm="6" md="4" lg="3">
+                        <MudCard Elevation="2" Class="pa-3 d-flex flex-column h-100">
+                            <MudText Typo="Typo.body1" Class="mb-2"><strong>Rosca Scott</strong> (Foco na cabeça curta)</MudText>
+                            <MudImage Src="img/H.Full.png" Alt="Rosca Scott" ObjectFit="ObjectFit.Cover" MaxHeight="220" Class="rounded-lg mt-auto" />
+                        </MudCard>
+                    </MudItem>
+                </MudGrid>
+            }
+
+            @if (_grupamentoAtivo == "Triceps")
+            {
+                <div class="mb-4">
+                    <MudText Typo="Typo.h5" Style="color:coral; font-weight:bold;" Class="mb-3">Tríceps Braquial</MudText>
+                    <MudText Typo="Typo.body1" Class="mb-2"><strong>Função:</strong> Composto por três cabeças (longa, lateral e medial), ele ocupa cerca de 60% do volume total do braço. Sua função exclusiva é a extensão do cotovelo (esticar o braço).</MudText>
+                    <MudText Typo="Typo.body1" Class="mb-4"><strong>Visão de Treino:</strong> Para acionar a cabeça longa (a maior delas), o braço precisa ser posicionado acima da cabeça durante o movimento.</MudText>
+                </div>
+
+                <MudDivider Class="my-4" Style="--mud-palette-divider:coral" />
+
+                <MudText Typo="Typo.h6" Class="mb-3" Style="font-weight:bold; color:coral;">Exercícios-chave:</MudText>
+                <MudGrid Spacing="3">
+                    <MudItem xs="12" sm="6" md="4" lg="3">
+                        <MudCard Elevation="2" Class="pa-3 d-flex flex-column h-100">
+                            <MudText Typo="Typo.body1" Class="mb-2"><strong>Tríceps Testa</strong></MudText>
+                            <MudImage Src="img/H.Full.png" Alt="Tríceps Testa" ObjectFit="ObjectFit.Cover" MaxHeight="220" Class="rounded-lg mt-auto" />
+                        </MudCard>
+                    </MudItem>
+                    <MudItem xs="12" sm="6" md="4" lg="3">
+                        <MudCard Elevation="2" Class="pa-3 d-flex flex-column h-100">
+                            <MudText Typo="Typo.body1" Class="mb-2"><strong>Tríceps na Polia</strong> (Corda ou Barra)</MudText>
+                            <MudImage Src="img/H.Full.png" Alt="Tríceps Polia" ObjectFit="ObjectFit.Cover" MaxHeight="220" Class="rounded-lg mt-auto" />
+                        </MudCard>
+                    </MudItem>
+                    <MudItem xs="12" sm="6" md="4" lg="3">
+                        <MudCard Elevation="2" Class="pa-3 d-flex flex-column h-100">
+                            <MudText Typo="Typo.body1" Class="mb-2"><strong>Tríceps Francês</strong> (Foco na cabeça longa)</MudText>
+                            <MudImage Src="img/H.Full.png" Alt="Tríceps Francês" ObjectFit="ObjectFit.Cover" MaxHeight="220" Class="rounded-lg mt-auto" />
+                        </MudCard>
+                    </MudItem>
+                </MudGrid>
+            }
+
+            @if (_grupamentoAtivo == "Antebraco")
+            {
+                <div class="mb-4">
+                    <MudText Typo="Typo.h5" Style="color:coral; font-weight:bold;" Class="mb-3">Antebraços (Flexores e Extensores do Punho)</MudText>
+                    <MudText Typo="Typo.body1" Class="mb-2"><strong>Função:</strong> Controlam os movimentos do punho e dos dedos, além de serem fundamentais para a força de pegada (grip).</MudText>
+                    <MudText Typo="Typo.body1" Class="mb-4"><strong>Visão de Treino:</strong> Geralmente já trabalham de forma isométrica intensa nos treinos de costas e bíceps, mas podem receber estímulo isolado se forem um ponto fraco.</MudText>
+                    <MudDivider Class="my-4" Style="--mud-palette-divider:coral" />
+                    
+                
+                </div>
+
+                <MudDivider Class="my-4" Style="--mud-palette-divider:coral" />
+
+                <MudText Typo="Typo.h6" Class="mb-3" Style="font-weight:bold; color:coral;">Exercícios-chave:</MudText>
+                <MudGrid Spacing="3">
+                    <MudItem xs="12" sm="6" md="4" lg="3">
+                        <MudCard Elevation="2" Class="pa-3 d-flex flex-column h-100">
+                            <MudText Typo="Typo.body1" Class="mb-2"><strong>Rosca Inversa</strong></MudText>
+                            <MudImage Src="img/H.Full.png" Alt="Rosca Inversa" ObjectFit="ObjectFit.Cover" MaxHeight="220" Class="rounded-lg mt-auto" />
+                        </MudCard>
+                    </MudItem>
+                    <MudItem xs="12" sm="6" md="4" lg="3">
+                        <MudCard Elevation="2" Class="pa-3 d-flex flex-column h-100">
+                            <MudText Typo="Typo.body1" Class="mb-2"><strong>Rosca Punho</strong></MudText>
+                            <MudImage Src="img/H.Full.png" Alt="Rosca Punho" ObjectFit="ObjectFit.Cover" MaxHeight="220" Class="rounded-lg mt-auto" />
+                        </MudCard>
+                    </MudItem>
+                </MudGrid>
+            }
+
+            @if (_grupamentoAtivo == "Abdomen")
+            {
+                <div class="mb-4">
+                    <MudText Typo="Typo.h5" Style="color:coral; font-weight:bold;" Class="mb-3">Abdômen (Reto Abdominal, Oblíquos e Transverso)</MudText>
+                    <MudText Typo="Typo.body1" Class="mb-2">
+                        <strong>Função:</strong> O abdômen é muito mais do que o famoso "tanquinho" ou uma parede estética no centro do corpo. Ele funciona como o principal elo de ligação entre os membros superiores e inferiores, sendo o núcleo (core) de transferência de força, estabilização da coluna e proteção dos órgãos internos.
+                        Para desenvolver um abdômen forte e visível, precisamos entender sua anatomia em camadas, suas funções reais e como aplicar a biomecânica correta no treino.
+                    </MudText>
+                    <MudDivider Class="my-4" Style="--mud-palette-divider:coral" />
+                    
+                    <MudText Typo="Typo.body1" Class="mb-2"><h2><strong>Anatomia e Divisões (As Camadas do Core)</strong></h2> A parede abdominal é composta por quatro músculos principais que se sobrepõem em camadas, indo do mais superficial ao mais profundo:
+                        <article><b><h3>Reto do Abdômen</h3></b></article>
+                        É o músculo mais superficial e o responsável pelos gomos visíveis. Ele corre verticalmente desde o osso púbico até o esterno e as costelas.
+
+                        <article><b>A Linha Alba:</b></article> É o tecido conjuntivo fibroso que divide o reto abdominal verticalmente ao meio. As interseções tendíneas horizontais são o que criam a aparência dos gomos.
+
+                        <article><b>Mito do "Abdomen Superior e Inferior":</b></article> O reto do abdômen é um músculo único. Você não consegue isolar a parte de cima da de baixo, mas pode mudar a ênfase (mover o tronco em direção ao quadril enfatiza a porção superior; mover o quadril em direção ao tronco enfatiza a porção inferior).
+                        
+                        <article><b><h3>Oblíquo Externo e Oblíquo Interno</h3></b></article>
+                        Ficam nas laterais do tronco. O oblíquo externo é o mais superficial e suas fibras correm diagonalmente para baixo (como colocar as mãos no bolso). O oblíquo interno fica logo abaixo, com as fibras correndo na direção oposta. Eles dão o aspecto "V" na lateral da cintura.
+                        
+                        <article><b><h3>Transverso do Abdômen</h3></b></article>
+                        É o músculo mais profundo da parede abdominal. Suas fibras correm horizontalmente, envolvendo o abdômen como se fosse uma cinta ou espartilho. Ele não gera movimentos visíveis de flexão do tronco, mas sua contração puxa a parede abdominal para dentro.
+                    </MudText>
+                    
+                    <MudDivider Class="my-4" Style="--mud-palette-divider:coral" />
+                    
+                    <MudText Typo="Typo.body1" Class="mb-2">
+                        <h2><b>Funções Biomecânicas e Movimento</b></h2> Muitas vezes treinamos o abdômen apenas pensando em dobrar o corpo, mas sua função principal na evolução humana é resistir ao movimento para proteger a coluna.<br />
+
+                        <b>Flexão da Coluna:</b> Aproximar o tórax da pelve (ex: abdominal clássico).<br />
+
+                        <b>Inclinação Pélvica Posterior:</b> Puxar a pelve para cima/trás (ex: abdominal infra).<br />
+
+                        <b>Rotação e Inclinação Lateral:</b> Girar o tronco ou inclinar o corpo para os lados (função dos oblíquos).<br />
+
+                        <b>Estabilização (Anti-movimento):</b> Resistir a forças externas para manter a postura ereta (função do transverso e do core global).
+                    </MudText>
+
+                    <MudDivider Class="my-4" Style="--mud-palette-divider:coral" />
+
+                    <MudText Typo="Typo.body1"><h2><b>Seleção de Exercícios para Hipertrofia</b></h2> Assim como o peitoral, o abdômen é um músculo esquelético e precisa de sobrecarga progressiva (ficar mais pesado ou difícil com o tempo) para hipertrofiar. Fazer 100 repetições rápidas sem peso gera resistência, não gomos densos.
+                        <h3><b>Ênfase na Porção Superior (Flexão de Tronco)</b></h3>
+                        O foco é tirar as escápulas do chão, aproximando as costelas do quadril.<br />
+                        <b>Exercícios-chave:</b> Abdominal na polia alta (de joelhos ou em pé com carga), Crunch no banco declinado com peso, Crunch na máquina.
+                        
+                        <article><h3><b>Ênfase na Porção Inferior (Inclinação Pélvica)</b></h3></article>
+                        O foco não é apenas balançar as pernas, mas sim fazer a bacia girar para cima, aproximando o quadril do esterno.<br />
+                        <b>Exercícios-chave:</b> Elevação de pernas suspenso na barra (focando em levantar o quadril, não só as pernas), Abdominal reverso no banco inclinado.
+                        
+                        <article><h3><b>Foco nos Oblíquos (Rotação e Controle Lateral)</b></h3></article>
+                        Devem ser treinados com cuidado se o objetivo for manter a cintura fina, pois a hipertrofia excessiva dos oblíquos pode alargar a silhueta lateral.<br />
+
+                        <b>Exercícios-chave:</b> Rotação de tronco na polia (Woodchopper), Abdominal oblíquo no chão.
+                        
+                        <article><h3><b>Fortalecimento do Transverso (Linha de Cintura)</b></h3></article>
+                        Ativar o transverso ajuda a manter a "barriga para dentro" no dia a dia, melhorando a postura estética interna.<br />
+
+                        <b>Exercícios-chave:</b> Prancha frontal estática, Exercício de Stomach Vacuum (fazer o vácuo abdominal em jejum).
+                    </MudText>
+
+                    <MudDivider Class="my-4" Style="--mud-palette-divider:coral" />
+
+                    <MudText Typo="Typo.body1" Class="mb-2">
+                        <h2><b>O Grande Segredo do Abdômen Definido</b></h2> Não há como falar de abdômen sem alinhar a maior verdade da fisiologia esportiva: o abdômen é construído no treino, mas revelado na cozinha.
+                        <article><h3><b>A Barreira da Gordura:</b></h3></article> Todo mundo tem gomos abdominais. Eles são parte da anatomia humana. O motivo de não aparecerem é a camada de tecido adiposo (gordura) subcutâneo que fica acima deles.<br />
+                        <b>Para Homens:</b> O abdômen geralmente começa a desenhar com menos de <b>12% a 14%</b> de gordura corporal (BF).<br />
+
+                        <b>Para Mulheres:</b> Geralmente começa a aparecer com menos de <b>20% a 22%</b> de BF, devido às distribuições hormonais naturais.<br />
+                        Não existe perda de gordura localizada. Fazer 500 abdominais por dia queima calorias gerais, mas não queima a gordura especificamente da barriga. A única forma de revelar o abdômen é através do déficit calórico (dieta equilibrada) combinado com o treino de força para hipertrofiar o músculo, fazendo com que ele "salte" mesmo com percentuais de gordura ligeiramente maiores.
+                    </MudText>
+                    <MudDivider Class="my-4" Style="--mud-palette-divider:coral" />
+
+
+                    <MudText Typo="Typo.body1" Class="mb-2">
+                        <h2><b>Erros Comuns na Execução</b></h2> <b>Puxar o pescoço com as mãos:</b> No abdominal clássico, as mãos servem apenas de apoio. Puxar a cabeça joga uma tensão desnecessária e perigosa na coluna cervical.<br />
+
+                        <b>Usar os Flexores do Quadril (Iliopsoas):</b> Na elevação de pernas, se você apenas sobe e desce a perna reta sem tirar o quadril do banco ou da posição vertical, quem está fazendo 90% do esforço são os músculos da coxa e da virilha, não o abdômen.<br />
+
+                        <b>Esquecer de soltar o ar:</b> Para contrair o reto abdominal ao máximo, você precisa esvaziar os pulmões. Solte todo o ar pela boca no topo do movimento (contração máxima) e inspire ao descer.
+                    </MudText>
+
+                    <MudText Typo="Typo.body1" Class="mb-4"><strong>Visão de Treino:</strong> O abdômen é um músculo como qualquer outro; precisa de sobrecarga progressiva para hipertrofiar (ficar com os "gomos" aparentes) e não apenas de repetições infinitas.</MudText>
+
+                </div>
+
+                <MudDivider Class="my-4" Style="--mud-palette-divider:coral" />
+
+                <MudText Typo="Typo.h6" Class="mb-3" Style="font-weight:bold; color:coral;">Exercícios-chave:</MudText>
+                <MudGrid Spacing="3">
+                    <MudItem xs="12" sm="6" md="4" lg="3">
+                        <MudCard Elevation="2" Class="pa-3 d-flex flex-column h-100">
+                            <MudText Typo="Typo.body1" Class="mb-2"><strong>Abdominal na Polia</strong></MudText>
+                            <MudImage Src="caminho/abdominal-polia.jpg" Alt="Abdominal na Polia" ObjectFit="ObjectFit.Cover" MaxHeight="220" Class="rounded-lg mt-auto" />
+                        </MudCard>
+                    </MudItem>
+                    <MudItem xs="12" sm="6" md="4" lg="3">
+                        <MudCard Elevation="2" Class="pa-3 d-flex flex-column h-100">
+                            <MudText Typo="Typo.body1" Class="mb-2"><strong>Elevação de Pernas Suspenso</strong></MudText>
+                            <MudImage Src="caminho/elevacao-pernas.jpg" Alt="Elevação de Pernas" ObjectFit="ObjectFit.Cover" MaxHeight="220" Class="rounded-lg mt-auto" />
+                        </MudCard>
+                    </MudItem>
+                    <MudItem xs="12" sm="6" md="4" lg="3">
+                        <MudCard Elevation="2" Class="pa-3 d-flex flex-column h-100">
+                            <MudText Typo="Typo.body1" Class="mb-2"><strong>Prancha Isométrica</strong> (Foco em estabilização)</MudText>
+                            <MudImage Src="img/H.Full.png" Alt="Prancha Isométrica" ObjectFit="ObjectFit.Cover" MaxHeight="220" Class="rounded-lg mt-auto" />
+                        </MudCard>
+                    </MudItem>
+                </MudGrid>
+            }
+
+            @if (_grupamentoAtivo == "Lombar")
+            {
+                <div class="mb-4">
+                    <MudText Typo="Typo.h5" Style="color:coral; font-weight:bold;" Class="mb-3">Lombar / Eretores da Espinha</MudText>
+                    <MudText Typo="Typo.body1" Class="mb-4"><strong>Função:</strong> Sustentar e estender a coluna vertebral. É a base de sustentação do tronco.</MudText>
+                </div>
+
+                <MudDivider Class="my-4" Style="--mud-palette-divider:coral" />
+
+                <MudText Typo="Typo.h6" Class="mb-3" Style="font-weight:bold; color:coral;">Exercícios-chave:</MudText>
+                <MudGrid Spacing="3">
+                    <MudItem xs="12" sm="6" md="4" lg="3">
+                        <MudCard Elevation="2" Class="pa-3 d-flex flex-column h-100">
+                            <MudText Typo="Typo.body1" Class="mb-2"><strong>Hiperextensão Lombar</strong> (Banco Romano)</MudText>
+                            <MudImage Src="caminho/hiperextensao.jpg" Alt="Hiperextensão Lombar" ObjectFit="ObjectFit.Cover" MaxHeight="220" Class="rounded-lg mt-auto" />
+                        </MudCard>
+                    </MudItem>
+                    <MudItem xs="12" sm="6" md="4" lg="3">
+                        <MudCard Elevation="2" Class="pa-3 d-flex flex-column h-100">
+                            <MudText Typo="Typo.body1" Class="mb-2"><strong>Levantamento Terra</strong></MudText>
+                            <MudImage Src="caminho/levantamento-terra.jpg" Alt="Levantamento Terra" ObjectFit="ObjectFit.Cover" MaxHeight="220" Class="rounded-lg mt-auto" />
+                        </MudCard>
+                    </MudItem>
+                </MudGrid>
+            }
+
+            @if (_grupamentoAtivo == "Quadri")
+            {
+                <div class="mb-4">
+                    <MudText Typo="Typo.h5" Style="color:coral; font-weight:bold;" Class="mb-3">Quadríceps (Reto Femoral, Vasto Lateral, Vasto Medial e Vasto Intermédio)</MudText>
+                    <MudText Typo="Typo.body1" Class="mb-2"><strong>Função:</strong> Um grupo de quatro músculos na parte frontal da coxa. A principal função conjunta é a extensão do joelho (esticar a perna). O reto femoral também auxilia na flexão do quadril (trazer a coxa para cima).</MudText>
+                    <MudText Typo="Typo.body1" Class="mb-4"><strong>Visão de Treino:</strong> Exige grande volume de oxigênio e energia por ser um grupo muscular massivo. O agachamento livre é o rei aqui, mas máquinas ajudam no isolamento.</MudText>
+                </div>
+
+                <MudDivider Class="my-4" Style="--mud-palette-divider:coral" />
+
+                <MudText Typo="Typo.h6" Class="mb-3" Style="font-weight:bold; color:coral;">Exercícios-chave:</MudText>
+                <MudGrid Spacing="3">
+                    <MudItem xs="12" sm="6" md="4" lg="3">
+                        <MudCard Elevation="2" Class="pa-3 d-flex flex-column h-100">
+                            <MudText Typo="Typo.body1" Class="mb-2"><strong>Agachamento Livre</strong></MudText>
+                            <MudImage Src="caminho/agachamento.jpg" Alt="Agachamento Livre" ObjectFit="ObjectFit.Cover" MaxHeight="220" Class="rounded-lg mt-auto" />
+                        </MudCard>
+                    </MudItem>
+                    <MudItem xs="12" sm="6" md="4" lg="3">
+                        <MudCard Elevation="2" Class="pa-3 d-flex flex-column h-100">
+                            <MudText Typo="Typo.body1" Class="mb-2"><strong>Leg Press</strong></MudText>
+                            <MudImage Src="caminho/legpress.jpg" Alt="Leg Press" ObjectFit="ObjectFit.Cover" MaxHeight="220" Class="rounded-lg mt-auto" />
+                        </MudCard>
+                    </MudItem>
+                    <MudItem xs="12" sm="6" md="4" lg="3">
+                        <MudCard Elevation="2" Class="pa-3 d-flex flex-column h-100">
+                            <MudText Typo="Typo.body1" Class="mb-2"><strong>Hack Machine</strong></MudText>
+                            <MudImage Src="caminho/hack.jpg" Alt="Hack Machine" ObjectFit="ObjectFit.Cover" MaxHeight="220" Class="rounded-lg mt-auto" />
+                        </MudCard>
+                    </MudItem>
+                    <MudItem xs="12" sm="6" md="4" lg="3">
+                        <MudCard Elevation="2" Class="pa-3 d-flex flex-column h-100">
+                            <MudText Typo="Typo.body1" Class="mb-2"><strong>Cadeira Extensora</strong></MudText>
+                            <MudImage Src="caminho/extensora.jpg" Alt="Cadeira Extensora" ObjectFit="ObjectFit.Cover" MaxHeight="220" Class="rounded-lg mt-auto" />
+                        </MudCard>
+                    </MudItem>
+                </MudGrid>
+            }
+
+            @if (_grupamentoAtivo == "Posterior")
+            {
+                <div class="mb-4">
+                    <MudText Typo="Typo.h5" Style="color:coral; font-weight:bold;" Class="mb-3">Posteriores de Coxa / Isquiotibiais (Bíceps Femoral, Semitendinoso e Semimembranoso)</MudText>
+                    <MudText Typo="Typo.body1" Class="mb-2"><strong>Função:</strong> Localizados na parte de trás da coxa, realizam duas funções principais: a flexão do joelho (trazer o calcanhar em direção ao glúteo) e a extensão do quadril (empurrar a perna para trás).</MudText>
+                    <MudText Typo="Typo.body1" Class="mb-4"><strong>Visão de Treino:</strong> Um erro comum na musculação é treinar menos o posterior do que o quadríceps, o que gera desequilíbrios e lesões no joelho (como o ligamento cruzado anterior). Seu treino deve conter exercícios de flexão de joelho e de extensão de quadril.</MudText>
+                </div>
+
+                <MudDivider Class="my-4" Style="--mud-palette-divider:coral" />
+
+                <MudText Typo="Typo.h6" Class="mb-3" Style="font-weight:bold; color:coral;">Exercícios-chave:</MudText>
+                <MudGrid Spacing="3">
+                    <MudItem xs="12" sm="6" md="4" lg="3">
+                        <MudCard Elevation="2" Class="pa-3 d-flex flex-column h-100">
+                            <MudText Typo="Typo.body1" Class="mb-2"><strong>Stiff</strong> (Extensão de quadril)</MudText>
+                            <MudImage Src="caminho/stiff.jpg" Alt="Stiff" ObjectFit="ObjectFit.Cover" MaxHeight="220" Class="rounded-lg mt-auto" />
+                        </MudCard>
+                    </MudItem>
+                    <MudItem xs="12" sm="6" md="4" lg="3">
+                        <MudCard Elevation="2" Class="pa-3 d-flex flex-column h-100">
+                            <MudText Typo="Typo.body1" Class="mb-2"><strong>Mesa Flexora</strong> (Flexão de joelho)</MudText>
+                            <MudImage Src="caminho/mesa-flexora.jpg" Alt="Mesa Flexora" ObjectFit="ObjectFit.Cover" MaxHeight="220" Class="rounded-lg mt-auto" />
+                        </MudCard>
+                    </MudItem>
+                    <MudItem xs="12" sm="6" md="4" lg="3">
+                        <MudCard Elevation="2" Class="pa-3 d-flex flex-column h-100">
+                            <MudText Typo="Typo.body1" Class="mb-2"><strong>Cadeira Flexora</strong> (Flexão de joelho)</MudText>
+                            <MudImage Src="caminho/cadeira-flexora.jpg" Alt="Cadeira Flexora" ObjectFit="ObjectFit.Cover" MaxHeight="220" Class="rounded-lg mt-auto" />
+                        </MudCard>
+                    </MudItem>
+                </MudGrid>
+            }
+
+            @if (_grupamentoAtivo == "Pantu")
+            {
+                <div class="mb-4">
+                    <MudText Typo="Typo.h5" Style="color:coral; font-weight:bold;" Class="mb-3">Panturrilhas (Gastrocnêmio e Sóleo)</MudText>
+                    <MudText Typo="Typo.body1" Class="mb-2"><strong>Função:</strong> Responsáveis pela flexão plantar (ficar na ponta dos pés). O gastrocnêmio é o músculo com duas "cabeças" visíveis e cruza a articulação do joelho. O sóleo fica por baixo e é um músculo mais profundo.</MudText>
+                    <MudText Typo="Typo.body1" Class="mb-4"><strong>Visão de Treino:</strong> O sóleo é mais ativado com os joelhos flexionados (sentado). O gastrocnêmio exige os joelhos totalmente estendidos (em pé). Para desenvolver panturrilhas completas, você precisa treinar das duas formas.</MudText>
+                </div>
+
+                <MudDivider Class="my-4" Style="--mud-palette-divider:coral" />
+
+                <MudText Typo="Typo.h6" Class="mb-3" Style="font-weight:bold; color:coral;">Exercícios-chave:</MudText>
+                <MudGrid Spacing="3">
+                    <MudItem xs="12" sm="6" md="4" lg="3">
+                        <MudCard Elevation="2" Class="pa-3 d-flex flex-column h-100">
+                            <MudText Typo="Typo.body1" Class="mb-2"><strong>Panturrilha em Pé</strong> (Gastrocnêmio)</MudText>
+                            <MudImage Src="img/H.Full.png" Alt="Panturrilha em Pé" ObjectFit="ObjectFit.Cover" MaxHeight="220" Class="rounded-lg mt-auto" />
+                        </MudCard>
+                    </MudItem>
+                    <MudItem xs="12" sm="6" md="4" lg="3">
+                        <MudCard Elevation="2" Class="pa-3 d-flex flex-column h-100">
+                            <MudText Typo="Typo.body1" Class="mb-2"><strong>Panturrilha Sentado / "Burrinho"</strong> (Sóleo)</MudText>
+                            <MudImage Src="img/H.Full.png" Alt="Panturrilha Sentado" ObjectFit="ObjectFit.Cover" MaxHeight="220" Class="rounded-lg mt-auto" />
+                        </MudCard>
+                    </MudItem>
+                </MudGrid>
+            }
+
+            @if (_grupamentoAtivo == "Gluteo")
+            {
+                <div class="mb-4">
+                    <MudText Typo="Typo.h5" Style="color:coral; font-weight:bold;" Class="mb-3">Glúteos (Máximo, Médio e Mínimo)</MudText>
+                    <MudText Typo="Typo.body1" Class="mb-2"><strong>Função:</strong> O glúteo máximo é o maior músculo do corpo e o principal extensor do quadril. O glúteo médio e o mínimo ficam na lateral e são responsáveis pela abdução do quadril (abrir a perna) e pela estabilização da pélvis enquanto andamos ou corremos.</MudText>
+                    <MudText Typo="Typo.body1" Class="mb-4"><strong>Visão de Treino:</strong> Para ativação máxima do glúteo máximo, são necessários exercícios com vetores de força horizontais e verticais.</MudText>
+                </div>
+
+                <MudDivider Class="my-4" Style="--mud-palette-divider:coral" />
+
+                <MudText Typo="Typo.h6" Class="mb-3" Style="font-weight:bold; color:coral;">Exercícios-chave:</MudText>
+                <MudGrid Spacing="3">
+                    <MudItem xs="12" sm="6" md="4" lg="3">
+                        <MudCard Elevation="2" Class="pa-3 d-flex flex-column h-100">
+                            <MudText Typo="Typo.body1" Class="mb-2"><strong>Elevação Pélvica</strong></MudText>
+                            <MudImage Src="caminho/elevacao-pelvica.jpg" Alt="Elevação Pélvica" ObjectFit="ObjectFit.Cover" MaxHeight="220" Class="rounded-lg mt-auto" />
+                        </MudCard>
+                    </MudItem>
+                    <MudItem xs="12" sm="6" md="4" lg="3">
+                        <MudCard Elevation="2" Class="pa-3 d-flex flex-column h-100">
+                            <MudText Typo="Typo.body1" Class="mb-2"><strong>Agachamento Búlgaro</strong></MudText>
+                            <MudImage Src="caminho/bulgaro.jpg" Alt="Agachamento Búlgaro" ObjectFit="ObjectFit.Cover" MaxHeight="220" Class="rounded-lg mt-auto" />
+                        </MudCard>
+                    </MudItem>
+                    <MudItem xs="12" sm="6" md="4" lg="3">
+                        <MudCard Elevation="2" Class="pa-3 d-flex flex-column h-100">
+                            <MudText Typo="Typo.body1" Class="mb-2"><strong>Cadeira Abdutora</strong> (Glúteo médio)</MudText>
+                            <MudImage Src="caminho/abdutora.jpg" Alt="Cadeira Abdutora" ObjectFit="ObjectFit.Cover" MaxHeight="220" Class="rounded-lg mt-auto" />
+                        </MudCard>
+                    </MudItem>
+                    <MudItem xs="12" sm="6" md="4" lg="3">
+                        <MudCard Elevation="2" Class="pa-3 d-flex flex-column h-100">
+                            <MudText Typo="Typo.body1" Class="mb-2"><strong>Glúteo na Polia</strong></MudText>
+                            <MudImage Src="caminho/gluteo-polia.jpg" Alt="Glúteo na Polia" ObjectFit="ObjectFit.Cover" MaxHeight="220" Class="rounded-lg mt-auto" />
+                        </MudCard>
+                    </MudItem>
+                </MudGrid>
+            }
+
+        </MudPaper>
     }
 
-    @if (_mostrarOmbro)
-    {
-        <MudText>
-            Deltoides / Ombros (Anterior, Lateral e Posterior)
-            Função: O deltoide é dividido em três cabeças. A anterior (frente) eleva o braço para a frente; a lateral eleva o braço para os lados (dá o aspecto de "ombros largos" e cintura fina); a posterior (atrás) puxa o braço para trás horizontalmente.
-
-            Visão de Treino: A porção anterior já é muito exigida nos supinos de peito. Por isso, no treino isolado de ombro, o foco principal deve ser nas porções lateral e posterior para garantir simetria e proteger a articulação contra lesões.
-
-            Exercícios-chave: Desenvolvimento com halteres (geral), elevação lateral (foco em largura) e crucifixo inverso (foco em posterior).
-        </MudText>
-    }
-
-    @if (_mostrarBiceps)
-    {
-        <MudText>
-            Bíceps Braquial e Braquial
-            Função: O bíceps possui duas cabeças (longa e curta) e é o principal flexor do cotovelo, além de fazer a supinação do antebraço (girar a palma da mão para cima). O braquial fica abaixo do bíceps e ajuda a dar volume lateral ao braço.
-
-            Visão de Treino: Mudar a posição dos cotovelos em relação ao corpo altera a ênfase (cotovelos para trás do corpo focam na cabeça longa; cotovelos à frente focam na cabeça curta).
-
-            Exercícios-chave: Rosca direta (com barra ou halteres), rosca banco inclinado e rosca Scott.
-        </MudText>
-    }
-
-    @if (_mostrarTriceps)
-    {
-        <MudText>
-            Tríceps Braquial
-            Função: Composto por três cabeças (longa, lateral e medial), ele ocupa cerca de 60% do volume total do braço. Sua função exclusiva é a extensão do cotovelo (esticar o braço).
-
-            Visão de Treino: Para acionar a cabeça longa (a maior delas), o braço precisa ser posicionado acima da cabeça durante o movimento.
-
-            Exercícios-chave: Tríceps testa, tríceps na polia (corda ou barra) e tríceps francês.
-        </MudText>
-    }
-
-    @if (_mostrarAntebraco)
-    {
-        <MudText>
-            Antebraços (Flexores e Extensores do Punho)
-            Função: Controlam os movimentos do punho e dos dedos, além de serem fundamentais para a força de pegada (grip).
-
-            Visão de Treino: Geralmente já trabalham de forma isométrica intensa nos treinos de costas e bíceps, mas podem receber estímulo isolado se forem um ponto fraco.
-
-            Exercícios-chave: Rosca inversa e rosca punho.
-        </MudText>
-    }
-
-    @if (_mostrarAbdomen)
-    {
-        <MudText>
-            Abdômen (Reto Abdominal, Oblíquos e Transverso)
-            Função: O reto abdominal faz a flexão da coluna (trazer o tórax em direção ao quadril). Os oblíquos fazem a rotação e inclinação lateral do tronco. O transverso do abdômen funciona como uma cinta natural, gerando pressão intra-abdominal e estabilizando a coluna.
-
-            Visão de Treino: O abdômen é um músculo como qualquer outro; precisa de sobrecarga progressiva para hipertrofiar (ficar com os "gomos" aparentes) e não apenas de repetições infinitas.
-
-            Exercícios-chave: Abdominal na polia, elevação de pernas suspenso e prancha isométrica (foco em estabilização).
-        </MudText>
-    }
-
-    @if (_mostrarLombar)
-    {
-        <MudText>
-            Lombar / Eretores da Espinha
-            Função: Sustentar e estender a coluna vertebral. É a base de sustentação do tronco.
-
-            Exercícios-chave: Hiperextensão lombar no banco romano e levantamento terra.
-        </MudText>
-    }
-
-    @if (_mostrarQuadri)
-    {
-        <MudText>
-            Quadríceps (Reto Femoral, Vasto Lateral, Vasto Medial e Vasto Intermédio)
-            Função: Um grupo de quatro músculos na parte frontal da coxa. A principal função conjunta é a extensão do joelho (esticar a perna). O reto femoral também auxilia na flexão do quadril (trazer a coxa para cima).
-
-            Visão de Treino: Exige grande volume de oxigênio e energia por ser um grupo muscular massivo. O agachamento livre é o rei aqui, mas máquinas ajudam no isolamento.
-
-            Exercícios-chave: Agachamento livre, Leg Press, Hack Machine e Cadeira Extensora.
-        </MudText>
-    }
-
-    @if (_mostrarPosterior)
-    {
-        <MudText>
-            Posteriores de Coxa / Isquiotibiais (Bíceps Femoral, Semitendinoso e Semimembranoso)
-            Função: Localizados na parte de trás da coxa, realizam duas funções principais: a flexão do joelho (trazer o calcanhar em direção ao glúteo) e a extensão do quadril (empurrar a perna para trás).
-
-            Visão de Treino: Um erro comum na musculação é treinar menos o posterior do que o quadríceps, o que gera desequilíbrios e lesões no joelho (como o ligamento cruzado anterior). Seu treino deve conter exercícios de flexão de joelho e de extensão de quadril.
-
-            Exercícios-chave: Stiff (extensão de quadril), Mesa Flexora e Cadeira Flexora (flexão de joelho).
-        </MudText>
-    }
-
-        @if (_mostrarPantu)
-    {
-        <MudText>
-            Panturrilhas (Gastrocnêmio e Sóleo)
-            Função: Responsáveis pela flexão plantar (ficar na ponta dos pés). O gastrocnêmio é o músculo com duas "cabeças" visíveis e cruza a articulação do joelho. O sóleo fica por baixo e é um músculo mais profundo.
-
-            Visão de Treino: O sóleo é mais ativado com os joelhos flexionados (sentado). O gastrocnêmio exige os joelhos totalmente estendidos (em pé). Para desenvolver panturrilhas completas, você precisa treinar das duas formas.
-
-            Exercícios-chave: Panturrilha em pé (gastrocnêmio) e Panturrilha sentado / "Burrinho" (sóleo).
-        </MudText>
-    }
-
-    @if (_mostrarGluteo)
-    {
-        <MudText>
-            Glúteos (Máximo, Médio e Mínimo)
-            Função: O glúteo máximo é o maior músculo do corpo e o principal extensor do quadril. O glúteo médio e o mínimo ficam na lateral e são responsáveis pela abdução do quadril (abrir a perna) e pela estabilização da pélvis enquanto andamos ou corremos.
-
-            Visão de Treino: Para ativação máxima do glúteo máximo, são necessários exercícios com vetores de força horizontais e verticais.
-
-            Exercícios-chave: Elevação pélvica, agachamento búlgaro, cadeira abdutora (glúteo médio) e glúteo na polia.
-        </MudText>
-    }
     <MudGrid Spacing="5" Class="px-4">
         @foreach (var treino in ListaTreinos)
         {
-            <MudItem xs="12">
+            @* Geração dinâmica do ID para a âncora (Ex: "upper-lower", "full-body") *@
+            var idAncora = treino.Nome.ToLower().Replace(" ", "-").Replace("/", "-");
+
+            <MudItem xs="12" id="@idAncora" Class="mb-20 mt-20">
                 <MudGrid Class="@(treino.Inverter ? "flex-row-reverse align-center" : "align-center")">
 
                     <MudItem xs="12" md="5">
@@ -205,35 +606,30 @@
 
                     <MudItem xs="12" md="7" Class="d-flex flex-column justify-center">
                         <div class="px-4">
-                            @* <MudChip T="string" Size="Size.Small" Class="coral-chip ">Método</MudChip> *@
- 
                             <MudText Typo="Typo.h4" Style="font-family:cambria; font-weight:bold; color:coral" Class=" mb-2">@treino.Nome</MudText>
-                            
+
                             <MudCard Elevation="12" Class="mb-2" Style="border:1px solid coral">
-                            
                                 <MudText Typo="Typo.body1" Align="Align.Center" Class="white-text mb-2 ms-1 mt-2">@treino.Descricao</MudText>
-                            
-                            <MudText Style="font-size:0.75rem;font-weight:bold;text-transform:uppercase;letter-spacing:0.12em;color:coral" Class="mb-3 ms-2">
-                                Benefícios
-                            </MudText>
-                            <MudGrid Spacing="2" Class="mb-2">
-                                @foreach (var b in treino.Beneficios)
-                                {
-                                    <MudItem xs="12" sm="6">
-                                        <div class="d-flex align-start gap-2 ms-2">
-                                            <MudIcon Icon="@Icons.Material.Filled.CheckCircle"
-                                                     Style="color:coral;font-size:1.1rem;margin-top:2px;flex-shrink:0;" />
-                                            <MudText Typo="Typo.body2" Class="white-text">@b</MudText>
-                                        </div>
-                                    </MudItem>
-                                }
-                            </MudGrid>
 
+                                <MudText Style="font-size:0.75rem;font-weight:bold;text-transform:uppercase;letter-spacing:0.12em;color:coral" Class="mb-3 ms-2">
+                                    Benefícios
+                                </MudText>
+                                <MudGrid Spacing="2" Class="mb-2">
+                                    @foreach (var b in treino.Beneficios)
+                                    {
+                                        <MudItem xs="12" sm="6">
+                                            <div class="d-flex align-start gap-2 ms-2">
+                                                <MudIcon Icon="@Icons.Material.Filled.CheckCircle"
+                                                         Style="color:coral;font-size:1.1rem;margin-top:2px;flex-shrink:0;" />
+                                                <MudText Typo="Typo.body2" Class="white-text">@b</MudText>
+                                            </div>
+                                        </MudItem>
+                                    }
+                                </MudGrid>
                             </MudCard>
-                            <MudGrid Spacing="3">
-                                
-                                <MudItem xs="12" sm="6">
 
+                            <MudGrid Spacing="3">
+                                <MudItem xs="12" sm="6">
                                     <div class="info-chip coral-border rounded mb-2 mud-theme-dark">
                                         <div class="d-flex align-center gap-2 mb-1">
                                             <MudIcon Icon="@Icons.Material.Filled.CalendarMonth"
@@ -245,7 +641,7 @@
                                         <MudText Typo="Typo.body2" Class="white-text ms-1" Style="font-weight:600;">@treino.Frequencia</MudText>
                                     </div>
                                 </MudItem>
-                                
+
                                 <MudItem xs="12" sm="6">
                                     <div class="info-chip coral-border rounded mb-2 mud-theme-dark">
                                         <div class="d-flex align-center gap-2 mb-1">
@@ -259,20 +655,19 @@
                                     </div>
                                 </MudItem>
                             </MudGrid>
-                            
+
                             <MudButton Variant="Variant.Text"
                                        Style="background-color:coral"
                                        Class="scale-hover"
                                        EndIcon="@Icons.Material.Filled.ArrowForward"
                                        OnClick="@(async () => await AbrirDetalhes(treino))">
                                 Saiba Mais
-                                </MudButton>
-                            
+                            </MudButton>
                         </div>
                     </MudItem>
                 </MudGrid>
 
-                <MudDivider Class="mt-10 opacity-20" Style="--mud-palette-divider:coral" />
+                @* <MudDivider Class="mt-10 opacity-20" Style="--mud-palette-divider:coral" /> *@
             </MudItem>
         }
     </MudGrid>
@@ -283,13 +678,22 @@
         transform: scale(1.05);
         transition: transform 0.3s ease-in-out
     }
-    :root { --coral-orange: #FF6B35; }
 
-    .coral-text   { color: var(--coral-orange) !important; }
-    .coral-border { border-color: var(--coral-orange) !important; }
+    :root {
+        --coral-orange: #FF6B35;
+    }
 
-    .white-text  { color: var(--mud-palette-text-secondary) !important; }
-    .white-text { color: var(--mud-palette-text-primary)   !important; }
+    .coral-text {
+        color: var(--coral-orange) !important;
+    }
+
+    .coral-border {
+        border-color: var(--coral-orange) !important;
+    }
+
+    .white-text {
+        color: var(--mud-palette-text-primary) !important;
+    }
 
     .training-card {
         border-radius: 20px;
@@ -298,19 +702,25 @@
         position: relative;
         overflow: hidden;
     }
-    .training-card::after {
-        content: '';
-        position: absolute;
-        inset: 0;
-        background: linear-gradient(to bottom right, rgba(0,0,0,0.35), transparent, rgba(0,0,0,0.65));
-        pointer-events: none;
-    }
-    .training-card > * { position: relative; z-index: 1; }
-    .training-card:hover {
-        transform: translateY(-6px);
-        box-shadow: 0 12px 40px -8px rgba(255,107,53,0.45) !important;
-        border: 1px solid var(--coral-orange);
-    }
+
+        .training-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to bottom right, rgba(0,0,0,0.35), transparent, rgba(0,0,0,0.65));
+            pointer-events: none;
+        }
+
+        .training-card > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        .training-card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 40px -8px rgba(255,107,53,0.45) !important;
+            border: 1px solid var(--coral-orange);
+        }
 
     .icon-bubble {
         width: 88px;
@@ -323,7 +733,10 @@
         box-shadow: 0 8px 32px -8px rgba(255,107,53,0.5);
         transition: transform 0.4s ease;
     }
-    .training-card:hover .icon-bubble { transform: scale(1.08) rotate(3deg); }
+
+    .training-card:hover .icon-bubble {
+        transform: scale(1.08) rotate(3deg);
+    }
 
     .coral-chip {
         background: rgba(255,107,53,0.12) !important;
@@ -343,14 +756,48 @@
         padding: 0.875rem 1rem;
     }
 
-    .animate-fade-in { animation: fadeIn 0.8s ease-out; }
+    .animate-fade-in {
+        animation: fadeIn 0.8s ease-out;
+    }
+
     @@keyframes fadeIn {
-        from { opacity: 0; transform: translateY(20px); }
-        to   { opacity: 1; transform: translateY(0); }
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
     }
 </style>
 
 @code {
+    private string _grupamentoAtivo = "";
+
+    private void AlternarGrupamento(string grupamento)
+    {
+        _grupamentoAtivo = _grupamentoAtivo == grupamento ? "" : grupamento;
+    }
+
+    protected override async Task OnAfterRenderAsync(bool firstRender)
+    {
+        if (firstRender)
+        {
+            var uri = NavigationManager.ToAbsoluteUri(NavigationManager.Uri);
+
+            if (!string.IsNullOrEmpty(uri.Fragment))
+            {
+                var elementId = uri.Fragment.Substring(1);
+
+                await Task.Delay(350);
+
+                await JS.InvokeVoidAsync("eval", $"document.getElementById('{elementId}')?.scrollIntoView({{ behavior: 'smooth' }})");
+            }
+        }
+    }
+
     private async Task AbrirDetalhes(TreinoModel treino)
     {
         var options = new DialogOptions
@@ -427,98 +874,15 @@
 
     public class TreinoModel
     {
-        public string Nome         { get; set; } = "";
-        public string Tagline      { get; set; } = "";
-        public string Descricao    { get; set; } = "";
-        public string Frequencia   { get; set; } = "";
-        public string Publico      { get; set; } = "";
-        public string Icone        { get; set; } = "";
-        public bool   Inverter     { get; set; }
+        public string Nome { get; set; } = "";
+        public string Tagline { get; set; } = "";
+        public string Descricao { get; set; } = "";
+        public string Frequencia { get; set; } = "";
+        public string Publico { get; set; } = "";
+        public string Icone { get; set; } = "";
+        public bool Inverter { get; set; }
         public string CardGradient { get; set; } = "";
         public List<string> Beneficios { get; set; } = new();
-        public string Explicacao   { get; set; } = "";
-    }
-
-    private bool _mostrarPeitoral = false;
-
-    private void ExibirPeitoral()
-    {
-        _mostrarPeitoral = !_mostrarPeitoral;
-    }
-    private bool _mostrarDorsal = false;
-
-    private void ExibirDorsal()
-    {
-        _mostrarDorsal = !_mostrarDorsal;
-    }
-
-    private bool _mostrarOmbro = false;
-
-    private void ExibirOmbro()
-    {
-        _mostrarOmbro = !_mostrarOmbro;
-    }
-
-    private bool _mostrarBiceps = false;
-
-    private void ExibirBiceps()
-    {
-        _mostrarBiceps = !_mostrarBiceps;
-    }
-
-    private bool _mostrarTriceps = false;
-
-    private void ExibirTriceps()
-    {
-        _mostrarTriceps = !_mostrarTriceps;
-    }
-
-    private bool _mostrarAntebraco = false;
-
-    private void ExibirAntebraco()
-    {
-        _mostrarAntebraco = !_mostrarAntebraco;
-    }
-
-    private bool _mostrarAbdomen = false;
-
-    private void ExibirAbdomen()
-    {
-        _mostrarAbdomen = !_mostrarAbdomen;
-    }
-
-    private bool _mostrarLombar;
-
-    private void ExibirLombar()
-    {
-        _mostrarLombar = !_mostrarLombar;
-    }
-
-    private bool _mostrarQuadri;
-
-    private void ExibirQuadri()
-    {
-        _mostrarQuadri = !_mostrarQuadri;
-    }
-
-    private bool _mostrarPosterior;
-
-    private void ExibirPosterior()
-    {
-        _mostrarPosterior = !_mostrarPosterior;
-    }
-
-    private bool _mostrarPantu;
-
-    private void ExibirPantu()
-    {
-        _mostrarPantu = !_mostrarPantu;
-    }
-
-    private bool _mostrarGluteo;
-
-    private void ExibirGluteo()
-    {
-        _mostrarGluteo = !_mostrarGluteo;
+        public string Explicacao { get; set; } = "";
     }
 }
