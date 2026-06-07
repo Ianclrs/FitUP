@@ -1,4 +1,5 @@
 ﻿@page "/DicasTreino"
+@using MudBlazor.Charts
 @inject IDialogService DialogService
 @inject NavigationManager NavigationManager
 @inject IJSRuntime JS
@@ -129,7 +130,69 @@
             {
                 <div class="mb-4">
                     <MudText Typo="Typo.h5" Style="color:coral; font-weight:bold;" Class="mb-3">Dorsais / Costas (Latíssimo do Dorso, Trapézio, Romboides e Redondos)</MudText>
-                    <MudText Typo="Typo.body1" Class="mb-2"><strong>Função:</strong> Um complexo de músculos gigante. O latíssimo do dorso ("asa") faz a extensão e adução do braço (puxar de cima para baixo). Os romboides e o trapézio médio/inferior fazem a retração das escápulas (esmagar as costas para trás). O trapézio superior eleva os ombros.</MudText>
+                    <MudText Typo="Typo.body1" Class="mb-2">
+                        <strong>Função:</strong> As costas formam o complexo muscular mais amplo, detalhado e visualmente complexo do corpo humano. Desenvolver uma musculatura dorsal imponente não é apenas o segredo para construir o cobiçado "shape em V" (que afunila em direção à cintura, criando uma ilusão de ótica que a faz parecer menor), mas é também a base de sustentação para uma postura impecável e para a saúde dos ombros.
+
+                        Para dominar o treino de costas, precisamos entender que ele não se resume a "puxar". É necessário mapear a anatomia dessa imensidão de músculos e alinhar as puxadas e remadas com a direção correta de suas fibras.
+                    </MudText>
+                    <MudDivider Class="my-4" Style="--mud-palette-divider:coral" />
+
+                    <MudText Typo="Typo.body1" Class="mb-2"><h2><b>Anatomia do Complexo Dorsal</b></h2> O dorso é composto por dezenas de músculos sobrepostos. Para simplificar o treino, nós o dividimos em quatro áreas funcionais principais: <h3><b>Latíssimo do Dorso (Grande Dorsal)</b></h3> É o maior músculo das costas e o principal responsável pela largura (as famosas "asas"). Suas fibras se originam ao longo da coluna vertebral inferior, da pelve e das costelas inferiores, e correm diagonalmente para cima e para fora até se inserirem na parte anterior do úmero (braço). Quando bem desenvolvido, ele se projeta para os lados, aparecendo mesmo quando você é visto de frente.
+                    <h3><b>Trapézio</b></h3> Muitos acham que o trapézio é apenas o músculo que fica ao lado do pescoço, mas ele é gigantesco e desce até o meio das costas. É dividido em três porções:<br />
+
+                        <b>Superior:</b> Eleva as escápulas (o movimento de "dar de ombros").<br />
+
+                        <b>Médio:</b> Cruza horizontalmente o meio das costas. Sua função é a adução escapular (juntar as escápulas).<br />
+
+                        <b>Inferior:</b> Fica na parte central baixa do trapézio e faz a depressão escapular (puxar as escápulas para baixo). <h3><b>Romboides (Maior e Menor) e Redondo Maior</b></h3> Ficam localizados logo abaixo do trapézio médio. Os romboides ligam a coluna à borda interna da escápula. Junto com o músculo redondo maior, eles são os responsáveis por criar o "miolo das costas", dando aquele aspecto tridimensional de nós e relevos quando as costas estão contraídas.
+                    </MudText>
+                    <MudDivider Class="my-4" Style="--mud-palette-divider:coral" />
+
+                    <MudText Typo="Typo.body1" Class="mb-2">
+                        <h2><b>Funções Biomecânicas e os Vetores de Treino</b></h2> Como as costas possuem músculos correndo em várias direções, o treino precisa obrigatoriamente ser dividido em dois vetores de movimento fundamentais:<br />
+
+                        <b>Vetor Vertical (Puxadas):</b> O movimento de trazer o peso de cima para baixo. Foca primariamente na extensão e adução do ombro, recrutando massivamente o latíssimo do dorso para dar largura.<br />
+
+                        <b>Vetor Horizontal (Remadas):</b> O movimento de trazer o peso de frente para trás. Foca na retração das escápulas, recrutando o trapézio médio/inferior, os romboides e os redondos para dar espessura e densidade (miolo).
+                    </MudText>
+                    <MudDivider Class="my-4" Style="--mud-palette-divider:coral" />
+
+                    <MudText Typo="Typo.body1" Class="mb-2">
+                        <h2><b>Seleção de Exercícios para um Dorso Tridimensional</b></h2> <h3><b>Foco em Largura (Puxadas Verticais)</b></h3>
+                        <b>Barra Fixa (Pull-up / Chin-up):</b> O exercício padrão-ouro. Sustentar e puxar o próprio peso corporal exige uma coordenação neuromuscular absurda e ativa o latíssimo de forma brutal.<br />
+
+                        <b>Puxada Alta no Pulley (Lat Pulldown):</b> Excelente para isolar o movimento. Dica biomecânica: Uma pegada com as mãos na largura dos ombros ou ligeiramente mais aberta (e não exageradamente aberta) oferece o melhor alinhamento para o latíssimo produzir força.
+                        <h3><b>Foco em Densidade e Espessura (Remadas Horizontais)</b></h3>
+                        <b>Remada Curvada com Barra:</b> O construtor de massa bruta das costas. Como exige que você sustente a posição inclinado, recruta toda a cadeia posterior (da lombar aos romboides).<br />
+
+                        <b>Remada Cavalinho (Barra T):</b> Permite uma pegada neutra (palmas das mãos voltadas uma para a outra), o que anatomicamente coloca os cotovelos colados ao corpo, aumentando o estiramento do latíssimo e o esmagamento dos romboides no final.<br />
+
+                        <b>Remada Unilateral com Halter (Serrote):</b> Corrige assimetrias. Permite que você puxe o halter em um arco (trazendo em direção ao quadril), o que isola o latíssimo de forma cirúrgica.
+                    </MudText>
+                    <MudDivider Class="my-4" Style="--mud-palette-divider:coral" />
+
+                    <MudText Typo="Typo.body1" Class="mb-2">
+                        <h2><b>O Segredo que Ninguém Te Conta: O Caminho do Cotovelo</b></h2> Muitas pessoas terminam o treino de costas com os bíceps exaustos e as costas intactas. Isso acontece porque elas tentam puxar o peso com as mãos, dobrando apenas o cotovelo.<br />
+
+                        <b>Regra de Ouro:</b> A mão é apenas um gancho. O seu foco mental deve ser puxar com o cotovelo. Imagine que há uma corda amarrada no seu cotovelo e alguém está puxando-a para trás do seu corpo.
+                        <h3><b>A Posição do Cotovelo Altera o Alvo:</b></h3>
+                        <b>Cotovelos colados ao tronco (Pegada Neutra/Supinada):</b> Direciona a maior parte da carga para a porção inferior do latíssimo do dorso (linha da cintura).<br />
+
+                        <b>Cotovelos abertos a 45° ou 90° (Pegada Pronada bem aberta):</b> Anula parte do latíssimo e joga toda a tensão no trapézio médio, romboides e deltoide posterior (miolo e parte alta).
+                    </MudText>
+                    <MudDivider Class="my-4" Style="--mud-palette-divider:coral" />
+
+                    <MudText Typo="Typo.body1" Class="mb-2">
+                        <h2><b>Ação Escapular: O Gatilho da Contração</b></h2> Nenhum exercício de costas será 100% eficiente se as suas escápulas (omoplatas) ficarem estáticas. O movimento das costas começa nas costas, não nos braços.<br />
+
+                        <b>Na Puxada:</b> Quando a barra subir, deixe o peso alongar as suas costas a ponto de os seus ombros subirem tocando as orelhas. Antes de dobrar o braço para descer, puxe os ombros para baixo (depressão escapular) e só então puxe com os braços.<br />
+
+                        <b>Na Remada:</b> Quando o peso for para a frente, deixe as escápulas se abrirem (o ombro vai para a frente). Ao puxar, primeiro esmague as escápulas uma contra a outra (como se quisesse prender uma caneta no meio das costas) e finalize trazendo o cotovelo para trás.<br />
+
+                        Dominar essa conexão mente-músculo e essa dança das escápulas é o divisor de águas entre ter costas normais ou desenvolver um dorso verdadeiramente denso e largo.
+                    </MudText>
+
+
                     <MudText Typo="Typo.body1" Class="mb-4"><strong>Visão de Treino:</strong> Dividimos o treino de costas em dois estímulos: puxadas (para dar largura/amplitude) e remadas (para dar densidade/espessura).</MudText>
                 </div>
 
@@ -174,15 +237,75 @@
             {
                 <div class="mb-4">
                     <MudText Typo="Typo.h5" Style="color:coral; font-weight:bold;" Class="mb-3">Deltoides / Ombros (Anterior, Lateral e Posterior)</MudText>
-                    <MudText Typo="Typo.body1" Class="mb-2"><strong>Função:</strong> O deltoide é dividido em três cabeças. A anterior (frente) eleva o braço para a frente; a lateral eleva o braço para os lados (dá o aspecto de "ombros largos" e cintura fina); a posterior (atrás) puxa o braço para trás horizontalmente.</MudText>
+                    <MudText Typo="Typo.body1" Class="mb-2"><strong>Função:</strong> O complexo do ombro é o agrupamento muscular que coroa o físico. Ele é o responsável por dar largura ao tronco, criar a ilusão de uma cintura mais fina e desenhar o aspecto tridimensional e esférico dos braços (o famoso ombro "bola de boliche").Diferente de articulações estáveis como o joelho, o ombro é a articulação mais móvel e, por consequência, a mais instável e vulnerável do corpo humano. Entender sua biomecânica é o único caminho para construir ombros massivos sem acumular lesões crônicas.</MudText>
                     <MudText Typo="Typo.body1" Class="mb-4"><strong>Visão de Treino:</strong> A porção anterior já é muito exigida nos supinos de peito. Por isso, no treino isolado de ombro, o foco principal deve ser nas porções lateral e posterior para garantir simetria e proteger a articulação contra lesões.</MudText>
+                    <MudDivider Class="my-4" Style="--mud-palette-divider:coral" />
+
+                    <MudText Typo="Typo.body1" Class="mb-2"><h2><b>Anatomia das Três Cabeças do Deltoide</b></h2> O deltoide é um músculo único, mas dividido em três porções ou "cabeças" distintas. Cada uma possui origens diferentes, mas todas se unem na mesma inserção: a tuberosidade deltoidea no meio do osso do braço (úmero).
+                        <h3><b>Deltoide Anterior (Frontal)</b></h3>
+                        Origina-se na parte externa da clavícula. Fica na parte da frente do ombro.<br />
+
+                        <b>Função:</b> Flexão do ombro (levantar o braço para a frente) e rotação interna.<br />
+
+                        <b>Fato Clínico:</b> É massivamente recrutado em todos os exercícios de empurrar (Supino reto, inclinado, desenvolvimento). Por isso, raramente é uma porção fraca no físico de quem treina pesado.
+                        <h3><b>Deltoide Lateral (Medial)</b></h3>
+                         Origina-se no acrômio (o osso mais alto do ombro). Fica exatamente na lateral.<br />
+
+                        <b>Função:</b> Abdução do ombro (levantar o braço para o lado).<br />
+
+                        <b>Importância Estética:</b> É a porção mais importante para dar largura e aspecto de "V" ao shape. Como não participa diretamente de supinos ou remadas pesadas, precisa ser isolado com inteligência para crescer.
+                        <h3><b>Deltoide Posterior</b></h3>
+                        Origina-se na espinha da escápula. Fica na parte de trás do ombro.<br />
+
+                                    <b>Função:</b> Extensão horizontal do ombro (jogar o braço para trás) e rotação externa.<br />
+
+                        <b>Importância Estética:</b> É o responsável pelo aspecto "3D" do ombro quando visto de perfil ou de costas. Costuma ser a porção mais negligenciada e fraca na maioria das pessoas.
+                    </MudText>
+                    <MudDivider Class="my-4" Style="--mud-palette-divider:coral" />
+
+                    <MudText Typo="Typo.body1" Class="mb-2">
+                        <h2><b>Seleção de Exercícios para Desenvolvimento Máximo</b></h2> Para construir um deltoide completo, o treino deve ser focado nos movimentos específicos de cada porção anatômica.<br />
+                        <h3><b>Foco em Força Bruta e Porção Anterior</b></h3>
+                        <b>Desenvolvimento com Halteres ou Barra (Overhead Press / Shoulder Press):</b> O exercício base para a construção de ombros massivos. Pode ser feito em pé ou sentado. O foco é empurrar a carga verticalmente acima da cabeça.<br />
+
+                        <b>Elevação Frontal (Polia ou Halteres):</b> Trabalho isolado para o deltoide anterior (geralmente opcional se os seus treinos de supino e desenvolvimento já forem muito pesados).
+                        <h3><b>Foco em Largura (Deltoide Lateral)</b></h3>
+                        <b>Elevação Lateral com Halteres:</b> O exercício mais clássico. Para executá-lo com máxima eficiência, pense em empurrar os halteres para as paredes laterais, e não em puxá-los para cima.<br />
+
+                        <b>Elevação Lateral na Polia Baixa (Crossover):</b> Superior aos halteres no quesito física mecânica, pois a polia mantém a tensão constante durante todo o movimento, inclusive no início (embaixo), onde o halter perde totalmente o peso devido à gravidade.<br />
+                        <h3><b>Foco em Tridimensionalidade (Deltoide Posterior)</b></h3>
+                        <b>Crucifixo Invertido (Halteres ou Máquina):</b> Sentado com o tronco inclinado para a frente ou na máquina de Peck Deck invertido. O foco deve ser abrir os braços para trás sem deixar as escápulas se juntarem excessivamente (para isolar o ombro e tirar o trapézio da jogada).<br />
+
+                        <b>Face Pull (Puxada na Face):</b> Feito na polia alta com uma corda. Excelente não só para hipertrofia do posterior, mas também para fortalecer os rotadores externos e melhorar a postura dos ombros caídos para a frente.
+                    </MudText>
+                    <MudDivider Class="my-4" Style="--mud-palette-divider:coral" />
+
+                    <MudText Typo="Typo.body1" Class="mb-2">
+                        <h2><b>O Perigo da Elevação Lateral: O Espaço Subacromial</b></h2> O erro mais comum na elevação lateral é subir os braços com as palmas das mãos voltadas para a frente ou os polegares apontados para baixo ("virando a garrafinha").<br />
+
+                        <b>Biomecânica do Impacto:</b> Quando você gira o braço para dentro (rotação interna) e o eleva lateralmente em linha reta pura, a cabeça do úmero colide diretamente contra o acrômio. Isso esmaga o tendão do músculo supraespinhal e a bursa, gerando a famosa e dolorosa Síndrome do Impacto no Ombro.
+                        <h3><b>Como fazer a Elevação Lateral Perfeita e Segura:</b></h3>
+                        <b>O Plano Escapular:</b> Não suba os braços exatamente alinhados com o lado do corpo (ângulo de 180°). Traga os braços ligeiramente para a frente, cerca de 30° à frente do corpo. Esse é o plano natural da sua escápula.<br />
+
+                        <b>Ligeira Rotação Externa:</b> Mantenha os cotovelos levemente destravados e aponte o dedo mínimo sutilmente para cima no topo do movimento, ou mantenha a mão neutra. Nunca aponte o polegar para o chão.<br />
+
+                        <b>Limite de Altura:</b> Suba os braços até a linha dos ombros (90°). Passar desse ponto transfere a tensão do deltoide direto para o trapézio superior.
+                    </MudText>
+                    <MudDivider Class="my-4" Style="--mud-palette-divider:coral" />
+
+                    <MudText Typo="Typo.body1" Class="mb-2">
+                        <h2><b>O Manguito Rotador: A Blindagem Invisível</b></h2> Você não consegue ver o manguito rotador no espelho, mas se ele falhar, seu treino de ombros e peito acaba. Ele é um grupo de quatro músculos profundos (<b>Supraespinhal, Infraespinhal, Redondo Menor e Subescapular</b>) cuja única função é abraçar a cabeça do úmero e mantê-la colada na articulação.
+
+                        Fazer exercícios de rotação externa na polia ou com elástico antes do treino não serve para hipertrofia, mas sim para "ligar" e aquecer esses estabilizadores. Um manguito forte garante estabilidade para você progredir carga com segurança nos supinos e desenvolvimentos pesados.
+                    </MudText>
+
                 </div>
 
                 <MudDivider Class="my-4" Style="--mud-palette-divider:coral" />
 
                 <MudText Typo="Typo.h6" Class="mb-3" Style="font-weight:bold; color:coral;">Exercícios-chave:</MudText>
                 <MudGrid Spacing="3">
-                    <MudItem xs="12" sm="6" md="4" lg="3">
+                     <MudItem xs="12" sm="6" md="4" lg="3">
                         <MudCard Elevation="2" Class="pa-3 d-flex flex-column h-100">
                             <MudText Typo="Typo.body1" Class="mb-2"><strong>Desenvolvimento com Halteres</strong> (Geral)</MudText>
                             <MudImage Src="img/H.Full.png" Alt="Desenvolvimento" ObjectFit="ObjectFit.Cover" MaxHeight="220" Class="rounded-lg mt-auto" />
@@ -207,7 +330,61 @@
             {
                 <div class="mb-4">
                     <MudText Typo="Typo.h5" Style="color:coral; font-weight:bold;" Class="mb-3">Bíceps Braquial e Braquial</MudText>
-                    <MudText Typo="Typo.body1" Class="mb-2"><strong>Função:</strong> O bíceps possui duas cabeças (longa e curta) e é o principal flexor do cotovelo, além de fazer a supinação do antebraço (girar a palma da mão para cima). O braquial fica abaixo do bíceps e ajuda a dar volume lateral ao braço.</MudText>
+                    <MudText Typo="Typo.body1" Class="mb-2">
+                        <strong>Função:</strong> O bíceps femoral (que vimos no treino de posteriores) tem um primo muito mais famoso na parte superior do corpo: o bíceps braquial. Localizado na parte anterior do braço, ele é historicamente o músculo que simboliza a força e a musculação.<br />
+
+                        Construir bíceps que impressionam — com o famoso pico quando contraídos e espessura quando vistos de frente — exige ir muito além de simplesmente dobrar o cotovelo com carga. É preciso entender como suas duas cabeças se comportam e como a posição do seu ombro muda completamente o foco do exercício.
+                    </MudText>
+                    <MudDivider Class="my-4" Style="--mud-palette-divider:coral" />
+
+                    <MudText><h2><b>Anatomia do Bíceps e Seus Vizinhos</b></h2> O termo "bíceps" significa "duas cabeças". Ambas as cabeças se originam em pontos diferentes da escápula (ombro), cruzam a articulação do cotovelo e se fundem em um único tendão que se insere no osso do antebraço (rádio).
+                        <h3><b>Cabeça Longa (Porção Externa)</b></h3>
+                        Fica na parte de fora do braço. Devido ao seu caminho anatômico, ela passa por dentro da articulação do ombro. É a cabeça responsável por criar a altura do bíceps, o famoso "pico" quando você faz a pose de duplo bíceps.
+                        <h3><b>Cabeça Curta (Porção Interna)</b></h3>
+                        Fica na parte de dentro do braço (voltada para o peito). Ela é a responsável por dar largura e preenchimento ao braço quando você é visto de frente.
+                        <h3><b>O Músculo Braquial (O Coadjuvante Secreto)</b></h3>
+                        Ele não faz parte do bíceps, mas fica localizado logo abaixo dele, perto da dobra do cotovelo. Quando o braquial é hipertrofiado, ele atua como uma "cunha", empurrando o bíceps para cima. Isso aumenta tanto o pico do bíceps quanto a espessura geral do braço.
+                    </MudText>
+                    <MudDivider Class="my-4" Style="--mud-palette-divider:coral" />
+
+                    <MudText>
+                        <h2><b>As Três Funções Biomecânicas</b></h2> A maioria das pessoas acha que o bíceps serve apenas para dobrar o braço, mas ele é um músculo trifuncional:<br />
+
+                        <b>Flexão do Cotovelo:</b> Trazer a mão em direção ao ombro.<br />
+
+                        <b>Supinação do Antebraço:</b> Girar o punho para que a palma da mão fique voltada para cima (ex: o movimento de girar uma chave de fenda). O bíceps é o supinador mais poderoso do corpo humano.<br />
+                        <b>Flexão Sutil do Ombro:</b> Auxiliar a erguer o braço para a frente (já que suas cabeças nascem na escápula).
+                    </MudText>
+                    <MudDivider Class="my-4" Style="--mud-palette-divider:coral" />
+
+                    <MudText><h2><b>Seleção de Exercícios e a Posição do Ombro</b></h2> Como o bíceps cruza a articulação do ombro, a posição do seu cotovelo em relação ao seu tronco altera o nível de alongamento inicial das cabeças, ditando quem faz a maior parte do trabalho.
+                        <h3><b>Cotovelos Atrás do Corpo (Foco na Cabeça Longa e no Pico)</b></h3> Quando você coloca o cotovelo para trás da linha do tronco, a cabeça longa é esticada ao máximo antes mesmo do movimento começar.<br />
+
+                        <b>Exercício-chave:</b> Rosca Direta no Banco Inclinado (45°). Ao sentar inclinado e deixar os braços caírem para trás, a tensão no ponto inicial do movimento é brutal na porção externa.
+                        <h3><b>Cotovelos À Frente do Corpo (Foco na Cabeça Curta e Isolamento)</b></h3> Com o cotovelo projetado para a frente, a cabeça longa entra em insuficiência ativa (fica levemente frouxa), transferindo o esforço para a cabeça curta e eliminando qualquer ajuda dos ombros.<br />
+
+                        <b>Exercícios-chave:</b> Rosca Scott (na máquina ou banco) e Rosca Concentrada. No banco Scott, o braço fica totalmente apoiado à frente, impedindo o corpo de "roubar" usando o balanço do tronco.
+                        <h3><b>Cotovelos Alinhados ao Corpo (Construção de Massa Geral)</b></h3> O ponto de equilíbrio onde ambas as cabeças conseguem produzir muita força juntas.<br />
+
+                        <b>Exercícios-chave:</b> Rosca Direta clássica (com barra reta ou barra W) e Rosca Direta com halteres.
+                        <h3><b>Foco no Músculo Braquial</b></h3> Para focar no músculo que fica escondido por baixo e empurra o bíceps:<br />
+
+                        <b>Exercício-chave:</b> Rosca Martelo (pegada neutra). Anula a função de supinação do bíceps e joga a carga diretamente no braquial e no braquiorradial do antebraço.
+                    </MudText>
+                    <MudDivider Class="my-4" Style="--mud-palette-divider:coral" />
+
+                    <MudText>
+                        <h2><b>O Erro do "Supino de Bíceps" e a Conexão com o Punho</b></h2> O erro mais comum na rosca direta clássica é o praticante trazer os cotovelos para a frente e para cima no final do movimento, encostando a barra no pescoço.<br />
+
+                        <b>A Perda de Tensão:</b> Ao projetar os cotovelos para a frente no topo da rosca direta, quem passa a sustentar o peso não é mais o bíceps, mas sim o deltoide anterior (ombro) e a estrutura óssea. O bíceps entra em descanso no topo.
+                        <h3><b>Para Corrigir e Maximizar a Contração:</b></h3> <b>Congele o Cotovelo:</b> Mantenha os cotovelos fixos ao lado do corpo (como se estivessem aparafusados nas suas costelas) durante 90% do movimento.<br />
+
+                        <b>Gire o Mindinho:</b> Se estiver usando halteres, comece o movimento com a pegada neutra (martelo) e, conforme sobe, vá girando o punho (supinando). No topo do movimento, tente fazer com que o seu dedo mindinho aponte para o seu ombro. Esse giro extra é o gatilho para a contração máxima e cãibra no bíceps.<br />
+
+                        <b>Punho Firme:</b> Nunca dobre o punho para dentro no topo (como se estivesse tentando encostar a mão no antebraço). Mantenha o punho rígido ou levemente estendido para trás para forçar apenas a articulação do cotovelo a trabalhar.
+                    
+                    </MudText>
+
                     <MudText Typo="Typo.body1" Class="mb-4"><strong>Visão de Treino:</strong> Mudar a posição dos cotovelos em relação ao corpo altera a ênfase (cotovelos para trás do corpo focam na cabeça longa; cotovelos à frente focam na cabeça curta).</MudText>
                 </div>
 
@@ -240,7 +417,51 @@
             {
                 <div class="mb-4">
                     <MudText Typo="Typo.h5" Style="color:coral; font-weight:bold;" Class="mb-3">Tríceps Braquial</MudText>
-                    <MudText Typo="Typo.body1" Class="mb-2"><strong>Função:</strong> Composto por três cabeças (longa, lateral e medial), ele ocupa cerca de 60% do volume total do braço. Sua função exclusiva é a extensão do cotovelo (esticar o braço).</MudText>
+                    <MudText Typo="Typo.body1" Class="mb-2"><strong>Função:</strong> O tríceps braquial é o verdadeiro dono do braço. Enquanto a maioria das pessoas foca obsessivamente no bíceps, a realidade anatômica é implacável: o tríceps ocupa aproximadamente 60% do volume total do braço. Se o seu objetivo é ter braços massivos, densos e com aquele aspecto de "ferradura" rasgada, o seu foco principal deve estar aqui.</MudText>
+                    <MudDivider Class="my-4" Style="--mud-palette-divider:coral" />
+
+                    <MudText><h2><b>Anatomia das Três Cabeças</b></h2> O termo "tríceps" vem do latim e significa "três cabeças". Ao contrário do bíceps, apenas uma de suas cabeças cruza a articulação do ombro, o que dita toda a estratégia biomecânica do treino. 
+                        Todas as três se unem na parte inferior em um tendão plano e massivo que se insere no olécano (a ponta do osso do cotovelo).
+                        <h3><b>Cabeça Longa</b></h3> É a maior das três cabeças e fica na porção traseira interna do braço (perto do corpo). Ela é a única biarticular do grupo: não se origina no osso do braço, mas sim na escápula. Por isso, ela participa tanto da extensão do cotovelo quanto da extensão do ombro (trazer o braço para trás). É ela que dá volume bruto ao braço quando visto de perfil.
+                        <h3><b>Cabeça Lateral</b></h3> Fica na porção externa do braço. É a cabeça responsável por desenhar a metade de fora da "ferradura". É altamente visível quando o braço está estendido ao lado do corpo e dá aquela impressão de largura quando você é visto de frente.
+                        <h3><b>Cabeça Medial</b></h3> ica localizada na parte inferior central do braço, abaixo das outras duas cabeças e perto do cotovelo. Embora seja profunda e menos visível externamente, ela é a "base de força" do tríceps, trabalhando ativamente em praticamente qualquer ângulo de extensão.
+                    </MudText>
+                    <MudDivider Class="my-4" Style="--mud-palette-divider:coral" />
+
+                    <MudText>
+                        <h2><b>A Regra Biomecânica do Tríceps (A Posição do Braço)</b></h2> Como a cabeça longa cruza a articulação do ombro, o comprimento dela muda dependendo da altura do seu braço. Para esticar e recrutar essa cabeça ao máximo, o braço precisa estar levantado.<br />
+
+                        <b>Braço para baixo anula a Cabeça Longa:</b> Quando você faz exercícios com os braços colados ao corpo (como o Tríceps Pulley/Corda tradicional), a cabeça longa fica encurtada no ombro e não consegue produzir força máxima. Esse tipo de exercício esmaga a cabeça lateral e a medial.
+                    </MudText>
+                    <MudDivider Class="my-4" Style="--mud-palette-divider:coral" />
+
+                    <MudText><h2><b>Seleção de Exercícios para Desenvolvimento Completo</b></h2> Para construir um tríceps tridimensional, dividimos o treino com base no posicionamento dos braços em relação ao tronco:
+                        <h3><b>Braços Acima da Cabeça (Foco na Cabeça Longa / Volume Bruto)</b></h3> Coloca a cabeça longa em um estado de alongamento extremo antes de iniciar a extensão.<br />
+
+                        <b>Tríceps Francês (Halter, Polia ou Barra):</b> Sentado ou em pé, os braços ficam apontados para o teto. Você dobra o cotovelo levando o peso atrás da nuca e estende totalmente para cima.<br />
+
+                        <b>Tríceps Testa no Banco Inclinado:</b> Fazer o tríceps testa em um banco levemente inclinado para trás (ou puxando os braços um pouco além da linha da cabeça no banco reto) mantém a cabeça longa sob tensão constante mesmo no topo do movimento.
+                        <h3><b>Braços ao Lado do Corpo (Foco na Cabeça Lateral / O Desenho da Ferradura)</b></h3> Excelente para gerar um pico de contração violento na parte externa do braço.<br />
+
+                        <b>Tríceps Pulley (Barra Reta ou W):</b> O exercício clássico na polia. Permite uma excelente progressão de carga estrita.<br />
+
+                        <b>Tríceps Corda:</b> A vantagem da corda é que, no final do movimento (embaixo), você consegue afastar as mãos para os lados, estendendo o cotovelo além do limite que uma barra rígida permitiria. Isso gera uma cãibra mecânica absurda na cabeça lateral.
+                        <h3><b>Exercícios Compostos (Força Bruta e Massa Geral)</b></h3> Exercícios multiarticulares onde o tríceps trabalha junto com o peito e o ombro, permitindo cargas massivas.<br />
+
+                        <b>Supino Fechado (Close-grip Bench Press):</b> Um supino reto feito com as mãos alinhadas na largura dos ombros. Transfere a maior parte do trabalho do peito diretamente para o tríceps.<br />
+
+                        <b>Paralelas (Foco em Tríceps):</b> Mantendo o tronco o mais vertical possível (sem inclinar para a frente), você força os tríceps a empurrarem o peso do seu próprio corpo.
+                    </MudText>
+                    <MudDivider Class="my-4" Style="--mud-palette-divider:coral" />
+
+                    <MudText>
+                        <h2><b>Erros Comuns que Destroem os Cotovelos</b></h2> O tríceps é um músculo forte, mas o tendão do cotovelo sofre muito se a execução for negligenciada.<br />
+
+                        <b>Abrir os cotovelos para os lados:</b> No Tríceps Testa ou no Francês, os cotovelos devem apontar para a frente (paralelos um ao outro). Se você deixa os cotovelos "abrirem" para fora durante a descida, você tira a tensão do tríceps e joga uma força de torção perigosa na articulação do cotovelo.<br />
+
+                        <b>Usar o peso do corpo no Pulley:</b> No tríceps na polia, jogar o tronco para cima do cabo e empurrar o peso usando o peso do peito e dos ombros anula o isolamento do braço. Mantenha os ombros para trás e para baixo, mexendo apenas a articulação do cotovelo.
+                    </MudText>
+
                     <MudText Typo="Typo.body1" Class="mb-4"><strong>Visão de Treino:</strong> Para acionar a cabeça longa (a maior delas), o braço precisa ser posicionado acima da cabeça durante o movimento.</MudText>
                 </div>
 
@@ -273,8 +494,49 @@
             {
                 <div class="mb-4">
                     <MudText Typo="Typo.h5" Style="color:coral; font-weight:bold;" Class="mb-3">Antebraços (Flexores e Extensores do Punho)</MudText>
-                    <MudText Typo="Typo.body1" Class="mb-2"><strong>Função:</strong> Controlam os movimentos do punho e dos dedos, além de serem fundamentais para a força de pegada (grip).</MudText>
-                    <MudText Typo="Typo.body1" Class="mb-4"><strong>Visão de Treino:</strong> Geralmente já trabalham de forma isométrica intensa nos treinos de costas e bíceps, mas podem receber estímulo isolado se forem um ponto fraco.</MudText>
+                    <MudText Typo="Typo.body1" Class="mb-2">
+                        <strong>Função:</strong> O antebraço é um dos agrupamentos musculares mais complexos, subestimados e visuais do corpo humano. Junto com o pescoço e as panturrilhas, ele faz parte dos músculos de "exposição constante" — aqueles que ficam evidentes mesmo quando você está de camiseta.
+
+                        Anatomicamente, o antebraço funciona como o "tornozelo" do membro superior. Ele é composto por mais de 20 pequenos músculos divididos em várias camadas, responsáveis por comandar os movimentos do punho, dos dedos e a força da sua pegada.
+                    </MudText>
+                    <MudDivider Class="my-4" Style="--mud-palette-divider:coral" />
+
+                    <MudText><h2><b>Anatomia Funcional (Os Três Grupos Principais)</b></h2> Para simplificar o treino e a biomecânica, nós dividimos a massa muscular do antebraço em três grupos de ação principais: <h3><b>Braquiorradial</b></h3> É o maior e mais estético músculo do antebraço. Ele fica na parte superior e externa, cruzando a articulação do cotovelo.<br />
+                        <b>A Grande Diferença:</b> Ao contrário da maioria dos músculos do antebraço, o braquiorradial não se insere nos dedos. Ele começa no úmero e vai até a base do pulso (rádio). Sua função principal não é mexer o punho, mas sim auxiliar na flexão do cotovelo, especialmente quando a palma da mão está virada para baixo ou em posição neutra.
+                        <h3><b>Extensores do Punho e dos Dedos</b></h3> Ficam localizados na parte de cima (dorso) do antebraço. São os músculos que você vê trabalhando quando levanta a mão ou abre os dedos. O principal deles é o extensor radial longo do carpo.
+                        <h3><b>Flexores do Punho e dos Dedos</b></h3> Ficam localizados na parte de baixo (palma) do antebraço. É o grupo mais volumoso e denso, responsável por dobrar o punho para dentro e fechar os dedos com força (gerando a pegada).
+                    </MudText>
+                    <MudDivider Class="my-4" Style="--mud-palette-divider:coral" />
+
+                    <MudText>
+                        <h2><b>As Três Dimensões da Força de Pegada (Grip Strength)</b></h2> Para construir antebraços massivos, você precisa entender que a mão não apenas "segura" as coisas da mesma forma. Existem três tipos de força mecânica que ativam o antebraço:<br />
+
+                        <b>Pegada de Esmagamento (Crush Grip):</b> A força de fechar os dedos contra a palma da mão (ex: apertar um alicate ou segurar uma barra pesada no Levantamento Terra).<br />
+
+                        <b>Pegada de Suporte (Support Grip):</b> A capacidade de segurar uma carga estática por um longo período (ex: carregar halteres pesados na Caminhada do Fazendeiro).<br />
+
+                        <b>Pegada de Pinça (Pinch Grip):</b> A força entre a ponta dos dedos e o polegar (ex: segurar uma anilha de ferro lisa pelos dedos).
+                    </MudText>
+                    <MudDivider Class="my-4" Style="--mud-palette-divider:coral" />
+
+                    <MudText><h2><b>Seleção de Exercícios para Hipertrofia Máxima</b></h2> Muitas pessoas desenvolvem antebraços decentes apenas segurando barras pesadas no treino de costas (estímulo isométrico). Porém, para atingir o potencial máximo e construir aquela densidade que salta aos olhos, o estímulo dinâmico e isolado é indispensável.
+                        <h3><b>Foco no Braquiorradial (Volume Alto)</b></h3>
+                        <b>Rosca Inversa (Barra W ou Halteres):</b> Feita exatamente como a rosca direta para bíceps, mas com as palmas das mãos voltadas para baixo (pegada pronada). Ao girar a mão para baixo, você coloca o bíceps em desvantagem mecânica, forçando o braquiorradial a carregar o peso do movimento.<br />
+
+                        <b>Rosca Martelo (Halteres ou Corda):</b> Feita com a pegada neutra (palmas voltadas uma para a outra). Divide o trabalho perfeitamente entre o bíceps, o braquial e o braquiorradial, permitindo o uso de cargas bem elevadas.
+                        <h3><b>Foco nos Flexores (Volume de Baixo)</b></h3> <b>Rosca Punho (Barra ou Polia):</b> Apoiando os antebraços em um banco, deixe as palmas das mãos viradas para cima. Permita que a barra role até a ponta dos dedos no final da descida (fase excêntrica) e depois feche a mão flexionando o punho para cima (fase concêntrica).
+                        <h3><b>Foco nos Extensores (Desenho de Cima)</b></h3> <b>Rosca Punho Inversa:</b> Mesma posição da rosca punho, mas com as palmas voltadas para baixo. O movimento é puramente levantar o dorso da mão em direção ao teto. Como esses músculos são menores, use cargas moderadas e foque na contração.
+                        <h3><b>Força de Carregamento Bruta (Densidade Global)</b></h3> <b>Caminhada do Fazendeiro (Farmer's Walk):</b> Segure o par de halteres mais pesado que conseguir suportar e caminhe por uma distância ou tempo determinados (ex: 30 a 45 segundos). A contração isométrica gerada para não deixar o peso cair recruta praticamente todas as fibras do antebraço até a falha.
+                    </MudText>
+                    <MudDivider Class="my-4" Style="--mud-palette-divider:coral" />
+
+                    <MudText><h2><b>Fisiologia e Recuperação</b></h2> Assim como as panturrilhas, os músculos do antebraço (especialmente os flexores e extensores do punho) possuem uma alta densidade de fibras de contração lenta (Tipo I) e tecidos tendíneos rígidos, pois são usados o dia inteiro para abrir portas, digitar e carregar objetos.<br />
+                        Por conta disso, eles toleram e respondem muito bem a frequências mais altas de treino (podendo ser treinados de 2 a 3 vezes por semana) e se beneficiam de repetições ligeiramente mais altas com controle estrito do movimento (<b>12 a 20 repetições</b>), garantindo que a articulação do pulso não sofra microlesões por excesso de carga desalinhada.
+                    </MudText>
+
+                    <MudText Typo="Typo.body1" Class="mb-4">
+                        <strong>Visão de Treino:</strong> Geralmente já trabalham de forma isométrica intensa nos treinos de costas e bíceps, mas podem receber estímulo isolado se forem um ponto fraco. 
+                    </MudText>
                     <MudDivider Class="my-4" Style="--mud-palette-divider:coral" />
                     
                 
@@ -414,7 +676,50 @@
             {
                 <div class="mb-4">
                     <MudText Typo="Typo.h5" Style="color:coral; font-weight:bold;" Class="mb-3">Lombar / Eretores da Espinha</MudText>
-                    <MudText Typo="Typo.body1" Class="mb-4"><strong>Função:</strong> Sustentar e estender a coluna vertebral. É a base de sustentação do tronco.</MudText>
+                    <MudText Typo="Typo.body1" Class="mb-4"><strong>Função:</strong> Se o abdômen é a parede da frente do seu tronco, a região lombar é a fundação traseira. Conhecida anatomicamente como a zona das vértebras lombares (L1 a L5), ela suporta a maior parte do peso do seu corpo e sofre pressões mecânicas imensas no dia a dia e nos treinos.Desenvolver uma lombar forte e resiliente não é apenas uma questão de estética (embora crie o famoso desenho em "V" ou a "asa" nas costas quando bem desenvolvida), mas sim o principal seguro contra dores e lesões na coluna.</MudText>
+                    <MudDivider Class="my-4" Style="--mud-palette-divider:coral" />
+                    <MudText Typo="Typo.body1" Class="mb-2"><h2><b>Anatomia Funcional (O Escudo Posterior)</b></h2> Ao contrário do peitoral, a região lombar não é composta por um único músculo grande e visível, mas sim por um complexo de tecidos profundos e superficiais que atuam juntos. O grupo mais importante para o movimento e estabilização é o Eretor da Espinha.<br />
+                        <h3>O Eretores da Espinha (Sacroespinhais)</h3>
+                    Este é um conjunto de três colunas musculares que correm verticalmente ao longo de toda a extensão da coluna (desde o quadril até a base do crânio):<br />
+
+                        <b>Iliocostal:</b> A porção mais externa.<br />
+
+                        <b>Longíssimo:</b> A porção central e mais longa.<br />
+
+                        <b>Espinal:</b> A porção mais interna, colada nas vértebras.<br />
+
+                    Quando você treina a lombar e ela fica "inchada" (o famoso pump), são esses músculos que saltam para fora, criando duas colunas densas de carne paralelas à espinha.<br />
+                    <h3>Músculos Auxiliares Chave</h3>
+                        <b>Quadrado Lombo:</b> Um músculo plano e profundo que fica na parede posterior do abdômen, conectando as costelas à pelve. Ele é o principal responsável por você conseguir se inclinar para o lado.<br />
+
+                        <b>Multífidos:</b> Pequenos feixes musculares profundos que conectam vértebra por vértebra. Eles têm pouca força de movimento, mas são os sensores de estabilidade mais importantes da sua coluna.
+                    </MudText>
+                    <MudDivider Class="my-4" Style="--mud-palette-divider:coral" />
+
+                    <MudText Typo="Typo.body1" Class="mb-2">
+                        <h2><b>Funções Biomecânicas</b></h2> A lombar trabalha de duas formas no treino de força: gerando movimento (dinâmica) ou travando o corpo (estática/isométrica).<br />
+
+                        <b>Extensão da Coluna:</b> Erguer o tronco a partir de uma posição inclinada para a frente (ação dinâmica dos eretores).<br />
+
+                        <b>Extensão do Quadril (Co-participação):</b> Trabalha em sinergia com os glúteos e posteriores de coxa para esticar o corpo.<br />
+
+                        <b>Flexão Lateral:</b> Inclinar o tronco para os lados.<br />
+
+                        <b>Anti-Flexão (Função Isométrica Principal):</b> Resistir à carga que tenta dobrar sua coluna para a frente (ex: segurar a barra pesada no Agachamento ou no Levantamento Terra).
+                    </MudText>
+                    <MudDivider Class="my-4" Style="--mud-palette-divider:coral" />
+                    <MudText Typo="Typo.body1" Class="mb-2"><h2><b>O Erro Fatal: Hiperextensão Excessiva</b></h2> O erro mais comum e perigoso no treino de lombar acontece no final do movimento de extensão (seja no banco romano ou no levantamento terra).<br />
+
+                    <b>A Linha Neutra:</b> Ao subir o tronco, o ponto final do movimento deve ser o alinhamento neutro da coluna (corpo reto). Passar desse ponto e esmagar as costas para trás curvando a espinha ao contrário (hiperextensão) não traz ganho para o músculo e gera uma compressão esmagadora nos discos intervertebrais. Com o tempo, isso é a receita perfeita para uma hérnia de disco.</MudText>
+                    <MudDivider Class="my-4" Style="--mud-palette-divider:coral" />
+                    
+                    <MudText Typo="Typo.body1" Class="mb-2">
+                        <h2><b>Lombar e a Relação com o "Core"</b></h2> Sentir a lombar "queimar" ou fadigar rápido demais nos treinos de perna ou costas geralmente é sinal de duas coisas:<br />
+
+                        <b>Abdômen Fraco:</b> Se a parede abdominal anterior não gera pressão interna suficiente (pressão intra-abdominal), a lombar é forçada a trabalhar o dobro para segurar a carga sozinha.<br />
+
+                        <b>Encurtamento de Posteriores e Glúteos:</b> Se os seus posteriores de coxa são travados, quando você desce no agachamento, o seu quadril é obrigado a girar para dentro prematuramente (retroversão pélvica ou butt wink), jogando toda a carga mecânica direto nas vértebras lombares. Mantendo o abdômen forte e a flexibilidade em dia, a lombar trabalha protegida e sem dores crônicas.
+                    </MudText>
                 </div>
 
                 <MudDivider Class="my-4" Style="--mud-palette-divider:coral" />
@@ -440,7 +745,43 @@
             {
                 <div class="mb-4">
                     <MudText Typo="Typo.h5" Style="color:coral; font-weight:bold;" Class="mb-3">Quadríceps (Reto Femoral, Vasto Lateral, Vasto Medial e Vasto Intermédio)</MudText>
-                    <MudText Typo="Typo.body1" Class="mb-2"><strong>Função:</strong> Um grupo de quatro músculos na parte frontal da coxa. A principal função conjunta é a extensão do joelho (esticar a perna). O reto femoral também auxilia na flexão do quadril (trazer a coxa para cima).</MudText>
+                    <MudText Typo="Typo.body1" Class="mb-2"><strong>Função:</strong> O quadríceps femoral é o maior e mais potente conjunto muscular do corpo humano. Localizado na parte anterior (frente) da coxa, ele é o grande motor responsável por estender o joelho, carregar o peso do tronco e garantir nossa locomoção, saltos e desacelerações.
+                        Se você quer pernas massivas, densas e com cortes profundos, precisa entender a fundo como este bloco de quatro cabeças trabalha e como a biomecânica dita as regras do treino de pernas.
+                    </MudText>
+                    <MudDivider Class="my-4" Style="--mud-palette-divider:coral" />
+                    <MudText Typo="Typo.body1" Class="mb-2"><h2><b>Anatomia das Quatro Cabeças</b></h2> O termo "quadríceps" vem do latim e significa "quatro cabeças". Todos esses quatro ventre musculares distintos se unem na parte de baixo da coxa para formar um único e massivo tendão: o tendão quadricepital, que envolve a patela (rótulo do joelho) e se insere na tíbia (osso da canela).</MudText>
+                    
+                    <MudText Typo="Typo.body1" Class="mb-2"><h3><b>Reto Femoral (Rectus femoris)</b></h3> É o músculo que corre bem no centro da coxa. Ele tem uma característica única que muda completamente a estratégia de treino: é o único músculo biarticular do grupo.<br />
+                    <b>A Diferença:</b> Ele não se origina no fêmur (osso da coxa), mas sim no osso ilíaco (quadril). Isso significa que ele atravessa tanto a articulação do quadril quanto a do joelho, atuando tanto na extensão do joelho quanto na flexão do quadril (trazer a coxa em direção ao abdômen).</MudText>
+                    
+                    <MudText Typo="Typo.body1" Class="mb-2"><h3><b>Vasto Lateral (Vastus lateralis)</b></h3> É o maior dos quatro músculos e fica na face externa (de fora) da coxa. É o responsável por criar aquele aspecto abaulado para fora, o famoso outer sweep, que dá largura e imponência às pernas quando vistas de frente.</MudText>
+                    
+                    <MudText Typo="Typo.body1" Class="mb-2"><h3><b>Vasto Medial (Vastus medialis)</b></h3> Localizado na face interna (de dentro) da coxa, logo acima do joelho. Ele tem o formato de uma gota d'água (teardrop). Além da função estética óbvia, ele tem um papel crucial na saúde articular: ele é o principal estabilizador da patela, impedindo que ela se desloque para os lados durante o movimento de flexão e extensão.</MudText>
+
+                    <MudText Typo="Typo.body1"><h3><b>Vasto Intermédio (Vastus intermedius)</b></h3> Fica escondido bem abaixo do reto femoral, colado diretamente no osso do fêmur. Embora não seja visível externamente, seu desenvolvimento empurra os outros três músculos para fora, aumentando drasticamente o volume e a espessura total da coxa.</MudText>
+                    <MudDivider Class="my-4" Style="--mud-palette-divider:coral" />
+
+                    <MudText Typo="Typo.body1" Class="mb-2"><h2><b>Funções Biomecânicas e a Grande Sacada do Treino</b></h2> A função primária do quadríceps é óbvia: Extensão do Joelho (esticar a perna). No entanto, a forma como o quadril se comporta durante o treino determina qual parte vai trabalhar mais.<br />
+                     <b>O paradoxo do Reto Femoral:</b> Em exercícios como o Agachamento ou Leg Press, o quadril se dobra ao mesmo tempo em que o joelho se dobra. Como o reto femoral se encurta no quadril e se alonga no joelho simultaneamente, ele mantém praticamente o mesmo comprimento. Por isso, exercícios multiarticulares (agachamentos) são péssimos para hipertrofiar o reto femoral. Ele só atinge ativação máxima quando o quadril está estático e o joelho trabalha isolado (como na cadeira extensora).</MudText>
+                     <MudDivider Class="my-4" Style="--mud-palette-divider:coral" />
+
+                    <MudText Typo="Typo.body1" Class="mb-2"><h2><b>Seleção de Exercícios para Desenvolvimento Máximo</b></h2> Para extrair o máximo de hipertrofia, seu treino precisa de uma combinação inteligente de exercícios compostos (foco nos vastos) e isolados (foco no reto femoral).</MudText>
+                    <MudText>
+                        <h3><b>Exercícios Multiarticulares (Força Bruta e Volume dos Vasos)</b></h3> <b>Agachamento Livre (Barra Costas/Frente):</b> O construtor de pernas por excelência. Para máxima ativação de quadríceps, priorize a profundidade (passar de 90° de flexão) e tente manter o tronco o mais vertical possível.<br />
+
+                        <b>Agachamento Hack (Hack Squat):</b> Devido à estabilização do tronco no encosto, você consegue projetar os joelhos bem para a frente com total segurança. Essa extrema flexão de joelho gera um estiramento absurdo nos vastos lateral e medial.<br />
+
+                        <b>Leg Press 45°:</b> Permite focar puramente no empurrão sem se preocupar com o equilíbrio do tronco. Dica biomecânica: Posicionar os pés mais abaixo na plataforma aumenta a flexão do joelho, direcionando muito mais o foco para o quadríceps em vez dos glúteos.<br />
+                        <h3><b>Exercícios Isolados (O Isolamento do Reto Femoral)</b></h3> <b>Cadeira Extensora:</b> Essencial em qualquer treino. Como o quadril fica fixo em 90°, a extensão total do joelho sob carga esmaga o reto femoral de uma forma que o agachamento jamais conseguirá fazer. É o exercício perfeito para buscar a falha concêntrica com segurança.
+                    </MudText>
+                    <MudDivider Class="my-4" Style="--mud-palette-divider:coral" />
+
+                    <MudText Typo="Typo.body1" Class="mb-2"><h2><b>Fatores de Segurança: Protegendo os Joelhos</b></h2> Muitas pessoas evitam treinar quadríceps pesado com medo de dores no joelho, mas o problema quase nunca é o exercício em si, e sim a execução incorreta.<br />
+
+                        <b>Valgo Dinâmico (Joelhos para dentro):</b> Durante a subida do agachamento ou do leg press, os joelhos jamais devem apontar para dentro (em direção um ao outro). Isso gera uma força de cisalhamento terrível nos meniscos e ligamentos. Force os joelhos para fora, alinhados com a ponta dos pés.<br />
+
+                        <b>Tirar os calcanhares da plataforma:</b> No leg press ou agachamento, se o seu calcanhar levanta, toda a carga do exercício é transferida da musculatura da coxa diretamente para o tendão patelar. A pressão interna no joelho dispara. Mantenha o pé inteiro plantado e empurre a força a partir do meio do pé/calcanhar.</MudText>
+                    
                     <MudText Typo="Typo.body1" Class="mb-4"><strong>Visão de Treino:</strong> Exige grande volume de oxigênio e energia por ser um grupo muscular massivo. O agachamento livre é o rei aqui, mas máquinas ajudam no isolamento.</MudText>
                 </div>
 
@@ -479,7 +820,61 @@
             {
                 <div class="mb-4">
                     <MudText Typo="Typo.h5" Style="color:coral; font-weight:bold;" Class="mb-3">Posteriores de Coxa / Isquiotibiais (Bíceps Femoral, Semitendinoso e Semimembranoso)</MudText>
-                    <MudText Typo="Typo.body1" Class="mb-2"><strong>Função:</strong> Localizados na parte de trás da coxa, realizam duas funções principais: a flexão do joelho (trazer o calcanhar em direção ao glúteo) e a extensão do quadril (empurrar a perna para trás).</MudText>
+                    <MudText Typo="Typo.body1" Class="mb-2">
+                        <strong>Função:</strong> Os músculos posteriores de coxa, conhecidos cientificamente como o grupo dos isquiostibiais (ou hamstrings), formam o bloco muscular que cobre a parte de trás da coxa.
+                        Muitas vezes negligenciados por não serem vistos no espelho de frente, eles são fundamentais para o equilíbrio estético da perna (criando aquele perfil lateral massivo e denso) e são os maiores protetores da articulação do joelho contra lesões graves, como o rompimento do ligamento cruzado anterior (LCA).
+                    </MudText>
+                    <MudDivider Class="my-4" Style="--mud-palette-divider:coral" />
+
+                    <MudText Typo="Typo.body1" Class="mb-2"><h2><b>Anatomia dos Isquiostibiais</b></h2> Esse grupo é composto por três músculos principais. Com exceção de uma parte específica, todos eles compartilham a mesma origem: a tuberosidade isquiática (o "osso do bumbum" em que sentamos) e cruzam duas articulações, o quadril e o joelho.<br />
+                        <h3><b>Bíceps Femoral</b></h3>
+                        Localizado na face externa (de fora) da parte de trás da coxa. Ele possui duas cabeças:<br />
+
+                        <b>Cabeça Longa:</b> É biarticular. Começa no quadril e vai até o joelho.<br />
+
+                        <b>Cabeça Curta:</b> É a única exceção do grupo. Ela se origina no próprio osso do fêmur, o que significa que ela cruza apenas a articulação do joelho. Sua única função é dobrar a perna.<br /> <h3><b>Semitendíneo</b></h3>
+                        Fica na porção medial (interna) da coxa. É um músculo superficial com um tendão muito longo. Junto com outros tendões, ele forma a estrutura anatômica conhecida como "pata de ganso" na lateral do joelho.<br /> <h3><b>Semimembranáceo</b></h3>
+                        Fica logo abaixo do semitendíneo (mais profundo). É um músculo largo e achatado que também atua na porção interna da parte de trás da perna.</MudText>
+                    <MudDivider Class="my-4" Style="--mud-palette-divider:coral" />
+
+                    <MudText Typo="Typo.body1" Class="mb-2">
+                        <h2><b>Funções Biomecânicas (A Regra de Ouro do Treino)</b></h2> Por serem músculos biarticulares, os posteriores de coxa possuem duas funções principais, e você precisa treinar ambas se quiser um desenvolvimento completo:<br />
+
+                        <b>Flexão do Joelho:</b> Dobrar a perna, aproximando o calcanhar do glúteo (ex: mesas e cadeiras flexoras).<br />
+
+                        <b>Extensão do Quadril:</b> Jogar o quadril para a frente e o tronco para cima (ex: Levantamento Terra, Stiff).<br />
+
+                        <b>A Estratégia Anatômica:</b> Como a cabeça curta do bíceps femoral não cruza o quadril, ela não participa de movimentos como o Stiff. Se você treinar posteriores apenas com variações de Stiff ou Good Morning, a cabeça curta do seu bíceps femoral ficará subdesenvolvida. Da mesma forma, as cadeiras flexoras não alongam o músculo na articulação do quadril. O treino perfeito exige um exercício de cada função.
+                    </MudText>
+                    <MudDivider Class="my-4" Style="--mud-palette-divider:coral" />
+
+                    <MudText Typo="Typo.body1" Class="mb-2"><h2><b>Seleção de Exercícios para Desenvolvimento Máximo</b></h2> Para extrair a máxima hipertrofia, dividimos o treino através do plano biomecânico:</MudText>
+                    <MudText Typo="Typo.body1" Class="mb-2">
+                        <h3><b>Foco em Flexão de Joelho (Trabalho de Isolamento e Pico de Contração)</b></h3> <b>Mesa Flexora (Deitado):</b> Excelente para gerar um estiramento inicial na musculatura. Como o quadril fica levemente estendido, foca muito no pico de contração no topo do movimento.<br />
+
+                        <b>Cadeira Flexora (Sentado):</b> Biomecanicamente, é o exercício mais eficiente para hipertrofia em alongamento. Como você está sentado, o seu quadril está flexionado a 90°, o que estica os posteriores na parte de cima (origem). Quando você dobra o joelho, o músculo é submetido a uma tensão brutal enquanto está totalmente alongado.
+                    </MudText>
+                    <MudText Typo="Typo.body1" Class="mb-2">
+                        <h3><b>Foco em Extensão de Quadril (Trabalho de Força e Alongamento Máximo)</b></h3> <b>Stiff (Levantamento Terra Romeno / RDL):</b> O rei dos posteriores. O movimento consiste em empurrar o quadril o máximo possível para trás, mantendo os joelhos semi-flexionados (e travados nesse ângulo) e a coluna totalmente reta. A sensação é de que o músculo está "rasgando" na descida.<br />
+
+                        <b>Bom Dia (Good Morning):</b> Semelhante ao Stiff, mas com a barra apoiada nos trapézios. Exige um controle absurdo do core e joga uma tensão massiva nos posteriores e glúteos na fase excêntrica.
+                    </MudText>
+                    <MudDivider Class="my-4" Style="--mud-palette-divider:coral" />
+
+                    <MudText Typo="Typo.body1" Class="mb-2">
+                        <h2><b>O Erro Comum: Confundir o Stiff com o Agachamento</b></h2> O erro mais clássico no Stiff é dobrar demais os joelhos durante a descida.<br />
+
+                        Se você dobra os joelhos à medida que desce a barra, você está transformando o exercício em um agachamento modificado. Ao dobrar o joelho, você encurta o posterior na parte de baixo, tirando toda a tensão do músculo que deveria estar sendo alongado.<br />
+
+                        <b>Execução Correta:</b> Os joelhos devem iniciar levemente destravados (cerca de 15° a 20°) apenas para proteger a articulação, e devem congelar nessa posição. Quem move é apenas o quadril, indo para trás (como se quisesse fechar uma porta com o bumbum) e voltando para a frente.
+                    </MudText>
+                    <MudDivider Class="my-4" Style="--mud-palette-divider:coral" />
+
+                    <MudText Typo="Typo.body1" Class="mb-2">
+                        <h2><b>Relação de Força: Quadríceps vs. Posterior</b></h2> Em um corpo equilibrado e saudável, a força dos posteriores deve ser de aproximadamente 60% a 70% da força dos quadríceps.<br />
+
+                        Na maioria das pessoas que treinam em academias comerciais, essa proporção é completamente desregulada (muito quadríceps para pouco posterior). Essa assimetria puxa a patela de forma errada e deixa o joelho instável. Fortalecer os posteriores com a mesma intensidade e carga que você treina a parte da frente da coxa é o segredo para ganhar força bruta no agachamento e blindar suas articulações contra lesões.
+                    </MudText>
                     <MudText Typo="Typo.body1" Class="mb-4"><strong>Visão de Treino:</strong> Um erro comum na musculação é treinar menos o posterior do que o quadríceps, o que gera desequilíbrios e lesões no joelho (como o ligamento cruzado anterior). Seu treino deve conter exercícios de flexão de joelho e de extensão de quadril.</MudText>
                 </div>
 
@@ -512,7 +907,60 @@
             {
                 <div class="mb-4">
                     <MudText Typo="Typo.h5" Style="color:coral; font-weight:bold;" Class="mb-3">Panturrilhas (Gastrocnêmio e Sóleo)</MudText>
-                    <MudText Typo="Typo.body1" Class="mb-2"><strong>Função:</strong> Responsáveis pela flexão plantar (ficar na ponta dos pés). O gastrocnêmio é o músculo com duas "cabeças" visíveis e cruza a articulação do joelho. O sóleo fica por baixo e é um músculo mais profundo.</MudText>
+                    <MudText Typo="Typo.body1" Class="mb-2">
+                        <strong>Função:</strong> As panturrilhas, frequentemente chamadas de "o segundo coração do corpo" devido à sua importância no retorno venoso (bombear o sangue de volta para o alto), são um dos agrupamentos musculares mais desafiadores da musculação.<br />
+
+                        Muitos culpam a genética pelo formato das panturrilhas, mas a verdade biomecânica é que a maioria das pessoas comete erros cruciais na seleção de exercícios, na amplitude de movimento e no entendimento do tipo de fibra que compõe esse músculo.
+                    </MudText>
+                    <MudDivider Class="my-4" Style="--mud-palette-divider:coral" />
+                    <MudText Typo="Typo.body1" class="mb-2">
+                        <h2><b>Anatomia do Tríceps Sural</b></h2> O que chamamos de panturrilha é, na verdade, o complexo do Tríceps Sural, composto por três cabeças musculares que se unem na porção inferior para formar o tendão mais forte do corpo humano: o <b>Tendão de Aquiles</b> (Tendão Calcâneo), que se insere no osso do calcanhar. <h3><b>O Gastrocnêmio (Medial e Lateral)</b></h3> É a porção mais superficial, aquela que desenha o formato de "coração invertido" ou "bola" na parte de trás da perna. Ele é um músculo biarticular: origina-se nos côndilos do fêmur (acima do joelho) e cruza até o calcanhar.<br />
+
+                        <b>Ação:</b> Ele faz a flexão plantar (ficar na ponta dos pés) e auxilia sutilmente na flexão do joelho.<br />
+
+                        <b>Fisiologia:</b> É composto majoritariamente por fibras de contração rápida (Tipo II), o que significa que responde muito bem a cargas pesadas e estímulos explosivos.
+                        <h3><b>O Sóleo</b></h3> É um músculo largo e plano que fica escondido logo abaixo do gastrocnêmio. Ao contrário do seu vizinho, o sóleo é monoarticular: origina-se na tíbia e fíbula (abaixo do joelho).<br />
+
+                        <b>Ação:</b> Sua única função é a flexão plantar. Quando hipertrofiado, ele empurra o gastrocnêmio para fora, dando largura lateral à perna.<br />
+
+                        <b>Fisiologia:</b> É composto por até 80% de fibras de contração lenta (Tipo I), altamente resistentes à fadiga, feitas para nos manter em pé o dia todo.
+                    </MudText>
+                    <MudDivider Class="my-4" Style="--mud-palette-divider:coral" />
+
+                    <MudText Typo="Typo.body1" Class="mb-2">
+                        <h2><b>A Grande Regra Biomecânica do Treino</b></h2> A anatomia dita exatamente como você deve dividir o seu treino de panturrilhas com base na posição do seu joelho. Isso muda o foco mecânico entre o gastrocnêmio e o sóleo.<br />
+
+                        <b>O Joelho Dobrado Anula o Gastrocnêmio:</b> Como o gastrocnêmio cruza o joelho, quando você se senta (como na máquina de panturrilha sentada/cavalinho), esse músculo entra em insuficiência ativa. Ele fica frouxo na articulação de cima e perde quase toda a capacidade de gerar força. Portanto, exercícios sentados treinam quase que exclusivamente o Sóleo.<br />
+
+                        Para treinar o <b>Gastrocnêmio</b> (a porção estética e explosiva), o joelho precisa estar completamente estendido (reto).
+                    </MudText>
+                    <MudDivider Class="my-4" Style="--mud-palette-divider:coral" />
+
+                    <MudText Typo="Typo.body1" Class="mb-2"><h2><b>Seleção de Exercícios Eficientes</b></h2> Para cobrir as duas necessidades fisiológicas, seu treino precisa de variações com pernas esticadas e pernas dobradas:</MudText>
+                    <MudText Typo="Typo.body1" Class="mb-2">
+                        <h3><b>Exercícios com Joelhos Estendidos (Foco no Gastrocnêmio e Força Bruta)</b></h3> <b>Panturrilha em Pé (Na máquina ou Smith):</b> O exercício base. Permite uma sobrecarga enorme. O foco deve ser manter o corpo alinhado e empurrar o chão para subir.<br />
+
+                        <b>Panturrilha no Leg Press (Pressões de Tornozelo):</b> Excelente porque elimina a carga sobre a coluna. Permite focar puramente no movimento do tornozelo, com total segurança para buscar a falha mecânica.<br />
+
+                        <b>Panturrilha no "Burrinho" (Donkey Calf Raise):</b> O tronco fica inclinado para a frente a 90°. Essa posição coloca o gastrocnêmio em um alongamento inicial extremo antes mesmo do movimento começar, gerando uma ativação altíssima.<br />
+                    </MudText>                    
+                    <MudText Typo="Typo.body1" Class="mb-2"><h3><b>Exercícios com Joelhos Flexionados (Foco no Sóleo e Espessura)</b></h3> <b>Panturrilha Sentado (Cavalinho):</b> Essencial para dar volume à base da perna e empurrar o músculo superficial para fora. Como o sóleo é feito de fibras lentas, ele responde muito bem a séries com maior tempo sob tensão e execuções controladas.</MudText>
+                    <MudDivider Class="my-4" Style="--mud-palette-divider:coral" />
+
+                    <MudText Typo="Typo.body1" Class="mb-2"><h2><b>O Erro do "Efeito Mola" (Por que suas panturrilhas não crescem)</b></h2> O Tendão de Aquiles é o elo elástico mais poderoso do corpo. Ele foi desenhado para economizar energia: quando você caminha ou corre, o tendão absorve a energia do impacto na descida e a devolve como uma "mola" na subida, sem que o músculo precise fazer força.
+                        Se você treina panturrilha quicando rápido, fazendo aquele movimento curto e frenético, quem está trabalhando é a elasticidade do tendão, não o músculo.
+                    </MudText>
+                    <MudText Typo="Typo.body1" Class="mb-2">
+                        <h3><b>A Execução Perfeita para Anular a Mola:</b></h3> <b>Alongamento Máximo:</b> Desça o calcanhar o máximo que puder, sentindo a panturrilha esticar por completo.<br />
+
+                        <b>A Pausa de Desmistificação:</b> Segure a posição embaixo por 2 segundos. Isso dissipa toda a energia elástica acumulada no tendão, forçando o músculo a fazer o trabalho bruto para iniciar a subida.<br />
+
+                        <b>Contração Explosiva:</b> Suba de forma explosiva até ficar na ponta máxima dos dedos.<br />
+
+                        <b>Pico de Contração:</b> Esprema a panturrilha no topo por 1 segundo antes de descer controlando o peso.<br />
+
+                        Se você fizer isso aplicando uma progressão de carga real, o volume de treino necessário cairá drasticamente e os resultados estéticos finalmente vão aparecer.
+                    </MudText>
                     <MudText Typo="Typo.body1" Class="mb-4"><strong>Visão de Treino:</strong> O sóleo é mais ativado com os joelhos flexionados (sentado). O gastrocnêmio exige os joelhos totalmente estendidos (em pé). Para desenvolver panturrilhas completas, você precisa treinar das duas formas.</MudText>
                 </div>
 
@@ -539,7 +987,55 @@
             {
                 <div class="mb-4">
                     <MudText Typo="Typo.h5" Style="color:coral; font-weight:bold;" Class="mb-3">Glúteos (Máximo, Médio e Mínimo)</MudText>
-                    <MudText Typo="Typo.body1" Class="mb-2"><strong>Função:</strong> O glúteo máximo é o maior músculo do corpo e o principal extensor do quadril. O glúteo médio e o mínimo ficam na lateral e são responsáveis pela abdução do quadril (abrir a perna) e pela estabilização da pélvis enquanto andamos ou corremos.</MudText>
+                    <MudText Typo="Typo.body1" Class="mb-2">
+                        <strong>Função:</strong> Os glúteos formam o complexo muscular mais poderoso e volumoso do corpo humano. Localizados na região posterior da pelve, eles são o verdadeiro "centro de força" do atleta.
+                        Além do óbvio apelo estético de preenchimento, formato e firmeza, os glúteos desempenham um papel biomecânico crucial: eles estabilizam a bacia, protegem a região lombar contra sobrecargas e são os principais geradores de potência para correr, saltar, agachar e estender o quadril.
+                    </MudText>
+                    <MudDivider Class="my-4" Style="--mud-palette-divider:coral" />
+                    
+                    <MudText Typo="Typo.body1" Class="mb-2"><h2><b>Anatomia do Complexo Glúteo</b></h2> O que chamamos popularmente de "bumbum" é composto por três músculos distintos, cada um com orientações de fibras e funções mecânicas diferentes. Para construir glúteos proporcionais, o treino precisa estimular as três porções.<br />
+                        <h3><b>Glúteo Máximo</b></h3>
+                            É o maior, mais superficial e mais pesado músculo do complexo. Ele cobre toda a região traseira e é o principal responsável pelo volume, projeção e espessura do bumbum (o aspecto "empinado").<br />
+
+                        <b>Fisiologia:</b> Possui uma mistura equilibrada de fibras de contração rápida (potência) e lenta. Responde incrivelmente bem a cargas pesadas e grande amplitude. <h3><b>Glúteo Médio</b></h3>
+                            Fica localizado na lateral externa da pelve, logo acima do glúteo máximo. É o músculo que preenche a "lateral do quadril". Desenvolvê-lo corrige aquele aspecto de "deposição de gordura" ou o "afundamento lateral" (depressão trocantérica), criando uma transição suave da cintura para as coxas.<br />
+
+                        <b>Função Extra:</b> É o principal estabilizador dinâmico da pelve durante a marcha (andar ou correr em um pé só). <h3><b>Glúteo Mínimo</b></h3>
+                            O menor e mais profundo do trio, situado logo abaixo do glúteo médio. Ele trabalha em perfeita sinergia com o médio, auxiliando na estabilização do quadril e impedindo que a bacia desabe para os lados.</MudText>
+                    <MudDivider Class="my-4" Style="--mud-palette-divider:coral" />
+
+                    <MudText Typo="Typo.body1" Class="mb-2"><h2><b>Funções Biomecânicas (Como Ativar Cada Parte)</b></h2> As funções dos glúteos dependem da porção e do ângulo em que o quadril se encontra.<br />
+
+                        <b>Extensão do Quadril:</b> O movimento de empurrar a coxa para trás, alinhando-a com o tronco (função primária do Glúteo Máximo).<br />
+
+                        <b>Abdução do Quadril:</b> Afastar as pernas para os lados (função principal do Glúteo Médio e Mínimo).<br />
+
+                        <b>Rotação Externa:</b> Girar os joelhos e os pés para fora (ação conjunta do máximo e do médio).<br />
+
+                        <b>Retroversão Pélvica:</b> O ato de "encaixar o quadril" para a frente, esmagando o bumbum no topo do movimento.</MudText>
+                    <MudDivider Class="my-4" Style="--mud-palette-divider:coral" />
+
+                    <MudText Typo="Typo.body1" Class="mb-2">
+                        <h2><b>Seleção de Exercícios para Desenvolvimento Máximo</b></h2> Para extrair o máximo de hipertrofia, o treino deve ser dividido entre exercícios de vetor vertical (onde o peso empurra para baixo) e vetor horizontal (onde o peso empurra para trás). <h3><b>O Rei da Tensão em Alongamento (Vetor Vertical)</b></h3> Esses exercícios geram a maior quebra de fibras musculares no ponto onde o glúteo está totalmente esticado (embaixo).<br />
+
+                        <b>Agachamento Profundo:</b> Para o agachamento ativar o glúteo ao máximo, ele precisa passar dos 90° (quebrar a paralela). Quanto mais baixo você desce com segurança, maior é o alongamento e a ativação do glúteo máximo.<br />
+
+                        <b>Leg Press 45° (Pés Altos):</b> Posicionar os pés mais acima na plataforma reduz a flexão do joelho e aumenta o ângulo de flexão do quadril, transferindo o foco do quadríceps direto para o glúteo.<br />
+
+                        <b>Avanço / Passada ou Agachamento Búlgaro:</b> Exercícios unilaterais são brutais para o glúteo. O búlgaro, em especial, coloca o glúteo da perna da frente sob um estiramento extremo e exige estabilização constante. <h3><b>O Rei do Pico de Contração (Vetor Horizontal)</b></h3> Muitas vezes, os agachamentos perdem tensão no topo do movimento. É aqui que entram os exercícios de empurrão horizontal.<br />
+
+                        <b>Elevação Pélvica (Hip Thrust):</b> Biomecanicamente, é o exercício com maior ativação isolada do glúteo máximo. A maior tensão acontece justamente no topo, quando o quadril está em extensão total e você consegue esmagar o músculo contra a gravidade.<h3><b>Foco no Glúteo Médio e "Desenho Superior" (Abduções)</b></h3> Para dar o aspecto arredondado na parte alta e lateral.<br />
+
+                        <b>Cadeira Abdutora:</b> Excelente para isolamento. Dica: Inclinar o tronco ligeiramente para a frente durante a execução altera o braço de momento e aumenta o recrutamento das fibras do glúteo médio.<br />
+
+                        <b>Abdução na Polia Baixa (Crossover):</b> Mantém a tensão constante durante toda a fase de abertura da perna.
+                    </MudText>
+                    <MudDivider Class="my-4" Style="--mud-palette-divider:coral" />
+
+                    <MudText Typo="Typo.body1" Class="mb-2"><h2><b>O Erro do "Glúteo Adormecido" (Amnésia Glútea)</b></h2> Um fenômeno muito comum em quem passa muitas horas sentado trabalhando ou estudando é a chamada amnésia glútea. Passar o dia pressionando o músculo contra a cadeira inibe os estímulos nervosos. Quando a pessoa vai agachar, o sistema nervoso "esquece" de recrutar o glúteo, sobrecarregando a lombar e os quadríceps.
+                        <h3><b>Como resolver isso no treino?</b></h3> Faça um trabalho de ativação prévia antes de ir para as cargas pesadas. Duas séries leves de elevação pélvica sem peso ou abdução com elástico (miniband), focando apenas na mente-músculo (sentir o bumbum queimar e contrair), acordam o sistema nervoso. Quando você for para o agachamento livre, sentirá o glúteo empurrar a carga imediatamente.
+                    </MudText>
+
                     <MudText Typo="Typo.body1" Class="mb-4"><strong>Visão de Treino:</strong> Para ativação máxima do glúteo máximo, são necessários exercícios com vetores de força horizontais e verticais.</MudText>
                 </div>
 
