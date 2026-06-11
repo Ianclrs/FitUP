@@ -45,25 +45,32 @@
     @* Container Elegante para os Textos Explicativos dos Músculos *@
     @if (!string.IsNullOrEmpty(_grupamentoAtivo))
     {
-        <MudPaper Elevation="4" Class="pa-6 mb-8 coral-border" Style="border: 1px solid coral; border-radius: 12px;">
-
+@*         <MudPaper Elevation="4" Class="pa-6 mb-8 coral-border" Style="border: 1px solid coral; border-radius: 12px;">
+    </MudPaper> *@
             @if (_grupamentoAtivo == "Peito")
             {
                 <!-- Bloco de Explicação Textual -->
                 <div class="mb-4">
-                    <MudText Typo="Typo.h5" Style="color:coral; font-weight:bold;" Class="mb-3">Peitoral (Maior e Menor)</MudText>
-                    <MudText Typo="Typo.body1" Class="mb-2"><strong>Função:</strong> O peitoral é um dos agrupamentos musculares mais visados na musculação, tanto pela estética quanto pela sua importância funcional no complexo do ombro. Para extrair o máximo de desenvolvimento desse músculo, é preciso entender como ele se divide, a orientação de suas fibras e a biomecânica por trás dos exercícios.</MudText>
-                    <MudText Typo="Typo.body1" Class="mb-2"><strong>Anatomia e Divisões Funcionais:</strong> O que chamamos popularmente de "peito" é composto por dois músculos principais: o peitoral maior (o músculo grande e superficial) e o peitoral menor (um músculo profundo, localizado abaixo do maior).</MudText>
+
+                    <MudPaper Elevation="4" MaxWidth="50%" Style="border: 1px solid coral">
+                    <MudText Typo="Typo.h5" Style="color:coral; font-weight:bold;" Class="mb-3 ms-2">Peitoral (Maior e Menor)</MudText>
+                    <MudText Typo="Typo.body1" Class="mb-2 ms-2"><strong>Função:</strong> O peitoral é um dos agrupamentos musculares mais visados na musculação, tanto pela estética quanto pela sua importância funcional no complexo do ombro. Para extrair o máximo de desenvolvimento desse músculo, é preciso entender como ele se divide, a orientação de suas fibras e a biomecânica por trás dos exercícios.</MudText>
+                    <MudText Typo="Typo.body1" Class="mb-2 ms-2"><strong>Anatomia e Divisões Funcionais:</strong> O que chamamos popularmente de "peito" é composto por dois músculos principais: o peitoral maior (o músculo grande e superficial) e o peitoral menor (um músculo profundo, localizado abaixo do maior).</MudText>
+                    </MudPaper>
                     <MudDivider Class="my-4" Style="--mud-palette-divider:coral" />
-                    <MudText Typo="Typo.body1" Class="mb-2">
-                        <h2><strong>Peitoral Maior:</strong></h2> É um músculo em formato de leque. Embora seja uma peça única de tecido, ele é dividido funcionalmente em porções baseadas na origem de suas fibras, pois cada parte responde melhor a diferentes ângulos de movimento:
-                        <article><strong>Porção Clavicular (Superior):</strong></article> Origina-se na metade interna da clavícula. Suas fibras correm de cima para baixo e para fora, inserindo-se no braço (úmero).
+                    
+                    <MudPaper Elevation="4" Class="justify-end" MaxWidth="50%" Style="border: 1px solid coral">
+                        <MudText Typo="Typo.body1" Class="mb-2 ms-2">
+                            <h2><strong>Peitoral Maior:</strong></h2> É um músculo em formato de leque. Embora seja uma peça única de tecido, ele é dividido funcionalmente em porções baseadas na origem de suas fibras, pois cada parte responde melhor a diferentes ângulos de movimento:<br />
+                            <b>Porção Clavicular (Superior):</b> Origina-se na metade interna da clavícula. Suas fibras correm de cima para baixo e para fora, inserindo-se no braço (úmero).<br />
 
-                        <article><strong>Porção Esternocostal (Medial/Inferior):</strong></article> É a maior parte do peito. Origina-se no esterno (osso do centro do peito) e nas cartilagens das primeiras seis costelas. Suas fibras correm horizontalmente e de baixo para cima em direção ao braço.
+                            <b>Porção Esternocostal (Medial/Inferior):</b> É a maior parte do peito. Origina-se no esterno (osso do centro do peito) e nas cartilagens das primeiras seis costelas. Suas fibras correm horizontalmente e de baixo para cima em direção ao braço.<br />
 
-                        <article><strong>Porção Abdominal (Inferior):</strong></article> Uma subdivisão mais baixa que se origina na bainha do músculo reto do abdômen e puxa o braço para baixo e para dentro.
+                            <b>Porção Abdominal (Inferior):</b> Uma subdivisão mais baixa que se origina na bainha do músculo reto do abdômen e puxa o braço para baixo e para dentro.<br />
 
-                        <article><strong>O Ponto de Inserção:</strong></article> Todas as fibras do peitoral maior se convergem em um único tendão que se fixa na parte anterior do úmero (o osso do braço). Isso significa que a principal função do peito não é mover as mãos, mas sim mover o braço em direção ao centro do corpo.</MudText>
+                            <b>O Ponto de Inserção:</b> Todas as fibras do peitoral maior se convergem em um único tendão que se fixa na parte anterior do úmero (o osso do braço). Isso significa que a principal função do peito não é mover as mãos, mas sim mover o braço em direção ao centro do corpo.
+                        </MudText>
+                    </MudPaper>
                     <MudDivider Class="my-4" Style="--mud-palette-divider:coral" />
                     <MudText Typo="Typo.body1" Class="mb-2"><h2><strong>Peitoral Menor:</strong></h2> Músculo plano e triangular que fica escondido abaixo do peitoral maior. Ele não se insere no braço, mas sim no processo coracoide da escápula (omoplata). Sua função é estabilizar, deprimir (puxar para baixo) e protrair (jogar para a frente) a escápula.
                         <article><strong>Funções Biomecânicas (Ações Populares)</strong></article>
@@ -1070,7 +1077,7 @@
                 </MudGrid>
             }
 
-        </MudPaper>
+        
     }
 
     <MudGrid Spacing="5" Class="px-4">
