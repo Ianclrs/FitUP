@@ -29,7 +29,7 @@
     </style>
     </MudCard>
     @*Botoes de ativacao*@
-    <div class="mt-2 d-flex gap-1">
+    <div class="mt-2 d-flex gap-1 flex-wrap">
     <MudButton Class="transition-fast-out-slow-in scale-hover" OnClick="ExibirProteinas" Style="background-color:darkred;font-weight:bold;font-family:Cambria">Proteinas</MudButton>
     <MudButton Class="transition-fast-out-slow-in scale-hover" OnClick="ExibirCarboidratos" Style="background-color:sandybrown;font-weight:bold;font-family:Cambria">Carboidratos</MudButton>
     <MudButton Class="transition-fast-out-slow-in scale-hover" OnClick="ExibirFrutas" Style="background-color:darkcyan;font-weight:bold;font-family:Cambria">Frutas</MudButton>
@@ -414,6 +414,7 @@
     </MudCard>
 </MudStack>
 
+
 <div class="d-flex flex-wrap gap-5 justify-center mt-2">
 <MudCard Elevation="11" Style="width: 280px;" Class="rounded-xl trasition-fast-out-slow-in scale-hover mb-1">
     <MudCardMedia  Image="img-gm/cafe1.png" Height="150" />
@@ -482,7 +483,20 @@
             </MudText>
         </MudCardContent>
     </MudCard>
+
 </div>
+<MudStack AlignItems="AlignItems.Center" Class="mt-2">
+<MudButton HtmlTag="a"
+           Href="img-gm/bulkinglimpo.png"
+           Download="Dieta_Bulking_Limpo.png"
+           Variant="Variant.Filled"
+           Color="Color.Primary"
+           Style="background-color: coral; font-weight: bold; color: white; width:220px"
+           StartIcon="@Icons.Material.Filled.Download"
+           Class="mt-1 mb-2 trasition-fast-out-slow-in scale-hover">
+    Baixar PDF da Dieta
+</MudButton>
+</MudStack>
 <MudDivider Class="mt-3 mb-3" Style="--mud-palette-divider:coral"></MudDivider>
 @*Segunda Dieta*@
 <MudStack AlignItems="AlignItems.Center">
@@ -544,7 +558,18 @@
         </MudCardContent>
     </MudCard>
 </div>
-
+<MudStack AlignItems="AlignItems.Center" Class="mt-2">
+<MudButton HtmlTag="a"
+           Href="img-gm/cutting.png"
+           Download="Dieta_Cutting.png"
+           Variant="Variant.Filled"
+           Color="Color.Primary"
+           Style="background-color: coral; font-weight: bold; color: white;"
+           StartIcon="@Icons.Material.Filled.Download"
+           Class="mt-1 mb-2 trasition-fast-out-slow-in scale-hover">
+    Baixar PDF da Dieta
+</MudButton>
+</MudStack>
 <MudDivider Class="mt-3 mb-3" Style="--mud-palette-divider:coral"></MudDivider>
 @*Terceira dieta*@
 <MudStack AlignItems="AlignItems.Center">
@@ -616,7 +641,18 @@
     </MudCardContent>
     </MudCard>
 </div>
-
+<MudStack AlignItems="AlignItems.Center" Class="mt-2">
+<MudButton HtmlTag="a"
+           Href="img-gm/bulkingclean.png"
+           Download="Dieta_Bulking_Limpo.png"
+           Variant="Variant.Filled"
+           Color="Color.Primary"
+           Style="background-color: coral; font-weight: bold; color: white;"
+           StartIcon="@Icons.Material.Filled.Download"
+           Class="mt-1 mb-2 trasition-fast-out-slow-in scale-hover">
+    Baixar PDF da Dieta
+</MudButton>
+</MudStack>
 <MudDivider Class="mt-3 mb-3" Style="--mud-palette-divider:coral"></MudDivider>
 @*Quarta Dieta*@
 <MudStack AlignItems="AlignItems.Center">
@@ -687,6 +723,18 @@
         </MudCardContent>
     </MudCard>
 </div>
+<MudStack AlignItems="AlignItems.Center" Class="mt-2">
+<MudButton HtmlTag="a"
+           Href="img-gm/carbcycling.png"
+           Download="Dieta_CarbCycling.png"
+           Variant="Variant.Filled"
+           Color="Color.Primary"
+           Style="background-color: coral; font-weight: bold; color: white;"
+           StartIcon="@Icons.Material.Filled.Download"
+               Class="mt-1 mb-2 trasition-fast-out-slow-in scale-hover">
+    Baixar PDF da Dieta
+</MudButton>
+</MudStack>
 </MudContainer>
 
 
