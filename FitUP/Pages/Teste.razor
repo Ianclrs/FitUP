@@ -1,189 +1,1084 @@
-﻿
-@page "/teste"
-<!-- Container mantém tudo centralizado em telas ultra-wide -->
+﻿@page "/Teste"
+@using System.Collections.Generic
+@using System.Timers
 
-<MudContainer MaxWidth="MaxWidth.Large" Class="px-2 mt-0">
+<PageTitle>Monte o Seu Treino</PageTitle>
 
-    <MudGrid Justify="Justify.Center" Class="align-center" Spacing="1">
+<style>
+    :root {
+        --fitup-orange: #FF7A2F;
+        --fitup-orange-hover: #FF9559;
+        --fitup-orange-alpha: rgba(255, 122, 47, 0.12);
+        --fitup-orange-glow: 0 0 22px rgba(255, 122, 47, 0.30);
+        --fitup-orange-glow-sm: 0 0 14px rgba(255, 122, 47, 0.22);
+    }
 
-        <MudItem xs="12" md="7" Class="d-flex flex-column">
+    .step-card {
+        background-color: var(--mud-palette-surface) !important;
+        border: 1.5px solid var(--mud-palette-surface) !important;
+        border-radius: 6px !important;
+        transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s !important;
+    }
 
-            <MudText Typo="Typo.h4" Style="color:coral; font-weight:bold;" Class="mb-3">
-                Peitoral (Maior e Menor)
-            </MudText>
+        .step-card:hover {
+            border-color: var(--fitup-orange) !important;
+            box-shadow: var(--fitup-orange-glow);
+            transform: translateY(-2px);
+        }
 
-            <MudPaper Elevation="15" Class="d-flex flex-column pa-2" Height="100%" Style="border: 1px solid coral">
-                <MudText Typo="Typo.body1" Class="mb-3">
-                    <strong>Função:</strong> O peitoral é um dos agrupamentos musculares mais visados na musculação, tanto pela estética quanto pela sua importância funcional no complexo do ombro. Para extrair o máximo de desenvolvimento desse músculo, é preciso entender como ele se divide, a orientação de suas fibras e a biomecânica por trás dos exercícios.
-                </MudText>
-                <MudText Typo="Typo.body1">
-                    <strong>Anatomia e Divisões Funcionais:</strong> O que chamamos popularmente de "peito" é composto por dois músculos principais: o peitoral maior (o músculo grande e superficial) e o peitoral menor (um músculo profundo, localizado abaixo do maior).
-                </MudText>
-            </MudPaper>
-        </MudItem>
+    .option-card-selected {
+        border-color: var(--fitup-orange) !important;
+        background-color: var(--fitup-orange-alpha) !important;
+    }
 
-        <MudItem xs="12" md="5" Class="d-flex flex-column align-center justify-center">
-            <MudImage Src="img/H.Full.png"
-                      Alt="Anatomia do Peitoral"
-                      Elevation="15"
-                      Class="rounded-lg mt-2 mt-md-20"
-                      Style="width: 100%; max-width: 420px; object-fit: cover;" />
-            <MudText Typo="Typo.caption" Class="mt-2 text-center" Style="color:coral; max-width:420px">
-                <ul style="color:var(--mud-palette-text-primary); padding-right: 50px;">
-                    <li class="mb-1"><b>Nome do Exercicio:</b></li>
-                    <li class="mb-1"><b>Academia:</b> ...</li>
-                </ul>
-            </MudText>
-        </MudItem>
+    .pill-option {
+        background-color: var(--mud-palette-surface) !important;
+        border: 1.5px solid var(--mud-palette-surface) !important;
+        border-radius: 6px !important;
+        color: var(--mud-palette-text-primary) !important;
+        transition: border-color 0.2s, background-color 0.2s, box-shadow 0.2s;
+        cursor: pointer;
+        padding: 8px 20px;
+        font-size: 15px;
+    }
 
-    </MudGrid>
-    <MudDivider Class="my-4" Style="--mud-palette-divider: coral" />
+        .pill-option:hover {
+            border-color: var(--fitup-orange) !important;
+            box-shadow: 0 0 16px rgba(255, 122, 47, 0.28);
+        }
 
-    <MudGrid Justify="Justify.Center" Class="align-center mb-6" Spacing="2">
+    .pill-selected {
+        border-color: var(--fitup-orange) !important;
+        background-color: var(--fitup-orange-alpha) !important;
+        color: var(--fitup-orange) !important;
+        font-weight: 500;
+    }
 
-        
-        <MudItem xs="12" md="7" Class="d-flex flex-column">
+    .day-btn {
+        background-color: var(--mud-palette-surface) !important;
+        border: 1.5px solid var(--mud-palette-surface) !important;
+        border-radius: 6px !important;
+        color: var(--mud-palette-text-secondary) !important;
+        font-size: 16px;
+        font-weight: 700;
+        transition: all 0.2s, box-shadow 0.2s;
+        cursor: pointer;
+        min-width: 52px;
+        height: 52px;
+    }
 
-            <MudPaper Elevation="15" Class="d-flex flex-column pa-2 mt-2" Height="100%" Style="border: 1px solid coral">
-                <MudText Typo="Typo.h5" Style="color:coral; font-weight:bold;" Class="mb-3">
-                    Peitoral Maior
-                </MudText>
-                <MudText Typo="Typo.body1" Class="mb-2">
-                    É um músculo em formato de leque. Embora seja uma peça única de tecido, ele é dividido funcionalmente em porções baseadas na origem de suas fibras, pois cada parte responde melhor a diferentes ângulos de movimento:<br /><br />
-                    <ul style="color: var(--mud-palette-text-primary); padding-left: 20px; font-size: 0.875rem;">
-                        <li class="mb-1"><b>Porção Clavicular (Superior):</b> Origina-se na metade interna da clavícula. Suas fibras correm de cima para baixo e para fora, inserindo-se no braço (úmero).</li>
-                        <li class="mb-1"><b>Porção Esternocostal (Medial/Inferior):</b> É a maior parte do peito. Origina-se no esterno (osso do centro do peito) e nas cartilagens das primeiras seis costelas. Suas fibras correm horizontalmente e de baixo para cima em direção ao braço.</li>
-                        <li class="mb-1"><b>Porção Abdominal (Inferior):</b> Uma subdivisão mais baixa que se origina na bainha do músculo reto do abdômen e puxa o braço para baixo e para dentro.</li>
-                        <li class="mb-1"><b>O Ponto de Inserção:</b> Todas as fibras do peitoral maior se convergem em um único tendão que se fixa na parte anterior do úmero (o osso do braço). Isso significa que a principal função do peito não é mover as mãos, mas sim mover o braço em direção ao centro do corpo.</li>
-                    </ul>
-                </MudText>
-            </MudPaper>
-        </MudItem>
+        .day-btn:hover {
+            border-color: var(--fitup-orange) !important;
+            box-shadow: var(--fitup-orange-glow-sm);
+            color: var(--mud-palette-text-primary) !important;
+        }
 
-        
-        <MudItem xs="12" md="5" Class="d-flex flex-column align-center justify-center">
-            <MudImage Src="img/H.Full.png"
-                      Alt="Anatomia do Peitoral Maior"
-                      Elevation="15"
-                      Class="rounded-lg mt-4 mt-md-0"
-                      Style="width: 100%; max-width: 420px; object-fit: cover;" />
-            <MudText Typo="Typo.caption" Class="mt-2 text-center" Style="color:coral; max-width:420px">
-                <ul style="color:var(--mud-palette-text-primary); padding-right: 50px;">
-                    <li class="mb-1"><b>Nome do Exercicio:</b></li>
-                    <li class="mb-1"><b>Academia:</b> ...</li>
-                </ul>
-            </MudText>
-        </MudItem>
-    </MudGrid>
+    .day-btn-selected {
+        border-color: var(--fitup-orange) !important;
+        background-color: var(--fitup-orange-alpha) !important;
+        color: var(--fitup-orange) !important;
+    }
 
-    <MudDivider Class="my-10" Style="--mud-palette-divider: coral" />
+    .progress-track {
+        background-color: var(--mud-palette-surface);
+        border-radius: 6px;
+        height: 3px;
+        overflow: hidden;
+    }
 
-    
-    <MudGrid Justify="Justify.Center" Class="align-center mb-6" Spacing="2">
+    .progress-fill {
+        height: 3px;
+        background-color: var(--fitup-orange);
+        border-radius: 6px;
+        transition: width 0.5s cubic-bezier(.4,0,.2,1);
+    }
 
-        <MudItem xs="12" md="7" Class="d-flex flex-column">
-            <MudPaper Elevation="15" Class="d-flex flex-column pa-4" Height="100%" Style="border: 1px solid coral">
-                <MudText Typo="Typo.h5" Style="color:coral; font-weight:bold;" Class="mb-3">
-                    Peitoral Menor
-                </MudText>
-                <MudText Typo="Typo.body1" Class="mb-3">
-                    Músculo plano e triangular que fica escondido abaixo do peitoral maior. Ele não se insere no braço, mas sim no processo coracoide da escápula (omoplata). Sua função é estabilizar, deprimir (puxar para baixo) e protrair (jogar para a frente) a escápula.
-                </MudText>
+    .exercise-card {
+        background-color: var(--mud-palette-surface) !important;
+        border: 1.5px solid var(--mud-palette-surface) !important;
+        border-radius: 6px !important;
+    }
 
-                <MudText Typo="Typo.body1" Style="color:coral; font-weight:bold;" Class="mt-2 mb-1">
-                    Funções Biomecânicas (Ações Populares)
-                </MudText>
-                <MudText Typo="Typo.body1" Class="mb-2">
-                    Para recrutar o peitoral ao máximo, o foco deve ser realizar as ações anatômicas que ele comanda:
-                </MudText>
+        .exercise-card:hover {
+            border-color: var(--fitup-orange) !important;
+        }
 
-                <ul style="color: var(--mud-palette-text-primary); padding-left: 20px; font-size: 0.875rem;">
-                    <li class="mb-1"><b>Adução Horizontal:</b> Trazer os braços que estão abertos em linha reta para a frente do corpo (ex: movimento do crucifixo ou voador).</li>
-                    <li class="mb-1"><b>Flexão do Ombro:</b> Levantar o braço para a frente (função principal da porção superior/clavicular).</li>
-                    <li class="mb-1"><b>Extensão do Ombro:</b> Trazer o braço de cima para baixo (função principal da porção inferior/abdominal).</li>
-                    <li class="mb-1"><b>Rotação Interna:</b> Girar o braço para dentro, em direção ao eixo do próprio corpo.</li>
-                </ul>
-            </MudPaper>
-        </MudItem>
+    .ex-num {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background-color: var(--fitup-orange-alpha);
+        color: var(--fitup-orange);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+        font-weight: 500;
+        flex-shrink: 0;
+    }
 
-        <MudItem xs="12" md="5" Class="d-flex flex-column align-center justify-center">
-            <MudImage Src="img/H.Full.png"
-                      Alt="Anatomia do Peitoral Menor"
-                      Elevation="15"
-                      Class="rounded-lg mt-4 mt-md-0"
-                      Style="width: 100%; max-width: 420px; object-fit: cover;" />
+    .tag-highlight {
+        background-color: var(--fitup-orange-alpha);
+        border: 1px solid var(--fitup-orange);
+        color: var(--fitup-orange);
+        border-radius: 6px;
+        padding: 2px 10px;
+        font-size: 12px;
+        font-weight: 500;
+    }
 
-            <MudText Typo="Typo.caption" Class="mt-2 text-center" Style="color:coral; max-width:420px">
-                <ul style="color:var(--mud-palette-text-primary); padding-right: 50px;">
-                    <li class="mb-1"><b>Nome do Exercicio:</b></li>
-                    <li class="mb-1"><b>Academia:</b> ...</li>
-                </ul>
-            </MudText>
-        </MudItem>
-    </MudGrid>
+    .tag-neutral {
+        background-color: var(--fitup-orange-alpha);
+        border: 1px solid var(--fitup-orange);
+        color: var(--mud-palette-text-primary);
+        border-radius: 6px;
+        padding: 2px 10px;
+        font-size: 12px;
+    }
 
-    <MudDivider Class="my-10" Style="--mud-palette-divider: coral" />
+    .stat-card {
+        background-color: var(--mud-palette-surface) !important;
+        border: 1.5px solid var(--mud-palette-surface) !important;
+        border-radius: 6px !important;
+        text-align: center;
+        padding: 14px 10px;
+    }
 
-    
-    <MudGrid Justify="Justify.Center" Class="align-center mb-6" Spacing="2">
+    .day-tab {
+        background-color: var(--mud-palette-surface);
+        border: 1.5px solid var(--mud-palette-surface);
+        border-radius: 6px;
+        padding: 6px 18px;
+        font-size: 13px;
+        color: var(--mud-palette-text-primary);
+        cursor: pointer;
+        transition: all 0.2s, box-shadow 0.2s;
+    }
 
-        
-        <MudItem xs="12" md="7" Class="d-flex flex-column">
-            <MudPaper Elevation="15" Class="d-flex flex-column pa-4" Height="100%" Style="border: 1px solid coral">
-                <MudText Typo="Typo.h5" Style="color:coral; font-weight:bold;" Class="mb-3">
-                    Maximizando a Hipertrofia: Seleção de Exercícios
-                </MudText>
-                <MudText Typo="Typo.body1" Class="mb-3">
-                    Para construir um peitoral estético e proporcional, o treino deve estimular todas as subdivisões respeitando o alinhamento das fibras.
-                </MudText>
+        .day-tab:hover {
+            border-color: var(--fitup-orange);
+            box-shadow: 0 0 12px rgba(255, 122, 47, 0.22);
+            color: var(--mud-palette-text-primary);
+        }
 
-                <MudText Typo="Typo.button" Style="color:coral; font-weight:bold;" Class="mt-2">
-                    Foco na Porção Superior (Clavicular)
-                </MudText>
-                <MudText Typo="Typo.body2" Class="mb-2">
-                    Para atingir o "peito alto", o braço precisa subir e entrar em direção ao centro. O ângulo ideal do banco geralmente fica entre 30° e 45°. Ângulos maiores começam a transferir o esforço excessivamente para o deltoide anterior.<br />
-                    <strong>Exercícios-chave:</strong> Supino inclinado (halteres ou barra), crucifixo inclinado, e crossover polia baixa.
-                </MudText>
+    .day-tab-active {
+        border-color: var(--fitup-orange);
+        color: var(--fitup-orange);
+        background-color: var(--fitup-orange-alpha);
+    }
 
-                <MudText Typo="Typo.button" Style="color:coral; font-weight:bold;" Class="mt-2">
-                    Foco na Porção Medial e Global (Esternocostal)
-                </MudText>
-                <MudText Typo="Typo.body2" Class="mb-2">
-                    Aqui as fibras correm na horizontal. Exercícios em bancos planos oferecem o melhor alinhamento mecânico para gerar força máxima.<br />
-                    <strong>Exercícios-chave:</strong> Supino reto (barra ou halteres), voador/peck deck, e supino articulado.
-                </MudText>
+    .btn-primary-fitup {
+        background-color: var(--fitup-orange) !important;
+        color: #FFFFFF !important;
+        border-radius: 6px !important;
+        border: none !important;
+        font-weight: 500 !important;
+        transition: background-color 0.2s, transform 0.15s !important;
+    }
 
-                <MudText Typo="Typo.button" Style="color:coral; font-weight:bold;" Class="mt-2">
-                    Foco na Porção Inferior (Abdominal/Costal)
-                </MudText>
-                <MudText Typo="Typo.body2" Class="mb-3">
-                    Para desenhar a linha inferior, o movimento deve empurrar para baixo ou trazer o braço de cima em direção à cintura.<br />
-                    <strong>Exercícios-chave:</strong> Supino declinado, paralelas (tronco inclinado) e crossover polia alta.
-                </MudText>
+        .btn-primary-fitup:hover {
+            background-color: var(--fitup-orange-hover) !important;
+        }
 
-                <MudDivider Class="my-2" Style="--mud-palette-divider: var(--mud-palette-divider-light);" />
-                <MudText Typo="Typo.body2" Style="font-style: italic;">
-                    <strong>Visão de Treino:</strong> Deve ser estimulado em ângulos diferentes para um aspecto estético preenchido.
-                </MudText>
-            </MudPaper>
-        </MudItem>
+        .btn-primary-fitup:active {
+            transform: scale(0.98);
+        }
 
-        
-        <MudItem xs="12" md="5" Class="d-flex flex-column align-center justify-center">
-            
-            <MudImage Src="img/H.Full.png"
-                      Alt="Exercícios para Peitoral"
-                      Elevation="15"
-                      Class="rounded-lg mt-4 mt-md-0"
-                      Style="width: 100%; max-width: 420px; object-fit: cover;" />
-            
-            <MudText Typo="Typo.caption" Class="mt-2 text-center" Style="color:coral; max-width:420px">
-                <ul style="color:var(--mud-palette-text-primary); padding-right: 50px;">
-                    <li class="mb-1"><b>Nome do Exercicio:</b></li>
-                    <li class="mb-1"><b>Academia:</b> ...</li>
-                </ul>
-            </MudText>
-           
-        </MudItem>
-    </MudGrid>
-</MudContainer>
+        .btn-primary-fitup[disabled], .btn-primary-fitup.mud-button-disabled {
+            color: #FFFFFF !important;
+            opacity: 0.7 !important;
+            cursor: not-allowed;
+        }
+
+    .btn-secondary-fitup, .btn-voltar-fitup {
+        background-color: var(--mud-palette-surface) !important;
+        color: var(--mud-palette-text-primary) !important;
+        border: 1.5px solid var(--mud-palette-surface) !important;
+        border-radius: 6px !important;
+        font-weight: 500 !important;
+        transition: all 0.2s, box-shadow 0.2s !important;
+    }
+
+        .btn-secondary-fitup:hover, .btn-voltar-fitup:hover {
+            border-color: var(--fitup-orange) !important;
+            box-shadow: var(--fitup-orange-glow-sm);
+        }
+
+    .spinner-ring {
+        width: 52px;
+        height: 52px;
+        border: 3px solid var(--mud-palette-divider);
+        border-top-color: var(--fitup-orange);
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+        margin: 0 auto;
+    }
+
+    @@keyframes spin {
+        to {
+            transform: rotate(360deg);
+        }
+    }
+
+    .loading-step-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 13px;
+        color: var(--mud-palette-text-disabled);
+        transition: color 0.3s;
+    }
+
+    .loading-step-done {
+        color: var(--mud-palette-text-primary) !important;
+    }
+
+    .ls-dot {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background-color: var(--mud-palette-divider);
+        flex-shrink: 0;
+        transition: background-color 0.3s;
+    }
+
+    .ls-dot-done {
+        background-color: var(--fitup-orange) !important;
+    }
+
+    .limitation-warning {
+        background-color: var(--mud-palette-surface);
+        border: 1.5px solid var(--fitup-orange);
+        border-radius: 6px;
+        padding: 12px 16px;
+        font-size: 13px;
+        color: var(--mud-palette-text-primary);
+    }
+
+    .step-badge {
+        font-size: 13px;
+        color: var(--fitup-orange);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        margin-bottom: 6px;
+    }
+
+    .fitup-textarea {
+        background-color: var(--mud-palette-surface) !important;
+        border: 1.5px solid var(--mud-palette-divider) !important;
+        border-radius: 6px !important;
+        color: var(--mud-palette-text-primary) !important;
+        font-family: inherit;
+        resize: none;
+        outline: none;
+        transition: border-color 0.2s;
+        width: 100%;
+        padding: 14px;
+        font-size: 14px;
+        line-height: 1.6;
+    }
+
+        .fitup-textarea:focus {
+            border-color: var(--fitup-orange) !important;
+        }
+
+        .fitup-textarea::placeholder {
+            color: var(--mud-palette-text-disabled);
+        }
+
+    .edit-exercise-overlay {
+        background-color: var(--mud-palette-surface);
+        border: 1.5px solid var(--fitup-orange);
+        border-radius: 6px;
+        padding: 16px;
+        margin-top: 8px;
+        margin-bottom: 8px;
+    }
+
+    .edit-input {
+        background-color: var(--mud-palette-surface) !important;
+        border: 1.5px solid var(--mud-palette-surface) !important;
+        border-radius: 6px !important;
+        color: var(--mud-palette-text-primary) !important;
+        padding: 8px 12px;
+        font-size: 13px;
+        outline: none;
+        transition: border-color 0.2s;
+    }
+
+        .edit-input:focus {
+            border-color: var(--fitup-orange) !important;
+        }
+
+    .btn-edit-fitup {
+        background-color: transparent !important;
+        border: 1.5px solid var(--fitup-orange) !important;
+        color: var(--fitup-orange) !important;
+        border-radius: 6px !important;
+        font-size: 12px !important;
+        padding: 4px 14px !important;
+        cursor: pointer;
+        transition: all 0.2s;
+        white-space: nowrap;
+    }
+
+        .btn-edit-fitup:hover {
+            background-color: var(--fitup-orange-alpha) !important;
+            box-shadow: 0 0 10px rgba(255, 122, 47, 0.18);
+        }
+
+    .pular-link {
+        background-color: var(--mud-palette-surface) !important;
+        color: var(--mud-palette-text-primary) !important;
+        border: 1.5px solid var(--mud-palette-surface) !important;
+        border-radius: 6px !important;
+        font-weight: 500 !important;
+        transition: all 0.2s, box-shadow 0.2s !important;
+    }
+
+        .pular-link:hover {
+            color: var(--fitup-orange) !important;
+        }
+
+    .result-header-card {
+        background: linear-gradient(135deg, var(--fitup-orange-alpha) 0%, var(--mud-palette-surface) 60%);
+        border: 1.5px solid var(--fitup-orange);
+        border-radius: 8px;
+        padding: 14px 18px;
+        margin-bottom: 14px;
+    }
+
+    .focus-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        background-color: var(--fitup-orange-alpha);
+        border: 1px solid var(--fitup-orange);
+        border-radius: 6px;
+        padding: 6px 14px;
+        font-size: 13px;
+        color: var(--fitup-orange);
+        font-weight: 500;
+    }
+</style>
+
+<div>
+    <MudContainer MaxWidth="MaxWidth.Small" Class="py-8">
+
+        @if (_phase == Phase.Quiz)
+        {
+            <div class="mb-8">
+                <MudStack Row="true" Justify="Justify.SpaceBetween" Class="mb-2">
+                    @for (int i = 0; i < _stepLabels.Length; i++)
+                    {
+                        int idx = i;
+                        @if (idx == _step)
+                        {
+                            <MudText Typo="Typo.body2" Color="Color.Inherit" Style="font-weight:700;">
+                                <span style="color:var(--fitup-orange);">@_stepLabels[idx]</span>
+                            </MudText>
+                        }
+                        else
+                        {
+                            <MudText Typo="Typo.body2" Color="Color.Inherit">@_stepLabels[idx]</MudText>
+                        }
+                    }
+                </MudStack>
+                <div class="progress-track">
+                    <div class="progress-fill" style="width:@(ProgressPct())%"></div>
+                </div>
+            </div>
+
+            @if (_step == 0)
+            {
+                <div class="step-badge">Etapa 1 de 6</div>
+                <MudText Typo="Typo.h5" Color="Color.Inherit" Style="font-weight:500;margin-bottom:6px;">Qual é o seu objetivo principal?</MudText>
+                <MudText Typo="Typo.body2" Color="Color.Inherit" Style="margin-bottom:24px;">Vamos personalizar cada detalhe do seu treino.</MudText>
+                <MudGrid Spacing="3">
+                    @foreach (var opt in _objetivoOptions)
+                    {
+                        var o = opt;
+                        <MudItem xs="6">
+                            <div class="step-card @((_objetivo == o.Value) ? "option-card-selected" : "")" style="padding:18px;cursor:pointer;" @onclick="() => _objetivo = o.Value">
+                                <MudIcon Icon="@o.Icon" Style="color:var(--fitup-orange);font-size:26px;margin-bottom:8px;" />
+                                <MudText Typo="Typo.subtitle2" Color="Color.Inherit" Style="font-weight:500;">@o.Value</MudText>
+                                <MudText Typo="Typo.caption" Color="Color.Inherit" Style="margin-top:3px;">@o.Desc</MudText>
+                            </div>
+                        </MudItem>
+                    }
+                </MudGrid>
+                <MudStack Row="true" Class="mt-6" Spacing="2">
+                    <MudButton FullWidth="true" Class="btn-primary-fitup" Size="Size.Large" Disabled="@(_objetivo == null)" OnClick="NextStep">
+                        <MudText Style="font-weight:bolder">
+                            Continuar
+                        </MudText>
+                    </MudButton>
+                </MudStack>
+            }
+
+            @if (_step == 1)
+            {
+                <div class="step-badge">Etapa 2 de 6</div>
+                <MudText Typo="Typo.h5" Color="Color.Inherit" Style="font-weight:500;margin-bottom:6px;">Qual é o seu nível de experiência?</MudText>
+                <MudText Typo="Typo.body2" Color="Color.Inherit" Style="margin-bottom:24px;">Isso define a intensidade e complexidade dos exercícios.</MudText>
+                <MudGrid Spacing="3">
+                    @foreach (var opt in _nivelOptions)
+                    {
+                        var o = opt;
+                        <MudItem xs="6">
+                            <div class="step-card @((_nivel == o.Value) ? "option-card-selected" : "")" style="padding:18px;cursor:pointer;" @onclick="() => _nivel = o.Value">
+                                <MudIcon Icon="@o.Icon" Style="color:var(--fitup-orange);font-size:26px;margin-bottom:8px;" />
+                                <MudText Typo="Typo.subtitle2" Color="Color.Inherit" Style="font-weight:500;">@o.Value</MudText>
+                                <MudText Typo="Typo.caption" Color="Color.Inherit" Style="margin-top:3px;">@o.Desc</MudText>
+                            </div>
+                        </MudItem>
+                    }
+                </MudGrid>
+                <MudStack Row="true" Class="mt-6" Spacing="2">
+                    <MudButton Class="btn-voltar-fitup" Size="Size.Large" OnClick="PrevStep">
+                        <MudText Style="font-weight:bold">
+                            Voltar
+                        </MudText>
+                    </MudButton>
+                    <MudButton FullWidth="true" Class="btn-primary-fitup" Size="Size.Large" Disabled="@(_nivel == null)" OnClick="NextStep">
+                        <MudText Style="font-weight:bolder">
+                            Continuar
+                        </MudText>
+                    </MudButton>
+                </MudStack>
+            }
+
+            @if (_step == 2)
+            {
+                <div class="step-badge">Etapa 3 de 6</div>
+                <MudText Typo="Typo.h5" Color="Color.Inherit" Style="font-weight:500;margin-bottom:6px;">Quantos dias por semana você treina?</MudText>
+                <MudText Typo="Typo.body2" Color="Color.Inherit" Style="margin-bottom:24px;">Montaremos a divisão semanal perfeita para você.</MudText>
+                <MudStack Row="true" Justify="Justify.Center" Spacing="2">
+                    @foreach (var d in new[] { 2, 3, 4, 5, 6 })
+                    {
+                        int day = d;
+                        <div class="day-btn @((_dias == day) ? "day-btn-selected" : "")" style="display:flex;align-items:center;justify-content:center;" @onclick="() => _dias = day">@day@("x")</div>
+                    }
+                </MudStack>
+                <MudStack Row="true" Class="mt-6" Spacing="2">
+                    <MudButton Class="btn-voltar-fitup" Size="Size.Large" OnClick="PrevStep">
+                        <MudText Style="font-weight:bold">
+                            Voltar
+                        </MudText>
+                    </MudButton>
+                    <MudButton FullWidth="true" Class="btn-primary-fitup" Size="Size.Large" Disabled="@(_dias == 0)" OnClick="NextStep">
+                        <MudText Style="font-weight:bolder">
+                            Continuar
+                        </MudText>
+                    </MudButton>
+                </MudStack>
+            }
+
+            @if (_step == 3)
+            {
+                <div class="step-badge">Etapa 4 de 6</div>
+                <MudText Typo="Typo.h5" Color="Color.Inherit" Style="font-weight:500;margin-bottom:6px;">Quanto tempo você tem por treino?</MudText>
+                <MudText Typo="Typo.body2" Color="Color.Inherit" Style="margin-bottom:24px;">Otimizaremos o volume e a densidade do treino.</MudText>
+                <MudStack Row="true" Spacing="2" Style="flex-wrap:wrap;">
+                    @foreach (var dur in _duracaoOptions)
+                    {
+                        var d = dur;
+                        <div class="pill-option @((_duracao == d) ? "pill-selected" : "")" @onclick="() => _duracao = d">@d</div>
+                    }
+                </MudStack>
+                <MudStack Row="true" Class="mt-6" Spacing="2">
+                    <MudButton Class="btn-voltar-fitup" Size="Size.Large" OnClick="PrevStep">
+                        <MudText Style="font-weight:bold">
+                            Voltar
+                        </MudText>
+                    </MudButton>
+                    <MudButton FullWidth="true" Class="btn-primary-fitup" Size="Size.Large" Disabled="@(_duracao == null)" OnClick="NextStep">
+                        <MudText Style="font-weight:bolder">
+                            Continuar
+                        </MudText>
+                    </MudButton>
+                </MudStack>
+            }
+
+            @if (_step == 4)
+            {
+                <div class="step-badge">Etapa 5 de 6</div>
+                <MudText Typo="Typo.h5" Color="Color.Inherit" Style="font-weight:500;margin-bottom:6px;">Onde você vai treinar?</MudText>
+                <MudText Typo="Typo.body2" Color="Color.Inherit" Style="margin-bottom:24px;">Selecionaremos exercícios disponíveis para o seu ambiente.</MudText>
+                <MudGrid Spacing="3">
+                    @foreach (var opt in _localOptions)
+                    {
+                        var o = opt;
+                        <MudItem xs="6">
+                            <div class="step-card @((_local == o.Value) ? "option-card-selected" : "")" style="padding:18px;cursor:pointer;" @onclick="() => _local = o.Value">
+                                <MudIcon Icon="@o.Icon" Style="color:var(--fitup-orange);font-size:26px;margin-bottom:8px;" />
+                                <MudText Typo="Typo.subtitle2" Color="Color.Inherit" Style="font-weight:500;">@o.Value</MudText>
+                                <MudText Typo="Typo.caption" Color="Color.Inherit" Style="margin-top:3px;">@o.Desc</MudText>
+                            </div>
+                        </MudItem>
+                    }
+                </MudGrid>
+                <MudStack Row="true" Class="mt-6" Spacing="2">
+                    <MudButton Class="btn-voltar-fitup" Size="Size.Large" OnClick="PrevStep">
+                        <MudText Style="font-weight:bold">
+                            Voltar
+                        </MudText>
+                    </MudButton>
+                    <MudButton FullWidth="true" Class="btn-primary-fitup" Size="Size.Large" Disabled="@(_local == null)" OnClick="NextStep">
+                        <MudText Style="font-weight:bolder">
+                            Continuar
+                        </MudText>
+                    </MudButton>
+                </MudStack>
+            }
+
+            @if (_step == 5)
+            {
+                <div class="step-badge">Etapa 6 de 6</div>
+                <MudText Typo="Typo.h5" Color="Color.Inherit" Style="font-weight:500;margin-bottom:6px;">Você tem alguma limitação física?</MudText>
+                <MudText Typo="Typo.body2" Color="Color.Inherit" Style="margin-bottom:24px;">Opcional — nos ajuda a evitar exercícios que possam causar desconforto.</MudText>
+                <textarea class="fitup-textarea" rows="4" placeholder="Ex: dor no joelho, hérnia de disco, tendinite no ombro..." @bind="_limitacoes" @bind:event="oninput"></textarea>
+                <MudStack Row="true" Class="mt-6" Spacing="2" AlignItems="AlignItems.Center">
+                    <MudButton Class="btn-voltar-fitup" Size="Size.Large" OnClick="PrevStep">
+                        <MudText Style="font-weight:bold">
+                            Voltar
+                        </MudText>
+                    </MudButton>
+                    <MudButton FullWidth="true" Class="btn-primary-fitup" Size="Size.Large" OnClick="StartLoading">
+                        <MudText Style="font-weight:bolder">
+                            Gerar Treino
+                        </MudText>
+                    </MudButton>
+                </MudStack>
+            }
+        }
+
+        @if (_phase == Phase.Loading)
+        {
+            <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:420px;gap:24px;">
+                <div class="spinner-ring"></div>
+                <MudText Typo="Typo.subtitle1" Color="Color.Inherit" Style="font-weight:500;">@_currentLoadingLabel</MudText>
+                <div style="display:flex;flex-direction:column;gap:10px;min-width:240px;">
+                    @for (int i = 0; i < _loadingSteps.Length; i++)
+                    {
+                        int idx = i;
+                        <div class="loading-step-item @(_loadingStepDone[idx] ? "loading-step-done" : "")">
+                            <div class="ls-dot @(_loadingStepDone[idx] ? "ls-dot-done" : "")"></div>
+                            <span>@_loadingSteps[idx]</span>
+                        </div>
+                    }
+                </div>
+            </div>
+        }
+
+        @if (_phase == Phase.Result)
+        {
+            var workout = GetWorkout();
+            var splits = workout.Splits.Take(Math.Min(_dias > 0 ? _dias : 3, workout.Splits.Count)).ToList();
+            var currentSplit = splits.ElementAtOrDefault(_activeDay) ?? splits.First();
+            int totalSeries = splits.SelectMany(s => s.Exercises).Sum(e => e.Series);
+
+            <div class="result-header-card">
+                <MudText Typo="Typo.caption" Style="color:var(--fitup-orange);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:4px;">✓ Treino gerado com sucesso</MudText>
+                <MudText Typo="Typo.h5" Color="Color.Inherit" Style="font-weight:500;margin-bottom:2px;">@workout.Nome</MudText>
+                <MudText Typo="Typo.body2" Color="Color.Inherit">@workout.Desc · @_nivel · @_local</MudText>
+            </div>
+
+            <MudGrid Spacing="2" Class="mb-4">
+                <MudItem xs="4"><div class="stat-card"><MudText Typo="Typo.h6" Style="color:var(--fitup-orange);font-weight:500;">@(_dias)x</MudText><MudText Typo="Typo.subtitle2" Color="Color.Inherit">por semana</MudText></div></MudItem>
+                <MudItem xs="4"><div class="stat-card"><MudText Typo="Typo.h6" Style="color:var(--fitup-orange);font-weight:500;">@totalSeries</MudText><MudText Typo="Typo.subtitle2" Color="Color.Inherit">séries totais</MudText></div></MudItem>
+                <MudItem xs="4"><div class="stat-card"><MudText Typo="Typo.h6" Style="color:var(--fitup-orange);font-weight:500;">@GetDuration()</MudText><MudText Typo="Typo.subtitle2" Color="Color.Inherit">por sessão</MudText></div></MudItem>
+            </MudGrid>
+
+            <MudStack Row="true" Spacing="1" Class="mb-4" Style="flex-wrap:wrap;">
+                @for (int i = 0; i < splits.Count; i++)
+                {
+                    int idx = i;
+                    <div class="day-tab @((_activeDay == idx) ? "day-tab-active" : "")" @onclick="() => _activeDay = idx">@splits[idx].Label</div>
+                }
+            </MudStack>
+
+            <div class="focus-badge mb-4">
+                <MudIcon Icon="@Icons.Material.Outlined.TrackChanges" Style="font-size:16px;" />
+                <span>@currentSplit.Focus</span>
+            </div>
+
+            @for (int i = 0; i < currentSplit.Exercises.Count; i++)
+            {
+                var ex = currentSplit.Exercises[i];
+                int num = i + 1;
+                int exIndex = i;
+
+                @if (_editingExerciseDay == _activeDay && _editingExerciseIndex == exIndex)
+                {
+                    var filteredCatalog = GetFilteredCatalog(currentSplit.Focus);
+                    <div class="edit-exercise-overlay">
+                        <MudText Typo="Typo.subtitle2" Style="color:var(--fitup-orange);font-weight:500;margin-bottom:14px;">✎ Alterar Exercício @num</MudText>
+                        <MudStack Spacing="3">
+                            <MudSelect Label="Selecione o Exercício" Variant="Variant.Outlined"
+                                       @bind-Value="_selectedEditExerciseKey" AnchorOrigin="Origin.BottomCenter" Class="rounded-xl"
+                                       ToStringFunc="@(key => filteredCatalog.TryGetValue(key, out var exRef) ? exRef.Name : key)">
+                                @foreach (var kvp in filteredCatalog)
+                                {
+                                    <MudSelectItem Value="@kvp.Key">
+                                        <MudStack Row="true" Spacing="2" AlignItems="AlignItems.Center">
+                                            <MudText Typo="Typo.body2" Color="Color.Inherit">@kvp.Value.Name</MudText>
+                                            <MudText Typo="Typo.caption" Color="Color.Inherit">— @kvp.Value.Muscle</MudText>
+                                        </MudStack>
+                                    </MudSelectItem>
+                                }
+                            </MudSelect>
+                            <div style="display:flex;gap:8px;">
+                                <MudNumericField Label="Séries" Variant="Variant.Outlined" @bind-Value="_editSeries" Min="1" Max="10" Style="flex:1;" />
+                                <MudTextField Label="Repetições" Variant="Variant.Outlined" @bind-Value="_editReps" Style="flex:1;" />
+                                <MudTextField Label="Descanso" Variant="Variant.Outlined" @bind-Value="_editRest" Style="flex:1;" />
+                            </div>
+                        </MudStack>
+                        <MudStack Row="true" Spacing="2" Class="mt-4">
+                            <MudButton FullWidth="true" Class="btn-primary-fitup" Size="Size.Small" OnClick="() => SaveExerciseEdit(exIndex)">
+                                <MudText Style="font-weight:bold">
+                                    Salvar
+                                </MudText>
+                            </MudButton>
+                            <MudButton FullWidth="true" Class="btn-voltar-fitup" Size="Size.Small" OnClick="CancelExerciseEdit">
+                                <MudText Style="font-weight:bold">
+                                    Cancelar
+                                </MudText>
+                            </MudButton>
+                        </MudStack>
+                    </div>
+                }
+                else
+                {
+                    <div class="exercise-card mb-3" style="padding:16px;">
+                        <MudStack Row="true" AlignItems="AlignItems.Start" Spacing="3">
+                            <div class="ex-num">@num</div>
+                            <div style="flex:1;">
+                                <MudText Typo="Typo.subtitle2" Color="Color.Inherit" Style="font-weight:500;margin-bottom:3px;font-weight:bold">@ex.Name</MudText>
+                                <MudText Typo="Typo.subtitle2" Color="Color.Inherit" Style="margin-bottom:8px;font-weight:lighter">@ex.Muscle</MudText>
+                                <MudStack Row="true" Spacing="1" Style="flex-wrap:wrap;">
+                                    <span class="tag-highlight">@ex.Series séries</span>
+                                    <span class="tag-highlight">@ex.Reps reps</span>
+                                    <span class="tag-neutral">⏱ @ex.Rest descanso</span>
+                                </MudStack>
+                            </div>
+                            <button class="btn-edit-fitup" @onclick="() => StartExerciseEdit(exIndex)">✎ Alterar</button>
+                        </MudStack>
+                    </div>
+                }
+            }
+
+            <MudStack Row="true" Spacing="2" Class="mt-6" Style="flex-wrap:wrap;">
+                <MudButton Class="btn-secondary-fitup" Size="Size.Medium" StartIcon="@Icons.Material.Outlined.Bookmark" OnClick="SaveWorkout">
+                    <MudText Style="font-weight:bold">
+                        Salvar
+                    </MudText>
+                </MudButton>
+                <MudButton Class="btn-secondary-fitup" Size="Size.Medium" StartIcon="@Icons.Material.Outlined.FileDownload" OnClick="ExportPdf">
+                    <MudText Style="font-weight:bold">
+                        Exportar PDF
+                    </MudText>
+                </MudButton>
+                <MudButton FullWidth="true" Class="btn-primary-fitup" Size="Size.Medium" StartIcon="@Icons.Material.Outlined.Refresh" OnClick="ResetAll">
+                    <MudText Style="font-weight:bold">
+                        Novo Treino
+                    </MudText>
+                </MudButton>
+            </MudStack>
+
+            @if (!string.IsNullOrWhiteSpace(_limitacoes))
+            {
+                <div class="limitation-warning mt-4">
+                    <MudText Typo="Typo.caption" Color="Color.Inherit">
+                        <span style="color:var(--fitup-orange);">⚠</span>
+                        <strong Style="font-weight:500;"> Limitação considerada:</strong>
+                        <span> @_limitacoes</span>
+                    </MudText>
+                </div>
+            }
+        }
+
+    </MudContainer>
+</div>
+
+@code {
+    private Phase _phase = Phase.Quiz;
+    private int _step;
+    private string? _objetivo;
+    private string? _nivel;
+    private int _dias;
+    private string? _duracao;
+    private string? _local;
+    private string _limitacoes = string.Empty;
+    private int _activeDay;
+
+    private string _currentLoadingLabel = string.Empty;
+    private bool[] _loadingStepDone = new bool[5];
+    private System.Timers.Timer? _loadingTimer;
+    private int _loadingIndex;
+
+    private int _editingExerciseDay = -1;
+    private int _editingExerciseIndex = -1;
+    private string _selectedEditExerciseKey = string.Empty;
+    private int _editSeries;
+    private string _editReps = string.Empty;
+    private string _editRest = string.Empty;
+
+    private readonly string[] _stepLabels = { "Objetivo", "Nível", "Frequência", "Duração", "Local", "Limitações" };
+    private readonly string[] _duracaoOptions = { "Até 30 min", "45 min", "60 min", "75+ min" };
+    private readonly string[] _loadingSteps = { "Analisando perfil...", "Calculando volume ideal...", "Selecionando exercícios...", "Montando divisão semanal...", "Finalizando protocolo..." };
+
+    private readonly List<OptionItem> _objetivoOptions = new()
+    {
+        new(Icons.Material.Outlined.FitnessCenter, "Hipertrofia", "Ganho de massa muscular"),
+        new(Icons.Material.Outlined.LocalFireDepartment, "Emagrecimento", "Queima de gordura"),
+        new(Icons.Material.Outlined.Bolt, "Força", "Força máxima"),
+        new(Icons.Material.Outlined.DirectionsRun, "Resistência", "Resistência e condicionamento"),
+    };
+    private readonly List<OptionItem> _nivelOptions = new()
+    {
+        new(Icons.Material.Outlined.Grade, "Iniciante", "Menos de 6 meses de treino"),
+        new(Icons.Material.Outlined.TrendingUp, "Intermediário", "6 meses a 2 anos"),
+        new(Icons.Material.Outlined.EmojiEvents, "Avançado", "Mais de 2 anos de treino"),
+    };
+    private readonly List<OptionItem> _localOptions = new()
+    {
+        new(Icons.Material.Outlined.Apartment, "Academia", "Equipamentos completos"),
+        new(Icons.Material.Outlined.Home, "Casa", "Sem equipamentos ou básicos"),
+        new(Icons.Material.Outlined.Sync, "Ambos", "Flexível entre os dois ambientes"),
+    };
+
+    private readonly Dictionary<string, ExerciseItem> _exerciseCatalog = new()
+    {
+        @*Peitoral*@
+        ["supino-reto"] = new("Supino Reto Máquina ou Barra", 4, "8–12", "60s", "Peitoral maior"),
+        ["supino-inclinado"] = new("Supino Inclinado Máquina ou Barra", 4, "8–12", "60s", "Peitoral superior"),
+        ["crucifixo-inclinado"] = new("Crucifixo Inclinado Máquina ou Halter", 3, "8–12", "60s", "Peitoral superior"),
+        ["crucifixo-reto"] = new("Crucifixo Reto", 3, "8–12", "60s", "Peitoral maior"),
+        ["voador-frontal"] = new("Voador Frontal", 3, "8–10", "60s", "Peitoral maior"),
+        ["crossover-polia-alta"] = new("Cross Over Polia Alta", 3, "8–12", "60s", "Peitoral superior"),
+        ["crossover-polia-baixa"] = new("Cross Over Polia Baixa", 3, "8–12", "60s", "Peitoral inferior"),
+        ["crossover-polia-media"] = new("Cross Over Polia Média", 3, "8–12", "60s", "Peitoral maior"),
+        ["flexao"] = new("Flexão de Braços", 3, "10–20", "45s", "Peito & Ombros"),
+        ["supino-declinado"] = new("Supino Declinado", 4, "8–12", "90s", "Peitoral inferior"),
+
+        @*Dorsal/Costas*@
+        ["puxada-frontal"] = new("Puxada Frontal", 4, "8–12", "60s", "Costas"),
+        ["remada-curvada"] = new("Remada Curvada com Barra", 4, "8–12", "75s", "Costas & Lombar"),
+        ["remada-cavalinho"] = new("Remada Cavalinho", 3, "5–6", "120s", "Costas"),
+        ["remada-unilateral"] = new("Remada Unilateral", 3, "8–10", "90s", "Costas"),
+        ["pulldown"] = new("Pulldown Polia", 3, "8–10", "120s", "Costas"),
+        ["crucifixo-inverso"] = new("Crucifixo Inverso", 3, "8–10", "90s", "Costas & Ombros"),
+        ["barra-fixa"] = new("Barra Fixa Pegada Larga", 4, "6–10", "90s", "Latíssimo do dorso"),
+
+        @*Ombro*@
+        ["desenvolvimento"] = new("Desenvolvimento Máquina ou Halter", 3, "8–12", "60s", "Deltoides"),
+        ["elevacao-lateral"] = new("Elevação Lateral Polia ou Halter", 3, "8–12", "60s", "Deltoides medial e posterior"),
+        ["elevacao-frontal"] = new("Elevação Frontal", 3, "8–12", "60s", "Deltoides frontal"),
+        ["arnold-press"] = new("Arnold Press", 3, "10–12", "90s", "Deltoides"),
+        ["remada-alta"] = new("Remada Alta", 4, "8–10", "60s", "Deltoides"),
+        ["face-pull"] = new("Face Pull", 4, "8–10", "90s", "Deltoides"),
+
+        @*Triceps*@
+        ["triceps-frances"] = new("Tríceps Francês Corda ou Halter", 3, "10–12", "60s", "Tríceps"),
+        ["triceps-testa"] = new("Tríceps Testa Corda ou Barra W", 3, "10–12", "60s", "Tríceps"),
+        ["triceps-corda"] = new("Tríceps Corda na Polia", 4, "8-12", "60s", "Tríceps"),
+        ["triceps-pulley"] = new("Tríceps Polia Alta", 4, "10–12", "60s", "Tríceps"),
+        ["triceps-coice"] = new("Tríceps Coice", 3, "10–12", "60s", "Tríceps"),
+        ["flexao-fechada"] = new("Flexão de Braços Pegada Fechada", 3, "10–20", "60s", "Tríceps & Peito"),
+        ["mergulho"] = new("Mergulho entre Bancos", 3, "10–12", "60s", "Tríceps & Peito"),
+
+        @*Biceps*@
+        ["rosca-direta"] = new("Rosca Direta com Barra", 3, "6–8", "60s", "Bíceps"),
+        ["rosca-simultanea"] = new("Rosca Simultânea com Barra ou Halter", 3, "10–12", "60s", "Bíceps"),
+        ["rosca-direta-polia"] = new("Rosca Direta na Polia", 3, "6–8", "60s", "Bíceps"),
+        ["rosca-concentrada"] = new("Rosca Concentrada", 3, "10–12", "60s", "Bíceps"),
+        ["rosca-inclinada"] = new("Rosca Inclinada", 3, "10–12", "60s", "Bíceps"),
+        ["rosca-spider"] = new("Rosca Spider", 3, "10–12", "60s", "Bíceps"),
+        ["rosca-alternada"] = new("Rosca Alternada", 3, "10–12", "60s", "Bíceps"),
+        ["rosca-scott"] = new("Rosca Scott", 3, "8–12", "60s", "Bíceps"),
+        ["rosca-martelo"] = new("Rosca Martelo", 3, "8–12", "60s", "Braquial & Braquiorradial"),
+
+        @*Abdomen*@
+        ["abdominal"] = new("Abdominal Reto", 3, "15–20", "45s", "Core"),
+        ["prancha"] = new("Prancha Isométrica", 3, "45–60s", "45s", "Core"),
+        ["abdominal-supra"] = new("Abdominal Supra", 3, "15–20", "60s", "Core"),
+        ["abdominal-infra"] = new("Abdominal Infra", 3, "15–20", "60s", "Core"),
+        ["abdominal-bicicleta"] = new("Abdominal Bicicleta", 3, "15–20", "60s", "Core"),
+        ["abdominal-cruzada"] = new("Abdominal Cruzada", 3, "15–20", "45s", "Core"),
+        ["abdominal-alpinista"] = new("Abdominal Alpinista", 3, "15–20", "60s", "Core"),
+        ["prancha-rotacao"] = new("Prancha com Rotação", 3, "10 cada", "40s", "Core"),
+
+        @*Posterior*@
+        ["stiff"] = new("Stiff com Barra", 3, "10–12", "90s", "Posterior & Glúteo"),
+        ["cadeira-flexora"] = new("Cadeira Flexora", 3, "12–15", "60s", "Posterior & Isquiotibiais"),
+        ["mesa-flexora"] = new("Mesa Flexora", 3, "10–12", "60s", "Posterior & Isquiotibiais"),
+        ["back-extension"] = new("Extenção de Coluna ", 3, "8–10", "60s", "Posterior & Lombar"),
+        ["terra"] = new("Levantamento Terra", 4, "8–10", "120s", "Posterior"),
+
+        @*Quadriceps*@
+        ["agachamento"] = new("Agachamento Livre", 4, "6–10", "120s", "Quadríceps & Glúteo"),
+        ["agachamento-sumo"] = new("Agachamento Sumo", 4, "6–10", "120s", "Quadríceps & Glúteo"),
+        ["agachamento-bulgaro"] = new("Agachamento Bulgaro", 4, "6–10", "120s", "Quadríceps & Glúteo"),
+        ["cadeira-extensora"] = new("Cadeira Extensora", 3, "12–15", "60s", "Quadríceps"),
+        ["leg-press"] = new("Leg Press 45°", 4, "8–12", "60s", "Quadríceps"),
+        ["agachamento-goblet"] = new("Agachamento Goblet", 3, "20–25", "45s", "Quadríceps"),
+        ["agachamento-hack"] = new("Agachamento Hack", 4, "8–10", "60s", "Quadríceps"),
+        ["agachamento-smith"] = new("Agachamento Smith", 4, "8–12", "90s", "Quadríceps & Glúteo"),
+
+        @*Gluteo*@
+        ["elevacao-pelvica"] = new("Elevação Pélvica", 4, "8–12", "60s", "Glúteo"),
+        ["extensao-quadril"] = new("Extensão de Quadril na Polia", 4, "10–15", "45s", "Glúteo"),
+        ["afundo"] = new("Afundo Alternado", 4, "12 cada", "45s", "Quadríceps & Glúteo"),
+
+        ["panturrilha"] = new("Panturrilha em Pé", 4, "15–20", "45s", "Panturrilhas"),
+        ["agachamento-salto"] = new("Agachamento com Salto", 4, "15–20", "40s", "Full body"),
+        ["burpee"] = new("Burpee Modificado", 3, "10–12", "45s", "Full body"),
+        ["mountain-climber"] = new("Mountain Climber", 3, "20–25", "40s", "Core & Cardiovascular"),
+        ["kettlebell-swing"] = new("Kettlebell Swing", 4, "20–25", "60s", "Posterior chain"),
+        ["jumping-jacks"] = new("Jumping Jacks", 3, "30s", "30s", "Cardiovascular"),
+        ["corrida-intervalada"] = new("Corrida Intervalada", 5, "1 min forte", "1 min leve", "Cardiovascular"),
+        ["pulo-corda"] = new("Pulo de Corda", 3, "2 min", "60s", "Cardiovascular"),
+    };
+
+    private static readonly Dictionary<string, string[]> _focusMapping = new()
+    {
+        ["Full Body"] = new[] { "agachamento", "supino-reto", "puxada-frontal", "desenvolvimento", "rosca-direta", "triceps-corda", "abdominal" },
+        ["Superiores"] = new[] { "supino-inclinado", "puxada-frontal", "crucifixo-reto", "remada-curvada", "elevacao-lateral", "rosca-alternada", "triceps-frances", "crucifixo-inclinado", "voador-frontal", "crossover-polia-alta", "crossover-polia-baixa", "triceps-testa", "triceps-pulley", "barra-fixa", "remada-cavalinho", "pulldown", "crucifixo-inverso", "rosca-martelo", "rosca-scott", "rosca-direta-polia", "rosca-concentrada", "rosca-inclinada", "rosca-spider", "desenvolvimento", "elevacao-frontal", "arnold-press", "remada-alta", "face-pull" },
+        ["Inferiores"] = new[] { "agachamento", "leg-press", "cadeira-extensora", "cadeira-flexora", "stiff", "elevacao-pelvica", "panturrilha", "abdominal", "agachamento-sumo", "agachamento-bulgaro", "agachamento-goblet", "agachamento-hack", "agachamento-smith", "mesa-flexora", "extensao-quadril", "afundo", "abdominal-supra", "abdominal-infra", "abdominal-bicicleta", "abdominal-cruzada", "prancha", "prancha-rotacao" },
+        ["Ombros & Core"] = new[] { "desenvolvimento", "elevacao-lateral", "elevacao-frontal", "face-pull", "remada-alta", "prancha", "abdominal-bicicleta", "arnold-press", "abdominal", "abdominal-supra", "abdominal-infra", "abdominal-cruzada", "abdominal-alpinista", "prancha-rotacao" },
+        ["Peito & Tríceps"] = new[] { "supino-inclinado", "supino-reto", "crucifixo-inclinado", "crucifixo-reto", "voador-frontal", "crossover-polia-alta", "crossover-polia-baixa", "triceps-testa", "triceps-frances", "triceps-pulley", "crossover-polia-media", "triceps-corda", "triceps-coice", "flexao-fechada", "mergulho", "supino-declinado" },
+        ["Costas & Bíceps"] = new[] { "barra-fixa", "remada-curvada", "remada-cavalinho", "remada-unilateral", "puxada-frontal", "terra", "rosca-direta", "rosca-martelo", "rosca-scott", "pulldown", "crucifixo-inverso", "rosca-alternada", "rosca-concentrada", "rosca-inclinada", "rosca-spider", "rosca-direta-polia" },
+        ["Pernas & Glúteos"] = new[] { "agachamento", "leg-press", "cadeira-extensora", "stiff", "afundo", "agachamento-goblet", "cadeira-flexora", "panturrilha", "elevacao-pelvica", "extensao-quadril", "agachamento-sumo", "agachamento-bulgaro", "agachamento-hack", "agachamento-smith", "mesa-flexora", "abdominal", "abdominal-supra", "abdominal-infra", "abdominal-bicicleta", "abdominal-cruzada", "prancha", "prancha-rotacao" },
+        ["Pernas & Ombros"] = new[] { "agachamento", "leg-press", "cadeira-extensora", "cadeira-flexora", "elevacao-lateral", "desenvolvimento", "elevacao-frontal", "remada-alta", "stiff", "elevacao-pelvica", "panturrilha", "face-pull", "arnold-press", "afundo" },
+        ["Full Body Metabolic"] = new[] { "agachamento-salto", "flexao", "burpee", "mountain-climber", "afundo", "remada-halteres", "prancha-rotacao", "jumping-jacks" },
+        ["HIIT + Resistência"] = new[] { "afundo", "remada-halteres", "prancha-rotacao", "jumping-jacks", "burpee", "mountain-climber", "kettlebell-swing", "corrida-intervalada" },
+        ["Agachamento + Empurrar"] = new[] { "agachamento", "supino-reto", "desenvolvimento", "supino-inclinado", "leg-press", "triceps-corda" },
+        ["Terra + Puxar"] = new[] { "terra", "barra-fixa", "remada-cavalinho", "remada-curvada", "puxada-polia", "rosca-direta", "rosca-martelo" },
+        ["Resistência Muscular"] = new[] { "agachamento-goblet", "flexao", "remada-halteres", "prancha", "agachamento-salto", "panturrilha", "abdominal" },
+        ["Cardio + Força"] = new[] { "corrida-intervalada", "kettlebell-swing", "pulo-corda", "burpee", "jumping-jacks", "mountain-climber" },
+    };
+
+    private Dictionary<string, ExerciseItem> GetFilteredCatalog(string focus)
+    {
+        if (_focusMapping.TryGetValue(focus, out var keys))
+            return _exerciseCatalog.Where(kvp => keys.Contains(kvp.Key)).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
+        return _exerciseCatalog;
+    }
+
+    private int ProgressPct() => (int)Math.Round((double)_step / _stepLabels.Length * 100);
+    private void NextStep() { if (_step < _stepLabels.Length - 1) _step++; }
+    private void PrevStep() { if (_step > 0) _step--; }
+
+    private void StartLoading()
+    {
+        _phase = Phase.Loading; _loadingIndex = 0;
+        _loadingStepDone = new bool[_loadingSteps.Length];
+        _currentLoadingLabel = _loadingSteps[0];
+        _loadingTimer = new System.Timers.Timer(600);
+        _loadingTimer.Elapsed += OnLoadingTick;
+        _loadingTimer.Start();
+    }
+    private async void OnLoadingTick(object? sender, ElapsedEventArgs e)
+    {
+        _loadingStepDone[_loadingIndex] = true; _loadingIndex++;
+        if (_loadingIndex < _loadingSteps.Length) { _currentLoadingLabel = _loadingSteps[_loadingIndex]; }
+        else { _loadingTimer?.Stop(); _loadingTimer?.Dispose(); await Task.Delay(400); _phase = Phase.Result; _activeDay = 0; }
+        await InvokeAsync(StateHasChanged);
+    }
+
+    private WorkoutPlan GetWorkout()
+    {
+        if (_objetivo == "Hipertrofia")
+        {
+            var dur = _duracao ?? "";
+            bool isShort = dur == "Até 30 min" || dur == "45 min";
+
+            if (_nivel == "Iniciante")
+                return WorkoutData.HipertrofiaFullbody;
+
+            if (_nivel == "Intermediário")
+            {
+                if (_dias == 2 || _dias == 4)
+                    return WorkoutData.HipertrofiaAB;
+                if (_dias == 3 || _dias == 5 || _dias == 6)
+                    return WorkoutData.HipertrofiaABC;
+                return WorkoutData.HipertrofiaABC;
+            }
+
+            if (_nivel == "Avançado")
+            {
+                if (_dias == 2)
+                    return WorkoutData.HipertrofiaAB;
+                if (_dias == 3)
+                    return WorkoutData.HipertrofiaABC;
+                if (_dias == 4)
+                    return isShort ? WorkoutData.HipertrofiaAB : WorkoutData.HipertrofiaABCD;
+                if (_dias == 5)
+                    return WorkoutData.HipertrofiaABCD;
+                if (_dias == 6)
+                    return isShort ? WorkoutData.HipertrofiaAB : WorkoutData.HipertrofiaABC;
+                return WorkoutData.HipertrofiaABC;
+            }
+
+            return WorkoutData.HipertrofiaFullbody;
+        }
+
+        return _objetivo switch
+        {
+            "Emagrecimento" => WorkoutData.Emagrecimento,
+            "Força" => WorkoutData.Forca,
+            "Resistência" => WorkoutData.Resistencia,
+            _ => WorkoutData.HipertrofiaFullbody,
+        };
+    }
+    private string GetDuration() => _duracao switch { "Até 30 min" => "30 min", "45 min" => "45 min", "60 min" => "60 min", "75+ min" => "75+ min", _ => "60 min", };
+    private void SaveWorkout() { }
+    private void ExportPdf() { }
+
+    private void StartExerciseEdit(int index)
+    {
+        _editingExerciseDay = _activeDay; _editingExerciseIndex = index;
+        var workout = GetWorkout();
+        var splits = workout.Splits.Take(Math.Min(_dias > 0 ? _dias : 3, workout.Splits.Count)).ToList();
+        var split = splits.ElementAtOrDefault(_activeDay) ?? splits.First();
+        var ex = split.Exercises[index];
+        var match = _exerciseCatalog.Where(kvp => kvp.Value.Name == ex.Name).Select(kvp => kvp.Key).FirstOrDefault();
+        _selectedEditExerciseKey = match ?? string.Empty;
+        _editSeries = ex.Series; _editReps = ex.Reps; _editRest = ex.Rest;
+    }
+    private void SaveExerciseEdit(int index)
+    {
+        var workout = GetWorkout();
+        var splits = workout.Splits.Take(Math.Min(_dias > 0 ? _dias : 3, workout.Splits.Count)).ToList();
+        var split = splits.ElementAtOrDefault(_activeDay) ?? splits.First();
+        var ex = split.Exercises[index];
+        if (!string.IsNullOrWhiteSpace(_selectedEditExerciseKey) && _exerciseCatalog.TryGetValue(_selectedEditExerciseKey, out var sel)) { ex.Name = sel.Name; ex.Muscle = sel.Muscle; }
+        ex.Series = _editSeries; ex.Reps = _editReps; ex.Rest = _editRest;
+        CancelExerciseEdit();
+    }
+    private void CancelExerciseEdit() { _editingExerciseDay = -1; _editingExerciseIndex = -1; _selectedEditExerciseKey = string.Empty; }
+    private void ResetAll() { _phase = Phase.Quiz; _step = 0; _objetivo = null; _nivel = null; _dias = 0; _duracao = null; _local = null; _limitacoes = string.Empty; _activeDay = 0; CancelExerciseEdit(); }
+    public void Dispose() { _loadingTimer?.Stop(); _loadingTimer?.Dispose(); }
+
+    private enum Phase { Quiz, Loading, Result }
+    private record OptionItem(string Icon, string Value, string Desc);
+    private class ExerciseItem { public string Name { get; set; } public int Series { get; set; } public string Reps { get; set; } public string Rest { get; set; } public string Muscle { get; set; } public ExerciseItem(string name, int series, string reps, string rest, string muscle) { Name = name; Series = series; Reps = reps; Rest = rest; Muscle = muscle; } }
+    private class WorkoutSplit { public string Label { get; set; } public string Focus { get; set; } public List<ExerciseItem> Exercises { get; set; } public WorkoutSplit(string label, string focus, List<ExerciseItem> exercises) { Label = label; Focus = focus; Exercises = exercises; } }
+    private record WorkoutPlan(string Nome, string Desc, List<WorkoutSplit> Splits);
+
+    private static class WorkoutData
+    {
+        // --- Hipertrofia: Fullbody (Iniciante) ---
+        public static readonly WorkoutPlan HipertrofiaFullbody = new("Protocolo Hypertrophy Pro — Fullbody", "Treino completo para iniciantes em hipertrofia",
+        new() { new("Treino Fullbody", "Full Body", new() {
+            new("Agachamento Livre", 4, "8–12", "90s", "Quadríceps & Glúteo"),
+            new("Supino Reto Máquina ou Barra", 3, "8–12", "60s", "Peitoral maior"),
+            new("Puxada Frontal", 3, "8–12", "60s", "Costas"),
+            new("Desenvolvimento Máquina ou Halter", 3, "8–12", "60s", "Deltoides"),
+            new("Rosca Direta com Barra", 3, "8–12", "60s", "Bíceps"),
+            new("Tríceps Corda na Polia", 3, "8–12", "60s", "Tríceps"),
+            new("Abdominal Reto", 3, "15–20", "45s", "Core"),
+        }), });
+
+        // --- Hipertrofia: AB Upper/Lower ---
+        public static readonly WorkoutPlan HipertrofiaAB = new("Protocolo Hypertrophy Pro — Upper/Lower", "Divisão AB para hipertrofia (superiores/inferiores)",
+        new() {
+            new("Treino A", "Superiores", new() {
+                new("Supino Inclinado Máquina ou Barra", 3, "8–12", "60s", "Peitoral superior"),
+                new("Puxada Frontal", 4, "8–12", "60s", "Costas"),
+                new("Crucifixo Reto", 3, "8–12", "60s", "Peitoral maior"),
+                new("Remada Curvada com Barra", 3, "8–12", "75s", "Costas & Lombar"),
+                new("Elevação Lateral Polia ou Halter", 3, "8–12", "60s", "Deltoides medial e posterior"),
+                new("Rosca Alternada", 3, "10–12", "60s", "Bíceps"),
+                new("Tríceps Francês Corda ou Halter", 3, "10–12", "60s", "Tríceps"),
+            }),
+            new("Treino B", "Inferiores", new() {
+                new("Agachamento Livre", 4, "6–10", "120s", "Quadríceps & Glúteo"),
+                new("Leg Press 45°", 3, "8–12", "60s", "Quadríceps"),
+                new("Cadeira Extensora", 3, "12–15", "60s", "Quadríceps"),
+                new("Cadeira Flexora", 3, "12–15", "60s", "Posterior & Isquiotibiais"),
+                new("Stiff com Barra", 3, "10–12", "90s", "Posterior & Glúteo"),
+                new("Elevação Pélvica", 4, "8–12", "60s", "Glúteo"),
+                new("Panturrilha em Pé", 4, "15–20", "45s", "Panturrilhas"),
+                new("Abdominal Reto", 3, "15–20", "45s", "Core"),
+            }),
+        });
+
+        // --- Hipertrofia: ABC Push/Pull/Legs (Intermediário / Avançado 3x/6x) ---
+        public static readonly WorkoutPlan HipertrofiaABC = new("Protocolo Hypertrophy Pro — Push/Pull/Legs", "Divisão ABC para hipertrofia (empurrar/puxar/pernas)",
+        new() {
+            new("Treino A", "Peito & Tríceps", new() {
+                new("Supino Inclinado Máquina ou Barra", 3, "8-12", "60s", "Peitoral superior"),
+                new("Crucifixo Reto", 3, "8–10", "60s", "Peitoral maior"),
+                new("Voador Frontal", 3, "8-10", "60s", "Peitoral maior"),
+                new("Cross Over Polia Alta", 3, "8-10", "60s", "Peitoral superior"),
+                new("Cross Over Polia Baixa", 3, "8-10", "60s", "Peitoral inferior"),
+                new("Tríceps Polia Alta", 4, "8-10", "60s", "Tríceps"),
+                new("Tríceps Francês", 4, "10-12", "60s", "Tríceps"),
+            }),
+            new("Treino B", "Costas & Bíceps", new() {
+                new("Puxada Frontal", 4, "8–12", "90s", "Costas"),
+                new("Remada Curvada com Barra", 3, "8–12", "75s", "Costas & Lombar"),
+                new("Crucifixo Inverso", 3, "8–10", "60s", "Costas & Ombros"),
+                new("Pulldown", 3, "8-10", "60s", "Costas"),
+                new("Rosca Martelo", 3, "8-12", "60s", "Braquial & Braquiorradial"),
+                new("Rosca Alternada", 3, "10-12", "60s", "Bíceps"),
+            }),
+            new("Treino C", "Pernas & Ombros", new() {
+                new("Agachamento Livre", 4, "6–10", "120s", "Quadríceps & Glúteo"),
+                new("Leg Press 45°", 3, "8-12", "90s", "Quadríceps"),
+                new("Cadeira Extensora", 3, "12–15", "60s", "Quadríceps"),
+                new("Cadeira Flexora", 3, "8-12", "60s", "Posterior & Isquiotibiais"),
+                new("Elevação Lateral Polia ou Halter", 3, "8-12", "60s", "Deltoides medial e posterior"),
+                new("Desenvolvimento Máquina ou Halter", 3, "8-12", "60s", "Deltoides"),
+                new("Elevação Frontal", 3, "8-12", "60s", "Deltoides frontal"),
+                new("Remada Alta", 3, "8-12", "60s", "Deltoides"),
+            }),
+        });
+
+        // --- Hipertrofia: ABCD 4-day split (Avançado 4x/5x) ---
+        public static readonly WorkoutPlan HipertrofiaABCD = new("Protocolo Hypertrophy Pro — ABCD", "Divisão de 4 dias para hipertrofia avançada",
+        new() {
+            new("Treino A", "Peito & Tríceps", new() {
+                new("Supino Reto Máquina ou Barra", 4, "6–10", "90s", "Peitoral maior"),
+                new("Supino Inclinado Máquina ou Barra", 4, "8–12", "60s", "Peitoral superior"),
+                new("Crucifixo Inclinado Máquina ou Halter", 3, "8–12", "60s", "Peitoral superior"),
+                new("Cross Over Polia Média", 3, "8–12", "60s", "Peitoral maior"),
+                new("Tríceps Testa Corda ou Barra W", 3, "10–12", "60s", "Tríceps"),
+                new("Tríceps Corda na Polia", 3, "8-12", "60s", "Tríceps"),
+            }),
+            new("Treino B", "Costas & Bíceps", new() {
+                new("Barra Fixa Pegada Larga", 4, "6–10", "90s", "Latíssimo do dorso"),
+                new("Remada Curvada com Barra", 4, "8–12", "75s", "Costas & Lombar"),
+                new("Puxada Frontal", 3, "8–12", "60s", "Costas"),
+                new("Crucifixo Inverso", 3, "8–10", "60s", "Costas & Ombros"),
+                new("Rosca Direta com Barra", 3, "6–8", "60s", "Bíceps"),
+                new("Rosca Martelo", 3, "8-12", "60s", "Braquial & Braquiorradial"),
+            }),
+            new("Treino C", "Pernas & Glúteos", new() {
+                new("Agachamento Livre", 4, "6–10", "120s", "Quadríceps & Glúteo"),
+                new("Leg Press 45°", 4, "8–12", "60s", "Quadríceps"),
+                new("Cadeira Extensora", 3, "12–15", "60s", "Quadríceps"),
+                new("Cadeira Flexora", 3, "12–15", "60s", "Posterior & Isquiotibiais"),
+                new("Elevação Pélvica", 4, "8–12", "60s", "Glúteo"),
+                new("Panturrilha em Pé", 4, "15–20", "45s", "Panturrilhas"),
+                new("Abdominal Reto", 3, "15–20", "45s", "Core"),
+            }),
+            new("Treino D", "Ombros & Core", new() {
+                new("Desenvolvimento Máquina ou Halter", 4, "8–12", "60s", "Deltoides"),
+                new("Elevação Lateral Polia ou Halter", 4, "8–12", "60s", "Deltoides medial e posterior"),
+                new("Elevação Frontal", 3, "8–12", "60s", "Deltoides frontal"),
+                new("Face Pull", 4, "8–10", "90s", "Deltoides"),
+                new("Remada Alta", 3, "8–10", "60s", "Deltoides"),
+                new("Prancha Isométrica", 3, "45–60s", "45s", "Core"),
+                new("Abdominal Bicicleta", 3, "15–20", "60s", "Core"),
+            }),
+        });
+
+        // --- Outros objetivos (não Hipertrofia) ---
+        public static readonly WorkoutPlan Emagrecimento = new("Protocolo Fat Burn Circuit", "Circuito metabólico de alta densidade para queima de gordura", new() { new("Circuito A", "Full Body Metabolic", new() { new("Agachamento com Salto", 4, "15–20", "40s", "Full body"), new("Flexão de Braços", 3, "12–15", "40s", "Peito & Ombros"), new("Burpee Modificado", 3, "10–12", "45s", "Full body"), new("Mountain Climber", 3, "20–25", "40s", "Core & Cardiovascular"), }), new("Circuito B", "HIIT + Resistência", new() { new("Afundo Alternado", 4, "12 cada", "45s", "Quadríceps & Glúteo"), new("Remada com Halteres", 3, "15–18", "40s", "Costas & Bíceps"), new("Prancha com Rotação", 3, "10 cada", "40s", "Core"), new("Jumping Jacks", 3, "30s", "30s", "Cardiovascular"), }), });
+        public static readonly WorkoutPlan Forca = new("Protocolo Strength Builder", "Periodização linear para ganho de força máxima", new() { new("Treino A", "Agachamento + Empurrar", new() { new("Agachamento Livre", 5, "3–5", "180s", "Quadríceps & Glúteo"), new("Supino Reto com Barra", 5, "3–5", "180s", "Peitoral"), new("Desenvolvimento Militar", 3, "5–6", "120s", "Deltoides"), }), new("Treino B", "Terra + Puxar", new() { new("Levantamento Terra", 4, "3–4", "240s", "Posterior chain"), new("Barra Fixa Lastrada", 4, "4–6", "180s", "Latíssimo"), new("Remada Cavalinho", 3, "5–6", "120s", "Costas"), }), });
+        public static readonly WorkoutPlan Resistencia = new("Protocolo Endurance Plus", "Volume progressivo para resistência muscular e aeróbica", new() { new("Sessão A", "Resistência Muscular", new() { new("Agachamento Goblet", 3, "20–25", "45s", "Quadríceps"), new("Flexão de Braços", 3, "15–20", "45s", "Peito & Ombros"), new("Remada com Halteres", 3, "15–20", "45s", "Costas"), new("Prancha Isométrica", 3, "45–60s", "45s", "Core"), }), new("Sessão B", "Cardio + Força", new() { new("Corrida Intervalada", 5, "1 min forte", "1 min leve", "Cardiovascular"), new("Kettlebell Swing", 4, "20–25", "60s", "Posterior chain"), new("Pulo de Corda", 3, "2 min", "60s", "Cardiovascular"), }), });
+    }
+}
