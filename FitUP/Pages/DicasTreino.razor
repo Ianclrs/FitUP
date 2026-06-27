@@ -3,6 +3,7 @@
 @inject NavigationManager NavigationManager
 @inject IJSRuntime JS
 
+
 <MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="mt-4 py-0 mb-8 animate-fade-in">
 
     <MudStack AlignItems="AlignItems.Center" Spacing="0" Class="mb-16">
@@ -11,14 +12,15 @@
             <MudText Typo="Typo.h4" Class="ms-1" Style="font-family:Cambria; font-weight:bold">de</MudText>
             <MudText Typo="Typo.h4" Style="font-family:Cambria;font-weight:bold">Treino</MudText>
         </div>
-        <MudDivider Style="--mud-palette-divider:coral; width:399px"></MudDivider>
-        <MudCard Elevation="12" Style="width:400px;height:73px" Class="rounded-sm d-flex flex-column flex-wrap">
-            <MudText Align="Align.Center">
-                Escolha o método ideal para o seu objetivo. Compare divisões de treino,
-                frequência e benefícios para evoluir com inteligência.
-            </MudText>
-        </MudCard>
-
+        <div class="d-flex flex-column align-center justify-center" style="width: 100%;">
+            <MudDivider Style="--mud-palette-divider:coral; max-width:400px; width:100%;" />
+            <MudCard Elevation="12" Style="max-width:400px; width:100%; min-height:73px; height:auto;" Class="rounded-sm">
+                <MudText Align="Align.Center" Class="pa-1">
+                    Escolha o método ideal para o seu objetivo. Compare divisões de treino,
+                    frequência e benefícios para evoluir com inteligência.
+                </MudText>
+            </MudCard>
+        </div>
         <div class="d-flex gap-2 mt-2">
             <MudMenu Class="rounded-sm" Style="background-color: coral" Label="Superiores"> 
                 <MudMenuItem OnClick='() => AlternarGrupamento("Peito")' Label="Peito" />
@@ -2254,6 +2256,11 @@
                                        OnClick="@(async () => await AbrirDetalhes(treino))">
                                 Saiba Mais
                             </MudButton>
+                            <MudButton Style="background-color:coral" Class="scale-hover" OnClick="@(() => AbrirExemplo(treino))">
+                                Exemplo de Treino
+                            </MudButton>
+                            
+                        
                         </div>
                     </MudItem>
                 </MudGrid>
@@ -2406,9 +2413,55 @@
 
         await DialogService.ShowAsync<MensagemCustomizada>("Detalhes do Treino", parameters, options);
     }
+    private async Task AbrirExemplo(TreinoModel treino)
+    {
+        var options = new DialogOptions
+        {
+            CloseOnEscapeKey = true,
+            MaxWidth = MaxWidth.Small,
+            FullWidth = true
+        };
+
+        // Monta a tabela em HTML puro estruturado com classes globais do MudBlazor
+        var sb = new System.Text.StringBuilder();
+        sb.Append("<div class='mud-table mud-simple-table mud-table-bordered mud-table-striped mud-elevation-1 mt-2'>");
+        sb.Append("  <div class='mud-table-container'>");
+        sb.Append("    <table class='mud-table-root'>");
+        sb.Append("      <thead class='mud-table-head' style='background-color: rgba(255,107,53,0.1);'>");
+        sb.Append("        <tr class='mud-table-row'>");
+        sb.Append("          <th class='mud-table-cell' style='color:coral; font-weight:bold;'>Dia</th>");
+        sb.Append("          <th class='mud-table-cell' style='color:coral; font-weight:bold;'>Divisão</th>");
+        sb.Append("          <th class='mud-table-cell' style='color:coral; font-weight:bold;'>Foco Principal</th>");
+        sb.Append("        </tr>");
+        sb.Append("      </thead>");
+        sb.Append("      <tbody class='mud-table-body'>");
+
+        foreach (var item in treino.CronogramaSemanal)
+        {
+            sb.Append("    <tr class='mud-table-row'>");
+            sb.Append($"     <td class='mud-table-cell'><b>{item.Dia}</b></td>");
+            sb.Append($"     <td class='mud-table-cell'>{item.Rotina}</td>");
+            sb.Append($"     <td class='mud-table-cell'>{item.Foco}</td>");
+            sb.Append("    </tr>");
+        }
+
+        sb.Append("      </tbody>");
+        sb.Append("    </table>");
+        sb.Append("  </div>");
+        sb.Append("</div>");
+
+        var parameters = new DialogParameters<MensagemCustomizada>
+    {
+        { x => x.Titulo, $"Rotina Semanal: {treino.Nome}" },
+        { x => x.Conteudo, sb.ToString() } // Passa a tabela gerada
+    };
+
+        await DialogService.ShowAsync<MensagemCustomizada>("Exemplo de Treino", parameters, options);
+    }
 
     private List<TreinoModel> ListaTreinos = new()
     {
+
         new TreinoModel
         {
             Nome        = "Upper / Lower",
@@ -2420,7 +2473,17 @@
             Inverter    = false,
             CardGradient = "linear-gradient(135deg, #3a1f14 0%, #1c1008 100%)",
             Beneficios  = new() { "Boa frequência por grupamento", "Recuperação adequada", "Volume bem distribuído", "Fácil de progredir" },
-            Explicacao  = "Treine membros superiores (peito, costas, ombros e braços) em um dia e membros inferiores (quadríceps, isquiotibiais, glúteos e panturrilha) no outro. Permite alta frequência e boa recuperação por grupamento."
+            Explicacao  = "Treine membros superiores em um dia e membros inferiores no outro. Permite alta frequência e excelente janela de descanso hipertrófico.",
+            CronogramaSemanal = new()
+            {
+                new() { Dia = "Segunda", Rotina = "Upper", Foco = "Peito, Costas, Ombros e Braços" },
+                new() { Dia = "Terça", Rotina = "Lower", Foco = "Quadríceps, Posterior e Panturrilha" },
+                new() { Dia = "Quarta", Rotina = "Descanso", Foco = "Recuperação Ativa / Cardio Leve" },
+                new() { Dia = "Quinta", Rotina = "Upper", Foco = "Peito, Costas, Ombros e Braços" },
+                new() { Dia = "Sexta", Rotina = "Lower", Foco = "Quadríceps, Posterior e Glúteos" },
+                new() { Dia = "Sábado", Rotina = "Descanso", Foco = "Repouso Total / Cardio Leve" },
+                new() { Dia = "Domingo", Rotina = "Descanso", Foco = "Repouso Total" }
+            }
         },
         new TreinoModel
         {
@@ -2433,7 +2496,17 @@
             Inverter    = true,
             CardGradient = "linear-gradient(135deg, #3d2010 0%, #1a0d06 100%)",
             Beneficios  = new() { "Alta frequência muscular", "Ótimo para iniciantes", "Eficiente para quem tem pouco tempo", "Queima calórica elevada" },
-            Explicacao  = "Foco em exercícios compostos (agachamento, supino, levantamento terra, remada) que recrutam múltiplos grupos musculares ao mesmo tempo. Alta eficiência para ganho de força e condicionamento geral."
+            Explicacao  = "Foco em exercícios compostos (agachamento, supino, levantamento terra, remada) que recrutam múltiplos grupos musculares ao mesmo tempo. Alta eficiência para ganho de força e condicionamento geral.",
+            CronogramaSemanal = new()
+            {
+                new() { Dia = "Segunda", Rotina = "Full Body", Foco = "Peito, Costas, Braço e Inferiores" },
+                new() { Dia = "Terça", Rotina = "Descanso", Foco = "Cardio" },
+                new() { Dia = "Quarta", Rotina = "Full Body", Foco = "Peito, Costas, Braço e Inferiores" },
+                new() { Dia = "Quinta", Rotina = "Descanso", Foco = "Cardio" },
+                new() { Dia = "Sexta", Rotina = "Full Body", Foco = "Peito, Costas, Braço e Inferiores" },
+                new() { Dia = "Sábado", Rotina = "Descanso", Foco = "Repouso Total / Cardio" },
+                new() { Dia = "Domingo", Rotina = "Descanso", Foco = "Repouso Total" }
+            }
         },
         new TreinoModel
         {
@@ -2446,7 +2519,17 @@
             Inverter    = false,
             CardGradient = "linear-gradient(135deg, #2e1a0e 0%, #150b04 100%)",
             Beneficios  = new() { "Treinos focados e intensos", "Permite alta frequência", "Ótimo para hipertrofia", "Padrão de movimento lógico" },
-            Explicacao  = "Push: peito, ombros e tríceps. Pull: costas e bíceps. Legs: toda a musculatura das pernas. Separação por tipo de movimento que garante excelente recuperação e permite frequência elevada sem sobrecarga."
+            Explicacao  = "Push: peito, ombros e tríceps. Pull: costas e bíceps. Legs: toda a musculatura das pernas. Separação por tipo de movimento que garante excelente recuperação e permite frequência elevada sem sobrecarga.",
+            CronogramaSemanal = new()
+            {
+                new() { Dia = "Segunda", Rotina = "Push (Empurrar)", Foco = "Peito e Tríceps" },
+                new() { Dia = "Terça", Rotina = "Pull (Puxar)", Foco = "Costas, Bíceps" },
+                new() { Dia = "Quarta", Rotina = "Legs (Pernas)", Foco = "Quadríceps, Ombro" },
+                new() { Dia = "Quinta", Rotina = "Push (Empurrar)", Foco = "Peito e Tríceps" },
+                new() { Dia = "Sexta", Rotina = "Pull (Puxar)", Foco = "Costas, Bíceps" },
+                new() { Dia = "Sábado", Rotina = "Legs (Pernas)", Foco = "Posterior, Ombro" },
+                new() { Dia = "Domingo", Rotina = "Descanso", Foco = "Repouso Total" }
+            }
         },
         new TreinoModel
         {
@@ -2459,8 +2542,18 @@
             Inverter    = true,
             CardGradient = "linear-gradient(135deg, #381810 0%, #180c06 100%)",
             Beneficios  = new() { "Volume máximo por grupamento", "Foco total em cada músculo", "Ideal para hipertrofia avançada", "Permite muitos exercícios" },
-            Explicacao  = "A divisão ABCD permite alto volume de treinamento por grupamento muscular. Com 4 ou mais dias na semana, cada músculo recebe atenção exclusiva, ideal para atletas avançados que buscam máxima hipertrofia e isolamento muscular."
-        },
+            Explicacao  = "A divisão ABCD permite alto volume de treinamento por grupamento muscular. Com 4 ou mais dias na semana, cada músculo recebe atenção exclusiva, ideal para atletas avançados que buscam máxima hipertrofia e isolamento muscular.",
+            CronogramaSemanal = new()
+            {
+                new() { Dia = "Segunda", Rotina = "Treino A", Foco = "Peito e Tríceps" },
+                new() { Dia = "Terça", Rotina = "Treino B", Foco = "Costas e Bíceps" },
+                new() { Dia = "Quarta", Rotina = "Treino C", Foco = "Inferiores Completos" },
+                new() { Dia = "Quinta", Rotina = "Descanso", Foco = "Cardio" },
+                new() { Dia = "Sexta", Rotina = "Treino D", Foco = "Deltoides e Core" },
+                new() { Dia = "Sábado", Rotina = "Descanso", Foco = "Repouso Total / Cardio Leve" },
+                new() { Dia = "Domingo", Rotina = "Descanso", Foco = "Repouso Total" }
+            }
+        }
     };
 
     public class TreinoModel
@@ -2475,5 +2568,12 @@
         public string CardGradient { get; set; } = "";
         public List<string> Beneficios { get; set; } = new();
         public string Explicacao { get; set; } = "";
+        public List<ItemCronograma> CronogramaSemanal { get; set; } = new();
+    }
+    public class ItemCronograma
+    {
+        public string Dia { get; set; } = "";
+        public string Rotina { get; set; } = "";
+        public string Foco { get; set; } = "";
     }
 }

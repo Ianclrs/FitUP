@@ -9,10 +9,10 @@
             <MudText Typo="Typo.h4" Style="font-weight:bold;font-family:Cambria" Align="Align.Center" Inline="true">Máximo</MudText>
     </div>
 
-    <MudDivider Style="--mud-palette-divider:coral; width:455px"></MudDivider>
+    <MudDivider Style="--mud-palette-divider:coral; max-width:455px; width:100%"></MudDivider>
 
-    <MudCard Elevation="12" Style="width:455px;height:171px"Class="rounded-sm" >
-            <MudText Align="Align.Center" >
+    <MudCard Elevation="12" Style="max-width:455px; width:100%;min-height:171px; height:auto"Class="rounded-sm" >
+    <MudText Align="Align.Center" Class="pa-1">
         Aqui você aprendera um pouco do mundo da alimentação e<br /> como isso poderá ajudar nos treinos!<br />
         Para alcançar a máxima hipertrofia e performance, não basta apenas "comer limpo"; é preciso entender a função bioquímica de cada substrato que você ingere.<br /> Abaixo, apresentaremos o guia técnico dos macronutrientes e micronutrientes essenciais para o seu desenvolvimento físico.
     </MudText>
@@ -29,7 +29,7 @@
     </style>
     </MudCard>
     @*Botoes de ativacao*@
-    <div class="mt-2 d-flex gap-1 flex-wrap">
+    <div class="mt-2 d-flex gap-1 flex-wrap align-center justify-center">
     <MudButton Class="transition-fast-out-slow-in scale-hover" OnClick="ExibirProteinas" Style="background-color:darkred;font-weight:bold;font-family:Cambria">Proteinas</MudButton>
     <MudButton Class="transition-fast-out-slow-in scale-hover" OnClick="ExibirCarboidratos" Style="background-color:sandybrown;font-weight:bold;font-family:Cambria">Carboidratos</MudButton>
     <MudButton Class="transition-fast-out-slow-in scale-hover" OnClick="ExibirFrutas" Style="background-color:darkcyan;font-weight:bold;font-family:Cambria">Frutas</MudButton>
