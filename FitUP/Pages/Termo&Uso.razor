@@ -1,0 +1,138 @@
+﻿@page "/Termos"
+@using MudBlazor.Charts
+
+<PageTitle>Termos de Uso</PageTitle>
+
+<MudContainer MaxWidth="MaxWidth.ExtraExtraLarge" Class="mt-4 py-0 mb-8 animate-fade-in">
+    <MudStack AlignItems="AlignItems.Center">
+        <MudText Typo="Typo.h4" Style="font-weight:700; font-family:Cambria">
+            TERMOS DE USO
+            <MudDivider Class="" Style="--mud-palette-divider:coral; max-width:256px; width:100%;" />
+        </MudText>
+
+        <MudCard Style="max-width:600px; width:100%; border: 1px solid coral">
+        <MudText Align="Align.Justify" Class="pa-2" Typo="Typo.subtitle2">
+            Seja bem-vindo ao <b>FitUP</b>.<br /> Ao aceder, navegar ou utilizar a nossa plataforma web, painéis e ferramentas
+            associadas, o utilizador concorda expressamente em cumprir e vincular-se aos presentes Termos de Uso e
+                Condições de Serviço. Se não concordar com qualquer uma das disposições aqui descritas, recomendamos
+            que interrompa imediatamente a utilização do serviço.
+        </MudText>
+        <MudAlert Class="pa-1" Style="border: 1px solid coral; color:inherit" Severity="Severity.Warning" Variant="Variant.Text">
+            <MudText Typo="Typo.subtitle2">
+                    <strong>AVISO LEGAL CRÍTICO (ISENÇÃO DE RESPONSABILIDADE MÉDICA):</strong><br /> O <b>FitUP</b> é uma ferramenta
+                estritamente de caráter informativo e educacional para suporte à rotina de treinos e acompanhamento
+                    nutricional generalista. A plataforma <b>NÃO</b> substitui, em hipótese alguma, diagnósticos, consultas,
+                pareceres ou o acompanhamento presencial de profissionais de saúde qualificados (médicos,
+                profissionais de educação física, personal trainers ou nutricionistas). É de total responsabilidade do utilizador
+                garantir que possui condições clínicas adequadas para a prática de atividades físicas antes de iniciar
+                qualquer rotina sugerida pelo sistema.
+            </MudText>
+        </MudAlert>
+            <MudText Align="Align.Justify" Class="pa-2" Typo="Typo.subtitle2">
+                <h3><b>1- Elegibilidade e Criação de Conta:</b></h3>
+                Para utilizar as funcionalidades exclusivas do <b>FitUP</b>, o utilizador deve realizar um registo na plataforma,
+                assegurando as seguintes premissas:
+                <ul class="ms-3">
+                    <li>Ter idade igual ou superior a <b>18 anos</b> ou estar devidamente autorizado e supervisionado pelos seus
+                        representantes legais.
+                    </li>
+                    <li>
+                        Fornecer informações cadastrais (nome, e-mail e dados de acesso) exatas, completas e atualizadas.
+                    </li>
+                    <li>
+                    Manter a confidencialidade das suas credenciais de acesso, sendo o único responsável por todas as
+                    atividades realizadas na sua conta. O <b>FitUP</b> não se responsabiliza por perdas resultantes do uso não
+                    autorizado do seu perfil.
+                    </li>
+                </ul>
+            </MudText>
+            <MudDivider Class="" Style="--mud-palette-divider:coral; max-width:600px; width:100%;" />
+
+            <MudText Align="Align.Justify" Class="pa-2" Typo="Typo.subtitle2">
+                <h3><b>2- Objeto do Serviço e Dados Físicos:</b></h3>
+                O <b>FitUP</b> processa informações imputadas voluntariamente pelo utilizador (como idade, peso, altura e
+                objetivos de fitness) para automatizar a exibição de cronogramas de treino e estimativas de distribuição de
+                macronutrientes. O utilizador reconhece que esses cálculos operam com base em algoritmos matemáticos
+                padronizados e estatísticos, e não constituem uma prescrição clínica personalizada.
+            </MudText>
+            <MudDivider Class="" Style="--mud-palette-divider:coral; max-width:600px; width:100%;" />
+
+            <MudText Align="Align.Justify" Class="pa-2" Typo="Typo.subtitle2">
+                <h3><b>3- Conduta do Utilizador e Proibições:</b></h3>
+                Ao usufruir do <b>FitUP</b>, o utilizador compromete-se a adotar uma conduta ética e legal, sendo expressamente
+                proibido:
+                <ul class="ms-3">
+                    <li>
+                        Utilizar mecanismos automatizados, como robots, spiders ou técnicas de web scraping, para extrair
+                        conteúdos, listagens de academias parceiras ou a lógica estrutural de treinos do site.
+                    </li>
+                    <li>
+                        Praticar engenharia reversa, descompilação ou introduzir códigos maliciosos (vírus, cavalos de troia) que
+                        comprometam a estabilidade e segurança do SQL Server ou da infraestrutura do sistema.
+                    </li>
+                    <li>
+                        Utilizar a plataforma para publicar, transmitir ou disseminar mensagens de cariz ofensivo, discriminatório,
+                        difamatório ou conteúdo comercial não solicitado (spam).
+                    </li>
+                </ul>
+            </MudText>
+            <MudDivider Class="" Style="--mud-palette-divider:coral; max-width:600px; width:100%;" />
+
+            <MudText Align="Align.Justify" Class="pa-2" Typo="Typo.subtitle2">
+                <h3><b>4- Propriedade Intelectual:</b></h3>
+                Todos os direitos de propriedade intelectual relativos ao <b>FitUP</b> — incluindo o código-fonte, bases de dados,
+                algoritmos de cálculo, identidade visual, componentes customizados de interface, logótipos, textos e arranjos
+                estruturais — pertencem exclusivamente à plataforma <b>FitUP</b>. A utilização do serviço confere apenas uma
+                licença de uso pessoal, revogável, não exclusiva e intransferível, sendo vedada qualquer cópia ou
+                reprodução sem autorização prévia por escrito.
+            </MudText>
+            <MudDivider Class="" Style="--mud-palette-divider:coral; max-width:600px; width:100%;" />
+
+            <MudText Align="Align.Justify" Class="pa-2" Typo="Typo.subtitle2">
+                <h3><b>5- Limitação de Responsabilidade:</b></h3>
+                O FitUP empenha os seus melhores esforços para manter a plataforma estável e segura. Contudo, na
+                máxima extensão permitida pela legislação aplicável, o <b>FitUP</b> exime-se de qualquer responsabilidade por:
+                <ul class="ms-3">
+                    <li>
+                        Instabilidades técnicas temporárias, manutenções programadas ou falhas decorrentes de serviços de
+                        telecomunicações de terceiros.
+                    </li>
+                    <li>
+                        Eventuais lesões, danos à saúde, fadiga física ou ausência de resultados estéticos esperados
+                        decorrentes da execução das rotinas informadas.
+                    </li>
+                    <li>
+                        Informações, links de terceiros ou serviços prestados por academias e estabelecimentos exibidos nas
+                        listagens e carrosséis do site.
+                    </li>
+                </ul>
+            </MudText>
+            <MudDivider Class="" Style="--mud-palette-divider:coral; max-width:600px; width:100%;" />
+
+            <MudText Align="Align.Justify" Class="pa-2" Typo="Typo.subtitle2">
+                <h3><b>6- Proteção de Dados (LGPD):</b></h3>
+                A privacidade do utilizador é uma prioridade para nós. A recolha, o processamento e a eliminação de dados
+                de perfil (peso, altura, histórico) seguem rigorosamente a Lei Geral de Proteção de Dados (LGPD) e estão
+                especificados detalhadamente na nossa <b>Política de Privacidade</b>, que constitui parte integrante destes
+                Termos.
+            </MudText>
+            <MudDivider Class="" Style="--mud-palette-divider:coral; max-width:600px; width:100%;" />
+
+            <MudText Align="Align.Justify" Class="pa-2" Typo="Typo.subtitle2">
+                <h3><b>7- Modificações dos Termos e Rescisão:</b></h3>
+                O <b>FitUP</b> reserva-se o direito de alterar estes Termos de Uso a qualquer momento para refletir atualizações no
+                sistema ou mudanças legislativas. Mudanças substanciais serão notificadas na aplicação. O uso continuado
+                do serviço após as alterações implica a aceitação integral dos novos termos. O utilizador poderá encerrar a
+                sua conta e solicitar a exclusão dos seus dados a qualquer momento através do seu painel de perfil.
+            </MudText>
+            <MudDivider Class="" Style="--mud-palette-divider:coral; max-width:600px; width:100%;" />
+
+            <MudText Align="Align.Justify" Class="pa-2" Typo="Typo.subtitle2">
+                <h3><b>8- Lei Aplicável e Foro:</b></h3>
+                Estes Termos são regidos e interpretados de acordo com a legislação da República Federativa do Brasil.
+                Fica eleito o foro da comarca da sede da plataforma <b>FitUP</b> para dirimir quaisquer litígios decorrentes deste
+                documento.
+            </MudText>
+        </MudCard>    
+    </MudStack>
+</MudContainer>

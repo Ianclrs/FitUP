@@ -126,10 +126,10 @@
                 <MudItem xs="12" sm="6">
                     <MudTextField InputType="@_passwordInput" AdornmentIcon="@_passwordInputIcon" Label="Confirmar Senha" Variant="Variant.Filled" Margin="Margin.Dense" @bind-Value="cadModel.ConfirmPassword" For="@(()=>cadModel.ConfirmPassword)" />
                 </MudItem>
-
+                @*Termos e Privacidade*@
                 <MudItem xs="12" Class="mt-2 text-center">
                     <MudText Typo="Typo.caption">
-                        Ao criar, aceita os <a href="#" class="orange-link">Termos</a> e <a href="#" class="orange-link">Privacidade</a>.
+                        Ao criar, aceita os <a href="/Termos" class="orange-link">Termos</a> e <a href="/Privacidade" class="orange-link">Privacidade</a>.
                     </MudText>
                 </MudItem>
 
