@@ -18,5 +18,6 @@ builder.Services.AddScoped(sp => new HttpClient
 
 // Serviços da aplicação
 builder.Services.AddScoped<AuthService>();
+builder.Services.AddScoped<PlanoTreinoService>();
 
 await builder.Build().RunAsync();

@@ -91,7 +91,7 @@
                 </MudItem>
                 
                 <MudItem xs="12" sm="6">
-                    <MudDatePicker AdornmentColor="Color.Inherit" Label="Nascimento" Variant="Variant.Filled" Margin="Margin.Dense" @bind-Date="cadModel.BirthDate" DateFormat="dd/MM/yyyy" Editable="true" Placeholder="Ex: 25/11/2004" />
+                    <MudDatePicker AdornmentColor="Color.Inherit" Label="Nascimento" Variant="Variant.Filled" Margin="Margin.Dense" @bind-Date="cadModel.BirthDate" DateFormat="dd/MM/yyyy" Editable="true" Mask="@(new PatternMask("00/00/0000"))" Placeholder="Ex: 25/11/2004" />
                 </MudItem>
 
                 <MudItem xs="12" sm="6">

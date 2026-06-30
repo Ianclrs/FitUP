@@ -1,9 +1,25 @@
+@implements IDisposable
 @inherits LayoutComponentBase
+@inject FitUP.Services.AuthService AuthService
+@inject NavigationManager NavigationManager
+
+<style>
+    .mud-snackbar-container {
+        bottom: 24px !important;
+        right: 24px !important;
+        top: auto !important;
+        left: auto !important;
+    }
+
+    .mud-snackbar-content {
+        background-color: coral !important;
+    }
+</style>
 
 <MudThemeProvider Theme="@_theme" IsDarkMode="_isDarkMode" /> 
 <MudPopoverProvider />
 <MudDialogProvider />
-<MudSnackbarProvider />
+<MudSnackbarProvider position="SnackbarPosition.BottomRight" />
 
 <MudLayout>
     <MudScrollToTop>
@@ -25,9 +41,24 @@
         <MudButton Class="ms-7 mt-2" Size="Size.Small" Style="color:coral; font-weight: 900;" Href="GanhoMaximo">Ganho Máximo</MudButton>
         </div>
         <MudSpacer />
-        @*Botões*@
-        <MudButton Href="Login" Class="mt-2 ms-2 d-md-inline-flex" Style="background-color:coral;font-weight: bold;" Size="Size.Small">Entrar</MudButton>
-        <MudButton Href="Cadastrar" Class="mt-2 ms-2 d-md-inline-flex" Style="background-color:coral; font-weight: bold" Size="Size.Small">Cadastrar</MudButton>
+        @*Botões condicionais: logado vs não logado*@
+        @if (AuthService.IsLoggedIn)
+        {
+            <MudMenu Icon="@Icons.Material.Filled.AccountCircle" 
+                     IconColor="Color.Inherit"
+                     Style="color:coral!important;" 
+                     Class="mt-2 ms-2">
+                <ChildContent>
+                    <MudMenuItem Href="/treinos-salvos">Treinos Salvos</MudMenuItem>
+                    <MudMenuItem OnClick="@(async () => await LogoutAsync())">Sair</MudMenuItem>
+                </ChildContent>
+            </MudMenu>
+        }
+        else
+        {
+            <MudButton Href="Login" Class="mt-2 ms-2 d-md-inline-flex" Style="background-color:coral;font-weight: bold;" Size="Size.Small">Entrar</MudButton>
+            <MudButton Href="Cadastrar" Class="mt-2 ms-2 d-md-inline-flex" Style="background-color:coral; font-weight: bold" Size="Size.Small">Cadastrar</MudButton>
+        }
 
         <MudIconButton Icon="@(DarkLightModeButtonIcon)" Style="color:coral" Class="mt-2"OnClick="@DarkModeToggle" />
     </MudAppBar>
@@ -89,9 +120,11 @@
     private string _backgroundImageDark = "img/Home.png";
     private string _backgroundImageLight = "img/HomeL.png";
 
-    protected override void OnInitialized()
+    protected override async Task OnInitializedAsync()
     {
-        base.OnInitialized();
+        AuthService.AuthStateChanged += OnAuthStateChanged;
+
+        await AuthService.RestoreSessionAsync();
 
         _theme = new()
         {
@@ -99,6 +132,16 @@
             PaletteDark = _darkPalette,
             LayoutProperties = new LayoutProperties()
         };
+    }
+
+    private void OnAuthStateChanged()
+    {
+        InvokeAsync(StateHasChanged);
+    }
+
+    public void Dispose()
+    {
+        AuthService.AuthStateChanged -= OnAuthStateChanged;
     }
 
     private void DrawerToggle()
@@ -109,6 +152,12 @@
     private void DarkModeToggle()
     {
         _isDarkMode = !_isDarkMode;
+    }
+
+    private async Task LogoutAsync()
+    {
+        await AuthService.LogoutAsync();
+        NavigationManager.NavigateTo("/", forceLoad: false);
     }
 
     private readonly PaletteLight _lightPalette = new()

@@ -142,23 +142,71 @@ public class PlanoTreinoService : IPlanoTreinoService
         await using var connection = new SqlConnection(_connectionString);
         await connection.OpenAsync();
 
-        var planoId = Guid.NewGuid();
+        await using var transaction = connection.BeginTransaction();
 
-        const string insertPlanoSql = @"
-            INSERT INTO PlanoTreino (Id, UsuarioId, Nome, Descricao, Divisao, Nivel, FrequenciaSemanal, CriadoEm)
-            VALUES (@Id, @UsuarioId, @Nome, @Descricao, @Divisao, @Nivel, @FrequenciaSemanal, GETUTCDATE())";
+        try
+        {
+            var planoId = Guid.NewGuid();
 
-        await using var insertCommand = new SqlCommand(insertPlanoSql, connection);
-        insertCommand.Parameters.AddWithValue("@Id", planoId);
-        insertCommand.Parameters.AddWithValue("@UsuarioId", usuarioId);
-        insertCommand.Parameters.AddWithValue("@Nome", request.Nome);
-        insertCommand.Parameters.AddWithValue("@Descricao", request.Descricao);
-        insertCommand.Parameters.AddWithValue("@Divisao", request.Divisao);
-        insertCommand.Parameters.AddWithValue("@Nivel", request.Nivel);
-        insertCommand.Parameters.AddWithValue("@FrequenciaSemanal", request.FrequenciaSemanal);
-        await insertCommand.ExecuteNonQueryAsync();
+            const string insertPlanoSql = @"
+                INSERT INTO PlanoTreino (Id, UsuarioId, Nome, Descricao, Divisao, Nivel, FrequenciaSemanal, CriadoEm)
+                VALUES (@Id, @UsuarioId, @Nome, @Descricao, @Divisao, @Nivel, @FrequenciaSemanal, GETUTCDATE())";
 
-        return await ObterPorIdAsync(planoId);
+            await using var insertCommand = new SqlCommand(insertPlanoSql, connection, transaction);
+            insertCommand.Parameters.AddWithValue("@Id", planoId);
+            insertCommand.Parameters.AddWithValue("@UsuarioId", usuarioId);
+            insertCommand.Parameters.AddWithValue("@Nome", request.Nome);
+            insertCommand.Parameters.AddWithValue("@Descricao", request.Descricao);
+            insertCommand.Parameters.AddWithValue("@Divisao", request.Divisao);
+            insertCommand.Parameters.AddWithValue("@Nivel", request.Nivel);
+            insertCommand.Parameters.AddWithValue("@FrequenciaSemanal", request.FrequenciaSemanal);
+            await insertCommand.ExecuteNonQueryAsync();
+
+            // Insere dias e exercícios
+            const string insertDiaSql = @"
+                INSERT INTO DiaTreino (Id, PlanoTreinoId, Nome, Ordem)
+                VALUES (@Id, @PlanoTreinoId, @Nome, @Ordem)";
+
+            const string insertExercicioSql = @"
+                INSERT INTO Exercicio (Id, DiaTreinoId, Nome, Descricao, GrupoMuscular, Series, Repeticoes, Carga, Observacoes, Ordem)
+                VALUES (@Id, @DiaTreinoId, @Nome, @Descricao, @GrupoMuscular, @Series, @Repeticoes, @Carga, @Observacoes, @Ordem)";
+
+            foreach (var dia in request.Dias)
+            {
+                var diaId = Guid.NewGuid();
+                await using var diaCmd = new SqlCommand(insertDiaSql, connection, transaction);
+                diaCmd.Parameters.AddWithValue("@Id", diaId);
+                diaCmd.Parameters.AddWithValue("@PlanoTreinoId", planoId);
+                diaCmd.Parameters.AddWithValue("@Nome", dia.Nome);
+                diaCmd.Parameters.AddWithValue("@Ordem", dia.Ordem);
+                await diaCmd.ExecuteNonQueryAsync();
+
+                foreach (var ex in dia.Exercicios)
+                {
+                    await using var exCmd = new SqlCommand(insertExercicioSql, connection, transaction);
+                    exCmd.Parameters.AddWithValue("@Id", Guid.NewGuid());
+                    exCmd.Parameters.AddWithValue("@DiaTreinoId", diaId);
+                    exCmd.Parameters.AddWithValue("@Nome", ex.Nome);
+                    exCmd.Parameters.AddWithValue("@Descricao", (object?)ex.Descricao ?? DBNull.Value);
+                    exCmd.Parameters.AddWithValue("@GrupoMuscular", ex.GrupoMuscular);
+                    exCmd.Parameters.AddWithValue("@Series", ex.Series);
+                    exCmd.Parameters.AddWithValue("@Repeticoes", ex.Repeticoes);
+                    exCmd.Parameters.AddWithValue("@Carga", (object?)ex.Carga ?? DBNull.Value);
+                    exCmd.Parameters.AddWithValue("@Observacoes", (object?)ex.Observacoes ?? DBNull.Value);
+                    exCmd.Parameters.AddWithValue("@Ordem", ex.Ordem);
+                    await exCmd.ExecuteNonQueryAsync();
+                }
+            }
+
+            await transaction.CommitAsync();
+
+            return await ObterPorIdAsync(planoId);
+        }
+        catch
+        {
+            await transaction.RollbackAsync();
+            throw;
+        }
     }
 
     public async Task<bool> AtualizarAsync(Guid id, PlanoTreinoRequest request)
