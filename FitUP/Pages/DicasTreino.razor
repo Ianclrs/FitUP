@@ -1,7 +1,5 @@
 ﻿@page "/DicasTreino"
 @inject IDialogService DialogService
-@inject NavigationManager NavigationManager
-@inject IJSRuntime JS
 
 
 <MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="mt-4 py-0 mb-8 animate-fade-in">
@@ -2170,13 +2168,10 @@
         
     }
 
-    <MudGrid Spacing="5" Class="px-4">
+    <MudGrid Spacing="10" Class="px-4">
         @foreach (var treino in ListaTreinos)
         {
-            @* Geração dinâmica do ID para a âncora (Ex: "upper-lower", "full-body") *@
-            var idAncora = treino.Nome.ToLower().Replace(" ", "-").Replace("/", "-");
-
-            <MudItem xs="12" id="@idAncora" Class="mb-20 mt-20">
+            <MudItem xs="12">
                 <MudGrid Class="@(treino.Inverter ? "flex-row-reverse align-center" : "align-center")">
 
                     <MudItem xs="12" md="5">
@@ -2199,52 +2194,50 @@
 
                     <MudItem xs="12" md="7" Class="d-flex flex-column justify-center">
                         <div class="px-4">
-                            <MudText Typo="Typo.h4" Style="font-family:cambria; font-weight:bold; color:coral" Class=" mb-2">@treino.Nome</MudText>
+                            <MudChip T="string" Size="Size.Small" Class="coral-chip mb-3">Método</MudChip>
 
-                            <MudCard Elevation="12" Class="mb-2" Style="border:1px solid coral">
-                                <MudText Typo="Typo.body1" Align="Align.Center" Class="white-text mb-2 ms-1 mt-2">@treino.Descricao</MudText>
+                            <MudText Typo="Typo.h4" Class="coral-text mb-2">@treino.Nome</MudText>
+                            <MudText Typo="Typo.body1" Class="white-text mb-6">@treino.Descricao</MudText>
 
-                                <MudText Style="font-size:0.75rem;font-weight:bold;text-transform:uppercase;letter-spacing:0.12em;color:coral" Class="mb-3 ms-2">
-                                    Benefícios
-                                </MudText>
-                                <MudGrid Spacing="2" Class="mb-2">
-                                    @foreach (var b in treino.Beneficios)
-                                    {
-                                        <MudItem xs="12" sm="6">
-                                            <div class="d-flex align-start gap-2 ms-2">
-                                                <MudIcon Icon="@Icons.Material.Filled.CheckCircle"
-                                                         Style="color:coral;font-size:1.1rem;margin-top:2px;flex-shrink:0;" />
-                                                <MudText Typo="Typo.body2" Class="white-text">@b</MudText>
-                                            </div>
-                                        </MudItem>
-                                    }
-                                </MudGrid>
-                            </MudCard>
+                            <MudText Style="font-size:0.75rem;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;" Class="coral-text mb-3">
+                                Benefícios
+                            </MudText>
+                            <MudGrid Spacing="2" Class="mb-6">
+                                @foreach (var b in treino.Beneficios)
+                                {
+                                    <MudItem xs="12" sm="6">
+                                        <div class="d-flex align-start gap-2">
+                                            <MudIcon Icon="@Icons.Material.Filled.CheckCircle"
+                                                     Style="color:#FF6B35;font-size:1.1rem;margin-top:2px;flex-shrink:0;" />
+                                            <MudText Typo="Typo.body2" Class="white-text">@b</MudText>
+                                        </div>
+                                    </MudItem>
+                                }
+                            </MudGrid>
 
-                            <MudGrid Spacing="3">
+                            <MudGrid Spacing="3" Class="mb-6">
                                 <MudItem xs="12" sm="6">
-                                    <div class="info-chip coral-border rounded mb-2 mud-theme-dark">
+                                    <div class="info-chip">
                                         <div class="d-flex align-center gap-2 mb-1">
                                             <MudIcon Icon="@Icons.Material.Filled.CalendarMonth"
-                                                     Style="color:coral;font-size:1rem;" />
+                                                     Style="color:#FF6B35;font-size:1rem;" />
                                             <MudText Class="white-text" Style="font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;">
                                                 Frequência
                                             </MudText>
                                         </div>
-                                        <MudText Typo="Typo.body2" Class="white-text ms-1" Style="font-weight:600;">@treino.Frequencia</MudText>
+                                        <MudText Typo="Typo.body2" Class="white-text" Style="font-weight:600;">@treino.Frequencia</MudText>
                                     </div>
                                 </MudItem>
-
                                 <MudItem xs="12" sm="6">
-                                    <div class="info-chip coral-border rounded mb-2 mud-theme-dark">
+                                    <div class="info-chip">
                                         <div class="d-flex align-center gap-2 mb-1">
                                             <MudIcon Icon="@Icons.Material.Filled.Group"
-                                                     Style="color:coral;font-size:1rem" />
+                                                     Style="color:#FF6B35;font-size:1rem;" />
                                             <MudText Class="white-text" Style="font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;">
                                                 Indicado para
                                             </MudText>
                                         </div>
-                                        <MudText Typo="Typo.body2" Class="white-text " Style="font-weight:600;">@treino.Publico</MudText>
+                                        <MudText Typo="Typo.body2" Class="white-text" Style="font-weight:600;">@treino.Publico</MudText>
                                     </div>
                                 </MudItem>
                             </MudGrid>
@@ -2270,26 +2263,13 @@
 </MudContainer>
 
 <style>
-    .scale-hover:hover {
-        transform: scale(1.05);
-        transition: transform 0.3s ease-in-out
-    }
+    :root { --coral-orange: #FF6B35; }
 
-    :root {
-        --coral-orange: #FF6B35;
-    }
+    .coral-text   { color: var(--coral-orange) !important; }
+    .coral-border { border-color: var(--coral-orange) !important; }
 
-    .coral-text {
-        color: var(--coral-orange) !important;
-    }
-
-    .coral-border {
-        border-color: var(--coral-orange) !important;
-    }
-
-    .white-text {
-        color: var(--mud-palette-text-primary) !important;
-    }
+    .white-text  { color: var(--mud-palette-text-secondary) !important; }
+    .white-text { color: var(--mud-palette-text-primary)   !important; }
 
     .training-card {
         border-radius: 20px;
@@ -2298,25 +2278,19 @@
         position: relative;
         overflow: hidden;
     }
-
-        .training-card::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(to bottom right, rgba(0,0,0,0.35), transparent, rgba(0,0,0,0.65));
-            pointer-events: none;
-        }
-
-        .training-card > * {
-            position: relative;
-            z-index: 1;
-        }
-
-        .training-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 12px 40px -8px rgba(255,107,53,0.45) !important;
-            border: 1px solid var(--coral-orange);
-        }
+    .training-card::after {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(to bottom right, rgba(0,0,0,0.35), transparent, rgba(0,0,0,0.65));
+        pointer-events: none;
+    }
+    .training-card > * { position: relative; z-index: 1; }
+    .training-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 12px 40px -8px rgba(255,107,53,0.45) !important;
+        border: 1px solid var(--coral-orange);
+    }
 
     .icon-bubble {
         width: 88px;
@@ -2329,10 +2303,7 @@
         box-shadow: 0 8px 32px -8px rgba(255,107,53,0.5);
         transition: transform 0.4s ease;
     }
-
-    .training-card:hover .icon-bubble {
-        transform: scale(1.08) rotate(3deg);
-    }
+    .training-card:hover .icon-bubble { transform: scale(1.08) rotate(3deg); }
 
     .coral-chip {
         background: rgba(255,107,53,0.12) !important;
@@ -2352,48 +2323,14 @@
         padding: 0.875rem 1rem;
     }
 
-    .animate-fade-in {
-        animation: fadeIn 0.8s ease-out;
-    }
-
+    .animate-fade-in { animation: fadeIn 0.8s ease-out; }
     @@keyframes fadeIn {
-        from {
-            opacity: 0;
-            transform: translateY(20px);
-        }
-
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        from { opacity: 0; transform: translateY(20px); }
+        to   { opacity: 1; transform: translateY(0); }
     }
 </style>
 
 @code {
-    private string _grupamentoAtivo = "";
-
-    private void AlternarGrupamento(string grupamento)
-    {
-        _grupamentoAtivo = _grupamentoAtivo == grupamento ? "" : grupamento;
-    }
-
-    protected override async Task OnAfterRenderAsync(bool firstRender)
-    {
-        if (firstRender)
-        {
-            var uri = NavigationManager.ToAbsoluteUri(NavigationManager.Uri);
-
-            if (!string.IsNullOrEmpty(uri.Fragment))
-            {
-                var elementId = uri.Fragment.Substring(1);
-
-                await Task.Delay(350);
-
-                await JS.InvokeVoidAsync("eval", $"document.getElementById('{elementId}')?.scrollIntoView({{ behavior: 'smooth' }})");
-            }
-        }
-    }
-
     private async Task AbrirDetalhes(TreinoModel treino)
     {
         var options = new DialogOptions
@@ -2487,7 +2424,7 @@
         {
             Nome        = "Full Body",
             Tagline     = "Corpo inteiro em cada sessão",
-            Descricao   = "A estratégia aqui é focar em exercícios compostos e multiarticulares (como agachamento, levantamento terra, supinos e remadas) que recrutam várias massas musculares ao mesmo tempo.",
+            Descricao   = "Treina todos os principais grupamentos musculares no mesmo dia. Ideal para iniciantes e para quem tem agenda apertada.",
             Frequencia  = "3 dias/semana",
             Publico     = "Iniciantes e intermediários",
             Icone       = Icons.Material.Filled.AccessibilityNew,
@@ -2509,8 +2446,8 @@
         new TreinoModel
         {
             Nome        = "Push Pull Legs",
-            Tagline     = "Empurrar, Puxar e Pernas",
-            Descricao   = "Uma das divisões mais famosas e fisiológicas que existem. Ela separa o corpo pelos padrões de movimento biomecânicos, evitando que você use músculos auxiliares no dia errado.",
+            Tagline     = "Empurrar, puxar e pernas",
+            Descricao   = "Divide os treinos em movimentos de empurrar, puxar e membros inferiores. Permite treinar até 6 vezes por semana.",
             Frequencia  = "3 a 6 dias/semana",
             Publico     = "Intermediários e avançados",
             Icone       = Icons.Material.Filled.DirectionsRun,
@@ -2533,7 +2470,7 @@
         {
             Nome        = "Treino A/B/C/D",
             Tagline     = "Divisão clássica por grupamento",
-            Descricao   = "Cada dia foca em grupamentos específicos (ex: A peito/tríceps, B costas/bíceps, C pernas, D ombros). Volume máximo por músculo, permitindo hypertrofiar aquela região com vários exercicíos, já que ela terá quase uma semana inteira para se recuperar antes de ser estimulada de novo.",
+            Descricao   = "Cada dia foca em grupamentos específicos (ex: A peito/tríceps, B costas/bíceps, C pernas, D ombros). Volume máximo por músculo.",
             Frequencia  = "4 a 5 dias/semana",
             Publico     = "Avançados em hipertrofia",
             Icone       = Icons.Material.Filled.Bolt,
@@ -2556,13 +2493,13 @@
 
     public class TreinoModel
     {
-        public string Nome { get; set; } = "";
-        public string Tagline { get; set; } = "";
-        public string Descricao { get; set; } = "";
-        public string Frequencia { get; set; } = "";
-        public string Publico { get; set; } = "";
-        public string Icone { get; set; } = "";
-        public bool Inverter { get; set; }
+        public string Nome         { get; set; } = "";
+        public string Tagline      { get; set; } = "";
+        public string Descricao    { get; set; } = "";
+        public string Frequencia   { get; set; } = "";
+        public string Publico      { get; set; } = "";
+        public string Icone        { get; set; } = "";
+        public bool   Inverter     { get; set; }
         public string CardGradient { get; set; } = "";
         public List<string> Beneficios { get; set; } = new();
         public string Explicacao { get; set; } = "";

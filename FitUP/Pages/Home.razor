@@ -1,5 +1,4 @@
 @page "/"
-@inject NavigationManager NavigationManager
 <PageTitle>Home</PageTitle>
 <MudContainer Class="mt-8 animate-fade-in">
     <MudGrid Justify="Justify.Center" Spacing="16">
@@ -73,7 +72,7 @@
                     }
 
                         .custom-shadow-hover:hover {
-                            box-shadow: 0 0 177px -12px rgba(255, 107, 53, 0.45) !important;
+                            box-shadow: 0 0 77px -12px rgba(255, 107, 53, 0.45) !important;
                         }
 
                     .scale-hover:hover {
@@ -92,7 +91,7 @@
         <MudCard Elevation="0" Style="width: 280px" Class="rounded-xl transition-fast-out-slow-in scale-hover custom-shadow-hover">
             <MudCardMedia Image="img/H.Lower.png" Height="150" />
             <MudCardContent>
-                <MudButton OnClick='() => IrParaTreino("upper-lower")' Class="transition-fast-out-slow-in scale-hover" Style="background-color:coral; width: 100%;font-weight: 800">UPPER/LOWER</MudButton>
+                <MudButton Class="transition-fast-out-slow-in scale-hover" Style="background-color:coral; width: 100%;font-weight: 800">UPPER/LOWER</MudButton>
             <MudText Class="mt-1" Align="Align.Center" Typo="Typo.body2">Um treino dividido em membros superiores e inferiores consiste em separar os treinos das partes superior e inferior do corpo.</MudText>
             </MudCardContent>
         </MudCard>
@@ -100,7 +99,7 @@
         <MudCard Elevation="11" Style="width: 280px;" Class="rounded-xl transition-fast-out-slow-in scale-hover custom-shadow-hover">
             <MudCardMedia Image="img/H.Full.png" Height="150" />
             <MudCardContent>
-                    <MudButton OnClick='() => IrParaTreino("full-body")' Class="transition-fast-out-slow-in scale-hover" Style="background-color:coral; width: 100%;font-weight: 800">FULLBODY</MudButton>
+                    <MudButton Class="transition-fast-out-slow-in scale-hover" Style="background-color:coral; width: 100%;font-weight: 800">FULLBODY</MudButton>
                     <MudText Class="mt-1" Align="Align.Center" Typo="Typo.body2">Treino focado para trabalhar os principais grupamentos musculares, em uma unica sessão.</MudText>
             </MudCardContent>
         </MudCard>
@@ -108,7 +107,7 @@
         <MudCard Elevation="11" Style="width: 280px;" Class="rounded-xl transition-fast-out-slow-in scale-hover custom-shadow-hover">
                 <MudCardMedia Image="img/H.PPL.png" Height="150" />
                 <MudCardContent>
-                <MudButton OnClick='() => IrParaTreino("push-pull-legs")' Class="transition-fast-out-slow-in scale-hover" Style="background-color:coral; width: 100%;font-weight: 800">PUSH/PULL/LEGS</MudButton>
+                <MudButton Class="transition-fast-out-slow-in scale-hover" Style="background-color:coral; width: 100%;font-weight: 800">PUSH/PULL/LEGS</MudButton>
                 <MudText Class="mt-1" Align="Align.Center" Typo="Typo.body2">Treino voltado em organizar os exercícios em três sessões distintas, e com grupamentos musculares distintos a cada dia.</MudText>
                 </MudCardContent>
         </MudCard>
@@ -116,7 +115,7 @@
         <MudCard Elevation="11" Style="width: 280px;" Class="rounded-xl transition-fast-out-slow-in scale-hover custom-shadow-hover">
             <MudCardMedia Image="img/H.ABCD.png" Height="150" />
             <MudCardContent>
-                <MudButton OnClick='() => IrParaTreino("treino-a-b-c-d")' Class="transition-fast-out-slow-in scale-hover" Style="background-color:coral; width: 100%;font-weight: 800">A/B/C/D</MudButton>
+                <MudButton Class="transition-fast-out-slow-in scale-hover" Style="background-color:coral; width: 100%;font-weight: 800">A/B/C/D</MudButton>
                 <MudText Class="mt-1" Align="Align.Center" Typo="Typo.body2">Focado em 1 ou 2 grupos musculares por dia, indicado para avançados, pois permite mais volume e intensidade por músculo trabalhado .</MudText>
             </MudCardContent>
         </MudCard>
@@ -134,10 +133,3 @@
         <MudButton Href="MonteTreino" Class=" ms-6 mt-2 rounded-xl transition-fast-out-slow-in scale-hover custom-shadow-hover" Style="background-color:coral; font-weight:700; width:clamp(300px,50%,500px)"> VENHA CONHECER NOSSOS TREINOS!</MudButton>
     </MudGrid>
 </MudContainer>
-
-@code{
-    private void IrParaTreino(string treinoId)
-    {
-        NavigationManager.NavigateTo($"/DicasTreino#{treinoId}");
-    }
-}
