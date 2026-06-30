@@ -107,7 +107,7 @@
         }
 
     .ex-num {
-        width: 32px;
+        width: 52px;
         height: 32px;
         border-radius: 50%;
         background-color: var(--fitup-orange-alpha);
@@ -374,11 +374,12 @@
                 <MudStack Row="true" Justify="Justify.SpaceBetween" Class="mb-2">
                     @for (int i = 0; i < _stepLabels.Length; i++)
                     {
+                        
                         int idx = i;
                         @if (idx == _step)
                         {
-                            <MudText Typo="Typo.body2" Color="Color.Inherit" Style="font-weight:700;">
-                                <span style="color:var(--fitup-orange);">@_stepLabels[idx]</span>
+                            <MudText Typo="Typo.body2" Color="Color.Inherit" Style="font-weight:700">
+                                <span style="color:var(--fitup-orange)">@_stepLabels[idx]</span>
                             </MudText>
                         }
                         else
@@ -746,10 +747,10 @@
 
     private readonly List<OptionItem> _objetivoOptions = new()
     {
-        new(Icons.Material.Outlined.FitnessCenter, "Hipertrofia", "Ganho de massa muscular"),
-        new(Icons.Material.Outlined.LocalFireDepartment, "Emagrecimento", "Queima de gordura"),
-        new(Icons.Material.Outlined.Bolt, "Força", "Força máxima"),
-        new(Icons.Material.Outlined.DirectionsRun, "Resistência", "Resistência e condicionamento"),
+        new(Icons.Material.Outlined.FitnessCenter, "Hipertrofia", "Ganho de Massa Muscular"),
+        new(Icons.Material.Outlined.LocalFireDepartment, "Emagrecimento", " Foco na Queima de Gordura"),
+        new(Icons.Material.Outlined.Bolt, "Força", "Foco em Força Máxima"),
+        new(Icons.Material.Outlined.DirectionsRun, "Resistência", "Condicionamento Físico"),
     };
     private readonly List<OptionItem> _nivelOptions = new()
     {
