@@ -1,6 +1,9 @@
 ﻿@page "/MonteTreino"
 @using System.Collections.Generic
 @using System.Timers
+@using System.Text.Json
+@using System.Text.Json.Serialization
+@inject IJSRuntime JS
 
 <PageTitle>Monte o Seu Treino</PageTitle>
 
@@ -584,6 +587,19 @@
                 <MudText Typo="Typo.body2" Color="Color.Inherit">@workout.Desc · @_nivel · @_local</MudText>
             </div>
 
+            @if (_nivel == "Iniciante")
+            {
+                <div class="limitation-warning mb-4" style="border-color:var(--fitup-orange);background-color:var(--fitup-orange-alpha);">
+                    <MudText Typo="Typo.body2" Color="Color.Inherit">
+                        <span style="color:var(--fitup-orange);font-size:18px;">📅</span>
+                        <strong Style="font-weight:500;color:var(--fitup-orange);">
+                            Lembrete:
+                        </strong>
+                        <span> Este treino foi pensado para se adaptar ao longo de <strong>1 mês</strong>. Conforme seu corpo evolui, aumente gradualmente as cargas e repetições para continuar progredindo. Após 30 dias, volte aqui e gere um novo treino para o próximo ciclo!</span>
+                    </MudText>
+                </div>
+            }
+
             <MudGrid Spacing="2" Class="mb-4">
                 <MudItem xs="4"><div class="stat-card"><MudText Typo="Typo.h6" Style="color:var(--fitup-orange);font-weight:500;">@(_dias)x</MudText><MudText Typo="Typo.subtitle2" Color="Color.Inherit">por semana</MudText></div></MudItem>
                 <MudItem xs="4"><div class="stat-card"><MudText Typo="Typo.h6" Style="color:var(--fitup-orange);font-weight:500;">@totalSeries</MudText><MudText Typo="Typo.subtitle2" Color="Color.Inherit">séries totais</MudText></div></MudItem>
@@ -934,7 +950,50 @@
     }
     private string GetDuration() => _duracao switch { "Até 30 min" => "30 min", "45 min" => "45 min", "60 min" => "60 min", "75+ min" => "75+ min", _ => "60 min", };
     private void SaveWorkout() { }
-    private void ExportPdf() { }
+    private async Task ExportPdf()
+    {
+        try
+        {
+            var workout = GetWorkout();
+            var splits = workout.Splits.Take(Math.Min(_dias > 0 ? _dias : 3, workout.Splits.Count)).ToList();
+
+            var pdfData = new
+            {
+                nome = workout.Nome,
+                desc = workout.Desc,
+                nivel = _nivel,
+                local = _local,
+                duracao = GetDuration(),
+                diasSemana = _dias > 0 ? _dias : 3,
+                splits = splits.Select(s => new
+                {
+                    label = s.Label,
+                    focus = s.Focus,
+                    exercicios = s.Exercises.Select(ex => new
+                    {
+                        name = ex.Name,
+                        muscle = ex.Muscle,
+                        series = ex.Series,
+                        reps = ex.Reps,
+                        rest = ex.Rest
+                    }).ToList()
+                }).ToList()
+            };
+
+            var options = new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+            };
+
+            var json = JsonSerializer.Serialize(pdfData, options);
+            await JS.InvokeVoidAsync("exportFitUpPdf", json);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Erro ao exportar PDF: {ex.Message}");
+        }
+    }
 
     private void StartExerciseEdit(int index)
     {
