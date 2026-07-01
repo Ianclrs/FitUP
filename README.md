@@ -10,8 +10,8 @@ Desenvolvido com uma arquitetura moderna e focado em alta performance, o projeto
 
 O projeto foi construído utilizando as melhores práticas de desenvolvimento de software e as tecnologias mais recentes do mercado:
 
-- **Frontend:** [MudBlazor](https://mudblazor.com/) (Componentes UI para Blazor WebAssembly/Server)
-- **Backend:** [.NET 10](https://dotnet.microsoft.com/) & C#
+- **Frontend:** [MudBlazor](https://mudblazor.com/) (Componentes UI para Blazor WebAssembly)
+- **Backend:** [.NET 10](https://dotnet.microsoft.com/) & C# (ASP.NET Core Web API)
 - **Persistência de Dados:** [Dapper ORM](https://github.com/DapperLib/Dapper) (Consultas de alta performance e mapeamento de dados)
 - **Banco de Dados:** Microsoft SQL Server
 - **Arquitetura:** Princípios de Clean Architecture / Domain-Driven Design (DDD) e modelagem relacional normalizada.
@@ -23,14 +23,22 @@ O projeto foi construído utilizando as melhores práticas de desenvolvimento de
 ### 📋 Gerenciamento de Treinos
 - Criação e customização de divisões de treino (Fullbody, PPL - Push/Pull/Legs, Upper/Lower, etc.).
 - Registro detalhado de exercícios, séries, repetições.
+- **Monte seu Treino** — ferramenta interativa para montar rotinas personalizadas.
+- **Dicas de Treino** — orientações e boas práticas para diferentes objetivos.
 
 ### 🍎 Guias de Nutrição & Macronutrientes
-- Cálculo e distribuição automatizada de macronutrientes (Proteínas, Carboidratos e Gorduras) com base no objetivo (Hipertrofia, Definição, Manutenção).
+- **Calculadora de Bioimpedância** — cálculo e análise de composição corporal (IMC, taxa metabólica basal, etc.).
+- **Ganho Máximo** — cálculo e distribuição automatizada de macronutrientes (Proteínas, Carboidratos e Gorduras) com base no objetivo (Hipertrofia, Definição, Manutenção).
 - Organização de diários alimentares ou planos estruturados.
 
 ### 👤 Gestão de Usuários & Perfil
-- Controle de acessos e autenticação segura.
-- Painel de controle (Dashboard) interativo centralizado para visualização rápida do progresso e rotina diária.
+- Cadastro e autenticação de usuários (**Login** / **Cadastro**).
+- Painel de controle (**Home**) interativo centralizado para visualização rápida do progresso e rotina diária.
+- **Mensagens Customizadas** para feedback e motivação personalizada.
+
+### 📄 Páginas Institucionais
+- **Termos de Uso** e **Política de Privacidade**.
+- **Indicações** e recomendações de uso da plataforma.
 
 ---
 
@@ -39,16 +47,49 @@ O projeto foi construído utilizando as melhores práticas de desenvolvimento de
 ### Pré-requisitos
 Antes de começar, você vai precisar ter instalado em sua máquina:
 - [.NET 10 SDK](https://dotnet.microsoft.com/download/dotnet/10.0)
-- [SQL Server](https://www.microsoft.com/sql-server/) (ou localdb)
+- [SQL Server](https://www.microsoft.com/sql-server/) (ou LocalDB)
 - IDE de sua preferência (Visual Studio 2022, VS Code ou Rider)
 
 ### Passos para Configuração
 
 1. **Clonar o Repositório:**
    ```bash
-   git clone [https://github.com/Ianclrs/FitUP.git](https://github.com/Ianclrs/FitUP.git)
+   git clone https://github.com/Ianclrs/FitUP.git
    cd FitUP
-# 📝Colaboradores:
+   ```
+
+2. **Restaurar as dependências:**
+   ```bash
+   dotnet restore
+   ```
+
+3. **Buildar o projeto:**
+   ```bash
+   dotnet build
+   ```
+
+4. **Executar o Frontend (Blazor WebAssembly):**
+   ```bash
+   cd FitUP/FitUP
+   dotnet run
+   ```
+   O frontend estará disponível em `https://localhost:5001` ou `http://localhost:5000`.
+
+5. **Executar a Web API (Backend):**
+   Em um terminal separado:
+   ```bash
+   cd src/FitUP.WebApi
+   dotnet run
+   ```
+   A API estará disponível em `https://localhost:7001` ou `http://localhost:7000`.
+
+6. **Configurar o Banco de Dados:**
+   - Atualize a string de conexão no arquivo de configuração da Web API (`appsettings.json`) com os dados do seu SQL Server.
+   - Execute os scripts de migração (se disponíveis) para criar as tabelas necessárias.
+
+---
+
+## 📝 Colaboradores
 
 <table>
   <tr>
@@ -112,4 +153,3 @@ Antes de começar, você vai precisar ter instalado em sua máquina:
      </td>
   </tr>  
 </table>
-
