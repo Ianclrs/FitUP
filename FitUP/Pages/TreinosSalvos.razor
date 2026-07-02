@@ -1,0 +1,403 @@
+@page "/treinos-salvos"
+@using FitUP.Services
+@using System.Text.Json
+@using System.Text.Json.Serialization
+@inject PlanoTreinoService PlanoTreinoService
+@inject AuthService AuthService
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JS
+@inject ISnackbar Snackbar
+
+<PageTitle>Treinos Salvos</PageTitle>
+
+<style>
+    :root {
+        --fitup-orange: #FF7A2F;
+        --fitup-orange-alpha: rgba(255, 122, 47, 0.12);
+    }
+
+    .treino-card {
+        background-color: var(--mud-palette-surface) !important;
+        border: 1.5px solid var(--mud-palette-surface) !important;
+        border-radius: 8px !important;
+        transition: border-color 0.2s, box-shadow 0.2s;
+        padding: 20px;
+        margin-bottom: 16px;
+    }
+
+    .treino-card:hover {
+        border-color: var(--fitup-orange) !important;
+        box-shadow: 0 0 22px rgba(255, 122, 47, 0.30);
+    }
+
+    .btn-primary-fitup {
+        background-color: var(--fitup-orange) !important;
+        color: #FFFFFF !important;
+        border-radius: 6px !important;
+        font-weight: 500 !important;
+    }
+
+    .btn-outline-fitup {
+        background-color: transparent !important;
+        border: 1.5px solid var(--fitup-orange) !important;
+        color: var(--fitup-orange) !important;
+        border-radius: 6px !important;
+        font-weight: 500 !important;
+    }
+
+    .day-tag {
+        background-color: var(--fitup-orange-alpha);
+        border: 1px solid var(--fitup-orange);
+        color: var(--fitup-orange);
+        border-radius: 6px;
+        padding: 4px 12px;
+        font-size: 12px;
+        font-weight: 500;
+    }
+
+    .tag-highlight {
+        background-color: var(--fitup-orange-alpha);
+        border: 1px solid var(--fitup-orange);
+        color: var(--fitup-orange);
+        border-radius: 6px;
+        padding: 2px 10px;
+        font-size: 12px;
+        font-weight: 500;
+    }
+
+    .tag-neutral {
+        background-color: var(--fitup-orange-alpha);
+        border: 1px solid var(--fitup-orange);
+        color: var(--mud-palette-text-primary);
+        border-radius: 6px;
+        padding: 2px 10px;
+        font-size: 12px;
+    }
+
+    .ex-num {
+        width: 32px;
+        height: 24px;
+        border-radius: 50%;
+        background-color: var(--fitup-orange-alpha);
+        color: var(--fitup-orange);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        font-weight: 500;
+        flex-shrink: 0;
+    }
+
+    .exercise-card-mini {
+        background-color: var(--mud-palette-surface) !important;
+        border: 1.5px solid var(--mud-palette-surface) !important;
+        border-radius: 6px !important;
+        padding: 10px 14px;
+        margin-bottom: 6px;
+        transition: border-color 0.2s;
+    }
+
+    .exercise-card-mini:hover {
+        border-color: var(--fitup-orange) !important;
+    }
+
+    .empty-state {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 400px;
+        gap: 16px;
+    }
+
+    .treino-btn {
+        background-color: var(--mud-palette-surface) !important;
+        border: 1.5px solid var(--mud-palette-surface) !important;
+        border-radius: 8px !important;
+        transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
+        cursor: pointer;
+        padding: 16px 20px;
+        margin-bottom: 12px;
+        text-transform: none !important;
+        font-weight: 500 !important;
+        color: var(--mud-palette-text-primary) !important;
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    .treino-btn:hover {
+        border-color: var(--fitup-orange) !important;
+        box-shadow: 0 0 22px rgba(255, 122, 47, 0.30);
+    }
+
+    .treino-btn.expanded {
+        border-color: var(--fitup-orange) !important;
+        background-color: var(--fitup-orange-alpha) !important;
+        box-shadow: 0 0 22px rgba(255, 122, 47, 0.30);
+    }
+
+    .expand-icon {
+        color: var(--fitup-orange);
+        transition: transform 0.3s;
+        font-size: 20px;
+    }
+
+    .expand-icon.rotated {
+        transform: rotate(180deg);
+    }
+
+    .detail-panel {
+        border: 1.5px solid var(--fitup-orange);
+        border-top: none;
+        border-radius: 0 0 8px 8px;
+        padding: 20px;
+        margin-top: -13px;
+        margin-bottom: 12px;
+        background-color: var(--mud-palette-surface) !important;
+        animation: slideDown 0.25s ease;
+    }
+
+    @@keyframes slideDown {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .divider-fitup {
+        border-color: var(--fitup-orange);
+        opacity: 0.3;
+        margin: 16px 0;
+    }
+</style>
+
+<MudContainer MaxWidth="MaxWidth.Medium" Class="py-8">
+
+    <MudText Typo="Typo.h4" Style="color:coral; font-weight:700; margin-bottom:8px;">Meus Treinos Salvos</MudText>
+    <MudText Typo="Typo.body1" Color="Color.Inherit" Class="mb-8">Clique em um treino para ver os exercícios.</MudText>
+
+    @if (_isLoading)
+    {
+        <div style="display:flex;justify-content:center;padding:80px 0;">
+            <MudProgressCircular Color="Color.Warning" Size="Size.Large" Indeterminate="true" />
+        </div>
+    }
+    else if (_treinos.Count == 0)
+    {
+        <div class="empty-state">
+            <MudIcon Icon="@Icons.Material.Outlined.FitnessCenter" Style="font-size:64px;color:coral;opacity:0.5;" />
+            <MudText Typo="Typo.h6" Color="Color.Inherit">Nenhum treino salvo</MudText>
+            <MudText Typo="Typo.body2" Color="Color.Inherit" Style="text-align:center;max-width:400px;">
+                Vá até "Monte o seu Treino", gere um treino personalizado e clique em <strong>Salvar</strong>.
+            </MudText>
+            <MudButton Href="MonteTreino" Class="btn-primary-fitup mt-4" StartIcon="@Icons.Material.Outlined.Add">
+                Criar Treino
+            </MudButton>
+        </div>
+    }
+    else
+    {
+        @foreach (var treino in _treinos)
+        {
+            int totalSeries = treino.Dias.SelectMany(d => d.Exercicios).Sum(e => e.Series);
+            bool isExpanded = _expandedTreinoId == treino.Id;
+
+            @* Botão principal do treino *@
+            <div class="treino-btn @(isExpanded ? "expanded" : "")" @onclick="() => ToggleExpansao(treino.Id)">
+                <MudStack Row="true" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center" Style="width:100%;">
+                    <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="3" Style="flex:1;flex-wrap:wrap;">
+                        <MudIcon Icon="@Icons.Material.Outlined.FitnessCenter" Style="color:var(--fitup-orange);" Size="Size.Medium" />
+                        <MudText Typo="Typo.h6" Style="font-weight:600;">@treino.Nome</MudText>
+                        <MudStack Row="true" Spacing="1" Style="flex-wrap:wrap;">
+                            <span class="day-tag">@treino.FrequenciaSemanal@("x")/semana</span>
+                            <span class="day-tag">@treino.Dias.Count dias</span>
+                            <span class="day-tag">@totalSeries séries</span>
+                        </MudStack>
+                    </MudStack>
+                    <MudIcon Icon="@Icons.Material.Filled.KeyboardArrowDown"
+                             Class="@($"expand-icon {(isExpanded ? "rotated" : "")}")" />
+                </MudStack>
+            </div>
+
+            @* Painel de detalhes expandido *@
+            @if (isExpanded)
+            {
+                <div class="detail-panel">
+                    <MudText Typo="Typo.body2" Color="Color.Inherit" Class="mb-3">@treino.Descricao</MudText>
+
+                    @if (treino.Dias.Count > 0)
+                    {
+                        @foreach (var dia in treino.Dias.OrderBy(d => d.Ordem))
+                        {
+                            <MudText Typo="Typo.subtitle2" Style="font-weight:600; color:var(--fitup-orange); margin-bottom:4px;">@dia.Nome</MudText>
+
+                            @if (dia.Exercicios.Count > 0)
+                            {
+                                @for (int i = 0; i < dia.Exercicios.OrderBy(e => e.Ordem).ToList().Count; i++)
+                                {
+                                    var ex = dia.Exercicios.OrderBy(e => e.Ordem).ElementAt(i);
+                                    int num = i + 1;
+                                    <div class="exercise-card-mini mb-2">
+                                        <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="2">
+                                            <div class="ex-num">@num</div>
+                                            <div style="flex:1;">
+                                                <MudText Typo="Typo.body2" Style="font-weight:500;">@ex.Nome</MudText>
+                                                <MudText Typo="Typo.caption" Color="Color.Inherit">
+                                                    @(string.IsNullOrWhiteSpace(ex.Descricao) ? "—" : ex.Descricao)
+                                                </MudText>
+                                            </div>
+                                            <MudStack Row="true" Spacing="1">
+                                                <span class="tag-highlight">@ex.Series@("x")</span>
+                                                <span class="tag-highlight">@ex.Repeticoes reps</span>
+                                                @if (!string.IsNullOrWhiteSpace(ex.Observacoes))
+                                                {
+                                                    <span class="tag-neutral">@ex.Observacoes</span>
+                                                }
+                                            </MudStack>
+                                        </MudStack>
+                                    </div>
+                                }
+                            }
+                            else
+                            {
+                                <MudText Typo="Typo.body2" Color="Color.Inherit" Style="margin-bottom:12px;">Nenhum exercício registrado para este dia.</MudText>
+                            }
+                        }
+                    }
+
+                    <MudDivider Class="divider-fitup" />
+
+                    <MudStack Row="true" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center">
+                        <MudText Typo="Typo.caption" Color="Color.Inherit">
+                            Salvo em @treino.CriadoEm.ToString("dd/MM/yyyy")
+                            @if (treino.AtualizadoEm.HasValue)
+                            {
+                                <span> · Atualizado em @treino.AtualizadoEm.Value.ToString("dd/MM/yyyy")</span>
+                            }
+                        </MudText>
+                        <MudStack Row="true" Spacing="2">
+                            <MudIconButton Icon="@Icons.Material.Outlined.FileDownload"
+                                           Style="color:var(--fitup-orange)"
+                                           Size="Size.Small"
+                                           title="Exportar PDF"
+                                           OnClick="@(async () => await ExportarPdf(treino))" />
+                            <MudIconButton Icon="@Icons.Material.Filled.Delete"
+                                           Style="color:#f44336"
+                                           Size="Size.Small"
+                                           title="Remover treino"
+                                           OnClick="@(async () => await RemoverTreino(treino))" />
+                        </MudStack>
+                    </MudStack>
+                </div>
+            }
+        }
+    }
+
+</MudContainer>
+
+@code {
+    private List<PlanoTreinoDto> _treinos = new();
+    private bool _isLoading = true;
+    private Guid? _expandedTreinoId;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await CarregarTreinos();
+    }
+
+    private async Task CarregarTreinos()
+    {
+        _isLoading = true;
+        try
+        {
+            _treinos = await PlanoTreinoService.ListarAsync();
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Erro ao carregar treinos: {ex.Message}", Severity.Error);
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+
+    private void ToggleExpansao(Guid treinoId)
+    {
+        if (_expandedTreinoId == treinoId)
+            _expandedTreinoId = null;
+        else
+            _expandedTreinoId = treinoId;
+    }
+
+    private async Task RemoverTreino(PlanoTreinoDto treino)
+    {
+        try
+        {
+            var sucesso = await PlanoTreinoService.RemoverAsync(treino.Id);
+            if (sucesso)
+            {
+                _treinos.Remove(treino);
+                if (_expandedTreinoId == treino.Id)
+                    _expandedTreinoId = null;
+                Snackbar.Add($"Treino '{treino.Nome}' removido.", Severity.Success);
+            }
+            else
+            {
+                Snackbar.Add("Erro ao remover treino.", Severity.Error);
+            }
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Erro ao remover: {ex.Message}", Severity.Error);
+        }
+    }
+
+    private async Task ExportarPdf(PlanoTreinoDto treino)
+    {
+        try
+        {
+            var nivelStr = treino.Nivel switch { 0 => "Iniciante", 1 => "Intermediário", 2 => "Avançado", _ => "—" };
+
+            var pdfData = new
+            {
+                nome = treino.Nome,
+                desc = treino.Descricao,
+                nivel = nivelStr,
+                local = "—",
+                duracao = "—",
+                diasSemana = treino.FrequenciaSemanal,
+                splits = treino.Dias.OrderBy(d => d.Ordem).Select(d => new
+                {
+                    label = d.Nome,
+                    focus = "",
+                    exercicios = d.Exercicios.OrderBy(e => e.Ordem).Select(e => new
+                    {
+                        name = e.Nome,
+                        muscle = e.Descricao ?? "",
+                        series = e.Series,
+                        reps = $"{e.Repeticoes}",
+                        rest = e.Observacoes?.Replace("Descanso: ", "") ?? "—"
+                    }).ToList()
+                }).ToList()
+            };
+
+            var options = new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+            };
+
+            var json = JsonSerializer.Serialize(pdfData, options);
+            await JS.InvokeVoidAsync("exportFitUpPdf", json);
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Erro ao exportar PDF: {ex.Message}", Severity.Error);
+        }
+    }
+}
