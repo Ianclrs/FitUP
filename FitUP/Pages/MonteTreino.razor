@@ -3,7 +3,11 @@
 @using System.Timers
 @using System.Text.Json
 @using System.Text.Json.Serialization
+@using FitUP.Services
 @inject IJSRuntime JS
+@inject AuthService AuthService
+@inject PlanoTreinoService PlanoTreinoService
+@inject ISnackbar Snackbar
 
 <PageTitle>Monte o Seu Treino</PageTitle>
 
@@ -950,7 +954,58 @@
         };
     }
     private string GetDuration() => _duracao switch { "Até 30 min" => "30 min", "45 min" => "45 min", "60 min" => "60 min", "75+ min" => "75+ min", _ => "60 min", };
-    private void SaveWorkout() { }
+    private async Task SaveWorkout()
+    {
+        if (!AuthService.IsLoggedIn)
+        {
+            Snackbar.Add("Faça login para salvar seu treino.", Severity.Warning);
+            return;
+        }
+
+        try
+        {
+            var workout = GetWorkout();
+            var splits = workout.Splits.Take(Math.Min(_dias > 0 ? _dias : 3, workout.Splits.Count)).ToList();
+
+            var request = new PlanoTreinoRequest
+            {
+                Nome = workout.Nome,
+                Descricao = workout.Desc,
+                Divisao = _dias > 0 ? _dias : 3,
+                Nivel = _nivel switch { "Iniciante" => 0, "Intermediário" => 1, "Avançado" => 2, _ => 0 },
+                FrequenciaSemanal = _dias > 0 ? _dias : 3,
+                Dias = splits.Select((s, idx) => new DiaTreinoRequest
+                {
+                    Nome = s.Label,
+                    Ordem = idx + 1,
+                    Exercicios = s.Exercises.Select((ex, exIdx) => new ExercicioRequest
+                    {
+                        Nome = ex.Name,
+                        Descricao = ex.Muscle,
+                        Series = ex.Series,
+                        Repeticoes = int.TryParse(ex.Reps.Split('–','-')[0], out var r) ? r : 10,
+                        Carga = null,
+                        Observacoes = $"Descanso: {ex.Rest}",
+                        Ordem = exIdx + 1
+                    }).ToList()
+                }).ToList()
+            };
+
+            var result = await PlanoTreinoService.CriarAsync(request);
+            if (result is not null)
+            {
+                Snackbar.Add("Treino salvo com sucesso! Acesse 'Treinos Salvos' no menu do usuário.", Severity.Success);
+            }
+            else
+            {
+                Snackbar.Add("Erro ao salvar o treino. Verifique sua conexão.", Severity.Error);
+            }
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Erro ao salvar: {ex.Message}", Severity.Error);
+        }
+    }
     private async Task ExportPdf()
     {
         try

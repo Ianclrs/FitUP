@@ -1,6 +1,9 @@
 ﻿@page "/login"
 @using System.ComponentModel.DataAnnotations
+@using FitUP.Services
 @inject NavigationManager NavigationManager
+@inject AuthService AuthService
+@inject ISnackbar Snackbar
 
 <PageTitle>Login</PageTitle>
 
@@ -114,7 +117,12 @@
                            Variant="Variant.Filled"
                            Style="background-color:coral; font-weight: 700;"
                            Class="mb-3 py-3"
-                           FullWidth="true">
+                           FullWidth="true"
+                           Disabled="@_isLoading">
+                    @if (_isLoading)
+                    {
+                        <MudProgressCircular Size="Size.Small" Color="Color.Inherit" Indeterminate="true" Class="mr-2" />
+                    }
                     ENTRAR
                 </MudButton>
 
@@ -137,10 +145,11 @@
 </div>
 
 @code {
-    private LoginRequest loginModel = new();
+    private LoginModel loginModel = new();
     bool _isPasswordVisible;
     InputType _passwordInput = InputType.Password;
     string _passwordInputIcon = Icons.Material.Filled.VisibilityOff;
+    bool _isLoading;
 
     void TogglePasswordVisibility()
     {
@@ -159,9 +168,43 @@
     }
 
     void VoltarHome() => NavigationManager.NavigateTo("/");
-    private async Task HandleLogin() => await Task.Delay(50);
 
-    public class LoginRequest
+    private async Task HandleLogin()
+    {
+        if (_isLoading) return;
+        _isLoading = true;
+
+        try
+        {
+            var request = new LoginRequest
+            {
+                Email = loginModel.Identity,
+                Senha = loginModel.Password
+            };
+
+            var response = await AuthService.LoginAsync(request);
+
+            if (response is not null)
+            {
+                Snackbar.Add($"Bem-vindo(a), {response.Nome}!", Severity.Success);
+                NavigationManager.NavigateTo("/");
+            }
+            else
+            {
+                Snackbar.Add("E-mail ou senha inválidos. Tente novamente.", Severity.Error);
+            }
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Erro ao conectar com o servidor: {ex.Message}", Severity.Error);
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+
+    public class LoginModel
     {
         [Required(ErrorMessage = "O e-mail é obrigatório!")]
         [EmailAddress(ErrorMessage = "Insira um e-mail válido!")]
