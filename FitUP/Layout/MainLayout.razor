@@ -44,9 +44,8 @@
         @*Botões condicionais: logado vs não logado*@
         @if (AuthService.IsLoggedIn)
         {
-            <MudMenu Icon="@Icons.Material.Filled.AccountCircle" 
-                     IconColor="Color.Inherit"
-                     Style="color:coral!important;" 
+            <MudMenu Icon="@Icons.Material.Filled.AccountCircle" IconColor="Color.Surface" 
+                     Style="color:coral;" 
                      Class="mt-2 ms-2">
                 <ChildContent>
                     <MudMenuItem Href="/treinos-salvos">Treinos Salvos</MudMenuItem>
@@ -177,6 +176,7 @@
         Success = "#008B8B",
         Secondary = "#2e8b57",
         Tertiary = "#8B4513",
+        Dark = "#e8e2da"
     };
 
     private readonly PaletteDark _darkPalette = new()
@@ -207,7 +207,8 @@
         Divider = "#292838",
         OverlayLight = "#1e1e2d80",
         Secondary = "#2e8b57",
-        Tertiary = "#8B4513"
+        Tertiary = "#8B4513",
+        Dark = "#1f1d1b"
     };
 
     public string DarkLightModeButtonIcon => _isDarkMode switch
