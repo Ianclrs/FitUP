@@ -54,17 +54,19 @@ public class UsuarioService : IUsuarioService
 
         const string sql = @"
             UPDATE Usuario
-            SET Nome = @Nome,
-                Sobrenome = @Sobrenome,
-                Telefone = @Telefone,
-                CPF = @CPF,
-                DataNascimento = @DataNascimento
+            SET Nome = COALESCE(@Nome, Nome),
+                Sobrenome = COALESCE(@Sobrenome, Sobrenome),
+                Email = COALESCE(@Email, Email),
+                Telefone = COALESCE(@Telefone, Telefone),
+                CPF = COALESCE(@CPF, CPF),
+                DataNascimento = COALESCE(@DataNascimento, DataNascimento)
             WHERE Id = @Id";
 
         await using var command = new SqlCommand(sql, connection);
         command.Parameters.AddWithValue("@Id", id);
         command.Parameters.AddWithValue("@Nome", request.Nome);
         command.Parameters.AddWithValue("@Sobrenome", request.Sobrenome);
+        command.Parameters.AddWithValue("@Email", (object?)request.Email ?? DBNull.Value);
         command.Parameters.AddWithValue("@Telefone", (object?)request.Telefone ?? DBNull.Value);
         command.Parameters.AddWithValue("@CPF", (object?)request.CPF ?? DBNull.Value);
         command.Parameters.AddWithValue("@DataNascimento", (object?)request.DataNascimento ?? DBNull.Value);

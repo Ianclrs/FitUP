@@ -1,0 +1,461 @@
+@page "/perfil"
+@layout MainLayout
+@using System.ComponentModel.DataAnnotations
+@using FitUP.Services
+@inject NavigationManager NavigationManager
+@inject AuthService AuthService
+@inject ISnackbar Snackbar
+
+<PageTitle>Meu Perfil</PageTitle>
+
+<style>
+    :root {
+        --mud-palette-primary: coral;
+        --mud-palette-primary-hover: #ff8e61;
+    }
+
+    .profile-wrap {
+        display: flex;
+        justify-content: center;
+    }
+
+    .profile-card {
+        border-radius: 28px;
+        width: 100%;
+        max-width: 700px;
+        position: relative;
+    }
+
+    .btn-close {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        color: #f44336 !important;
+        transition: transform 0.2s ease-in-out, opacity 0.2s;
+        opacity: 0.7;
+        z-index: 10;
+    }
+
+    .btn-close:hover {
+        color: #d32f2f !important;
+        opacity: 1;
+        transform: scale(1.1);
+    }
+
+    .btn-save {
+        background-color: coral !important;
+        color: #fff !important;
+        font-weight: 700;
+    }
+
+    .btn-save:hover {
+        background-color: #ff8e61 !important;
+    }
+
+    .treinos-link-card {
+        border: 2px dashed coral;
+        border-radius: 16px;
+        padding: 16px;
+        text-align: center;
+        cursor: pointer;
+        transition: background-color 0.3s, transform 0.2s;
+    }
+
+    .treinos-link-card:hover {
+        background-color: rgba(255, 127, 80, 0.1);
+        transform: translateY(-2px);
+    }
+</style>
+
+@if (!AuthService.IsLoggedIn)
+{
+    <MudContainer Class="d-flex justify-center align-center" Style="min-height: 60vh;">
+        <MudPaper Elevation="4" Class="pa-10 rounded-xl" Style="max-width: 500px; width: 100%; text-align: center;">
+            <MudIcon Icon="@Icons.Material.Filled.Lock" Size="Size.Large" Color="Color.Error" />
+            <MudText Typo="Typo.h5" Class="mt-4 mb-2" Style="font-weight: 700;">Acesso Restrito</MudText>
+            <MudText Typo="Typo.body1" Class="mb-6">Você precisa estar logado para acessar esta página.</MudText>
+            <MudButton Variant="Variant.Filled" Style="background-color: coral; font-weight: 700;" Href="/login">
+                Ir para Login
+            </MudButton>
+        </MudPaper>
+    </MudContainer>
+}
+else
+{
+    <div class="profile-wrap">
+        <MudPaper Elevation="4" Class="profile-card pa-10 mt-5 mb-5">
+
+            <MudIconButton Icon="@Icons.Material.Filled.Close"
+                           Class="btn-close"
+                           OnClick="VoltarHome"
+                           Size="Size.Medium" />
+
+            <div class="mb-6">
+                <MudText Align="Align.Center" Typo="Typo.h4" Style="font-weight: bold; color: coral;">Meu Perfil</MudText>
+                <MudText Align="Align.Center" Typo="Typo.body2" Class="mud-text-secondary">Gerencie suas informações pessoais</MudText>
+            </div>
+
+            @* ---- Atalho: Meus Treinos ---- *@
+            <div class="treinos-link-card mb-6" @onclick="IrParaTreinos">
+                <div class="d-flex align-center justify-center gap-3">
+                    <MudIcon Icon="@Icons.Material.Filled.FitnessCenter" Style="color: coral; font-size: 32px;" />
+                    <div>
+                        <MudText Typo="Typo.h6" Style="color: coral; font-weight: 700;">Meus Treinos Salvos</MudText>
+                        <MudText Typo="Typo.body2" Class="mud-text-secondary">Acesse e gerencie seus treinos gerados</MudText>
+                    </div>
+                    <MudIcon Icon="@Icons.Material.Filled.ChevronRight" Style="color: coral; font-size: 28px;" />
+                </div>
+            </div>
+
+            @* ---- Gavetas Expansíveis ---- *@
+            <MudExpansionPanels MultiExpansion="false">
+
+                @* Gaveta 1: Alterar Nome *@
+                <MudExpansionPanel Text="Alterar Nome" IsInitiallyExpanded>
+                    <TitleContent>
+                        <div class="d-flex align-center gap-2">
+                            <MudIcon Icon="@Icons.Material.Filled.Badge" Size="Size.Small" Style="color: coral;" />
+                            <MudText Style="font-weight: 700; color: coral;">Alterar Nome</MudText>
+                        </div>
+                    </TitleContent>
+                    <ChildContent>
+                        <EditForm Model="@_nomeModel" OnValidSubmit="HandleSalvarNome">
+                            <DataAnnotationsValidator />
+                            <MudGrid Spacing="2" Class="py-2">
+                                <MudItem xs="12" sm="8">
+                                    <MudTextField Label="Nome completo"
+                                                  Variant="Variant.Filled"
+                                                  Margin="Margin.Dense"
+                                                  @bind-Value="_nomeModel.Nome"
+                                                  For="@(() => _nomeModel.Nome)" />
+                                </MudItem>
+                                <MudItem xs="12" sm="4" Class="d-flex align-end">
+                                    <MudButton ButtonType="ButtonType.Submit"
+                                               Variant="Variant.Filled"
+                                               Class="btn-save"
+                                               FullWidth="true"
+                                               Disabled="@_isSavingNome">
+                                        @if (_isSavingNome)
+                                        {
+                                            <MudProgressCircular Size="Size.Small" Color="Color.Inherit" Indeterminate="true" />
+                                        }
+                                        else
+                                        {
+                                            <span>Salvar</span>
+                                        }
+                                    </MudButton>
+                                </MudItem>
+                            </MudGrid>
+                        </EditForm>
+                    </ChildContent>
+                </MudExpansionPanel>
+
+                @* Gaveta 2: Alterar E-mail *@
+                <MudExpansionPanel Text="Alterar E-mail">
+                    <TitleContent>
+                        <div class="d-flex align-center gap-2">
+                            <MudIcon Icon="@Icons.Material.Filled.Email" Size="Size.Small" Style="color: coral;" />
+                            <MudText Style="font-weight: 700; color: coral;">Alterar E-mail</MudText>
+                        </div>
+                    </TitleContent>
+                    <ChildContent>
+                        <EditForm Model="@_emailModel" OnValidSubmit="HandleSalvarEmail">
+                            <DataAnnotationsValidator />
+                            <MudGrid Spacing="2" Class="py-2">
+                                <MudItem xs="12" sm="5">
+                                    <MudTextField Label="Novo e-mail"
+                                                  Variant="Variant.Filled"
+                                                  Margin="Margin.Dense"
+                                                  @bind-Value="_emailModel.NovoEmail"
+                                                  For="@(() => _emailModel.NovoEmail)" />
+                                </MudItem>
+                                <MudItem xs="12" sm="4">
+                                    <MudTextField Label="Confirmar e-mail"
+                                                  Variant="Variant.Filled"
+                                                  Margin="Margin.Dense"
+                                                  @bind-Value="_emailModel.ConfirmarEmail"
+                                                  For="@(() => _emailModel.ConfirmarEmail)" />
+                                </MudItem>
+                                <MudItem xs="12" sm="3" Class="d-flex align-end">
+                                    <MudButton ButtonType="ButtonType.Submit"
+                                               Variant="Variant.Filled"
+                                               Class="btn-save"
+                                               FullWidth="true"
+                                               Disabled="@_isSavingEmail">
+                                        @if (_isSavingEmail)
+                                        {
+                                            <MudProgressCircular Size="Size.Small" Color="Color.Inherit" Indeterminate="true" />
+                                        }
+                                        else
+                                        {
+                                            <span>Salvar</span>
+                                        }
+                                    </MudButton>
+                                </MudItem>
+                            </MudGrid>
+                        </EditForm>
+                    </ChildContent>
+                </MudExpansionPanel>
+
+                @* Gaveta 3: Alterar Senha *@
+                <MudExpansionPanel Text="Alterar Senha">
+                    <TitleContent>
+                        <div class="d-flex align-center gap-2">
+                            <MudIcon Icon="@Icons.Material.Filled.Lock" Size="Size.Small" Style="color: coral;" />
+                            <MudText Style="font-weight: 700; color: coral;">Alterar Senha</MudText>
+                        </div>
+                    </TitleContent>
+                    <ChildContent>
+                        <EditForm Model="@_senhaModel" OnValidSubmit="HandleAlterarSenha">
+                            <DataAnnotationsValidator />
+                            <MudGrid Spacing="2" Class="py-2">
+                                <MudItem xs="12" sm="4">
+                                    <MudTextField Label="Senha atual"
+                                                  Variant="Variant.Filled"
+                                                  Margin="Margin.Dense"
+                                                  InputType="@_senhaInputType"
+                                                  @bind-Value="_senhaModel.SenhaAtual"
+                                                  For="@(() => _senhaModel.SenhaAtual)" />
+                                </MudItem>
+                                <MudItem xs="12" sm="4">
+                                    <MudTextField Label="Nova senha"
+                                                  Variant="Variant.Filled"
+                                                  Margin="Margin.Dense"
+                                                  InputType="@_senhaInputType"
+                                                  @bind-Value="_senhaModel.NovaSenha"
+                                                  For="@(() => _senhaModel.NovaSenha)" />
+                                </MudItem>
+                                <MudItem xs="12" sm="4">
+                                    <MudTextField Label="Confirmar senha"
+                                                  Variant="Variant.Filled"
+                                                  Margin="Margin.Dense"
+                                                  InputType="@_senhaInputType"
+                                                  @bind-Value="_senhaModel.ConfirmarSenha"
+                                                  For="@(() => _senhaModel.ConfirmarSenha)" />
+                                </MudItem>
+                            </MudGrid>
+                            <div class="d-flex justify-space-between align-center mt-2 py-2">
+                                <MudButton Variant="Variant.Text"
+                                           Size="Size.Small"
+                                           Style="color: coral;"
+                                           OnClick="ToggleSenhaVisibility"
+                                           StartIcon="@_senhaVisibilityIcon">
+                                    @(_senhaVisivel ? "Ocultar" : "Mostrar")
+                                </MudButton>
+                                <MudButton ButtonType="ButtonType.Submit"
+                                           Variant="Variant.Filled"
+                                           Class="btn-save"
+                                           Disabled="@_isSavingSenha">
+                                    @if (_isSavingSenha)
+                                    {
+                                        <MudProgressCircular Size="Size.Small" Color="Color.Inherit" Indeterminate="true" />
+                                    }
+                                    else
+                                    {
+                                        <span>Alterar Senha</span>
+                                    }
+                                </MudButton>
+                            </div>
+                        </EditForm>
+                    </ChildContent>
+                </MudExpansionPanel>
+
+            </MudExpansionPanels>
+
+        </MudPaper>
+    </div>
+}
+
+@code {
+    // ---- Nome ----
+    private NomeModel _nomeModel = new();
+    private bool _isSavingNome;
+
+    // ---- Email ----
+    private EmailModel _emailModel = new();
+    private bool _isSavingEmail;
+
+    // ---- Senha ----
+    private SenhaModel _senhaModel = new();
+    private bool _isSavingSenha;
+    private bool _senhaVisivel;
+    private InputType _senhaInputType = InputType.Password;
+    private string _senhaVisibilityIcon = Icons.Material.Filled.VisibilityOff;
+
+    protected override void OnInitialized()
+    {
+        if (!AuthService.IsLoggedIn) return;
+
+        // Preenche campos com dados atuais
+        _nomeModel.Nome = AuthService.NomeUsuario;
+        _emailModel.NovoEmail = AuthService.EmailUsuario;
+        _emailModel.ConfirmarEmail = AuthService.EmailUsuario;
+    }
+
+    // ==================== NAVEGAÇÃO ====================
+
+    private void VoltarHome() => NavigationManager.NavigateTo("/");
+    private void IrParaTreinos() => NavigationManager.NavigateTo("/MeusTreinos");
+
+    // ==================== NOME ====================
+
+    private async Task HandleSalvarNome()
+    {
+        _isSavingNome = true;
+        try
+        {
+            var (primeiroNome, sobrenome) = SepararNomeSobrenome(_nomeModel.Nome);
+            var request = new AtualizarPerfilRequest
+            {
+                Nome = primeiroNome,
+                Sobrenome = sobrenome
+            };
+            var ok = await AuthService.AtualizarPerfilAsync(request);
+            if (ok)
+            {
+                Snackbar.Add("Nome atualizado com sucesso!", Severity.Success);
+            }
+            else
+            {
+                Snackbar.Add("Erro ao atualizar nome. Tente novamente.", Severity.Error);
+            }
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Erro: {ex.Message}", Severity.Error);
+        }
+        finally
+        {
+            _isSavingNome = false;
+        }
+    }
+
+    // ==================== EMAIL ====================
+
+    private async Task HandleSalvarEmail()
+    {
+        _isSavingEmail = true;
+        try
+        {
+            var request = new AtualizarPerfilRequest
+            {
+                Email = _emailModel.NovoEmail
+            };
+            var ok = await AuthService.AtualizarPerfilAsync(request);
+            if (ok)
+            {
+                _emailModel.ConfirmarEmail = _emailModel.NovoEmail;
+                Snackbar.Add("E-mail atualizado com sucesso!", Severity.Success);
+            }
+            else
+            {
+                Snackbar.Add("Erro ao atualizar e-mail. Tente novamente.", Severity.Error);
+            }
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Erro: {ex.Message}", Severity.Error);
+        }
+        finally
+        {
+            _isSavingEmail = false;
+        }
+    }
+
+    private static (string nome, string sobrenome) SepararNomeSobrenome(string nomeCompleto)
+    {
+        if (string.IsNullOrWhiteSpace(nomeCompleto))
+            return (string.Empty, string.Empty);
+
+        nomeCompleto = nomeCompleto.Trim();
+        var ultimoEspaco = nomeCompleto.LastIndexOf(' ');
+
+        if (ultimoEspaco <= 0)
+            return (nomeCompleto, string.Empty);
+
+        return (nomeCompleto[..ultimoEspaco], nomeCompleto[(ultimoEspaco + 1)..]);
+    }
+
+    // ==================== SENHA ====================
+
+    private async Task HandleAlterarSenha()
+    {
+        _isSavingSenha = true;
+        try
+        {
+            var request = new AlterarSenhaRequest
+            {
+                SenhaAtual = _senhaModel.SenhaAtual,
+                NovaSenha = _senhaModel.NovaSenha,
+                ConfirmarNovaSenha = _senhaModel.ConfirmarSenha
+            };
+            var ok = await AuthService.AlterarSenhaAsync(request);
+            if (ok)
+            {
+                Snackbar.Add("Senha alterada com sucesso!", Severity.Success);
+                _senhaModel = new SenhaModel();
+            }
+            else
+            {
+                Snackbar.Add("Erro ao alterar senha. Verifique os dados.", Severity.Error);
+            }
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Erro: {ex.Message}", Severity.Error);
+        }
+        finally
+        {
+            _isSavingSenha = false;
+        }
+    }
+
+    private void ToggleSenhaVisibility()
+    {
+        _senhaVisivel = !_senhaVisivel;
+        if (_senhaVisivel)
+        {
+            _senhaInputType = InputType.Text;
+            _senhaVisibilityIcon = Icons.Material.Filled.Visibility;
+        }
+        else
+        {
+            _senhaInputType = InputType.Password;
+            _senhaVisibilityIcon = Icons.Material.Filled.VisibilityOff;
+        }
+    }
+
+    // ==================== MODELOS ====================
+
+    public class NomeModel
+    {
+        [Required(ErrorMessage = "Nome é obrigatório!")]
+        [MinLength(2, ErrorMessage = "Nome deve ter pelo menos 2 caracteres.")]
+        public string Nome { get; set; } = string.Empty;
+    }
+
+    public class EmailModel
+    {
+        [Required(ErrorMessage = "E-mail é obrigatório!")]
+        [EmailAddress(ErrorMessage = "Formato de e-mail inválido.")]
+        public string NovoEmail { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "Confirmação de e-mail é obrigatória!")]
+        [Compare(nameof(NovoEmail), ErrorMessage = "Os e-mails não conferem.")]
+        public string ConfirmarEmail { get; set; } = string.Empty;
+    }
+
+    public class SenhaModel
+    {
+        [Required(ErrorMessage = "Senha atual é obrigatória!")]
+        public string SenhaAtual { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "Nova senha é obrigatória!")]
+        [MinLength(6, ErrorMessage = "A nova senha deve ter pelo menos 6 caracteres.")]
+        public string NovaSenha { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "Confirmação de senha é obrigatória!")]
+        [Compare(nameof(NovaSenha), ErrorMessage = "As senhas não conferem.")]
+        public string ConfirmarSenha { get; set; } = string.Empty;
+    }
+}

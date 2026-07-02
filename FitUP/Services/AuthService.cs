@@ -45,6 +45,45 @@ public class RegistroRequest
 }
 
 /// <summary>
+/// DTO de requisição para atualizar perfil
+/// </summary>
+public class AtualizarPerfilRequest
+{
+    [JsonPropertyName("nome")]
+    public string Nome { get; set; } = string.Empty;
+
+    [JsonPropertyName("sobrenome")]
+    public string Sobrenome { get; set; } = string.Empty;
+
+    [JsonPropertyName("email")]
+    public string? Email { get; set; }
+
+    [JsonPropertyName("telefone")]
+    public string? Telefone { get; set; }
+
+    [JsonPropertyName("cpf")]
+    public string? Cpf { get; set; }
+
+    [JsonPropertyName("dataNascimento")]
+    public DateTime? DataNascimento { get; set; }
+}
+
+/// <summary>
+/// DTO de requisição para alterar senha
+/// </summary>
+public class AlterarSenhaRequest
+{
+    [JsonPropertyName("senhaAtual")]
+    public string SenhaAtual { get; set; } = string.Empty;
+
+    [JsonPropertyName("novaSenha")]
+    public string NovaSenha { get; set; } = string.Empty;
+
+    [JsonPropertyName("confirmarNovaSenha")]
+    public string ConfirmarNovaSenha { get; set; } = string.Empty;
+}
+
+/// <summary>
 /// DTO de resposta da autenticação
 /// </summary>
 public class AuthResponse
@@ -121,7 +160,24 @@ public class AuthService
     {
         try
         {
-            await _jsRuntime.InvokeVoidAsync("localStorage.removeItem", StorageKey);
+            var json = await _jsRuntime.InvokeAsync<string>("localStorage.getItem", StorageKey);
+            if (string.IsNullOrWhiteSpace(json))
+                return;
+
+            var state = JsonSerializer.Deserialize<StoredUserState>(json);
+            if (state is null)
+                return;
+
+            NomeUsuario = state.Nome;
+            EmailUsuario = state.Email;
+            UsuarioId = state.UsuarioId;
+            Token = state.Token;
+
+            // Reconfigura o header Authorization
+            _httpClient.DefaultRequestHeaders.Authorization =
+                new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", Token);
+
+            NotifyAuthStateChanged();
         }
         catch
         {
@@ -184,6 +240,35 @@ public class AuthService
         catch { /* Ignora erros */ }
 
         NotifyAuthStateChanged();
+    }
+
+    /// <summary>
+    /// Atualiza nome e/ou e-mail do usuário logado.
+    /// </summary>
+    public async Task<bool> AtualizarPerfilAsync(AtualizarPerfilRequest request)
+    {
+        var response = await _httpClient.PutAsJsonAsync("api/usuario/me", request);
+        if (!response.IsSuccessStatusCode)
+            return false;
+
+        // Atualiza estado em memória
+        if (!string.IsNullOrWhiteSpace(request.Nome))
+            NomeUsuario = request.Nome;
+        if (!string.IsNullOrWhiteSpace(request.Email))
+            EmailUsuario = request.Email;
+
+        await PersistSessionAsync();
+        NotifyAuthStateChanged();
+        return true;
+    }
+
+    /// <summary>
+    /// Altera a senha do usuário logado.
+    /// </summary>
+    public async Task<bool> AlterarSenhaAsync(AlterarSenhaRequest request)
+    {
+        var response = await _httpClient.PutAsJsonAsync("api/usuario/me/alterar-senha", request);
+        return response.IsSuccessStatusCode;
     }
 
     private async Task PersistSessionAsync()

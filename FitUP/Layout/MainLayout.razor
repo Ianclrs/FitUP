@@ -14,6 +14,7 @@
     .mud-snackbar-content {
         background-color: coral !important;
     }
+
 </style>
 
 <MudThemeProvider Theme="@_theme" IsDarkMode="_isDarkMode" /> 
@@ -47,6 +48,7 @@
             <MudMenu Icon="@Icons.Material.Filled.AccountCircle" Color="Color.Inherit" 
                      Class="mt-2 ms-2">
                 <ChildContent>
+                    <MudMenuItem Href="/perfil">Meu Perfil</MudMenuItem>
                     <MudMenuItem Href="/MeusTreinos">Treinos Salvos</MudMenuItem>
                     <MudMenuItem OnClick="@(async () => await LogoutAsync())">Sair</MudMenuItem>
                 </ChildContent>
