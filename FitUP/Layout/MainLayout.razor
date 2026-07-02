@@ -44,8 +44,7 @@
         @*Botões condicionais: logado vs não logado*@
         @if (AuthService.IsLoggedIn)
         {
-            <MudMenu Icon="@Icons.Material.Filled.AccountCircle" IconColor="Color.Surface" 
-                     Style="color:coral;" 
+            <MudMenu Icon="@Icons.Material.Filled.AccountCircle" Color="Color.Inherit" 
                      Class="mt-2 ms-2">
                 <ChildContent>
                     <MudMenuItem Href="/treinos-salvos">Treinos Salvos</MudMenuItem>

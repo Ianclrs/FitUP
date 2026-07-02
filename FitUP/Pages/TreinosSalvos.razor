@@ -1,4 +1,4 @@
-@page "/treinos-salvos"
+@page "/MeusTreinos"
 @using FitUP.Services
 @using System.Text.Json
 @using System.Text.Json.Serialization
@@ -8,7 +8,7 @@
 @inject IJSRuntime JS
 @inject ISnackbar Snackbar
 
-<PageTitle>Treinos Salvos</PageTitle>
+<PageTitle>Meus Treinos</PageTitle>
 
 <style>
     :root {
@@ -176,10 +176,14 @@
 </style>
 
 <MudContainer MaxWidth="MaxWidth.Medium" Class="py-8">
-
-    <MudText Typo="Typo.h4" Style="color:coral; font-weight:700; margin-bottom:8px;">Meus Treinos Salvos</MudText>
-    <MudText Typo="Typo.body1" Color="Color.Inherit" Class="mb-8">Clique em um treino para ver os exercícios.</MudText>
-
+    <div class="d-flex align-center justify-center flex-column">
+        <MudText Typo="Typo.h4" Align="Align.Center" Style="color:coral; font-weight:700;font-family:Cambria">Meus</MudText>
+        <MudText Typo="Typo.h4" Align="Align.Center" Style="font-weight:700; font-family:cambria">Treinos Salvos</MudText>
+    
+        <MudPaper>
+        <MudText Typo="Typo.body2" Color="Color.Inherit">Clique em um treino para ver os exercícios.</MudText>
+        </MudPaper>
+    </div>
     @if (_isLoading)
     {
         <div style="display:flex;justify-content:center;padding:80px 0;">
@@ -190,12 +194,12 @@
     {
         <div class="empty-state">
             <MudIcon Icon="@Icons.Material.Outlined.FitnessCenter" Style="font-size:64px;color:coral;opacity:0.5;" />
-            <MudText Typo="Typo.h6" Color="Color.Inherit">Nenhum treino salvo</MudText>
-            <MudText Typo="Typo.body2" Color="Color.Inherit" Style="text-align:center;max-width:400px;">
+            <MudText Typo="Typo.h6">Nenhum treino salvo</MudText>
+            <MudText Typo="Typo.body1" Style="text-align:center;max-width:400px;">
                 Vá até "Monte o seu Treino", gere um treino personalizado e clique em <strong>Salvar</strong>.
             </MudText>
-            <MudButton Href="MonteTreino" Class="btn-primary-fitup mt-4" StartIcon="@Icons.Material.Outlined.Add">
-                Criar Treino
+            <MudButton Href="MonteTreino" Style="background-color:coral" StartIcon="@Icons.Material.Outlined.Add">
+                <MudText Style="font-size:large">Criar Treino</MudText>
             </MudButton>
         </div>
     }
