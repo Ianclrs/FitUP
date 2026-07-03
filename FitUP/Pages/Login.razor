@@ -4,6 +4,7 @@
 @inject NavigationManager NavigationManager
 @inject AuthService AuthService
 @inject ISnackbar Snackbar
+@inject IDialogService DialogService
 
 <PageTitle>Login</PageTitle>
 
@@ -70,8 +71,14 @@
         font-size: 14px;
         font-weight: 600;
         color: coral; 
-        cursor: default;
+        cursor: pointer;
+        text-decoration: none;
     }
+
+        .texto-esqueceu:hover {
+            text-decoration: underline;
+            color: #ff8e61;
+        }
 </style>
 
 <div class="login-wrapper pa-4">
@@ -134,7 +141,7 @@
                 </MudButton>
 
                 <div class="d-flex justify-center">
-                    <MudText Style="color: coral; font-weight: 600; font-size: 14px;">
+                    <MudText Class="texto-esqueceu" @onclick="AbrirDialogoEsqueciSenha">
                         Esqueceu a senha?
                     </MudText>
                 </div>
@@ -201,6 +208,31 @@
         finally
         {
             _isLoading = false;
+        }
+    }
+
+    private async Task AbrirDialogoEsqueciSenha()
+    {
+        var parameters = new DialogParameters
+        {
+            { "EmailInicial", loginModel.Identity ?? string.Empty }
+        };
+
+        var options = new DialogOptions
+        {
+            MaxWidth = MaxWidth.Small,
+            FullWidth = true,
+            CloseButton = true,
+            NoHeader = false
+        };
+
+        var dialog = await DialogService.ShowAsync<EsqueciSenhaDialog>("Esqueci minha senha", parameters, options);
+        var result = await dialog.Result;
+
+        if (result is not null && !result.Canceled && result.Data is EsqueciSenhaResponseDto response)
+        {
+            Snackbar.Add($"Link: {response.LinkRedefinicao}", Severity.Info,
+                config => config.VisibleStateDuration = 15000);
         }
     }
 

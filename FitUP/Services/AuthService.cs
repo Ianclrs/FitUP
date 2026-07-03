@@ -84,6 +84,42 @@ public class AlterarSenhaRequest
 }
 
 /// <summary>
+/// DTO de requisição para esqueci minha senha
+/// </summary>
+public class EsqueciSenhaRequestDto
+{
+    [JsonPropertyName("email")]
+    public string Email { get; set; } = string.Empty;
+}
+
+/// <summary>
+/// DTO de resposta do esqueci minha senha
+/// </summary>
+public class EsqueciSenhaResponseDto
+{
+    [JsonPropertyName("token")]
+    public string Token { get; set; } = string.Empty;
+
+    [JsonPropertyName("linkRedefinicao")]
+    public string LinkRedefinicao { get; set; } = string.Empty;
+
+    [JsonPropertyName("expiraEm")]
+    public DateTime ExpiraEm { get; set; }
+}
+
+/// <summary>
+/// DTO de requisição para redefinir senha
+/// </summary>
+public class RedefinirSenhaRequestDto
+{
+    [JsonPropertyName("token")]
+    public string Token { get; set; } = string.Empty;
+
+    [JsonPropertyName("novaSenha")]
+    public string NovaSenha { get; set; } = string.Empty;
+}
+
+/// <summary>
 /// DTO de resposta da autenticação
 /// </summary>
 public class AuthResponse
@@ -268,6 +304,27 @@ public class AuthService
     public async Task<bool> AlterarSenhaAsync(AlterarSenhaRequest request)
     {
         var response = await _httpClient.PutAsJsonAsync("api/usuario/me/alterar-senha", request);
+        return response.IsSuccessStatusCode;
+    }
+
+    /// <summary>
+    /// Solicita redefinição de senha (esqueci minha senha).
+    /// </summary>
+    public async Task<EsqueciSenhaResponseDto?> EsqueciSenhaAsync(EsqueciSenhaRequestDto request)
+    {
+        var response = await _httpClient.PostAsJsonAsync("api/auth/esqueci-senha", request);
+        if (!response.IsSuccessStatusCode)
+            return null;
+
+        return await response.Content.ReadFromJsonAsync<EsqueciSenhaResponseDto>();
+    }
+
+    /// <summary>
+    /// Redefine a senha usando o token recebido.
+    /// </summary>
+    public async Task<bool> RedefinirSenhaAsync(RedefinirSenhaRequestDto request)
+    {
+        var response = await _httpClient.PostAsJsonAsync("api/auth/redefinir-senha", request);
         return response.IsSuccessStatusCode;
     }
 

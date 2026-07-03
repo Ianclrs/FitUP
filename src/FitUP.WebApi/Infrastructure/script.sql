@@ -27,6 +27,8 @@ CREATE TABLE Usuario (
     Ativo                   BIT                 NOT NULL DEFAULT 1,
     RefreshToken            NVARCHAR(500)       NULL,
     RefreshTokenExpiraEm    DATETIME2           NULL,
+    TokenRedefinicao        NVARCHAR(500)       NULL,
+    TokenRedefinicaoExpiraEm DATETIME2          NULL,
 
     CONSTRAINT UQ_Usuario_Email UNIQUE (Email)
 );

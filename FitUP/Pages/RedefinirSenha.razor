@@ -1,0 +1,245 @@
+@page "/redefinir-senha"
+@using System.ComponentModel.DataAnnotations
+@using FitUP.Services
+@inject NavigationManager NavigationManager
+@inject AuthService AuthService
+@inject ISnackbar Snackbar
+
+<PageTitle>Redefinir Senha</PageTitle>
+
+<style>
+    :root {
+        --mud-palette-primary: coral;
+        --mud-palette-primary-hover: #ff8e61;
+    }
+
+    html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+    }
+
+    .redefinir-wrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100%;
+        width: 100%;
+    }
+
+    .redefinir-card {
+        width: 100%;
+        max-width: 450px;
+        position: relative;
+    }
+
+    .btn-close {
+        position: absolute;
+        top: 12px;
+        right: 12px;
+        color: #f44336 !important;
+        transition: transform 0.2s ease-in-out, opacity 0.2s;
+        opacity: 0.7;
+    }
+
+        .btn-close:hover {
+            color: #d32f2f !important;
+            opacity: 1;
+            transform: scale(1.1);
+        }
+</style>
+
+<div class="redefinir-wrapper pa-4">
+    <MudPaper Elevation="5" Class="redefinir-card pa-10 mt-15 rounded-xl">
+
+        <MudIconButton Icon="@Icons.Material.Filled.Close"
+                       Class="btn-close"
+                       OnClick="VoltarLogin"
+                       Size="Size.Medium" />
+
+        <MudStack Spacing="2">
+
+            <MudText Typo="Typo.h5" Align="Align.Center" Style="font-weight: 700">
+                Redefinir senha
+            </MudText>
+            <MudText Typo="Typo.body2" Align="Align.Center" Class="mb-6">
+                Digite sua nova senha abaixo.
+            </MudText>
+
+            @if (_tokenValido is null)
+            {
+                <MudProgressCircular Color="Color.Primary" Indeterminate="true" Class="my-4 align-self-center" />
+                <MudText Typo="Typo.body2" Align="Align.Center">Validando token...</MudText>
+            }
+            else if (_tokenValido == false)
+            {
+                <MudAlert Severity="Severity.Error" Class="mb-4">
+                    Token inválido ou expirado. Solicite um novo link de redefinição.
+                </MudAlert>
+                <MudButton Variant="Variant.Filled"
+                           Style="background-color:coral; font-weight: 700;"
+                           FullWidth="true"
+                           Href="/login">
+                    VOLTAR PARA LOGIN
+                </MudButton>
+            }
+            else if (_senhaRedefinida)
+            {
+                <MudAlert Severity="Severity.Success" Class="mb-4">
+                    Senha redefinida com sucesso!
+                </MudAlert>
+                <MudButton Variant="Variant.Filled"
+                           Style="background-color:coral; font-weight: 700;"
+                           FullWidth="true"
+                           Href="/login">
+                    IR PARA LOGIN
+                </MudButton>
+            }
+            else
+            {
+                <EditForm Model="@_model" OnValidSubmit="HandleRedefinirSenha">
+                    <DataAnnotationsValidator />
+
+                    <MudTextField T="string"
+                                  Label="Nova senha"
+                                  Variant="Variant.Filled"
+                                  @bind-Value="_model.NovaSenha"
+                                  For="@(() => _model.NovaSenha)"
+                                  InputType="@_passwordInput1"
+                                  Adornment="Adornment.End"
+                                  AdornmentIcon="@_passwordIcon1"
+                                  AdornmentColor="Color.Inherit"
+                                  OnAdornmentClick="TogglePassword1Visibility"
+                                  Class="mb-4" />
+
+                    <MudTextField T="string"
+                                  Label="Confirmar nova senha"
+                                  Variant="Variant.Filled"
+                                  @bind-Value="_model.ConfirmarSenha"
+                                  For="@(() => _model.ConfirmarSenha)"
+                                  InputType="@_passwordInput2"
+                                  Adornment="Adornment.End"
+                                  AdornmentIcon="@_passwordIcon2"
+                                  AdornmentColor="Color.Inherit"
+                                  OnAdornmentClick="TogglePassword2Visibility"
+                                  Class="mb-6" />
+
+                    <MudButton ButtonType="ButtonType.Submit"
+                               Variant="Variant.Filled"
+                               Style="background-color:coral; font-weight: 700;"
+                               Class="mb-3 py-3"
+                               FullWidth="true"
+                               Disabled="@_isLoading">
+                        @if (_isLoading)
+                        {
+                            <MudProgressCircular Size="Size.Small" Color="Color.Inherit" Indeterminate="true" Class="mr-2" />
+                        }
+                        REDEFINIR SENHA
+                    </MudButton>
+                </EditForm>
+            }
+        </MudStack>
+    </MudPaper>
+</div>
+
+@code {
+    [SupplyParameterFromQuery]
+    public string? Token { get; set; }
+
+    private RedefinirSenhaModel _model = new();
+    private bool? _tokenValido;
+    private bool _senhaRedefinida;
+    private bool _isLoading;
+    private bool _isPassword1Visible;
+    private bool _isPassword2Visible;
+    private InputType _passwordInput1 = InputType.Password;
+    private InputType _passwordInput2 = InputType.Password;
+    private string _passwordIcon1 = Icons.Material.Filled.VisibilityOff;
+    private string _passwordIcon2 = Icons.Material.Filled.VisibilityOff;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (string.IsNullOrWhiteSpace(Token))
+        {
+            _tokenValido = false;
+            return;
+        }
+
+        // Não validamos o token antecipadamente (a API não tem endpoint pra isso),
+        // apenas garantimos que o token está presente
+        _tokenValido = true;
+    }
+
+    void VoltarLogin() => NavigationManager.NavigateTo("/login");
+
+    void TogglePassword1Visibility()
+    {
+        _isPassword1Visible = !_isPassword1Visible;
+        _passwordIcon1 = _isPassword1Visible ? Icons.Material.Filled.Visibility : Icons.Material.Filled.VisibilityOff;
+        _passwordInput1 = _isPassword1Visible ? InputType.Text : InputType.Password;
+    }
+
+    void TogglePassword2Visibility()
+    {
+        _isPassword2Visible = !_isPassword2Visible;
+        _passwordIcon2 = _isPassword2Visible ? Icons.Material.Filled.Visibility : Icons.Material.Filled.VisibilityOff;
+        _passwordInput2 = _isPassword2Visible ? InputType.Text : InputType.Password;
+    }
+
+    private async Task HandleRedefinirSenha()
+    {
+        if (_model.NovaSenha != _model.ConfirmarSenha)
+        {
+            Snackbar.Add("As senhas não conferem.", Severity.Warning);
+            return;
+        }
+
+        if (_model.NovaSenha.Length < 6)
+        {
+            Snackbar.Add("A senha deve ter no mínimo 6 caracteres.", Severity.Warning);
+            return;
+        }
+
+        _isLoading = true;
+
+        try
+        {
+            var request = new RedefinirSenhaRequestDto
+            {
+                Token = Token!,
+                NovaSenha = _model.NovaSenha
+            };
+
+            var sucesso = await AuthService.RedefinirSenhaAsync(request);
+
+            if (sucesso)
+            {
+                _senhaRedefinida = true;
+                Snackbar.Add("Senha redefinida com sucesso!", Severity.Success);
+            }
+            else
+            {
+                Snackbar.Add("Token inválido ou expirado.", Severity.Error);
+                _tokenValido = false;
+            }
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Erro: {ex.Message}", Severity.Error);
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+
+    public class RedefinirSenhaModel
+    {
+        [Required(ErrorMessage = "A nova senha é obrigatória!")]
+        [MinLength(6, ErrorMessage = "A senha deve ter no mínimo 6 caracteres.")]
+        public string NovaSenha { get; set; } = string.Empty;
+
+        [Required(ErrorMessage = "Confirme sua nova senha!")]
+        public string ConfirmarSenha { get; set; } = string.Empty;
+    }
+}

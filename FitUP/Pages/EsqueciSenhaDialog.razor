@@ -1,0 +1,108 @@
+@using System.ComponentModel.DataAnnotations
+@using FitUP.Services
+@inject AuthService AuthService
+@inject ISnackbar Snackbar
+@inject IJSRuntime JSRuntime
+
+<MudDialog>
+    <DialogContent>
+        <MudStack Spacing="4" Class="pa-4">
+            <MudText Typo="Typo.body1">
+                Informe o e-mail cadastrado para receber o link de redefinição de senha.
+            </MudText>
+
+            <MudTextField T="string"
+                          Label="E-mail"
+                          Variant="Variant.Filled"
+                          @bind-Value="_email"
+                          For="@(() => _email)"
+                          Immediate="true" />
+
+            <MudAlert Severity="Severity.Info" Class="mt-2" Style="font-size: 13px;">
+                Modo desenvolvimento: o link de redefinição será exibido na tela.
+            </MudAlert>
+        </MudStack>
+    </DialogContent>
+    <DialogActions>
+        <MudButton OnClick="Cancelar" Variant="Variant.Text" Disabled="@_isLoading">Cancelar</MudButton>
+        <MudButton OnClick="Enviar" Variant="Variant.Filled" Color="Color.Primary" Disabled="@_isLoading">
+            @if (_isLoading)
+            {
+                <MudProgressCircular Size="Size.Small" Color="Color.Inherit" Indeterminate="true" Class="mr-2" />
+            }
+            Enviar
+        </MudButton>
+    </DialogActions>
+</MudDialog>
+
+@code {
+    [Parameter]
+    public string EmailInicial { get; set; } = string.Empty;
+
+    [CascadingParameter]
+    private IMudDialogInstance MudDialog { get; set; } = default!;
+
+    private string _email = string.Empty;
+    private bool _isLoading;
+
+    protected override void OnInitialized()
+    {
+        _email = EmailInicial;
+    }
+
+    private void Cancelar()
+    {
+        MudDialog.Cancel();
+    }
+
+    private async Task Enviar()
+    {
+        if (string.IsNullOrWhiteSpace(_email))
+        {
+            Snackbar.Add("Informe um e-mail válido.", Severity.Warning);
+            return;
+        }
+
+        _isLoading = true;
+
+        try
+        {
+            var request = new EsqueciSenhaRequestDto
+            {
+                Email = _email
+            };
+
+            var response = await AuthService.EsqueciSenhaAsync(request);
+
+            if (response is not null)
+            {
+                // Salva o link no clipboard via JS (modo dev)
+                try
+                {
+                    await JSRuntime.InvokeVoidAsync("navigator.clipboard.writeText", response.LinkRedefinicao);
+                    Snackbar.Add($"Link copiado! Acesse: {response.LinkRedefinicao}", Severity.Success,
+                        config => config.VisibleStateDuration = 10000);
+                }
+                catch
+                {
+                    Snackbar.Add($"Link: {response.LinkRedefinicao}", Severity.Info,
+                        config => config.VisibleStateDuration = 15000);
+                }
+
+                MudDialog.Close(DialogResult.Ok(response));
+            }
+            else
+            {
+                Snackbar.Add("E-mail não encontrado.", Severity.Error);
+            }
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Erro: {ex.Message}", Severity.Error);
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+}
