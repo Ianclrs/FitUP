@@ -22,7 +22,7 @@ function exportFitUpPdf(workoutJson) {
         doc.setFont('helvetica', 'bold');
         doc.setFontSize(22);
         doc.setTextColor(orange[0], orange[1], orange[2]);
-        doc.text('FIT UP', margin, y);
+        doc.text('FitUP', margin, y);
         doc.setFontSize(10);
         doc.setTextColor(gray[0], gray[1], gray[2]);
         doc.text('Seu treino personalizado', margin, y + 5);
