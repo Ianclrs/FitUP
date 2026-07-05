@@ -595,7 +595,7 @@ Este projeto está licenciado sob a **Licença MIT** — veja o arquivo [LICENSE
     <strong>FitUP</strong> — Evoluindo com você! 💪
   </p>
   <p>
-    <a href="https://github.com/Ianclrs/FitUP">GitHub</a> ·
+    <a target="_blank" href="https://github.com/Ianclrs/FitUP">GitHub</a> ·
     <a href="https://linktr.ee/MembrosFitUp">Instagram</a> ·
     <a href="https://linktr.ee/LinkedInMembros">LinkedIn</a>
   </p>
