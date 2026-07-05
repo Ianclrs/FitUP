@@ -532,7 +532,7 @@ O projeto documenta decisões arquiteturais significativas no diretório `src/Fi
       </a>
     </td>
     <td align="center">
-      <a href="https://github.com/felipedario">
+      <a href="https://github.com/FelipeTWD">
         <img src="https://avatars.githubusercontent.com/u/146496842?v=4"
              width="120" height="120"
              style="object-fit: cover; border-radius: 50%;"
@@ -544,7 +544,7 @@ O projeto documenta decisões arquiteturais significativas no diretório `src/Fi
       </a>
     </td>
     <td align="center">
-      <a href="https://github.com/PedroFreitasQA">
+      <a href="https://github.com/pdfreitass">
         <img src="https://avatars.githubusercontent.com/u/203004835?v=4"
              width="120" height="120"
              style="object-fit: cover; border-radius: 50%;"
