@@ -532,7 +532,7 @@ O projeto documenta decisões arquiteturais significativas no diretório `src/Fi
       </a>
     </td>
     <td align="center">
-      <a href="https://github.com/felipedario">
+      <a href="https://github.com/FelipeTWD">
         <img src="https://avatars.githubusercontent.com/u/146496842?v=4"
              width="120" height="120"
              style="object-fit: cover; border-radius: 50%;"
@@ -544,7 +544,7 @@ O projeto documenta decisões arquiteturais significativas no diretório `src/Fi
       </a>
     </td>
     <td align="center">
-      <a href="https://github.com/PedroFreitasQA">
+      <a href="https://github.com/pdfreitass">
         <img src="https://avatars.githubusercontent.com/u/203004835?v=4"
              width="120" height="120"
              style="object-fit: cover; border-radius: 50%;"
@@ -568,7 +568,7 @@ O projeto documenta decisões arquiteturais significativas no diretório `src/Fi
       </a>
     </td>
     <td align="center">
-      <a href="https://github.com/GabrielCastorQA">
+      <a href="https://github.com/Castxr">
         <img src="https://avatars.githubusercontent.com/u/213353198?v=4"
              width="120" height="120"
              style="object-fit: cover; border-radius: 50%;"
@@ -595,7 +595,7 @@ Este projeto está licenciado sob a **Licença MIT** — veja o arquivo [LICENSE
     <strong>FitUP</strong> — Evoluindo com você! 💪
   </p>
   <p>
-    <a href="https://github.com/Ianclrs/FitUP">GitHub</a> ·
+    <a target="_blank" href="https://github.com/Ianclrs/FitUP">GitHub</a> ·
     <a href="https://linktr.ee/MembrosFitUp">Instagram</a> ·
     <a href="https://linktr.ee/LinkedInMembros">LinkedIn</a>
   </p>

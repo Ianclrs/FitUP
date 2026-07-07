@@ -7,4 +7,6 @@ public interface IAuthService
     Task<AuthResponse?> LoginAsync(LoginRequest request);
     Task<AuthResponse?> RegistrarAsync(RegistroRequest request);
     Task<AuthResponse?> RefreshTokenAsync(RefreshTokenRequest request);
+    Task<EsqueciSenhaResponse> SolicitarRedefinicaoSenhaAsync(EsqueciSenhaRequest request);
+    Task<bool> RedefinirSenhaAsync(RedefinirSenhaRequest request);
 }

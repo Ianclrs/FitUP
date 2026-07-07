@@ -211,4 +211,94 @@ public class AuthService : IAuthService
             ExpiraEm = expiraEm
         };
     }
+
+    public async Task<EsqueciSenhaResponse> SolicitarRedefinicaoSenhaAsync(EsqueciSenhaRequest request)
+    {
+        await using var connection = new SqlConnection(_connectionString);
+        await connection.OpenAsync();
+
+        const string sql = @"
+            SELECT Id, Ativo
+            FROM Usuario
+            WHERE Email = @Email";
+
+        await using var command = new SqlCommand(sql, connection);
+        command.Parameters.AddWithValue("@Email", request.Email);
+
+        await using var reader = await command.ExecuteReaderAsync();
+
+        if (!await reader.ReadAsync())
+            throw new InvalidOperationException("E-mail não encontrado.");
+
+        var usuarioId = reader.GetGuid(reader.GetOrdinal("Id"));
+        var ativo = reader.GetBoolean(reader.GetOrdinal("Ativo"));
+
+        if (!ativo)
+            throw new InvalidOperationException("Usuário inativo.");
+
+        reader.Close();
+
+        // Gera token de redefinição
+        var token = Guid.NewGuid().ToString("N");
+        var expiraEm = DateTime.UtcNow.AddHours(1);
+
+        const string updateSql = @"
+            UPDATE Usuario
+            SET TokenRedefinicao = @Token,
+                TokenRedefinicaoExpiraEm = @ExpiraEm
+            WHERE Id = @Id";
+
+        await using var updateCommand = new SqlCommand(updateSql, connection);
+        updateCommand.Parameters.AddWithValue("@Token", token);
+        updateCommand.Parameters.AddWithValue("@ExpiraEm", expiraEm);
+        updateCommand.Parameters.AddWithValue("@Id", usuarioId);
+        await updateCommand.ExecuteNonQueryAsync();
+
+        return new EsqueciSenhaResponse
+        {
+            Token = token,
+            LinkRedefinicao = $"/redefinir-senha?token={token}",
+            ExpiraEm = expiraEm
+        };
+    }
+
+    public async Task<bool> RedefinirSenhaAsync(RedefinirSenhaRequest request)
+    {
+        await using var connection = new SqlConnection(_connectionString);
+        await connection.OpenAsync();
+
+        const string sql = @"
+            SELECT Id
+            FROM Usuario
+            WHERE TokenRedefinicao = @Token
+              AND TokenRedefinicaoExpiraEm > GETUTCDATE()
+              AND Ativo = 1";
+
+        await using var command = new SqlCommand(sql, connection);
+        command.Parameters.AddWithValue("@Token", request.Token);
+
+        await using var reader = await command.ExecuteReaderAsync();
+
+        if (!await reader.ReadAsync())
+            return false;
+
+        var usuarioId = reader.GetGuid(reader.GetOrdinal("Id"));
+        reader.Close();
+
+        var novaSenhaHash = BCrypt.Net.BCrypt.HashPassword(request.NovaSenha);
+
+        const string updateSql = @"
+            UPDATE Usuario
+            SET SenhaHash = @SenhaHash,
+                TokenRedefinicao = NULL,
+                TokenRedefinicaoExpiraEm = NULL
+            WHERE Id = @Id";
+
+        await using var updateCommand = new SqlCommand(updateSql, connection);
+        updateCommand.Parameters.AddWithValue("@SenhaHash", novaSenhaHash);
+        updateCommand.Parameters.AddWithValue("@Id", usuarioId);
+        await updateCommand.ExecuteNonQueryAsync();
+
+        return true;
+    }
 }

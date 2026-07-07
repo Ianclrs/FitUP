@@ -60,4 +60,37 @@ public class AuthController : ControllerBase
 
         return Ok(response);
     }
+
+    /// <summary>
+    ///     Solicita redefinição de senha. Retorna o link com token (modo dev).
+    /// </summary>
+    [HttpPost("esqueci-senha")]
+    [AllowAnonymous]
+    public async Task<IActionResult> EsqueciSenha([FromBody] EsqueciSenhaRequest request)
+    {
+        try
+        {
+            var response = await _authService.SolicitarRedefinicaoSenhaAsync(request);
+            return Ok(response);
+        }
+        catch (InvalidOperationException ex)
+        {
+            return BadRequest(new { mensagem = ex.Message });
+        }
+    }
+
+    /// <summary>
+    ///     Redefine a senha usando o token enviado.
+    /// </summary>
+    [HttpPost("redefinir-senha")]
+    [AllowAnonymous]
+    public async Task<IActionResult> RedefinirSenha([FromBody] RedefinirSenhaRequest request)
+    {
+        var resultado = await _authService.RedefinirSenhaAsync(request);
+
+        if (!resultado)
+            return BadRequest(new { mensagem = "Token inválido ou expirado." });
+
+        return Ok(new { mensagem = "Senha redefinida com sucesso." });
+    }
 }
