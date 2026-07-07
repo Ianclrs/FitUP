@@ -1,4 +1,7 @@
 @page "/GanhoMaximo"
+@using System.Text.Json
+@using System.Text.Encodings.Web
+@inject IJSRuntime JS
 
 <PageTitle>GanhoMaximo</PageTitle>
 <MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="mt-6 py-0 mb-8  d-flex flex-column justify-center animate-fade-in">
@@ -1215,13 +1218,12 @@
 
 </div>
 <MudStack AlignItems="AlignItems.Center" Class="mt-2">
-<a href="img-gm/BulkingLimpo.png"
-   download
-   class="mud-button-root mud-button mud-button-filled mud-button-filled-primary mt-1 mb-2 trasition-fast-out-slow-in scale-hover"
-   style="background-color: coral; font-weight: bold; color: white; width:220px; text-decoration:none; padding:8px 16px; border-radius:4px; display:inline-flex; align-items:center; justify-content:center; gap:8px; font-size:0.875rem; text-transform:uppercase;">
-    <svg class="mud-icon-root mud-svg-icon mud-icon-size-medium" focusable="false" viewBox="0 0 24 24" aria-hidden="true" style="width:1.25rem;height:1.25rem;fill:currentColor;"><path d="M5 20h14v-2H5v2zM19 9h-4V3H9v6H5l7 7 7-7z"/></svg>
+<MudButton Class="transition-fast-out-slow-in scale-hover mt-1 mb-2"
+           Style="background-color: coral; font-weight: bold; color: white; width:220px; text-transform:uppercase;"
+           StartIcon="@Icons.Material.Outlined.FileDownload"
+           OnClick="() => ExportarDietaPdf(1)">
     Baixar a Dieta
-</a>
+</MudButton>
 </MudStack>
 <MudDivider Class="mt-3 mb-3" Style="--mud-palette-divider:coral"></MudDivider>
 @*Segunda Dieta*@
@@ -1285,13 +1287,12 @@
     </MudCard>
 </div>
 <MudStack AlignItems="AlignItems.Center" Class="mt-2">
-<a href="img-gm/Cutting.png"
-   download
-   class="mud-button-root mud-button mud-button-filled mud-button-filled-primary mt-1 mb-2 trasition-fast-out-slow-in scale-hover"
-   style="background-color: coral; font-weight: bold; color: white; text-decoration:none; padding:8px 16px; border-radius:4px; display:inline-flex; align-items:center; justify-content:center; gap:8px; font-size:0.875rem; text-transform:uppercase;">
-    <svg class="mud-icon-root mud-svg-icon mud-icon-size-medium" focusable="false" viewBox="0 0 24 24" aria-hidden="true" style="width:1.25rem;height:1.25rem;fill:currentColor;"><path d="M5 20h14v-2H5v2zM19 9h-4V3H9v6H5l7 7 7-7z"/></svg>
+<MudButton Class="transition-fast-out-slow-in scale-hover mt-1 mb-2"
+           Style="background-color: coral; font-weight: bold; color: white; width:220px; text-transform:uppercase;"
+           StartIcon="@Icons.Material.Outlined.FileDownload"
+           OnClick="() => ExportarDietaPdf(2)">
     Baixar a Dieta
-</a>
+</MudButton>
 </MudStack>
 <MudDivider Class="mt-3 mb-3" Style="--mud-palette-divider:coral"></MudDivider>
 @*Terceira dieta*@
@@ -1365,13 +1366,12 @@
     </MudCard>
 </div>
 <MudStack AlignItems="AlignItems.Center" Class="mt-2">
-<a href="img-gm/BulkingClean.png"
-   download
-   class="mud-button-root mud-button mud-button-filled mud-button-filled-primary mt-1 mb-2 trasition-fast-out-slow-in scale-hover"
-   style="background-color: coral; font-weight: bold; color: white; text-decoration:none; padding:8px 16px; border-radius:4px; display:inline-flex; align-items:center; justify-content:center; gap:8px; font-size:0.875rem; text-transform:uppercase;">
-    <svg class="mud-icon-root mud-svg-icon mud-icon-size-medium" focusable="false" viewBox="0 0 24 24" aria-hidden="true" style="width:1.25rem;height:1.25rem;fill:currentColor;"><path d="M5 20h14v-2H5v2zM19 9h-4V3H9v6H5l7 7 7-7z"/></svg>
+<MudButton Class="transition-fast-out-slow-in scale-hover mt-1 mb-2"
+           Style="background-color: coral; font-weight: bold; color: white; width:220px; text-transform:uppercase;"
+           StartIcon="@Icons.Material.Outlined.FileDownload"
+           OnClick="() => ExportarDietaPdf(3)">
     Baixar a Dieta
-</a>
+</MudButton>
 </MudStack>
 <MudDivider Class="mt-3 mb-3" Style="--mud-palette-divider:coral"></MudDivider>
 @*Quarta Dieta*@
@@ -1444,13 +1444,12 @@
     </MudCard>
 </div>
 <MudStack AlignItems="AlignItems.Center" Class="mt-2">
-<a href="img-gm/CarbCycling.png"
-   download
-   class="mud-button-root mud-button mud-button-filled mud-button-filled-primary mt-1 mb-2 trasition-fast-out-slow-in scale-hover"
-   style="background-color: coral; font-weight: bold; color: white; text-decoration:none; padding:8px 16px; border-radius:4px; display:inline-flex; align-items:center; justify-content:center; gap:8px; font-size:0.875rem; text-transform:uppercase;">
-    <svg class="mud-icon-root mud-svg-icon mud-icon-size-medium" focusable="false" viewBox="0 0 24 24" aria-hidden="true" style="width:1.25rem;height:1.25rem;fill:currentColor;"><path d="M5 20h14v-2H5v2zM19 9h-4V3H9v6H5l7 7 7-7z"/></svg>
+<MudButton Class="transition-fast-out-slow-in scale-hover mt-1 mb-2"
+           Style="background-color: coral; font-weight: bold; color: white; width:220px; text-transform:uppercase;"
+           StartIcon="@Icons.Material.Outlined.FileDownload"
+           OnClick="() => ExportarDietaPdf(4)">
     Baixar a Dieta
-</a>
+</MudButton>
 </MudStack>
 </MudContainer>
 
@@ -1490,5 +1489,154 @@
     private void ExibirGorduras()
     {
         _mostrarGorduras = !_mostrarGorduras;
+    }
+
+    private async Task ExportarDietaPdf(int dietaId)
+    {
+        try
+        {
+            object pdfData = dietaId switch
+            {
+                1 => new
+                {
+                    nome = "Bulking Limpo",
+                    descricao = "Foco no superávit calórico controlado. O aporte de carboidratos é alto para fornecer energia para treinos intensos e sinalizar a via mTOR (crescimento muscular).",
+                    refeicoes = new[]
+                    {
+                        new { titulo = "Café da Manhã", alimentos = new[] {
+                            new { label = "Proteína: ", valor = "Ovos mexidos ou Whey Protein." },
+                            new { label = "Carboidrato: ", valor = "Aveia em flocos." },
+                            new { label = "Fruta: ", valor = "Banana picada." },
+                            new { label = "Gordura: ", valor = "A gordura natural da gema ou 1 colher de pasta de amendoim." }
+                        }},
+                        new { titulo = "Almoço", alimentos = new[] {
+                            new { label = "Proteína: ", valor = "150g-200g de Peito de Frango ou Patinho." },
+                            new { label = "Carboidrato: ", valor = "200g-250g de Arroz Branco ou Batata." },
+                            new { label = "Vegetais: ", valor = "Grande porção de Brócolis e Cenoura no vapor." },
+                            new { label = "Gordura: ", valor = "1 colher de sopa de Azeite de Oliva Extra Virgem." }
+                        }},
+                        new { titulo = "Pré-Treino", alimentos = new[] {
+                            new { label = "Carboidrato: ", valor = "200g de Batata Doce ou Macarrão integral." },
+                            new { label = "Proteína: ", valor = "100g de Tilápia ou Frango." },
+                            new { label = "Fruta: ", valor = "1 rodela de abacaxi (ajuda na digestão)." }
+                        }},
+                        new { titulo = "Pós-Treino", alimentos = new[] {
+                            new { label = "Carboidrato: ", valor = "Suco de uva integral ou Maltodextrina." },
+                            new { label = "Proteína: ", valor = "Whey Protein Isolado." }
+                        }},
+                        new { titulo = "Janta", alimentos = new[] {
+                            new { label = "Carboidrato: ", valor = "150g de Mandioca ou Arroz." },
+                            new { label = "Proteína: ", valor = "150g de Salmão ou Carne Vermelha magra." },
+                            new { label = "Vegetais: ", valor = "Salada de folhas verdes escuras (Espinafre/Rúcula)." }
+                        }},
+                        new { titulo = "Ceia", alimentos = new[] {
+                            new { label = "Gordura: ", valor = "Um punhado de Castanhas do Pará ou Abacate." },
+                            new { label = "Proteína: ", valor = "Iogurte Grego ou Albumina." },
+                            new { label = "Fruta: ", valor = "Morangos (baixo IG)." }
+                        }}
+                    }
+                },
+                2 => new
+                {
+                    nome = "Cutting / Secar",
+                    descricao = "O objetivo aqui é o déficit calórico preservando a massa magra. Aumentamos a ingestão de proteínas para manter o balanço nitrogenado positivo e utilizamos carboidratos complexos de baixo índice glicêmico para controle da saciedade.",
+                    refeicoes = new[]
+                    {
+                        new { titulo = "Café da Manhã", alimentos = new[] {
+                            new { label = "Vegetais: ", valor = "Espinafre à vontade." },
+                            new { label = "Proteína: ", valor = "Omelete (4 ovos inteiros)." },
+                            new { label = "Carboidrato: ", valor = "30g de aveia em flocos." }
+                        }},
+                        new { titulo = "Almoço", alimentos = new[] {
+                            new { label = "Carboidrato: ", valor = "150g de batata-doce." },
+                            new { label = "Proteína: ", valor = "200g de peito de frango grelhado." },
+                            new { label = "Vegetais: ", valor = "Brócolis à vontade." }
+                        }},
+                        new { titulo = "Lanche da Tarde", alimentos = new[] {
+                            new { label = "Gordura: ", valor = "20g de castanhas do pará." },
+                            new { label = "Proteína: ", valor = "1 dose de Whey Protein." }
+                        }},
+                        new { titulo = "Janta", alimentos = new[] {
+                            new { label = "Vegetais: ", valor = "Salada verde variada com 1 colher de sopa de azeite de oliva extra virgem." },
+                            new { label = "Proteína: ", valor = "200g de filé de tilápia ou pescada." }
+                        }}
+                    }
+                },
+                3 => new
+                {
+                    nome = "Bulking Limpo",
+                    descricao = "Outra dieta também voltada superávit calórico controlado. Com bastante carboidrato para fornecer energia para treinos intensos e sinalizar a via mTOR (crescimento muscular).",
+                    refeicoes = new[]
+                    {
+                        new { titulo = "Café da Manhã", alimentos = new[] {
+                            new { label = "Carboidratos: ", valor = "400ml de leite integral e 60g de aveia." },
+                            new { label = "Frutas: ", valor = "2 bananas." },
+                            new { label = "Proteína: ", valor = "1 dose de Whey." },
+                            new { label = "Gorduras: ", valor = "1 colher de pasta de amendoim." }
+                        }},
+                        new { titulo = "Almoço", alimentos = new[] {
+                            new { label = "Carboidratos: ", valor = "300g de arroz branco e 100g de feijão." },
+                            new { label = "Proteína: ", valor = "200g de patinho moído ou bife magro." }
+                        }},
+                        new { titulo = "Lanche da Tarde", alimentos = new[] {
+                            new { label = "Carboidratos: ", valor = "2 fatias de pão de forma integral." },
+                            new { label = "Proteína: ", valor = "1 latinha de atum." },
+                            new { label = "Gorduras: ", valor = "Creme de ricota light." },
+                            new { label = "Frutas: ", valor = "1 Maçã." }
+                        }},
+                        new { titulo = "Jantar", alimentos = new[] {
+                            new { label = "Carboidratos: ", valor = "250g de macarrão integral com molho de tomate natural." },
+                            new { label = "Proteína: ", valor = "200g de sobrecoxa de frango (sem pele)." }
+                        }},
+                        new { titulo = "Ceia", alimentos = new[] {
+                            new { label = "Gorduras: ", valor = "1 iogurte grego natural com 30g de mix de sementes (girassol/abóbora)." }
+                        }}
+                    }
+                },
+                4 => new
+                {
+                    nome = "Carb Cycling",
+                    descricao = "Esta estratégia alterna dias de alto carboidrato (em treinos pesados de pernas ou costas) com dias de baixo carboidrato. Uma excelente variação por ser excelente para quem quer ganhar massa muscular com o mínimo de ganho de gordura.",
+                    refeicoes = new[]
+                    {
+                        new { titulo = "Café da Manhã", alimentos = new[] {
+                            new { label = "Carboidratos: ", valor = "2 fatias de pão de forma integral com sementes." },
+                            new { label = "Proteína: ", valor = "4 ovos mexidos." }
+                        }},
+                        new { titulo = "Almoço", alimentos = new[] {
+                            new { label = "Carboidratos: ", valor = "200g de mandioca cozida." },
+                            new { label = "Proteína: ", valor = "200g de sobrecoxa de frango grelhado." },
+                            new { label = "Vegetais: ", valor = "Salada de folhas." }
+                        }},
+                        new { titulo = "Pré-Treino", alimentos = new[] {
+                            new { label = "Carboidratos: ", valor = "30g de aveia." },
+                            new { label = "Frutas: ", valor = "1 Banana." }
+                        }},
+                        new { titulo = "Jantar", alimentos = new[] {
+                            new { label = "Carboidratos: ", valor = "150g de arroz." },
+                            new { label = "Vegetais: ", valor = "Legumes salteados na manteiga." },
+                            new { label = "Proteína: ", valor = "200g de carne bovina magra (alcatra/mignon)." }
+                        }},
+                        new { titulo = "Ceia", alimentos = new[] {
+                            new { label = "Proteínas: ", valor = "30g de albumina ou caseína." }
+                        }}
+                    }
+                },
+                _ => new { nome = "", descricao = "", refeicoes = Array.Empty<object>() }
+            };
+
+            var options = new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+            };
+
+            var json = JsonSerializer.Serialize(pdfData, options);
+            await JS.InvokeVoidAsync("exportDietaPdf", json);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Erro ao exportar PDF da dieta: {ex.Message}");
+        }
     }
 }

@@ -117,17 +117,17 @@
                 </MudItem>
                 
                 <MudItem xs="12" sm="6">
-                    <MudTextField Label="E-mail" Variant="Variant.Filled" Margin="Margin.Dense" @bind-Value="cadModel.Email" For="@(()=>cadModel.Email)" />
+                    <MudTextField Label="E-mail" Variant="Variant.Filled" Margin="Margin.Dense" @bind-Value="cadModel.Email" For="@(()=>cadModel.Email)" autocomplete="off" />
                 </MudItem>
                 <MudItem xs="12" sm="6">
-                    <MudTextField Label="Confirmar E-mail" Variant="Variant.Filled" Margin="Margin.Dense" @bind-Value="cadModel.ConfirmEmail" For="@(()=>cadModel.ConfirmEmail)" />
+                    <MudTextField Label="Confirmar E-mail" Variant="Variant.Filled" Margin="Margin.Dense" @bind-Value="cadModel.ConfirmEmail" For="@(()=>cadModel.ConfirmEmail)" autocomplete="off" />
                 </MudItem>
                 
                 <MudItem xs="12" sm="6">
-                    <MudTextField InputType="@_passwordInput" Adornment="Adornment.End" AdornmentIcon="@_passwordInputIcon" AdornmentColor="Color.Inherit" OnAdornmentClick="TogglePasswordVisibility" Label="Senha" Variant="Variant.Filled" Margin="Margin.Dense"  @bind-Value="cadModel.Password" For="@(()=>cadModel.Password)" />
+                    <MudTextField InputType="@_passwordInput" Adornment="Adornment.End" AdornmentIcon="@_passwordInputIcon" AdornmentColor="Color.Inherit" OnAdornmentClick="TogglePasswordVisibility" Label="Senha" Variant="Variant.Filled" Margin="Margin.Dense"  @bind-Value="cadModel.Password" For="@(()=>cadModel.Password)" autocomplete="new-password" />
                 </MudItem>
                 <MudItem xs="12" sm="6">
-                    <MudTextField InputType="@_passwordInput" AdornmentIcon="@_passwordInputIcon" Label="Confirmar Senha" Variant="Variant.Filled" Margin="Margin.Dense" @bind-Value="cadModel.ConfirmPassword" For="@(()=>cadModel.ConfirmPassword)" />
+                    <MudTextField InputType="@_passwordInput" AdornmentIcon="@_passwordInputIcon" Label="Confirmar Senha" Variant="Variant.Filled" Margin="Margin.Dense" @bind-Value="cadModel.ConfirmPassword" For="@(()=>cadModel.ConfirmPassword)" autocomplete="new-password" />
                 </MudItem>
                 @*Termos e Privacidade*@
                 <MudItem xs="12" Class="mt-2 text-center">

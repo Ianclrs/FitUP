@@ -1,4 +1,10 @@
 ﻿@page "/CalculadoraBio"
+@using FitUP.Services
+@inject IJSRuntime JS
+@inject AuthService AuthService
+@inject BioimpedanciaService BioimpedanciaService
+@inject ISnackbar Snackbar
+
 <PageTitle>Calculadora Corporal</PageTitle>
 
 <style>
@@ -12,109 +18,353 @@
     }
 
     @@keyframes fadeIn {
-        from {
-            opacity: 0;
-            transform: translateY(10px);
-        }
+        from { opacity: 0; transform: translateY(10px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
 
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
+    .result-card {
+        background: var(--mud-palette-surface);
+        border: 3px solid coral;
+        border-radius: 20px;
+        transition: all 0.3s ease;
+    }
+
+    .metric-row {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 16px 20px;
+        border-radius: 12px;
+        margin-bottom: 8px;
+        background: rgba(255, 127, 80, 0.04);
+        border: 1px solid rgba(255, 127, 80, 0.1);
+        transition: all 0.2s;
+    }
+
+    .metric-row:hover {
+        background: rgba(255, 127, 80, 0.1);
+        border-color: rgba(255, 127, 80, 0.3);
+    }
+
+    .metric-row.destaque {
+        background: rgba(255, 127, 80, 0.12);
+        border: 2px solid coral;
+    }
+
+    .metric-icon {
+        width: 52px;
+        height: 52px;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 24px;
+        flex-shrink: 0;
+    }
+
+    .icon-muscle  { background: rgba(255,127,80,0.2); border: 1px solid rgba(255,127,80,0.4); }
+    .icon-fat     { background: rgba(255,193,7,0.2); border: 1px solid rgba(255,193,7,0.4); }
+    .icon-fire    { background: rgba(255,87,34,0.2); border: 1px solid rgba(255,87,34,0.4); }
+    .icon-energy  { background: rgba(76,175,80,0.2); border: 1px solid rgba(76,175,80,0.4); }
+    .icon-weight  { background: rgba(33,150,243,0.2); border: 1px solid rgba(33,150,243,0.4); }
+    .icon-height  { background: rgba(156,39,176,0.2); border: 1px solid rgba(156,39,176,0.4); }
+    .icon-age     { background: rgba(255,152,0,0.2); border: 1px solid rgba(255,152,0,0.4); }
+
+    .save-btn {
+        background-color: coral !important;
+        color: white !important;
+        font-weight: 700 !important;
+        border-radius: 12px !important;
+        transition: all 0.3s ease !important;
+        font-size: 1rem !important;
+        padding: 12px 24px !important;
+    }
+
+    .save-btn:hover {
+        background-color: #ff8e61 !important;
+        box-shadow: 0 6px 24px rgba(255,127,80,0.4) !important;
+        transform: translateY(-2px);
+    }
+
+    .calc-btn {
+        background-color: coral !important;
+        color: white !important;
+        font-weight: 700 !important;
+        border-radius: 10px !important;
+        font-size: 0.9rem !important;
+        padding: 8px 18px !important;
+        transition: all 0.3s ease !important;
+    }
+
+    .calc-btn:hover {
+        background-color: #ff8e61 !important;
+        box-shadow: 0 6px 24px rgba(255,127,80,0.5) !important;
+        transform: translateY(-2px);
+    }
+
+    .input-card {
+        background: var(--mud-palette-surface);
+        border: 3px solid coral;
+        border-radius: 20px;
+    }
+
+    .composition-bar {
+        height: 14px;
+        border-radius: 7px;
+        display: flex;
+        overflow: hidden;
+        margin-top: 4px;
+    }
+
+    .composition-lean {
+        background-color: coral;
+        border-radius: 7px 0 0 7px;
+    }
+
+    .composition-fat {
+        background-color: #FFC107;
+        border-radius: 0 7px 7px 0;
+    }
+
+    .composition-label {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 2px;
+    }
+
+    .section-title {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding-bottom: 8px;
+        margin-bottom: 16px;
+        border-bottom: 2px solid rgba(255,127,80,0.3);
     }
 </style>
 
-<MudContainer MaxWidth="MaxWidth.Medium" Class="mt-6 animate-fade-in">
+<MudContainer MaxWidth="MaxWidth.Large" Class="mt-6 mb-10 animate-fade-in">
+
+    @* Header *@
+    <div class="d-flex align-center mb-6">
+        <MudIconButton Style="color:coral" Icon="@Icons.Material.Filled.ArrowBackIosNew" Href="/GanhoMaximo" Size="Size.Small" />
+        <div>
+            <MudText Typo="Typo.h6" Style="color:coral; font-weight:bold;font-family:Cambria">Calculadora de</MudText>
+            <MudText Typo="Typo.h6" Style="font-weight:bold;font-family:Cambria">Bioimpedância</MudText>
+        </div>
+    </div>
+
     <MudGrid>
-        <!-- Formulário de Entrada de Dados -->
+        @* Formulário *@
         <MudItem xs="12" md="6">
-            <MudCard Style="border: 2px solid coral;" Elevation="3" Class="pa-7 rounded-xl">
-                <div class="d-flex align-center mb-4">
-                    <MudIconButton Style="color:coral" Icon="@Icons.Material.Filled.ArrowBackIosNew" Href="/GanhoMaximo" Size="Size.Small" />
-                    <MudText Typo="Typo.h6" Class="ms-2" Style="color:coral; font-weight:bold">Dados da Bioimpedância</MudText>
+            <MudCard Elevation="12" Class="pa-6 rounded-xl input-card">
+                <div class="section-title">
+                    <MudIcon Icon="@Icons.Material.Filled.Assignment" Style="color:coral;font-size:22px" />
+                    <MudText Typo="Typo.h6" Style="color:coral; font-weight:bold;font-family:Cambria">Seus Dados</MudText>
                 </div>
 
-                <MudCardContent>
+                <MudCardContent Class="pa-0">
                     <MudForm @ref="form">
-                        <MudRadioGroup @bind-Value="Model.Sexo" Class="mb-4">
-                            <MudRadio Value='"M"' Color="Color.Inherit">Masculino</MudRadio>
-                            <MudRadio Value='"F"' Color="Color.Inherit">Feminino</MudRadio>
-                        </MudRadioGroup>
+                        <div class="mb-4">
+                            <MudText Typo="Typo.body2" Style="font-weight:600;color:var(--mud-palette-text-secondary);margin-bottom:4px">Sexo</MudText>
+                            <MudRadioGroup @bind-Value="Model.Sexo" Style="font-weight:600;">
+                                <MudRadio Value='"M"' Color="Color.Primary">
+                                    <MudStack Row="true" Spacing="1">
+                                        <MudIcon Icon="@Icons.Material.Filled.Male" Size="Size.Small" Style="color:#2196F3" />
+                                        <MudText Style="font-weight:600;">Masculino</MudText>
+                                    </MudStack>
+                                </MudRadio>
+                                <MudRadio Value='"F"' Color="Color.Primary">
+                                    <MudStack Row="true" Spacing="1">
+                                        <MudIcon Icon="@Icons.Material.Filled.Female" Size="Size.Small" Style="color:#E91E63" />
+                                        <MudText Style="font-weight:600;">Feminino</MudText>
+                                    </MudStack>
+                                </MudRadio>
+                            </MudRadioGroup>
+                        </div>
 
-                        <MudNumericField @bind-Value="Model.Peso" Label="Peso Atual (kg)" Variant="Variant.Text"
-                                         Format="F2" Step="0.1" Required="true" RequiredError="O peso é obrigatório."
-                                         Validation="@(new Func<double?, string?>(ValidationPeso))" Class="mb-3" />
+                        <div class="d-flex align-center mb-4">
+                            <div class="metric-icon icon-weight me-3">
+                                <MudIcon Icon="@Icons.Material.Filled.MonitorWeight" Style="color:#2196F3" />
+                            </div>
+                            <MudNumericField @bind-Value="Model.Peso" Label="Peso Atual (kg)" Variant="Variant.Text"
+                                             Format="F2" Step="0.1" Required="true" RequiredError="O peso é obrigatório."
+                                             Validation="@(new Func<double?, string?>(ValidationPeso))" Style="flex:1" />
+                        </div>
 
-                        <MudNumericField @bind-Value="Model.Altura" Label="Altura (cm)" Variant="Variant.Text"
-                                         Step="1" Required="true" RequiredError="A altura é obrigatória."
-                                         Validation="@(new Func<double?, string?>(ValidationAltura))" Class="mb-3" />
+                        <div class="d-flex align-center mb-4">
+                            <div class="metric-icon icon-height me-3">
+                                <MudIcon Icon="@Icons.Material.Filled.Height" Style="color:#9C27B0" />
+                            </div>
+                            <MudNumericField @bind-Value="Model.Altura" Label="Altura (cm)" Variant="Variant.Text"
+                                             Step="1" Required="true" RequiredError="A altura é obrigatória."
+                                             Validation="@(new Func<double?, string?>(ValidationAltura))" Style="flex:1" />
+                        </div>
 
-                        <MudNumericField @bind-Value="Model.Idade" Label="Idade (anos)" Variant="Variant.Text"
-                                         Step="1" Required="true" RequiredError="A idade é obrigatória."
-                                         Validation="@(new Func<int?, string?>(ValidationIdade))" Class="mb-3" />
+                        <div class="d-flex align-center mb-4">
+                            <div class="metric-icon icon-age me-3">
+                                <MudIcon Icon="@Icons.Material.Filled.CalendarMonth" Style="color:#FF9800" />
+                            </div>
+                            <MudNumericField @bind-Value="Model.Idade" Label="Idade (anos)" Variant="Variant.Text"
+                                             Step="1" Required="true" RequiredError="A idade é obrigatória."
+                                             Validation="@(new Func<int?, string?>(ValidationIdade))" Style="flex:1" />
+                        </div>
 
-                        <MudNumericField @bind-Value="Model.PercentualGordura" Label="Percentual de Gordura (%)"
-                                         Variant="Variant.Text" Format="F1" Step="0.1" Required="true" RequiredError="O percentual de gordura é obrigatório."
-                                         Validation="@(new Func<double?, string?>(ValidationGordura))" Class="mb-4" />
+                        <div class="d-flex align-center mb-4">
+                            <div class="metric-icon icon-fat me-3">
+                                <MudIcon Icon="@Icons.Material.Filled.Opacity" Style="color:#FFC107" />
+                            </div>
+                            <MudNumericField @bind-Value="Model.PercentualGordura" Label="Percentual de Gordura (%)"
+                                             Variant="Variant.Text" Format="F1" Step="0.1" Required="true"
+                                             RequiredError="O percentual de gordura é obrigatório."
+                                             Validation="@(new Func<double?, string?>(ValidationGordura))" Style="flex:1" />
+                        </div>
 
-                        <MudSelect @bind-Value="Model.NivelAtividade" Label="Nível de Atividade Física" Variant="Variant.Text" Class="mb-4">
-                            <MudSelectItem Style="color:inherit!important" Value="@("Sedentario")"><strong>Sedentário</strong> (Pouco ou nenhum exercício)</MudSelectItem>
-                            <MudSelectItem Style="color:inherit!important" Value="@("Leve")"><strong>Levemente Ativo</strong> (Exercício leve 1-3 dias/semana)</MudSelectItem>
-                            <MudSelectItem Style="color:inherit!important" Value="@("Moderado")"><strong>Moderadamente Ativo</strong> (Exercício moderado 3-5 dias/semana)</MudSelectItem>
-                            <MudSelectItem Style="color:inherit!important" Value="@("Intenso")"><strong>Altamente Ativo</strong> (Exercício intenso 6-7 dias/semana)</MudSelectItem>
-                            <MudSelectItem Style="color:inherit!important" Value="@("Extremo")"><strong>Extremamente Ativo</strong> (Treino diário pesado / Trabalho braçal)</MudSelectItem>
+                        <MudSelect @bind-Value="Model.NivelAtividade" Label="Nível de Atividade Física" Variant="Variant.Text" Class="mb-4"
+                                   AdornmentIcon="@Icons.Material.Filled.DirectionsRun" AdornmentColor="Color.Primary">
+                            <MudSelectItem Style="color:inherit!important" Value="@("Sedentario")"><strong>Sedentário</strong> — Pouco ou nenhum exercício</MudSelectItem>
+                            <MudSelectItem Style="color:inherit!important" Value="@("Leve")"><strong>Levemente Ativo</strong> — 1-3 dias/semana</MudSelectItem>
+                            <MudSelectItem Style="color:inherit!important" Value="@("Moderado")"><strong>Moderadamente Ativo</strong> — 3-5 dias/semana</MudSelectItem>
+                            <MudSelectItem Style="color:inherit!important" Value="@("Intenso")"><strong>Altamente Ativo</strong> — 6-7 dias/semana</MudSelectItem>
+                            <MudSelectItem Style="color:inherit!important" Value="@("Extremo")"><strong>Extremamente Ativo</strong> — Treino diário pesado</MudSelectItem>
                         </MudSelect>
                     </MudForm>
                 </MudCardContent>
-                <MudCardActions>
-                    <MudButton Class="scale-hover" Variant="Variant.Filled"
-                               Style="background-color:coral; color:white; font-weight:bold" FullWidth="true" OnClick="Calcular">
+                <MudCardActions Class="pa-0">
+                    <MudButton Class="calc-btn scale-hover" FullWidth="true" OnClick="Calcular">
+                        <MudIcon Icon="@Icons.Material.Filled.Calculate" Size="Size.Small" Class="me-2" />
                         Calcular Resultados
                     </MudButton>
                 </MudCardActions>
             </MudCard>
         </MudItem>
 
-        <!-- Painel de Resultados -->
+        @* Painel de Resultados *@
         <MudItem xs="12" md="6">
             @if (ResultadoCalculado)
             {
-                <MudCard Elevation="0" Class="pa-4" Style="height: 100%; background-color: var(--mud-palette-background-grey);">
+                <MudCard Elevation="12" Class="pa-6 result-card" Style="height: 100%;">
+                    <div class="section-title">
+                        <MudIcon Icon="@Icons.Material.Filled.Analytics" Style="color:coral;font-size:22px" />
+                        <MudText Typo="Typo.h6" Style="color:coral; font-weight:bold;font-family:Cambria">Seus Resultados</MudText>
+                    </div>
 
-                    <MudCardContent>
+                    <MudCardContent Class="pa-0">
+                        @* Barra de composição corporal *@
+                        <div class="mb-4">
+                            <MudText Typo="Typo.body2" Style="font-weight:600;color:var(--mud-palette-text-secondary);margin-bottom:4px">
+                                COMPOSIÇÃO CORPORAL
+                            </MudText>
+                            <div class="composition-bar">
+                                <div class="composition-lean" style="width:@((Resultado.MassaMagra / Model.Peso.GetValueOrDefault(1) * 100).ToString("F0", System.Globalization.CultureInfo.InvariantCulture))%"></div>
+                                <div class="composition-fat" style="width:@((Resultado.MassaGorda / Model.Peso.GetValueOrDefault(1) * 100).ToString("F0", System.Globalization.CultureInfo.InvariantCulture))%"></div>
+                            </div>
+                            <div class="composition-label mt-1">
+                                <div class="d-flex align-center gap-1">
+                                    <div style="width:10px;height:10px;border-radius:50%;background:coral"></div>
+                                    <MudText Typo="Typo.caption" Style="font-weight:600">Massa Magra</MudText>
+                                </div>
+                                <div class="d-flex align-center gap-1">
+                                    <div style="width:10px;height:10px;border-radius:50%;background:#FFC107"></div>
+                                    <MudText Typo="Typo.caption" Style="font-weight:600">Massa Gorda</MudText>
+                                </div>
+                            </div>
+                        </div>
 
-                        <MudPaper Class="mb-4" Style="border: 2px solid coral; height:35px">
-                            <MudText Typo="Typo.h5" Class="mb-4 ms-2 font-weight-bold text-center"><strong>Resultados:</strong></MudText>
-                        </MudPaper>
+                        <div class="metric-row">
+                            <div class="metric-icon icon-muscle">
+                                <MudIcon Icon="@Icons.Material.Filled.FitnessCenter" Style="color:coral" />
+                            </div>
+                            <div style="flex:1">
+                                <MudText Typo="Typo.caption" Style="color:var(--mud-palette-text-secondary)">MASSA MAGRA</MudText>
+                                <MudText Typo="Typo.h5" Style="font-weight:700;color:coral;">@Resultado.MassaMagra.ToString("F2") <span style="font-size:0.8rem;font-weight:400;">kg</span></MudText>
+                            </div>
+                        </div>
 
-                        <MudSimpleTable Style="overflow-x: auto; border: 2px solid coral" Dense="true" Hover="true" Striped="false">
-                            <tbody>
-                                <tr>
-                                    <td><strong>Massa Magra:</strong></td>
-                                    <td><MudText Typo="Typo.body2"><strong>@Resultado.MassaMagra.ToString("F2") kg</strong></MudText></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Massa Gorda:</strong></td>
-                                    <td><MudText Typo="Typo.body2"><strong>@Resultado.MassaGorda.ToString("F2") kg</strong></MudText></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Taxa Metabólica Basal:</strong></td>
-                                    <td><MudText><strong>@Resultado.TMB.ToString("N0") kcal</strong></MudText></td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Gasto Energético Total:</strong></td>
-                                    <td><MudText Style="color:coral"><strong>@Resultado.GET.ToString("N0") kcal</strong></MudText></td>
-                                </tr>
-                            </tbody>
-                        </MudSimpleTable>
-                        <MudPaper>
-                            <MudAlert Style="border: 2px solid coral; color:inherit" Severity="Severity.Warning" Class="mt-4" Variant="Variant.Text">
-                                <MudText Typo="Typo.body2">
-                                    <strong>Observação:</strong> Não associe esses resultados como verdade absoluta, sempre procure um profissional.
-                                </MudText>
-                            </MudAlert>
-                        </MudPaper>
+                        <div class="metric-row">
+                            <div class="metric-icon icon-fat">
+                                <MudIcon Icon="@Icons.Material.Filled.WaterDrop" Style="color:#FFC107" />
+                            </div>
+                            <div style="flex:1">
+                                <MudText Typo="Typo.caption" Style="color:var(--mud-palette-text-secondary)">MASSA GORDA</MudText>
+                                <MudText Typo="Typo.h5" Style="font-weight:700;">@Resultado.MassaGorda.ToString("F2") <span style="font-size:0.8rem;font-weight:400;">kg</span></MudText>
+                            </div>
+                        </div>
+
+                        <div class="metric-row">
+                            <div class="metric-icon icon-fire">
+                                <MudIcon Icon="@Icons.Material.Filled.LocalFireDepartment" Style="color:#FF5722" />
+                            </div>
+                            <div style="flex:1">
+                                <MudText Typo="Typo.caption" Style="color:var(--mud-palette-text-secondary)">TAXA METABÓLICA BASAL</MudText>
+                                <MudText Typo="Typo.h5" Style="font-weight:700;">@Resultado.TMB.ToString("N0") <span style="font-size:0.8rem;font-weight:400;">kcal</span></MudText>
+                            </div>
+                        </div>
+
+                        <div class="metric-row destaque">
+                            <div class="metric-icon icon-energy">
+                                <MudIcon Icon="@Icons.Material.Filled.FlashOn" Style="color:#4CAF50" />
+                            </div>
+                            <div style="flex:1">
+                                <MudText Typo="Typo.caption" Style="color:coral;font-weight:700">GASTO ENERGÉTICO TOTAL</MudText>
+                                <MudText Typo="Typo.h5" Style="font-weight:800;color:coral;">@Resultado.GET.ToString("N0") <span style="font-size:0.8rem;font-weight:400;color:coral;">kcal/dia</span></MudText>
+                            </div>
+                        </div>
+
+                        @* Cards de referência rápida *@
+                        <MudGrid Spacing="2" Class="mt-3">
+                            <MudItem xs="6">
+                                <MudPaper Class="pa-2" Style="text-align:center;border:1px solid rgba(255,127,80,0.2);border-radius:10px">
+                                    <MudText Typo="Typo.caption" Style="color:var(--mud-palette-text-secondary)">IMC</MudText>
+                                    <MudText Typo="Typo.body1" Style="font-weight:700;">
+                                        @((Model.Peso.GetValueOrDefault() / ((Model.Altura.GetValueOrDefault(1) / 100) * (Model.Altura.GetValueOrDefault(1) / 100))).ToString("F1"))
+                                    </MudText>
+                                </MudPaper>
+                            </MudItem>
+                            <MudItem xs="6">
+                                <MudPaper Class="pa-2" Style="text-align:center;border:1px solid rgba(255,127,80,0.2);border-radius:10px">
+                                    <MudText Typo="Typo.caption" Style="color:var(--mud-palette-text-secondary)">Gordura %</MudText>
+                                    <MudText Typo="Typo.body1" Style="font-weight:700;color:#FFC107;">
+                                        @Model.PercentualGordura.GetValueOrDefault().ToString("F1")%
+                                    </MudText>
+                                </MudPaper>
+                            </MudItem>
+                        </MudGrid>
+
+                        <MudAlert Severity="Severity.Info" Class="mt-4 mb-3" Variant="Variant.Text"
+                                  Style="border:2px solid rgba(255,127,80,0.3);background:rgba(255,127,80,0.03);color:inherit;border-radius:10px">
+                            <MudText Typo="Typo.body2">
+                                <strong>Nota:</strong> Não tome estes valores como verdade absoluta. Sempre consulte um profissional de saúde e nutrição.
+                            </MudText>
+                        </MudAlert>
+
+                        <MudButton Class="save-btn scale-hover" FullWidth="true" OnClick="SalvarResultado" Disabled="@_isSaving"
+                                   StartIcon="@Icons.Material.Filled.Save">
+                            @if (_isSaving)
+                            {
+                                <MudProgressCircular Size="Size.Small" Color="Color.Inherit" Indeterminate="true" Class="me-2" />
+                                <span>Salvando...</span>
+                            }
+                            else
+                            {
+                                <span>Salvar Resultado no Perfil</span>
+                            }
+                        </MudButton>
                     </MudCardContent>
+                </MudCard>
+            }
+            else
+            {
+                <MudCard Elevation="8" Class="pa-6 d-flex flex-column align-center justify-center"
+                          Style="height: 100%; border: 3px dashed rgba(255,127,80,0.3); border-radius: 20px; background: var(--mud-palette-surface);">
+                    <div style="width:80px;height:80px;border-radius:50%;background:rgba(255,127,80,0.08);display:flex;align-items:center;justify-content:center;margin-bottom:16px">
+                        <MudIcon Icon="@Icons.Material.Filled.Calculate" Style="font-size: 40px; color: rgba(255,127,80,0.5);" />
+                    </div>
+                    <MudText Typo="Typo.h6" Style="color: rgba(255,127,80,0.6); font-weight:600;font-family:Cambria">Pronto para descobrir?</MudText>
+                    <MudText Typo="Typo.body2" Style="color: var(--mud-palette-text-secondary);" Align="Align.Center" Class="mt-1">
+                        Preencha seus dados ao lado e clique em<br />
+                        <strong style="color:coral;font-size:1.05rem">"Calcular Resultados"</strong>
+                    </MudText>
                 </MudCard>
             }
         </MudItem>
@@ -124,6 +374,7 @@
 @code {
     private MudForm form = default!;
     private bool ResultadoCalculado { get; set; }
+    private bool _isSaving;
 
     private BioimpedanciaModel Model { get; set; } = new();
     private ResultadoBio Resultado { get; set; } = new();
@@ -137,7 +388,6 @@
     {
         if (form is null) return;
 
-        
         await form.ValidateAsync();
 
         if (!form.IsValid || !Model.Peso.HasValue || !Model.PercentualGordura.HasValue || !Model.Altura.HasValue || !Model.Idade.HasValue)
@@ -149,8 +399,7 @@
         double massaGorda = Model.Peso.Value * (Model.PercentualGordura.Value / 100.0);
         double massaMagra = Model.Peso.Value - massaGorda;
 
-        double tmb = 0;
-
+        double tmb;
         if (Model.Sexo == "M")
         {
             tmb = 88.362 + (13.397 * Model.Peso.Value) + (4.799 * Model.Altura.GetValueOrDefault()) - (5.677 * Model.Idade.GetValueOrDefault());
@@ -181,6 +430,54 @@
         };
 
         ResultadoCalculado = true;
+    }
+
+    private async Task SalvarResultado()
+    {
+        if (!AuthService.IsLoggedIn)
+        {
+            Snackbar.Add("Faça login para salvar seus resultados.", Severity.Warning);
+            return;
+        }
+
+        if (!Model.Peso.HasValue || !Model.Altura.HasValue || !Model.PercentualGordura.HasValue || !Model.Idade.HasValue)
+        {
+            Snackbar.Add("Calcule os resultados antes de salvar.", Severity.Warning);
+            return;
+        }
+
+        _isSaving = true;
+        try
+        {
+            var request = new RegistroBioimpedanciaRequest
+            {
+                DataRegistro = DateTime.UtcNow,
+                Peso = Model.Peso.Value,
+                Altura = Model.Altura.Value,
+                PercentualGordura = Model.PercentualGordura.Value,
+                MassaMagra = Resultado.MassaMagra,
+                MassaGorda = Resultado.MassaGorda,
+                TaxaMetabolicaBasal = Resultado.TMB
+            };
+
+            var result = await BioimpedanciaService.CriarAsync(request);
+            if (result is not null)
+            {
+                Snackbar.Add("Resultado salvo com sucesso! Acesse seu Perfil para ver o histórico.", Severity.Success);
+            }
+            else
+            {
+                Snackbar.Add("Erro ao salvar o resultado. Verifique sua conexão.", Severity.Error);
+            }
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Erro: {ex.Message}", Severity.Error);
+        }
+        finally
+        {
+            _isSaving = false;
+        }
     }
 
     public class BioimpedanciaModel

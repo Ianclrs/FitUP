@@ -4,6 +4,7 @@
 @using FitUP.Services
 @inject NavigationManager NavigationManager
 @inject AuthService AuthService
+@inject BioimpedanciaService BioimpedanciaService
 @inject ISnackbar Snackbar
 
 <PageTitle>Meu Perfil</PageTitle>
@@ -96,7 +97,7 @@ else
             </div>
 
             @* ---- Atalho: Meus Treinos ---- *@
-            <div class="treinos-link-card mb-6" @onclick="IrParaTreinos">
+            <div class="treinos-link-card mb-3" @onclick="IrParaTreinos">
                 <div class="d-flex align-center justify-center gap-3">
                     <MudIcon Icon="@Icons.Material.Filled.FitnessCenter" Style="color: coral; font-size: 32px;" />
                     <div>
@@ -105,6 +106,68 @@ else
                     </div>
                     <MudIcon Icon="@Icons.Material.Filled.ChevronRight" Style="color: coral; font-size: 28px;" />
                 </div>
+            </div>
+
+            @* ---- Histórico de Bioimpedância ---- *@
+            <div class="bioimpedancia-section mb-6">
+                <div class="d-flex align-center mb-3">
+                    <MudIcon Icon="@Icons.Material.Filled.Biotech" Style="color: coral; font-size: 24px;" Class="me-2" />
+                    <MudText Typo="Typo.h6" Style="color: coral; font-weight: 700;">Meus Resultados de Bioimpedância</MudText>
+                </div>
+
+                @if (_isLoadingBio)
+                {
+                    <div class="d-flex justify-center py-4">
+                        <MudProgressCircular Color="Color.Primary" Indeterminate="true" Size="Size.Small" />
+                    </div>
+                }
+                else if (_registrosBio.Count == 0)
+                {
+                    <MudPaper Class="pa-4" Style="border: 1px dashed rgba(255,127,80,0.3); border-radius: 12px; text-align: center;">
+                        <MudIcon Icon="@Icons.Material.Filled.Calculate" Style="font-size: 36px; color: rgba(255,127,80,0.4);" Class="mb-2" />
+                        <MudText Typo="Typo.body2" Class="mud-text-secondary">Nenhum resultado salvo ainda.</MudText>
+                        <MudText Typo="Typo.caption" Class="mud-text-secondary">
+                            Use a <strong>Calculadora de Bioimpedância</strong> e clique em <strong>"Salvar Resultado"</strong>.
+                        </MudText>
+                    </MudPaper>
+                }
+                else
+                {
+                    @foreach (var reg in _registrosBio.OrderByDescending(r => r.DataRegistro).Take(5))
+                    {
+                        <MudPaper Class="pa-3 mb-2 bio-card" Style="border: 1px solid rgba(255,127,80,0.2); border-radius: 12px; transition: all 0.2s;">
+                            <div class="d-flex align-center justify-space-between">
+                                <div class="d-flex align-center gap-2">
+                                    <MudIcon Icon="@Icons.Material.Filled.CalendarMonth" Size="Size.Small" Style="color: coral;" />
+                                    <MudText Typo="Typo.body2" Style="font-weight: 600;">@reg.DataRegistro.ToString("dd/MM/yyyy")</MudText>
+                                </div>
+                                <MudIconButton Icon="@Icons.Material.Filled.Delete"
+                                               Size="Size.Small"
+                                               Style="color: #f44336;"
+                                               title="Remover registro"
+                                               OnClick="@(async () => await RemoverRegistroBio(reg))" />
+                            </div>
+                            <MudGrid Spacing="1" Class="mt-1">
+                                <MudItem xs="6" sm="3">
+                                    <MudText Typo="Typo.caption" Class="mud-text-secondary">Peso</MudText>
+                                    <MudText Typo="Typo.body2" Style="font-weight:600;">@reg.Peso.ToString("F1") kg</MudText>
+                                </MudItem>
+                                <MudItem xs="6" sm="3">
+                                    <MudText Typo="Typo.caption" Class="mud-text-secondary">Massa Magra</MudText>
+                                    <MudText Typo="Typo.body2" Style="font-weight:600;color:coral;">@(reg.MassaMagra?.ToString("F1") ?? "—") kg</MudText>
+                                </MudItem>
+                                <MudItem xs="6" sm="3">
+                                    <MudText Typo="Typo.caption" Class="mud-text-secondary">Massa Gorda</MudText>
+                                    <MudText Typo="Typo.body2" Style="font-weight:600;">@(reg.MassaGorda?.ToString("F1") ?? "—") kg</MudText>
+                                </MudItem>
+                                <MudItem xs="6" sm="3">
+                                    <MudText Typo="Typo.caption" Class="mud-text-secondary">TMB</MudText>
+                                    <MudText Typo="Typo.body2" Style="font-weight:600;">@(reg.TaxaMetabolicaBasal?.ToString("N0") ?? "—") kcal</MudText>
+                                </MudItem>
+                            </MudGrid>
+                        </MudPaper>
+                    }
+                }
             </div>
 
             @* ---- Gavetas Expansíveis ---- *@
@@ -282,7 +345,11 @@ else
     private InputType _senhaInputType = InputType.Password;
     private string _senhaVisibilityIcon = Icons.Material.Filled.VisibilityOff;
 
-    protected override void OnInitialized()
+    // ---- Bioimpedância ----
+    private List<RegistroBioimpedanciaDto> _registrosBio = new();
+    private bool _isLoadingBio;
+
+    protected override async Task OnInitializedAsync()
     {
         if (!AuthService.IsLoggedIn) return;
 
@@ -290,6 +357,47 @@ else
         _nomeModel.Nome = AuthService.NomeUsuario;
         _emailModel.NovoEmail = AuthService.EmailUsuario;
         _emailModel.ConfirmarEmail = AuthService.EmailUsuario;
+
+        // Carrega registros de bioimpedância
+        await CarregarRegistrosBio();
+    }
+
+    private async Task CarregarRegistrosBio()
+    {
+        _isLoadingBio = true;
+        try
+        {
+            _registrosBio = await BioimpedanciaService.ListarAsync();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Erro ao carregar bioimpedância: {ex.Message}");
+        }
+        finally
+        {
+            _isLoadingBio = false;
+        }
+    }
+
+    private async Task RemoverRegistroBio(RegistroBioimpedanciaDto registro)
+    {
+        try
+        {
+            var ok = await BioimpedanciaService.RemoverAsync(registro.Id);
+            if (ok)
+            {
+                _registrosBio.Remove(registro);
+                Snackbar.Add("Registro removido.", Severity.Success);
+            }
+            else
+            {
+                Snackbar.Add("Erro ao remover registro.", Severity.Error);
+            }
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Erro: {ex.Message}", Severity.Error);
+        }
     }
 
     // ==================== NAVEGAÇÃO ====================
@@ -337,8 +445,11 @@ else
         _isSavingEmail = true;
         try
         {
+            var (primeiroNome, sobrenome) = SepararNomeSobrenome(_nomeModel.Nome);
             var request = new AtualizarPerfilRequest
             {
+                Nome = primeiroNome,
+                Sobrenome = sobrenome,
                 Email = _emailModel.NovoEmail
             };
             var ok = await AuthService.AtualizarPerfilAsync(request);

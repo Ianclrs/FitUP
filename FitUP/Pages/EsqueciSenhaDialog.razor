@@ -11,12 +11,15 @@
                 Informe o e-mail cadastrado para receber o link de redefinição de senha.
             </MudText>
 
-            <MudTextField T="string"
-                          Label="E-mail"
-                          Variant="Variant.Filled"
-                          @bind-Value="_email"
-                          For="@(() => _email)"
-                          Immediate="true" />
+            <EditForm Model="@_model" OnValidSubmit="Enviar">
+                <DataAnnotationsValidator />
+                <MudTextField T="string"
+                              Label="E-mail"
+                              Variant="Variant.Filled"
+                              @bind-Value="_model.Email"
+                              For="@(() => _model.Email)"
+                              Immediate="true" />
+            </EditForm>
 
             <MudAlert Severity="Severity.Info" Class="mt-2" Style="font-size: 13px;">
                 Modo desenvolvimento: o link de redefinição será exibido na tela.
@@ -25,7 +28,7 @@
     </DialogContent>
     <DialogActions>
         <MudButton OnClick="Cancelar" Variant="Variant.Text" Disabled="@_isLoading">Cancelar</MudButton>
-        <MudButton OnClick="Enviar" Variant="Variant.Filled" Color="Color.Primary" Disabled="@_isLoading">
+        <MudButton OnClick="EnviarHandler" Variant="Variant.Filled" Color="Color.Primary" Disabled="@_isLoading">
             @if (_isLoading)
             {
                 <MudProgressCircular Size="Size.Small" Color="Color.Inherit" Indeterminate="true" Class="mr-2" />
@@ -42,12 +45,12 @@
     [CascadingParameter]
     private IMudDialogInstance MudDialog { get; set; } = default!;
 
-    private string _email = string.Empty;
+    private EsqueciSenhaModel _model = new();
     private bool _isLoading;
 
     protected override void OnInitialized()
     {
-        _email = EmailInicial;
+        _model.Email = EmailInicial;
     }
 
     private void Cancelar()
@@ -55,28 +58,38 @@
         MudDialog.Cancel();
     }
 
-    private async Task Enviar()
+    private async Task EnviarHandler()
     {
-        if (string.IsNullOrWhiteSpace(_email))
+        if (string.IsNullOrWhiteSpace(_model.Email))
         {
             Snackbar.Add("Informe um e-mail válido.", Severity.Warning);
             return;
         }
 
+        if (!new EmailAddressAttribute().IsValid(_model.Email))
+        {
+            Snackbar.Add("Formato de e-mail inválido.", Severity.Warning);
+            return;
+        }
+
+        await Enviar();
+    }
+
+    private async Task Enviar()
+    {
         _isLoading = true;
 
         try
         {
             var request = new EsqueciSenhaRequestDto
             {
-                Email = _email
+                Email = _model.Email
             };
 
             var response = await AuthService.EsqueciSenhaAsync(request);
 
             if (response is not null)
             {
-                // Salva o link no clipboard via JS (modo dev)
                 try
                 {
                     await JSRuntime.InvokeVoidAsync("navigator.clipboard.writeText", response.LinkRedefinicao);
@@ -104,5 +117,12 @@
         {
             _isLoading = false;
         }
+    }
+
+    private class EsqueciSenhaModel
+    {
+        [Required(ErrorMessage = "O e-mail é obrigatório.")]
+        [EmailAddress(ErrorMessage = "Formato de e-mail inválido.")]
+        public string Email { get; set; } = string.Empty;
     }
 }
