@@ -1,0 +1,7 @@
+{
+  "buildCommand": "dotnet publish FitUP/FitUP.csproj -c Release -o publish",
+  "outputDirectory": "publish/wwwroot",
+  "rewrites": [
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}
