@@ -45,10 +45,14 @@
         @*Botões condicionais: logado vs não logado*@
         @if (AuthService.IsLoggedIn)
         {
-            <MudMenu Icon="@Icons.Material.Filled.AccountCircle" Color="Color.Inherit" 
+            <MudMenu AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter" Icon="@Icons.Material.Filled.AccountCircle" Color="Color.Inherit" 
                      Class="mt-2 ms-2">
                 <ChildContent>
-                    <MudMenuItem Href="/perfil">Meu Perfil</MudMenuItem>
+                    <MudMenuItem  Href="/perfil">
+                    <MudText Align="Align.Center" Style="font-weight: bold; font-family: Cambria">
+                        Meu Perfil
+                    </MudText>
+                    </MudMenuItem>
                     <MudMenuItem Href="/MeusTreinos">Treinos Salvos</MudMenuItem>
                     <MudMenuItem OnClick="@(async () => await LogoutAsync())">Sair</MudMenuItem>
                 </ChildContent>
