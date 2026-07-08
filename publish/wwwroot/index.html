@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>FitUP</title>
+    <base href="/" />
+    <link href="_framework/dotnet.fpr5v746fq.js" rel="preload" as="script" fetchpriority="high" crossorigin="anonymous" integrity="sha256-g9ZBeT5/ELYJwqQZljj+zO4voYrtvosAc5AEAAbu5Ys=" />
+    <link rel="stylesheet" href="_content/MudBlazor/MudBlazor.min.css" />
+    <link rel="stylesheet" href="css/app.css" />
+    <link rel="icon" type="image/png" href="img/Logo32.png" />
+    <link href="FitUP.styles.css" rel="stylesheet" />
+    <script type="importmap">{
+  "imports": {
+    "./_framework/blazor.webassembly.js": "./_framework/blazor.webassembly.958z1vx7fr.js",
+    "./_framework/dotnet.js": "./_framework/dotnet.fpr5v746fq.js",
+    "./_framework/dotnet.native.js": "./_framework/dotnet.native.n1dw2943hf.js",
+    "./_framework/dotnet.runtime.js": "./_framework/dotnet.runtime.a6jcqbs390.js"
+  },
+  "scopes": {},
+  "integrity": {
+    "./_framework/blazor.webassembly.958z1vx7fr.js": "sha256-A59Tr9HqEhHMu8kU7kruLI9ayw5MRS6Lvc6z7jCbghk=",
+    "./_framework/blazor.webassembly.js": "sha256-A59Tr9HqEhHMu8kU7kruLI9ayw5MRS6Lvc6z7jCbghk=",
+    "./_framework/dotnet.fpr5v746fq.js": "sha256-g9ZBeT5/ELYJwqQZljj+zO4voYrtvosAc5AEAAbu5Ys=",
+    "./_framework/dotnet.js": "sha256-g9ZBeT5/ELYJwqQZljj+zO4voYrtvosAc5AEAAbu5Ys=",
+    "./_framework/dotnet.native.js": "sha256-9e9R341sjA7CCvoFvvgHUTIYQSKbAvcEROh54Dgxv0M=",
+    "./_framework/dotnet.native.n1dw2943hf.js": "sha256-9e9R341sjA7CCvoFvvgHUTIYQSKbAvcEROh54Dgxv0M=",
+    "./_framework/dotnet.runtime.a6jcqbs390.js": "sha256-7i3usfTrnzC/9qWO4si5Bw4w7D9fUSnSBdhQ47blX2M=",
+    "./_framework/dotnet.runtime.js": "sha256-7i3usfTrnzC/9qWO4si5Bw4w7D9fUSnSBdhQ47blX2M="
+  }
+}</script>
+    <!-- jsPDF para exportação de PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <!-- helper de exportação FitUP -->
+    <script src="js/pdfExport.js"></script>
+</head>
+
+<body>
+    <div id="app">
+        <div class="loading-wrapper">
+            <span class="loading-progress-text">Carregando...</span>
+            <div class="loading-progress-container">
+            <div class="loading-progress-bar"></div>
+        </div>
+       </div>
+    </div>
+
+    <div id="blazor-error-ui">
+        An unhandled error has occurred.
+        <a href="." class="reload">Reload</a>
+        <span class="dismiss">🗙</span>
+    </div>
+    <script src="_content/MudBlazor/MudBlazor.min.js"></script>
+    <script src="_framework/blazor.webassembly.958z1vx7fr.js"></script>
+</body>
+
+</html>
