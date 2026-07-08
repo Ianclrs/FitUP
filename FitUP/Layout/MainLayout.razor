@@ -42,19 +42,31 @@
         <MudButton Class="ms-7 mt-2" Size="Size.Small" Style="color:coral; font-weight: 900;" Href="GanhoMaximo">Ganho Máximo</MudButton>
         </div>
         <MudSpacer />
+
         @*Botões condicionais: logado vs não logado*@
         @if (AuthService.IsLoggedIn)
         {
-            <MudMenu AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter" Icon="@Icons.Material.Filled.AccountCircle" Color="Color.Inherit" 
-                     Class="mt-2 ms-2">
+            <MudMenu AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter" Icon="@Icons.Material.Filled.AccountCircle" Color="Color.Inherit" Class="mt-2 ms-2">
                 <ChildContent>
-                    <MudMenuItem  Href="/perfil">
-                    <MudText Align="Align.Center" Style="font-weight: bold; font-family: Cambria">
-                        Meu Perfil
-                    </MudText>
-                    </MudMenuItem>
-                    <MudMenuItem Href="/MeusTreinos">Treinos Salvos</MudMenuItem>
-                    <MudMenuItem OnClick="@(async () => await LogoutAsync())">Sair</MudMenuItem>
+                    <div>
+                        <MudMenuItem Href="/perfil">
+                            <MudText Typo="Typo.subtitle2" Align="Align.Center" Style="font-weight: bold; font-size:0.9rem">
+                                Meu Perfil
+                            </MudText>
+                        </MudMenuItem>
+                        <MudDivider Style="--mud-palette-divider:coral" />
+                        <MudMenuItem Href="/MeusTreinos">
+                            <MudText Typo="Typo.subtitle2" Align="Align.Center" Style="font-weight:bold; font-size:0.9rem">
+                                Meus Treinos
+                            </MudText>
+                        </MudMenuItem>
+                        <MudDivider Style="--mud-palette-divider:coral" />
+                        <MudMenuItem OnClick="@(async () => await LogoutAsync())">
+                            <MudText Typo="Typo.subtitle2" Align="Align.Center" Style="font-weight:bold; font-size:0.9rem">
+                                Sair
+                            </MudText>
+                        </MudMenuItem>
+                    </div>
                 </ChildContent>
             </MudMenu>
         }
