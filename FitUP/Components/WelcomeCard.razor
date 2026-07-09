@@ -1,73 +1,89 @@
 @inject IJSRuntime JS
 
-<div style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 99999;
-            background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-            display: flex; align-items: center; justify-content: center;">
-    <div style="max-width: 320px; width: 90%; background: #1f1d1b; border: 2px solid coral;
-                border-radius: 12px; padding: 24px; color: white; position: relative;
-                box-shadow: 0 0 40px rgba(255, 107, 53, 0.4);">
-        <button @onclick="Dismiss"
+@if (!_done || _visible)
+{
+    <div style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+        z-index: 99999; background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px); display: flex; align-items: center; justify-content: center;">
+        <div style="max-width: 350px; width: 90%; background: #1f1d1b; border: 2px solid coral;
+            border-radius: 12px; padding: 24px; color: white; position: relative;
+            box-shadow: 0 0 40px rgba(255, 107, 53, 0.4);">
+            <button @onclick="Fechar"
                 style="position: absolute; top: 8px; right: 8px; background: none; border: none;
-                       color: coral; font-size: 20px; cursor: pointer; line-height: 1;">
-            &#x2715;
-        </button>
+                color: coral; font-size: 24px; cursor: pointer; line-height: 1;">&times;</button>
 
-        <h3 style="text-align: center; margin-top: 8px;">
-            Bem-vindo ao <span style="color: coral;">FitUP</span>!
-        </h3>
+            <h3 style="text-align: center; margin-top: 8px; line-height: 1.4;">
+                Bem-vindo ao <span style="color: coral;">FitUP</span>!
+            </h3>
 
-        <p style="text-align: center; margin: 16px 0;">
-            Sua plataforma definitiva para o mundo fitness. Trazemos praticidade com treinos personalizados, guias de execução e nutrição completa.
-        </p>
+            <pre style="display:none">DEBUG: _done=@_done _visible=@_visible</pre>
 
-        <hr style="border-color: coral; margin-bottom: 12px;" />
-
-        <div style="max-height: 250px; overflow-y: auto; padding-right: 8px;">
-            <h4 style="color: coral; margin-bottom: 4px;">Monte o Seu Treino</h4>
-            <p style="font-size: 0.9rem; margin-bottom: 12px;">
-                Gere rotinas de treino personalizadas com base no seu perfil e objetivos. Suas fichas podem ser salvas diretamente na sua área de usuário para acesso rápido na hora de ir para a academia.
+            <p style="text-align: center; margin: 16px 0; line-height: 1.5;">
+                Sua plataforma definitiva para o mundo fitness. Trazemos praticidade com treinos personalizados, guias de execução e nutrição completa.
             </p>
 
-            <hr style="margin-bottom: 12px;" />
+            <hr style="border-color: coral; margin-bottom: 12px;" />
 
-            <h4 style="color: coral; margin-bottom: 4px;">Dicas de Treino</h4>
-            <p style="font-size: 0.9rem; margin-bottom: 12px;">
-                Entenda como funcionam os grupamentos musculares. Acesse guias com os exercícios mais eficientes para cada área e descubra os principais métodos e estilos de treinamento para otimizar seus resultados.
-            </p>
+            <div style="max-height: 250px; overflow-y: auto; padding-right: 8px;">
+                <h4 style="color: coral; margin-bottom: 4px;">Monte o Seu Treino</h4>
+                <p style="font-size: 0.9rem; margin-bottom: 12px; line-height: 1.5;">
+                    Gere rotinas de treino personalizadas com base no seu perfil e objetivos. Suas fichas podem ser salvas diretamente na sua área de usuário para acesso rápido na hora de ir para a academia.
+                </p>
 
-            <hr style="margin-bottom: 12px;" />
+                <hr style="margin-bottom: 12px; border-color: #444;" />
 
-            <h4 style="color: coral; margin-bottom: 4px;">Ganho Máximo</h4>
-            <p style="font-size: 0.9rem;">
-                Domine a sua nutrição. Aprenda a importância de cada macronutriente, utilize nossa calculadora de taxa metabólica basal (TMB) e gere planos alimentares sob medida para o seu biotipo.
-            </p>
+                <h4 style="color: coral; margin-bottom: 4px;">Dicas de Treino</h4>
+                <p style="font-size: 0.9rem; margin-bottom: 12px; line-height: 1.5;">
+                    Entenda como funcionam os grupamentos musculares. Acesse guias com os exercícios mais eficientes para cada área e descubra os principais métodos e estilos de treinamento para otimizar seus resultados.
+                </p>
+
+                <hr style="margin-bottom: 12px; border-color: #444;" />
+
+                <h4 style="color: coral; margin-bottom: 4px;">Ganho Máximo</h4>
+                <p style="font-size: 0.9rem; line-height: 1.5;">
+                    Domine a sua nutrição. Aprenda a importância de cada macronutriente, utilize nossa calculadora de taxa metabólica basal (TMB) e gere planos alimentares sob medida para o seu biotipo.
+                </p>
+            </div>
         </div>
     </div>
-</div>
+}
 
 @code {
+    private bool _done;
+    private bool _visible = true;
+    private bool _started;
+
     protected override async Task OnAfterRenderAsync(bool firstRender)
     {
-        if (!firstRender) return;
+        if (!firstRender || _started) return;
+        _started = true;
 
         try
         {
-            var result = await JS.InvokeAsync<string>("localStorage.getItem", "fitup_welcome_dismissed");
-            if (result == "true")
+            var dismissed = await JS.InvokeAsync<string>("eval", "localStorage.getItem('fitup_welcome_v3')");
+            if (dismissed == "1")
             {
-                await JS.InvokeVoidAsync("document.querySelector('.welcome-overlay')?.remove");
+                _visible = false;
             }
         }
-        catch { }
+        catch
+        {
+            // JS indisponível — mantém visível
+        }
+
+        _done = true;
+        StateHasChanged();
     }
 
-    private async Task Dismiss()
+    private async Task Fechar()
     {
+        _visible = false;
+        StateHasChanged();
+
         try
         {
-            await JS.InvokeVoidAsync("localStorage.setItem", "fitup_welcome_dismissed", "true");
+            await JS.InvokeVoidAsync("eval", "localStorage.setItem('fitup_welcome_v3', '1')");
         }
         catch { }
-        await JS.InvokeVoidAsync("eval", "document.querySelector('[style*=\"position: fixed\"][style*=\"z-index: 99999\"]')?.remove()");
     }
 }
