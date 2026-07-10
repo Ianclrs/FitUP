@@ -367,6 +367,37 @@
         color: var(--fitup-orange);
         font-weight: 500;
     }
+
+    @@media (max-width: 400px) {
+        .step-labels-row {
+            flex-wrap: wrap !important;
+            gap: 6px !important;
+            justify-content: center !important;
+        }
+
+            .step-labels-row .mud-typography-body2 {
+                font-size: 11px !important;
+            }
+
+        .days-row {
+            flex-wrap: wrap !important;
+            gap: 6px !important;
+            justify-content: center !important;
+        }
+
+        .result-actions-row {
+            flex-wrap: wrap !important;
+        }
+
+            .result-actions-row .mud-button-root {
+                font-size: 12px !important;
+                padding: 6px 10px !important;
+            }
+
+        .result-header-card .mud-typography-h5 {
+            font-size: 1.1rem !important;
+        }
+    }
 </style>
 
 <div>
@@ -375,7 +406,7 @@
         @if (_phase == Phase.Quiz)
         {
             <div class="mb-8">
-                <MudStack Row="true" Justify="Justify.SpaceBetween" Class="mb-2">
+                <MudStack Row="true" Justify="Justify.SpaceBetween" Class="mb-2 step-labels-row">
                     @for (int i = 0; i < _stepLabels.Length; i++)
                     {
                         
@@ -461,7 +492,7 @@
                 <div class="step-badge">Etapa 3 de 6</div>
                 <MudText Typo="Typo.h5" Color="Color.Inherit" Style="font-weight:500;margin-bottom:6px;">Quantos dias por semana você treina?</MudText>
                 <MudText Typo="Typo.body2" Color="Color.Inherit" Style="margin-bottom:24px;">Montaremos a divisão semanal perfeita para você.</MudText>
-                <MudStack Row="true" Justify="Justify.Center" Spacing="2">
+                <MudStack Row="true" Justify="Justify.Center" Spacing="2" Class="days-row">
                     @foreach (var d in new[] { 2, 3, 4, 5, 6 })
                     {
                         int day = d;
@@ -689,7 +720,7 @@
                 }
             }
 
-            <MudStack Row="true" Spacing="2" Class="mt-6" Style="flex-wrap:wrap;">
+            <MudStack Row="true" Spacing="2" Class="mt-6 result-actions-row" Style="flex-wrap:wrap;">
                 <MudButton Class="btn-secondary-fitup" Size="Size.Medium" StartIcon="@Icons.Material.Outlined.Bookmark" OnClick="SaveWorkout">
                     <MudText Style="font-weight:bold">
                         Salvar
