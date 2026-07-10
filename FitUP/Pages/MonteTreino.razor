@@ -211,6 +211,52 @@
             box-shadow: var(--fitup-orange-glow-sm);
         }
 
+    .skeleton-card {
+        background-color: var(--mud-palette-surface);
+        border: 1.5px solid var(--fitup-orange);
+        border-radius: 8px;
+        padding: 18px;
+    }
+    .skeleton-shimmer {
+        background: linear-gradient(90deg, rgba(127,127,127,0.08) 0%, rgba(127,127,127,0.22) 40%, rgba(127,127,127,0.08) 80%);
+        background-size: 200% 100%;
+        animation: shimmer 1.8s ease-in-out infinite;
+        border-radius: 4px;
+    }
+    @@keyframes shimmer {
+        0% { background-position: 200% 0; }
+        100% { background-position: -200% 0; }
+    }
+    .sk-header { height: 13px; width: 65%; margin-bottom: 6px; }
+    .sk-header-sm { height: 10px; width: 40%; }
+    .sk-stat { height: 52px; border-radius: 6px; }
+    .sk-exercise { height: 48px; border-radius: 6px; margin-bottom: 6px; }
+    .sk-focus { height: 24px; width: 45%; border-radius: 6px; margin-bottom: 14px; }
+    .sk-daytab { height: 28px; width: 65px; border-radius: 6px; display: inline-block; margin-right: 6px; margin-bottom: 12px; }
+    .loading-step-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 13px;
+        transition: color 0.3s;
+    }
+    .loading-pending { color: var(--mud-palette-text-disabled); }
+    .loading-active { color: var(--fitup-orange); font-weight: 500; }
+    .loading-done { color: var(--mud-palette-text-primary); }
+    .loading-progress-bar {
+        width: 100%;
+        height: 4px;
+        background-color: var(--mud-palette-divider);
+        border-radius: 6px;
+        overflow: hidden;
+        margin-top: 12px;
+    }
+    .loading-progress-fill {
+        height: 4px;
+        background-color: var(--fitup-orange);
+        border-radius: 6px;
+        transition: width 0.5s cubic-bezier(.4,0,.2,1);
+    }
     .spinner-ring {
         width: 52px;
         height: 52px;
@@ -575,8 +621,25 @@
             {
                 <div class="step-badge">Etapa 6 de 6</div>
                 <MudText Typo="Typo.h5" Color="Color.Inherit" Style="font-weight:500;margin-bottom:6px;">Você tem alguma limitação física?</MudText>
-                <MudText Typo="Typo.body2" Color="Color.Inherit" Style="margin-bottom:24px;">Opcional — nos ajuda a evitar exercícios que possam causar desconforto.</MudText>
-                <textarea class="fitup-textarea" rows="4" placeholder="Ex: dor no joelho, hérnia de disco, tendinite no ombro..." @bind="_limitacoes" @bind:event="oninput"></textarea>
+                <MudText Typo="Typo.body2" Color="Color.Inherit" Style="margin-bottom:24px;">Selecione as regiões com restrições — os exercícios serão ajustados automaticamente. Esta etapa é opcional.</MudText>
+                <MudGrid Spacing="3">
+                    @foreach (var opt in _limitacaoOptions)
+                    {
+                        var o = opt;
+                        bool isSelected = _limitacoesSelecionadas.Contains(o.Value);
+                        <MudItem xs="6">
+                            <div class="step-card @(isSelected ? "option-card-selected" : "")" style="padding:18px;cursor:pointer;" @onclick="() => ToggleLimitacao(o)">
+                                <MudIcon Icon="@o.Icon" Style="color:var(--fitup-orange);font-size:26px;margin-bottom:8px;" />
+                                <MudText Typo="Typo.subtitle2" Color="Color.Inherit" Style="font-weight:500;">@o.Value</MudText>
+                                <MudText Typo="Typo.caption" Color="Color.Inherit" Style="margin-top:3px;">@o.Desc</MudText>
+                            </div>
+                        </MudItem>
+                    }
+                </MudGrid>
+                @if (_limitacoesSelecionadas.Contains("Outra"))
+                {
+                    <MudTextField @bind-Value="_outraLimitacaoDescricao" Label="Descreva brevemente sua limitação" Variant="Variant.Outlined" Class="mt-4" Style="width:100%;" />
+                }
                 <MudStack Row="true" Class="mt-6" Spacing="2" AlignItems="AlignItems.Center">
                     <MudButton Class="btn-voltar-fitup" Size="Size.Large" OnClick="PrevStep">
                         <MudText Style="font-weight:bold">
@@ -594,19 +657,50 @@
 
         @if (_phase == Phase.Loading)
         {
-            <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:420px;gap:24px;">
-                <div class="spinner-ring"></div>
-                <MudText Typo="Typo.subtitle1" Color="Color.Inherit" Style="font-weight:500;">@_currentLoadingLabel</MudText>
-                <div style="display:flex;flex-direction:column;gap:10px;min-width:240px;">
-                    @for (int i = 0; i < _loadingSteps.Length; i++)
-                    {
-                        int idx = i;
-                        <div class="loading-step-item @(_loadingStepDone[idx] ? "loading-step-done" : "")">
-                            <div class="ls-dot @(_loadingStepDone[idx] ? "ls-dot-done" : "")"></div>
-                            <span>@_loadingSteps[idx]</span>
-                        </div>
-                    }
+            <MudText Typo="Typo.caption" Style="color:var(--fitup-orange);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:10px;">Gerando protocolo de treino</MudText>
+            <div class="skeleton-card">
+                <div class="skeleton-shimmer sk-header"></div>
+                <div class="skeleton-shimmer sk-header-sm" style="margin-bottom:14px;"></div>
+                <MudGrid Spacing="2" Class="mb-4">
+                    <MudItem xs="4"><div class="skeleton-shimmer sk-stat"></div></MudItem>
+                    <MudItem xs="4"><div class="skeleton-shimmer sk-stat"></div></MudItem>
+                    <MudItem xs="4"><div class="skeleton-shimmer sk-stat"></div></MudItem>
+                </MudGrid>
+                <div style="margin-bottom:6px;">
+                    <div class="skeleton-shimmer sk-daytab"></div>
+                    <div class="skeleton-shimmer sk-daytab"></div>
+                    <div class="skeleton-shimmer sk-daytab"></div>
                 </div>
+                <div class="skeleton-shimmer sk-focus"></div>
+                <div class="skeleton-shimmer sk-exercise"></div>
+                <div class="skeleton-shimmer sk-exercise"></div>
+                <div class="skeleton-shimmer sk-exercise"></div>
+                <div class="skeleton-shimmer sk-exercise"></div>
+            </div>
+            <MudStack Spacing="1" Class="mt-4">
+                @for (int i = 0; i < _loadingSteps.Length; i++)
+                {
+                    int idx = i;
+                    string colorClass = "loading-pending";
+                    string icon = Icons.Material.Outlined.Circle;
+                    if (_loadingStepDone[idx])
+                    {
+                        colorClass = "loading-done";
+                        icon = Icons.Material.Outlined.CheckCircle;
+                    }
+                    else if (idx == 0 || _loadingStepDone[idx - 1])
+                    {
+                        colorClass = "loading-active";
+                        icon = Icons.Material.Outlined.RadioButtonChecked;
+                    }
+                    <div class="loading-step-row @colorClass">
+                        <MudIcon Icon="@icon" Size="Size.Small" Style="font-size:16px;flex-shrink:0;" />
+                        <span>@_loadingSteps[idx]</span>
+                    </div>
+                }
+            </MudStack>
+            <div class="loading-progress-bar">
+                <div class="loading-progress-fill" style="width:@((int)Math.Round((double)(_loadingIndex + 1) / _loadingSteps.Length * 100))%"></div>
             </div>
         }
 
@@ -618,7 +712,7 @@
             int totalSeries = splits.SelectMany(s => s.Exercises).Sum(e => e.Series);
 
             <div class="result-header-card">
-                <MudText Typo="Typo.caption" Style="color:var(--fitup-orange);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:4px;">✓ Treino gerado com sucesso</MudText>
+                <MudText Typo="Typo.caption" Style="color:var(--fitup-orange);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:4px;">Treino gerado com sucesso</MudText>
                 <MudText Typo="Typo.h5" Color="Color.Inherit" Style="font-weight:500;margin-bottom:2px;">@workout.Nome</MudText>
                 <MudText Typo="Typo.body2" Color="Color.Inherit">@workout.Desc · @_nivel · @_local</MudText>
             </div>
@@ -627,7 +721,7 @@
             {
                 <div class="limitation-warning mb-4" style="border-color:var(--fitup-orange);background-color:var(--fitup-orange-alpha);">
                     <MudText Typo="Typo.body2" Color="Color.Inherit">
-                        <span style="color:var(--fitup-orange);font-size:18px;">📅</span>
+                        <span style="color:var(--fitup-orange);font-size:18px;">&#128197;</span>
                         <strong Style="font-weight:500;color:var(--fitup-orange);">
                             Lembrete:
                         </strong>
@@ -665,7 +759,7 @@
                 {
                     var filteredCatalog = GetFilteredCatalog(currentSplit.Focus);
                     <div class="edit-exercise-overlay">
-                        <MudText Typo="Typo.subtitle2" Style="color:var(--fitup-orange);font-weight:500;margin-bottom:14px;">✎ Alterar Exercício @num</MudText>
+                        <MudText Typo="Typo.subtitle2" Style="color:var(--fitup-orange);font-weight:500;margin-bottom:14px;">Alterar Exercício @num</MudText>
                         <MudStack Spacing="3">
                             <MudSelect Label="Selecione o Exercício" Variant="Variant.Outlined"
                                        @bind-Value="_selectedEditExerciseKey" AnchorOrigin="Origin.BottomCenter" Class="rounded-xl"
@@ -711,10 +805,10 @@
                                 <MudStack Row="true" Spacing="1" Style="flex-wrap:wrap;">
                                     <span class="tag-highlight">@ex.Series séries</span>
                                     <span class="tag-highlight">@ex.Reps reps</span>
-                                    <span class="tag-neutral">⏱ @ex.Rest descanso</span>
+                                    <span class="tag-neutral">&#9201; @ex.Rest descanso</span>
                                 </MudStack>
                             </div>
-                            <button class="btn-edit-fitup" @onclick="() => StartExerciseEdit(exIndex)">✎ Alterar</button>
+                            <button class="btn-edit-fitup" @onclick="() => StartExerciseEdit(exIndex)">Alterar</button>
                         </MudStack>
                     </div>
                 }
@@ -738,13 +832,17 @@
                 </MudButton>
             </MudStack>
 
-            @if (!string.IsNullOrWhiteSpace(_limitacoes))
+            @if (_limitacoesSelecionadas.Count > 0 && !_limitacoesSelecionadas.Contains("Nenhuma"))
             {
                 <div class="limitation-warning mt-4">
                     <MudText Typo="Typo.caption" Color="Color.Inherit">
-                        <span style="color:var(--fitup-orange);">⚠</span>
-                        <strong Style="font-weight:500;"> Limitação considerada:</strong>
-                        <span> @_limitacoes</span>
+                        <span style="color:var(--fitup-orange);">&#9888;</span>
+                        <strong Style="font-weight:500;"> Limitações consideradas:</strong>
+                        <span> @string.Join(", ", _limitacoesSelecionadas.Where(l => l != "Outra"))</span>
+                        @if (_limitacoesSelecionadas.Contains("Outra") && !string.IsNullOrWhiteSpace(_outraLimitacaoDescricao))
+                        {
+                            <span> (@_outraLimitacaoDescricao)</span>
+                        }
                     </MudText>
                 </div>
             }
@@ -761,7 +859,8 @@
     private int _dias;
     private string? _duracao;
     private string? _local;
-    private string _limitacoes = string.Empty;
+    private HashSet<string> _limitacoesSelecionadas = new();
+    private string _outraLimitacaoDescricao = string.Empty;
     private int _activeDay;
 
     private string _currentLoadingLabel = string.Empty;
@@ -783,7 +882,7 @@
     private readonly List<OptionItem> _objetivoOptions = new()
     {
         new(Icons.Material.Outlined.FitnessCenter, "Hipertrofia", "Ganho de Massa Muscular"),
-        new(Icons.Material.Outlined.LocalFireDepartment, "Emagrecimento", " Foco na Queima de Gordura"),
+        new(Icons.Material.Outlined.LocalFireDepartment, "Emagrecimento", "Foco na Queima de Gordura"),
         new(Icons.Material.Outlined.Bolt, "Força", "Foco em Força Máxima"),
         new(Icons.Material.Outlined.DirectionsRun, "Resistência", "Condicionamento Físico"),
     };
@@ -798,6 +897,30 @@
         new(Icons.Material.Outlined.Apartment, "Academia", "Equipamentos completos"),
         new(Icons.Material.Outlined.Home, "Casa", "Sem equipamentos ou básicos"),
         new(Icons.Material.Outlined.Sync, "Ambos", "Flexível entre os dois ambientes"),
+    };
+
+    private readonly List<OptionItem> _limitacaoOptions = new()
+    {
+        new(Icons.Material.Outlined.DirectionsWalk, "Joelho", "Desconforto ou lesão nos joelhos"),
+        new(Icons.Material.Outlined.Accessibility, "Coluna", "Lombar, hérnia ou dor crônica"),
+        new(Icons.Material.Outlined.SportsHandball, "Ombro", "Tendinite, bursite ou instabilidade"),
+        new(Icons.Material.Outlined.FitnessCenter, "Cotovelo", "Epicondilite ou dor articular"),
+        new(Icons.Material.Outlined.PanTool, "Punho", "Síndrome do túnel do carpo"),
+        new(Icons.Material.Outlined.AirlineSeatFlat, "Quadril", "Desconforto ou restrição articular"),
+        new(Icons.Material.Outlined.DirectionsRun, "Tornozelo", "Entorses ou instabilidade"),
+        new(Icons.Material.Outlined.CheckCircle, "Nenhuma", "Sem limitações no momento"),
+        new(Icons.Material.Outlined.Edit, "Outra", "Outra condição não listada"),
+    };
+
+    private static readonly Dictionary<string, string[]> _limitacaoBloqueios = new()
+    {
+        ["Joelho"] = new[] { "agachamento", "agachamento-sumo", "agachamento-bulgaro", "agachamento-goblet", "agachamento-hack", "agachamento-smith", "leg-press", "afundo", "agachamento-salto", "burpee" },
+        ["Coluna"] = new[] { "terra", "stiff", "remada-curvada", "agachamento", "agachamento-sumo", "agachamento-smith", "remada-cavalinho", "back-extension" },
+        ["Ombro"] = new[] { "desenvolvimento", "elevacao-lateral", "elevacao-frontal", "arnold-press", "remada-alta", "supino-reto", "supino-inclinado", "supino-declinado", "flexao" },
+        ["Cotovelo"] = new[] { "rosca-direta", "rosca-simultanea", "rosca-alternada", "rosca-martelo", "rosca-scott", "rosca-concentrada", "rosca-inclinada", "rosca-spider", "rosca-direta-polia", "triceps-frances", "triceps-testa", "triceps-corda", "triceps-pulley", "triceps-coice", "flexao-fechada", "mergulho" },
+        ["Punho"] = new[] { "supino-reto", "supino-inclinado", "supino-declinado", "desenvolvimento", "flexao", "flexao-fechada", "barra-fixa", "mergulho", "burpee", "mountain-climber" },
+        ["Quadril"] = new[] { "agachamento-sumo", "agachamento-bulgaro", "stiff", "elevacao-pelvica", "afundo", "leg-press", "cadeira-extensora", "cadeira-flexora", "agachamento-salto" },
+        ["Tornozelo"] = new[] { "agachamento-salto", "burpee", "pulo-corda", "corrida-intervalada", "jumping-jacks", "mountain-climber", "afundo", "agachamento-bulgaro" },
     };
 
     private readonly Dictionary<string, ExerciseItem> _exerciseCatalog = new()
@@ -865,7 +988,7 @@
         ["stiff"] = new("Stiff com Barra", 3, "10–12", "90s", "Posterior & Glúteo"),
         ["cadeira-flexora"] = new("Cadeira Flexora", 3, "12–15", "60s", "Posterior & Isquiotibiais"),
         ["mesa-flexora"] = new("Mesa Flexora", 3, "10–12", "60s", "Posterior & Isquiotibiais"),
-        ["back-extension"] = new("Extenção de Coluna ", 3, "8–10", "60s", "Posterior & Lombar"),
+        ["back-extension"] = new("Extensão de Coluna", 3, "8–10", "60s", "Posterior & Lombar"),
         ["terra"] = new("Levantamento Terra", 4, "8–10", "120s", "Posterior"),
 
         @*Quadriceps*@
@@ -922,6 +1045,81 @@
     private void NextStep() { if (_step < _stepLabels.Length - 1) _step++; }
     private void PrevStep() { if (_step > 0) _step--; }
 
+    private void ToggleLimitacao(OptionItem opt)
+    {
+        if (opt.Value == "Nenhuma")
+        {
+            _limitacoesSelecionadas = new() { "Nenhuma" };
+            _outraLimitacaoDescricao = string.Empty;
+            return;
+        }
+
+        _limitacoesSelecionadas.Remove("Nenhuma");
+
+        if (_limitacoesSelecionadas.Contains(opt.Value))
+        {
+            _limitacoesSelecionadas.Remove(opt.Value);
+            if (opt.Value == "Outra") _outraLimitacaoDescricao = string.Empty;
+        }
+        else
+        {
+            _limitacoesSelecionadas.Add(opt.Value);
+        }
+    }
+
+    private WorkoutPlan ApplyLimitacoes(WorkoutPlan plan)
+    {
+        if (_limitacoesSelecionadas.Count == 0 || _limitacoesSelecionadas.Contains("Nenhuma"))
+            return plan;
+
+        var blockedKeys = new HashSet<string>();
+        foreach (var lim in _limitacoesSelecionadas)
+        {
+            if (_limitacaoBloqueios.TryGetValue(lim, out var keys))
+            {
+                foreach (var k in keys) blockedKeys.Add(k);
+            }
+        }
+
+        if (blockedKeys.Count == 0) return plan;
+
+        var fallbackExercises = new List<ExerciseItem>
+        {
+            new("Abdominal Reto", 3, "15–20", "45s", "Core"),
+            new("Prancha Isométrica", 3, "45–60s", "45s", "Core"),
+            new("Panturrilha em Pé", 4, "15–20", "45s", "Panturrilhas"),
+        };
+
+        foreach (var split in plan.Splits)
+        {
+            var originalCount = split.Exercises.Count;
+            split.Exercises = split.Exercises
+                .Where(ex => !blockedKeys.Any(bk => ex.Name.Contains(bk, StringComparison.OrdinalIgnoreCase) || MatchesBlockedKey(ex, blockedKeys)))
+                .ToList();
+
+            if (split.Exercises.Count < 3)
+            {
+                foreach (var fb in fallbackExercises.Take(3 - split.Exercises.Count))
+                {
+                    if (!split.Exercises.Any(e => e.Name == fb.Name))
+                        split.Exercises.Add(fb);
+                }
+            }
+        }
+
+        return plan;
+    }
+
+    private bool MatchesBlockedKey(ExerciseItem ex, HashSet<string> blockedKeys)
+    {
+        foreach (var kvp in _exerciseCatalog)
+        {
+            if (kvp.Value.Name == ex.Name && blockedKeys.Contains(kvp.Key))
+                return true;
+        }
+        return false;
+    }
+
     private void StartLoading()
     {
         _phase = Phase.Loading; _loadingIndex = 0;
@@ -941,49 +1139,56 @@
 
     private WorkoutPlan GetWorkout()
     {
+        WorkoutPlan plan;
+
         if (_objetivo == "Hipertrofia")
         {
             var dur = _duracao ?? "";
             bool isShort = dur == "Até 30 min" || dur == "45 min";
 
             if (_nivel == "Iniciante")
-                return WorkoutData.HipertrofiaFullbody;
-
-            if (_nivel == "Intermediário")
+                plan = WorkoutData.HipertrofiaFullbody;
+            else if (_nivel == "Intermediário")
             {
                 if (_dias == 2 || _dias == 4)
-                    return WorkoutData.HipertrofiaAB;
-                if (_dias == 3 || _dias == 5 || _dias == 6)
-                    return WorkoutData.HipertrofiaABC;
-                return WorkoutData.HipertrofiaABC;
+                    plan = WorkoutData.HipertrofiaAB;
+                else
+                    plan = WorkoutData.HipertrofiaABC;
             }
-
-            if (_nivel == "Avançado")
+            else if (_nivel == "Avançado")
             {
                 if (_dias == 2)
-                    return WorkoutData.HipertrofiaAB;
-                if (_dias == 3)
-                    return WorkoutData.HipertrofiaABC;
-                if (_dias == 4)
-                    return isShort ? WorkoutData.HipertrofiaAB : WorkoutData.HipertrofiaABCD;
-                if (_dias == 5)
-                    return WorkoutData.HipertrofiaABCD;
-                if (_dias == 6)
-                    return isShort ? WorkoutData.HipertrofiaAB : WorkoutData.HipertrofiaABC;
-                return WorkoutData.HipertrofiaABC;
+                    plan = WorkoutData.HipertrofiaAB;
+                else if (_dias == 3)
+                    plan = WorkoutData.HipertrofiaABC;
+                else if (_dias == 4)
+                    plan = isShort ? WorkoutData.HipertrofiaAB : WorkoutData.HipertrofiaABCD;
+                else if (_dias == 5)
+                    plan = WorkoutData.HipertrofiaABCD;
+                else if (_dias == 6)
+                    plan = isShort ? WorkoutData.HipertrofiaAB : WorkoutData.HipertrofiaABC;
+                else
+                    plan = WorkoutData.HipertrofiaABC;
             }
-
-            return WorkoutData.HipertrofiaFullbody;
+            else
+            {
+                plan = WorkoutData.HipertrofiaFullbody;
+            }
+        }
+        else
+        {
+            plan = _objetivo switch
+            {
+                "Emagrecimento" => WorkoutData.Emagrecimento,
+                "Força" => WorkoutData.Forca,
+                "Resistência" => WorkoutData.Resistencia,
+                _ => WorkoutData.HipertrofiaFullbody,
+            };
         }
 
-        return _objetivo switch
-        {
-            "Emagrecimento" => WorkoutData.Emagrecimento,
-            "Força" => WorkoutData.Forca,
-            "Resistência" => WorkoutData.Resistencia,
-            _ => WorkoutData.HipertrofiaFullbody,
-        };
+        return ApplyLimitacoes(plan);
     }
+
     private string GetDuration() => _duracao switch { "Até 30 min" => "30 min", "45 min" => "45 min", "60 min" => "60 min", "75+ min" => "75+ min", _ => "60 min", };
     private async Task SaveWorkout()
     {
@@ -1104,7 +1309,7 @@
         CancelExerciseEdit();
     }
     private void CancelExerciseEdit() { _editingExerciseDay = -1; _editingExerciseIndex = -1; _selectedEditExerciseKey = string.Empty; }
-    private void ResetAll() { _phase = Phase.Quiz; _step = 0; _objetivo = null; _nivel = null; _dias = 0; _duracao = null; _local = null; _limitacoes = string.Empty; _activeDay = 0; CancelExerciseEdit(); }
+    private void ResetAll() { _phase = Phase.Quiz; _step = 0; _objetivo = null; _nivel = null; _dias = 0; _duracao = null; _local = null; _limitacoesSelecionadas = new(); _outraLimitacaoDescricao = string.Empty; _activeDay = 0; CancelExerciseEdit(); }
     public void Dispose() { _loadingTimer?.Stop(); _loadingTimer?.Dispose(); }
 
     private enum Phase { Quiz, Loading, Result }
