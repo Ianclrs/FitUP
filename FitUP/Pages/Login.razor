@@ -229,11 +229,7 @@
         var dialog = await DialogService.ShowAsync<EsqueciSenhaDialog>("Esqueci minha senha", parameters, options);
         var result = await dialog.Result;
 
-        if (result is not null && !result.Canceled && result.Data is EsqueciSenhaResponseDto response)
-        {
-            Snackbar.Add($"Link: {response.LinkRedefinicao}", Severity.Info,
-                config => config.VisibleStateDuration = 15000);
-        }
+        // O EsqueciSenhaDialog já exibe o link via snackbar
     }
 
     public class LoginModel

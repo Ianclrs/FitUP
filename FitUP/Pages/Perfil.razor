@@ -372,7 +372,8 @@ else
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Erro ao carregar bioimpedância: {ex.Message}");
+            Console.WriteLine($"Erro ao carregar bioimpedância: {ex}");
+            Snackbar.Add("Erro ao carregar registros de bioimpedância. Tente recarregar a página.", Severity.Error);
         }
         finally
         {
@@ -397,7 +398,8 @@ else
         }
         catch (Exception ex)
         {
-            Snackbar.Add($"Erro: {ex.Message}", Severity.Error);
+            Console.WriteLine($"Erro ao remover registro de bioimpedância: {ex}");
+            Snackbar.Add("Erro ao remover registro. Tente novamente.", Severity.Error);
         }
     }
 
@@ -431,11 +433,12 @@ else
         }
         catch (Exception ex)
         {
-            Snackbar.Add($"Erro: {ex.Message}", Severity.Error);
+            Console.WriteLine($"Erro ao atualizar nome: {ex}");
+            Snackbar.Add("Erro ao atualizar nome. Tente novamente.", Severity.Error);
         }
         finally
         {
-            _isSavingNome = false;
+            _isSavingNome = false; 
         }
     }
 
@@ -466,7 +469,8 @@ else
         }
         catch (Exception ex)
         {
-            Snackbar.Add($"Erro: {ex.Message}", Severity.Error);
+            Console.WriteLine($"Erro ao atualizar e-mail: {ex}");
+            Snackbar.Add("Erro ao atualizar e-mail. Tente novamente.", Severity.Error);
         }
         finally
         {
@@ -514,7 +518,8 @@ else
         }
         catch (Exception ex)
         {
-            Snackbar.Add($"Erro: {ex.Message}", Severity.Error);
+            Console.WriteLine($"Erro ao alterar senha: {ex}");
+            Snackbar.Add("Erro ao alterar senha. Tente novamente.", Severity.Error);
         }
         finally
         {

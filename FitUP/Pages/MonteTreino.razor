@@ -870,6 +870,7 @@
 
     private int _editingExerciseDay = -1;
     private int _editingExerciseIndex = -1;
+    private bool _isExportingPdf;
     private string _selectedEditExerciseKey = string.Empty;
     private int _editSeries;
     private string _editReps = string.Empty;
@@ -1244,6 +1245,8 @@
     }
     private async Task ExportPdf()
     {
+        if (_isExportingPdf) return;
+        _isExportingPdf = true;
         try
         {
             var workout = GetWorkout();
@@ -1283,7 +1286,12 @@
         }
         catch (Exception ex)
         {
-            Console.WriteLine($"Erro ao exportar PDF: {ex.Message}");
+            Console.WriteLine($"Erro ao exportar PDF: {ex}");
+            Snackbar.Add("Erro ao exportar PDF. Tente novamente.", Severity.Error);
+        }
+        finally
+        {
+            _isExportingPdf = false;
         }
     }
 

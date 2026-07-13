@@ -40,8 +40,10 @@
 O **FitUP** é uma aplicação web full-stack projetada para atender entusiastas de fitness, atletas e profissionais da saúde que buscam centralizar o gerenciamento de treinos, planos alimentares e métricas corporais. A plataforma oferece:
 
 - **Montagem interativa de treinos** com divisões clássicas (Fullbody, PPL, Upper/Lower)
-- **Calculadora de macronutrientes** com distribuição automatizada baseada em objetivos (hipertrofia, definição, manutenção)
+- **Gerador de dietas inteligente** com cálculo de TMB/TDEE, distribuição automática de macronutrientes, banco de 30+ alimentos e exportação em PDF
+- **Calculadora de macronutrientes** com distribuição automatizada baseada em objetivos (Bulking, Cutting, Manutenção)
 - **Análise de bioimpedância** com cálculo de IMC, TMB e composição corporal
+- **Histórico de dietas salvas** com visualização detalhada por refeição e tabela nutricional
 - **Perfil do usuário** com alteração de nome, e-mail e senha
 - **Autenticação robusta** via JWT + Refresh Token com senhas hasheadas em BCrypt
 
@@ -163,10 +165,26 @@ O projeto foi concebido como trabalho acadêmico da disciplina de **Engenharia d
 
 ### 🍎 Nutrição
 
+- **Gerador de Dietas** — sistema inteligente de montagem de planos alimentares com:
+  - Wizard em 3 etapas (Perfil → Metas → Revisão)
+  - Cálculo automático de TMB (Harris-Benedict) e TDEE
+  - Ajuste calórico por objetivo: Bulking (+500 kcal), Cutting (−500 kcal), Manutenção
+  - Distribuição inteligente de macronutrientes com visualização por barras
+  - Banco de 30+ alimentos categorizados (proteínas, carboidratos, gorduras, frutas, vegetais)
+  - Suporte a restrições alimentares: sem lactose e vegetariano
+  - Horários sugeridos automaticamente conforme o número de refeições (3 a 6)
+  - Exportação em PDF com layout profissional
+  - Salvamento do plano completo (refeições + alimentos + macros) via API
+- **Minhas Dietas** — histórico e gerenciamento de planos alimentares salvos:
+  - Listagem com cards expansíveis (objetivo, refeições, kcal totais)
+  - Visualização detalhada de cada refeição com tabela nutricional
+  - Exportação individual em PDF e exclusão de planos
+  - Estado vazio com atalho direto para o Gerador de Dietas
 - **Ganho Máximo** — calculadora de macronutrientes com:
   - Entrada de peso, altura, idade, sexo e nível de atividade
   - Cálculo automático de TMB (Taxa Metabólica Basal) por Harris-Benedict
   - Distribuição de proteínas, carboidratos e gorduras por objetivo
+  - Atalho para o Gerador de Dietas
 - **Calculadora de Bioimpedância** — registro e análise de:
   - Peso, percentual de gordura, massa magra, massa gorda
   - IMC e classificação
@@ -206,6 +224,8 @@ FitUP/
 │   │   ├── Perfil.razor                    #     Alterar nome, e-mail e senha
 │   │   ├── MonteTreino.razor               #     Montador interativo de treinos
 │   │   ├── DicasTreino.razor               #     Guia educativo de treinos
+│   │   ├── GeradorDieta.razor              #     Gerador inteligente de planos alimentares
+│   │   ├── MinhasDietas.razor              #     Histórico de dietas salvas
 │   │   ├── GanhoMaximo.razor               #     Calculadora de macronutrientes
 │   │   ├── CalculadoraBio.razor            #     Análise de bioimpedância
 │   │   ├── TreinosSalvos.razor             #     Planos de treino salvos
@@ -220,7 +240,8 @@ FitUP/
 │   │   └── NavMenu.razor                   #     Menu de navegação lateral
 │   ├── Services/                           #   🔌 Serviços (comunicação com API)
 │   │   ├── AuthService.cs                  #     Autenticação, perfil, sessão
-│   │   └── PlanoTreinoService.cs           #     CRUD de planos de treino
+│   │   ├── PlanoTreinoService.cs           #     CRUD de planos de treino
+│   │   └── PlanoAlimentarService.cs        #     CRUD de planos alimentares
 │   ├── wwwroot/                            #   🌐 Assets estáticos
 │   │   ├── index.html                      #     Página host do Blazor
 │   │   ├── css/                            #     Folhas de estilo
@@ -404,7 +425,7 @@ O frontend estará disponível em:
 2. Clique em **Cadastrar** e crie uma conta
 3. Faça **Login** com as credenciais criadas
 4. Navegue até **Meu Perfil** para testar alteração de nome, e-mail e senha
-5. Explore **Monte seu Treino**, **Ganho Máximo** e **Calculadora de Bioimpedância**
+5. Explore **Monte seu Treino**, **Gerador de Dietas**, **Ganho Máximo** e **Calculadora de Bioimpedância**
 
 ---
 

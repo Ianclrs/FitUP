@@ -225,7 +225,8 @@
         }
         catch (Exception ex)
         {
-            Snackbar.Add($"Erro: {ex.Message}", Severity.Error);
+            Console.WriteLine($"Erro ao redefinir senha: {ex}");
+            Snackbar.Add("Erro ao redefinir senha. Tente novamente.", Severity.Error);
         }
         finally
         {

@@ -5,6 +5,7 @@ public class PlanoAlimentarRequest
     public string Nome { get; set; } = string.Empty;
     public int Objetivo { get; set; }
     public string Descricao { get; set; } = string.Empty;
+    public List<RefeicaoCompletaRequest> Refeicoes { get; set; } = new();
 }
 
 public class RefeicaoRequest
@@ -12,6 +13,19 @@ public class RefeicaoRequest
     public string Nome { get; set; } = string.Empty;
     public TimeSpan? HorarioSugerido { get; set; }
     public int Ordem { get; set; }
+}
+
+public class RefeicaoCompletaRequest
+{
+    public string Nome { get; set; } = string.Empty;
+    public TimeSpan? HorarioSugerido { get; set; }
+    public int Ordem { get; set; }
+    public double TotalProteina { get; set; }
+    public double TotalCarboidrato { get; set; }
+    public double TotalGordura { get; set; }
+    public double TotalFibra { get; set; }
+    public double TotalCalorias { get; set; }
+    public List<AlimentoRequest> Alimentos { get; set; } = new();
 }
 
 public class AlimentoRequest

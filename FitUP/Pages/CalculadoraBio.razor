@@ -471,7 +471,8 @@
         }
         catch (Exception ex)
         {
-            Snackbar.Add($"Erro: {ex.Message}", Severity.Error);
+            Console.WriteLine($"Erro ao salvar bioimpedância: {ex}");
+            Snackbar.Add("Erro ao salvar o resultado. Tente novamente.", Severity.Error);
         }
         finally
         {

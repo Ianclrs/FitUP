@@ -148,21 +148,89 @@ public class PlanoAlimentarService : IPlanoAlimentarService
         await using var connection = new SqlConnection(_connectionString);
         await connection.OpenAsync();
 
-        var planoId = Guid.NewGuid();
+        using var transaction = connection.BeginTransaction();
 
-        const string insertSql = @"
-            INSERT INTO PlanoAlimentar (Id, UsuarioId, Nome, Objetivo, Descricao, CriadoEm)
-            VALUES (@Id, @UsuarioId, @Nome, @Objetivo, @Descricao, GETUTCDATE())";
+        try
+        {
+            var planoId = Guid.NewGuid();
 
-        await using var command = new SqlCommand(insertSql, connection);
-        command.Parameters.AddWithValue("@Id", planoId);
-        command.Parameters.AddWithValue("@UsuarioId", usuarioId);
-        command.Parameters.AddWithValue("@Nome", request.Nome);
-        command.Parameters.AddWithValue("@Objetivo", request.Objetivo);
-        command.Parameters.AddWithValue("@Descricao", request.Descricao);
-        await command.ExecuteNonQueryAsync();
+            const string insertSql = @"
+                INSERT INTO PlanoAlimentar (Id, UsuarioId, Nome, Objetivo, Descricao, CriadoEm)
+                VALUES (@Id, @UsuarioId, @Nome, @Objetivo, @Descricao, GETUTCDATE())";
 
-        return await ObterPorIdAsync(planoId);
+            await using var command = new SqlCommand(insertSql, connection, transaction);
+            command.Parameters.AddWithValue("@Id", planoId);
+            command.Parameters.AddWithValue("@UsuarioId", usuarioId);
+            command.Parameters.AddWithValue("@Nome", request.Nome);
+            command.Parameters.AddWithValue("@Objetivo", request.Objetivo);
+            command.Parameters.AddWithValue("@Descricao", request.Descricao);
+            await command.ExecuteNonQueryAsync();
+
+            // Inserir refeições e alimentos aninhados, se fornecidos
+            if (request.Refeicoes is { Count: > 0 })
+            {
+                const string refeicaoSql = @"
+                    INSERT INTO Refeicao (Id, PlanoAlimentarId, Nome, HorarioSugerido, Ordem,
+                        TotalProteina, TotalCarboidrato, TotalGordura, TotalFibra, TotalCalorias)
+                    VALUES (@Id, @PlanoAlimentarId, @Nome, @HorarioSugerido, @Ordem,
+                        @TotalProteina, @TotalCarboidrato, @TotalGordura, @TotalFibra, @TotalCalorias)";
+
+                const string alimentoSql = @"
+                    INSERT INTO Alimento (Id, RefeicaoId, Nome, Quantidade, UnidadeMedida,
+                        Proteina, Carboidrato, Gordura, Fibra, Calorias, Observacoes)
+                    VALUES (@Id, @RefeicaoId, @Nome, @Quantidade, @UnidadeMedida,
+                        @Proteina, @Carboidrato, @Gordura, @Fibra, @Calorias, @Observacoes)";
+
+                foreach (var refeicaoRequest in request.Refeicoes)
+                {
+                    var refeicaoId = Guid.NewGuid();
+
+                    await using var refCmd = new SqlCommand(refeicaoSql, connection, transaction);
+                    refCmd.Parameters.AddWithValue("@Id", refeicaoId);
+                    refCmd.Parameters.AddWithValue("@PlanoAlimentarId", planoId);
+                    refCmd.Parameters.AddWithValue("@Nome", refeicaoRequest.Nome);
+                    refCmd.Parameters.AddWithValue("@HorarioSugerido",
+                        refeicaoRequest.HorarioSugerido.HasValue ? refeicaoRequest.HorarioSugerido.Value : DBNull.Value);
+                    refCmd.Parameters.AddWithValue("@Ordem", refeicaoRequest.Ordem);
+                    refCmd.Parameters.AddWithValue("@TotalProteina", refeicaoRequest.TotalProteina);
+                    refCmd.Parameters.AddWithValue("@TotalCarboidrato", refeicaoRequest.TotalCarboidrato);
+                    refCmd.Parameters.AddWithValue("@TotalGordura", refeicaoRequest.TotalGordura);
+                    refCmd.Parameters.AddWithValue("@TotalFibra", refeicaoRequest.TotalFibra);
+                    refCmd.Parameters.AddWithValue("@TotalCalorias", refeicaoRequest.TotalCalorias);
+                    await refCmd.ExecuteNonQueryAsync();
+
+                    if (refeicaoRequest.Alimentos is { Count: > 0 })
+                    {
+                        foreach (var alimentoRequest in refeicaoRequest.Alimentos)
+                        {
+                            await using var aliCmd = new SqlCommand(alimentoSql, connection, transaction);
+                            aliCmd.Parameters.AddWithValue("@Id", Guid.NewGuid());
+                            aliCmd.Parameters.AddWithValue("@RefeicaoId", refeicaoId);
+                            aliCmd.Parameters.AddWithValue("@Nome", alimentoRequest.Nome);
+                            aliCmd.Parameters.AddWithValue("@Quantidade", alimentoRequest.Quantidade);
+                            aliCmd.Parameters.AddWithValue("@UnidadeMedida", alimentoRequest.UnidadeMedida);
+                            aliCmd.Parameters.AddWithValue("@Proteina", alimentoRequest.Proteina);
+                            aliCmd.Parameters.AddWithValue("@Carboidrato", alimentoRequest.Carboidrato);
+                            aliCmd.Parameters.AddWithValue("@Gordura", alimentoRequest.Gordura);
+                            aliCmd.Parameters.AddWithValue("@Fibra", alimentoRequest.Fibra);
+                            aliCmd.Parameters.AddWithValue("@Calorias", alimentoRequest.Calorias);
+                            aliCmd.Parameters.AddWithValue("@Observacoes",
+                                alimentoRequest.Observacoes is not null ? alimentoRequest.Observacoes : DBNull.Value);
+                            await aliCmd.ExecuteNonQueryAsync();
+                        }
+                    }
+                }
+            }
+
+            transaction.Commit();
+
+            return await ObterPorIdAsync(planoId);
+        }
+        catch
+        {
+            transaction.Rollback();
+            throw;
+        }
     }
 
     public async Task<bool> AtualizarAsync(Guid id, PlanoAlimentarRequest request)

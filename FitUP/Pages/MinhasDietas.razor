@@ -1,0 +1,393 @@
+@page "/MinhasDietas"
+@using FitUP.Services
+@using System.Text.Json
+@using System.Text.Encodings.Web
+@inject PlanoAlimentarService PlanoAlimentarService
+@inject AuthService AuthService
+@inject NavigationManager NavigationManager
+@inject IJSRuntime JS
+@inject ISnackbar Snackbar
+
+<PageTitle>Minhas Dietas</PageTitle>
+
+<style>
+    :root {
+        --fitup-orange: #FF7A2F;
+        --fitup-orange-alpha: rgba(255, 122, 47, 0.12);
+    }
+
+    .dieta-card {
+        background-color: var(--mud-palette-surface) !important;
+        border: 1.5px solid var(--mud-palette-surface) !important;
+        border-radius: 8px !important;
+        transition: border-color 0.2s, box-shadow 0.2s;
+        padding: 20px;
+        margin-bottom: 16px;
+    }
+
+    .dieta-card:hover {
+        border-color: var(--fitup-orange) !important;
+        box-shadow: 0 0 22px rgba(255, 122, 47, 0.30);
+    }
+
+    .day-tag {
+        background-color: var(--fitup-orange-alpha);
+        border: 1px solid var(--fitup-orange);
+        color: var(--fitup-orange);
+        border-radius: 6px;
+        padding: 4px 12px;
+        font-size: 12px;
+        font-weight: 500;
+    }
+
+    .tag-highlight {
+        background-color: var(--fitup-orange-alpha);
+        border: 1px solid var(--fitup-orange);
+        color: var(--fitup-orange);
+        border-radius: 6px;
+        padding: 2px 10px;
+        font-size: 12px;
+        font-weight: 500;
+    }
+
+    .tag-neutral {
+        background-color: var(--fitup-orange-alpha);
+        border: 1px solid var(--fitup-orange);
+        color: var(--mud-palette-text-primary);
+        border-radius: 6px;
+        padding: 2px 10px;
+        font-size: 12px;
+    }
+
+    .empty-state {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 400px;
+        gap: 16px;
+    }
+
+    .dieta-btn {
+        background-color: var(--mud-palette-surface) !important;
+        border: 1.5px solid var(--mud-palette-surface) !important;
+        border-radius: 8px !important;
+        transition: border-color 0.2s, box-shadow 0.2s, background-color 0.2s;
+        cursor: pointer;
+        padding: 16px 20px;
+        margin-bottom: 12px;
+        text-transform: none !important;
+        font-weight: 500 !important;
+        color: var(--mud-palette-text-primary) !important;
+        width: 100%;
+        justify-content: flex-start;
+    }
+
+    .dieta-btn:hover {
+        border-color: var(--fitup-orange) !important;
+        box-shadow: 0 0 22px rgba(255, 122, 47, 0.30);
+    }
+
+    .dieta-btn.expanded {
+        border-color: var(--fitup-orange) !important;
+        background-color: var(--fitup-orange-alpha) !important;
+        box-shadow: 0 0 22px rgba(255, 122, 47, 0.30);
+    }
+
+    .expand-icon {
+        color: var(--fitup-orange);
+        transition: transform 0.3s;
+        font-size: 20px;
+    }
+
+    .expand-icon.rotated {
+        transform: rotate(180deg);
+    }
+
+    .detail-panel {
+        border: 1.5px solid var(--fitup-orange);
+        border-top: none;
+        border-radius: 0 0 8px 8px;
+        padding: 20px;
+        margin-top: -13px;
+        margin-bottom: 12px;
+        background-color: var(--mud-palette-surface) !important;
+        animation: slideDown 0.25s ease;
+    }
+
+    @@keyframes slideDown {
+        from {
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .divider-fitup {
+        border-color: var(--fitup-orange);
+        opacity: 0.3;
+        margin: 16px 0;
+    }
+
+    .alimento-row {
+        padding: 8px 12px;
+        border-radius: 6px;
+        margin-bottom: 4px;
+    }
+
+    .alimento-row:nth-child(even) {
+        background: rgba(255, 122, 47, 0.03);
+    }
+</style>
+
+<MudContainer MaxWidth="MaxWidth.Medium" Class="py-8">
+    <div class="d-flex align-center justify-center flex-column">
+        <MudText Typo="Typo.h4" Align="Align.Center" Style="color:coral; font-weight:700;font-family:Cambria">Minhas</MudText>
+        <MudText Typo="Typo.h4" Align="Align.Center" Style="font-weight:700; font-family:cambria">Dietas</MudText>
+
+        <MudPaper Class="mb-2">
+            <MudText Typo="Typo.body2" Color="Color.Inherit">Clique em uma dieta para ver as refeições.</MudText>
+        </MudPaper>
+    </div>
+
+    @if (_isLoading)
+    {
+        <div style="display:flex;justify-content:center;padding:80px 0;">
+            <MudProgressCircular Color="Color.Warning" Size="Size.Large" Indeterminate="true" />
+        </div>
+    }
+    else if (_dietas.Count == 0)
+    {
+        <div class="empty-state">
+            <MudIcon Icon="@Icons.Material.Outlined.RestaurantMenu" Style="font-size:64px;color:coral;opacity:0.5;" />
+            <MudText Typo="Typo.h6">Nenhuma dieta salva</MudText>
+            <MudText Typo="Typo.body1" Style="text-align:center;max-width:400px;">
+                Vá até "Gerador de Dietas", gere uma dieta personalizada e clique em <strong>Salvar Dieta</strong>.
+            </MudText>
+            <MudButton Href="GeradorDieta" Style="background-color:coral" StartIcon="@Icons.Material.Outlined.Add">
+                <MudText Style="font-size:large">Gerar Dieta</MudText>
+            </MudButton>
+        </div>
+    }
+    else
+    {
+        @foreach (var dieta in _dietas)
+        {
+            int totalRefeicoes = dieta.Refeicoes.Count;
+            int totalAlimentos = dieta.Refeicoes.Sum(r => r.Alimentos.Count);
+            double totalKcal = dieta.Refeicoes.Sum(r => r.TotalCalorias);
+            string objetivoStr = dieta.Objetivo switch { 0 => "Bulking", 1 => "Cutting", 2 => "Manutenção", _ => "—" };
+            bool isExpanded = _expandedDietaId == dieta.Id;
+
+            <div class="dieta-btn @(isExpanded ? "expanded" : "")" @onclick="() => ToggleExpansao(dieta.Id)">
+                <MudStack Row="true" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center" Style="width:100%;">
+                    <MudStack Row="true" AlignItems="AlignItems.Center" Spacing="3" Style="flex:1;flex-wrap:wrap;">
+                        <MudIcon Icon="@Icons.Material.Outlined.RestaurantMenu" Style="color:var(--fitup-orange);" Size="Size.Medium" />
+                        <MudText Typo="Typo.h6" Style="font-weight:600;">@dieta.Nome</MudText>
+                        <MudStack Row="true" Spacing="1" Style="flex-wrap:wrap;">
+                            <span class="day-tag">@objetivoStr</span>
+                            <span class="day-tag">@totalRefeicoes refeições</span>
+                            <span class="day-tag">@totalKcal.ToString("F0") kcal</span>
+                        </MudStack>
+                    </MudStack>
+                    <MudIcon Icon="@Icons.Material.Filled.KeyboardArrowDown"
+                             Class="@($"expand-icon {(isExpanded ? "rotated" : "")}")" />
+                </MudStack>
+            </div>
+
+            @if (isExpanded)
+            {
+                <div class="detail-panel">
+                    <MudText Typo="Typo.body2" Color="Color.Inherit" Class="mb-3">@dieta.Descricao</MudText>
+
+                    @if (dieta.Refeicoes.Count > 0)
+                    {
+                        @foreach (var refeicao in dieta.Refeicoes.OrderBy(r => r.Ordem))
+                        {
+                            <MudText Typo="Typo.subtitle2" Style="font-weight:600; color:var(--fitup-orange); margin-bottom:4px;">
+                                @refeicao.Nome
+                                @if (refeicao.HorarioSugerido.HasValue)
+                                {
+                                    <span style="font-weight:normal; opacity:0.7;">
+                                        (@refeicao.HorarioSugerido.Value.ToString(@"hh\:mm"))
+                                    </span>
+                                }
+                            </MudText>
+
+                            @if (refeicao.Alimentos.Count > 0)
+                            {
+                                <div style="overflow-x:auto;">
+                                    <table style="width:100%; font-size:13px; border-collapse:collapse;">
+                                        <thead>
+                                            <tr style="color:var(--fitup-orange); font-size:11px; text-transform:uppercase;">
+                                                <th style="text-align:left; padding:4px 8px;">Alimento</th>
+                                                <th style="text-align:center; padding:4px 4px;">Qtd</th>
+                                                <th style="text-align:center; padding:4px 4px;">Prot</th>
+                                                <th style="text-align:center; padding:4px 4px;">Carbo</th>
+                                                <th style="text-align:center; padding:4px 4px;">Gord</th>
+                                                <th style="text-align:center; padding:4px 4px;">Kcal</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (var alim in refeicao.Alimentos)
+                                            {
+                                                <tr class="alimento-row">
+                                                    <td style="padding:6px 8px;">@alim.Nome</td>
+                                                    <td style="text-align:center; padding:6px 4px;">@alim.Quantidade.ToString("F0")@alim.UnidadeMedida</td>
+                                                    <td style="text-align:center; padding:6px 4px;">@alim.Proteina.ToString("F0")g</td>
+                                                    <td style="text-align:center; padding:6px 4px;">@alim.Carboidrato.ToString("F0")g</td>
+                                                    <td style="text-align:center; padding:6px 4px;">@alim.Gordura.ToString("F0")g</td>
+                                                    <td style="text-align:center; padding:6px 4px;">@alim.Calorias.ToString("F0")</td>
+                                                </tr>
+                                            }
+                                        </tbody>
+                                        <tfoot>
+                                            <tr style="font-weight:bold; background:rgba(255,122,47,0.06);">
+                                                <td style="padding:6px 8px;">Total</td>
+                                                <td style="text-align:center; padding:6px 4px;"></td>
+                                                <td style="text-align:center; padding:6px 4px;">@refeicao.TotalProteina.ToString("F0")g</td>
+                                                <td style="text-align:center; padding:6px 4px;">@refeicao.TotalCarboidrato.ToString("F0")g</td>
+                                                <td style="text-align:center; padding:6px 4px;">@refeicao.TotalGordura.ToString("F0")g</td>
+                                                <td style="text-align:center; padding:6px 4px;">@refeicao.TotalCalorias.ToString("F0")</td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                                <MudDivider Style="margin:10px 0; opacity:0.15;" />
+                            }
+                            else
+                            {
+                                <MudText Typo="Typo.body2" Color="Color.Inherit" Style="margin-bottom:12px;">
+                                    Nenhum alimento nesta refeição.
+                                </MudText>
+                            }
+                        }
+                    }
+
+                    <MudDivider Class="divider-fitup" />
+
+                    <MudStack Row="true" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center">
+                        <MudText Typo="Typo.caption" Color="Color.Inherit">
+                            Salva em @dieta.CriadoEm.ToString("dd/MM/yyyy")
+                            @if (dieta.AtualizadoEm.HasValue)
+                            {
+                                <span> · Atualizada em @dieta.AtualizadoEm.Value.ToString("dd/MM/yyyy")</span>
+                            }
+                        </MudText>
+                        <MudStack Row="true" Spacing="2">
+                            <MudIconButton Icon="@Icons.Material.Outlined.FileDownload"
+                                           Style="color:var(--fitup-orange)"
+                                           Size="Size.Small"
+                                           title="Exportar PDF"
+                                           OnClick="@(async () => await ExportarPdf(dieta))" />
+                            <MudIconButton Icon="@Icons.Material.Filled.Delete"
+                                           Style="color:#f44336"
+                                           Size="Size.Small"
+                                           title="Remover dieta"
+                                           OnClick="@(async () => await RemoverDieta(dieta))" />
+                        </MudStack>
+                    </MudStack>
+                </div>
+            }
+        }
+    }
+
+</MudContainer>
+
+@code {
+    private List<PlanoAlimentarDto> _dietas = new();
+    private bool _isLoading = true;
+    private Guid? _expandedDietaId;
+
+    protected override async Task OnInitializedAsync()
+    {
+        await CarregarDietas();
+    }
+
+    private async Task CarregarDietas()
+    {
+        _isLoading = true;
+        try
+        {
+            _dietas = await PlanoAlimentarService.ListarAsync();
+        }
+        catch (Exception ex)
+        {
+            Snackbar.Add($"Erro ao carregar dietas: {ex.Message}", Severity.Error);
+        }
+        finally
+        {
+            _isLoading = false;
+        }
+    }
+
+    private void ToggleExpansao(Guid dietaId)
+    {
+        if (_expandedDietaId == dietaId)
+            _expandedDietaId = null;
+        else
+            _expandedDietaId = dietaId;
+    }
+
+    private async Task RemoverDieta(PlanoAlimentarDto dieta)
+    {
+        try
+        {
+            var sucesso = await PlanoAlimentarService.RemoverAsync(dieta.Id);
+            if (sucesso)
+            {
+                _dietas.Remove(dieta);
+                if (_expandedDietaId == dieta.Id)
+                    _expandedDietaId = null;
+                Snackbar.Add($"Dieta '{dieta.Nome}' removida.", Severity.Success);
+            }
+            else
+            {
+                Snackbar.Add("Erro ao remover dieta.", Severity.Error);
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Erro ao remover dieta: {ex}");
+            Snackbar.Add("Erro ao remover dieta. Tente novamente.", Severity.Error);
+        }
+    }
+
+    private async Task ExportarPdf(PlanoAlimentarDto dieta)
+    {
+        try
+        {
+            var pdfData = new
+            {
+                nome = dieta.Nome,
+                descricao = dieta.Descricao,
+                refeicoes = dieta.Refeicoes.OrderBy(r => r.Ordem).Select(r => new
+                {
+                    titulo = r.Nome,
+                    alimentos = r.Alimentos.Select(a => new
+                    {
+                        label = $"{a.Nome}: ",
+                        valor = $"{a.Quantidade:F0}{a.UnidadeMedida} | P:{a.Proteina:F0}g C:{a.Carboidrato:F0}g G:{a.Gordura:F0}g ({a.Calorias:F0} kcal)"
+                    }).ToList()
+                }).ToList()
+            };
+
+            var options = new JsonSerializerOptions
+            {
+                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
+                Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+            };
+
+            var json = JsonSerializer.Serialize(pdfData, options);
+            await JS.InvokeVoidAsync("exportDietaPdf", json);
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Erro ao exportar PDF: {ex}");
+            Snackbar.Add("Erro ao exportar PDF. Tente novamente.", Severity.Error);
+        }
+    }
+}

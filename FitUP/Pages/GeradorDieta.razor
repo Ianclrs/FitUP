@@ -1,0 +1,502 @@
+@page "/GeradorDieta"
+@using FitUP.Services
+@using System.Text.Json
+@using System.Text.Encodings.Web
+@inject IJSRuntime JS
+@inject PlanoAlimentarService PlanoAlimentarService
+@inject AuthService AuthService
+@inject ISnackbar Snackbar
+
+<PageTitle>Gerador de Dietas</PageTitle>
+
+<style>
+    .page-bg { position: relative; overflow: hidden; }
+    .page-bg::before { content: ''; position: fixed; top: -300px; right: -200px; width: 700px; height: 700px; background: radial-gradient(circle, rgba(255,127,80,0.07) 0%, transparent 70%); border-radius: 50%; pointer-events: none; z-index: 0; }
+    .page-bg::after  { content: ''; position: fixed; bottom: -200px; left: -200px; width: 500px; height: 500px; background: radial-gradient(circle, rgba(46,139,86,0.05) 0%, transparent 70%); border-radius: 50%; pointer-events: none; z-index: 0; }
+    @@keyframes fadeInUp    { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+    @@keyframes fadeInScale { from { opacity: 0; transform: scale(0.94); } to { opacity: 1; transform: scale(1); } }
+    @@keyframes slideInLeft { from { opacity: 0; transform: translateX(-30px); } to { opacity: 1; transform: translateX(0); } }
+    @@keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.03); } }
+    .anim-fade-up    { animation: fadeInUp 0.55s ease-out forwards; }
+    .anim-fade-scale { animation: fadeInScale 0.5s ease-out forwards; }
+    .anim-slide-left { animation: slideInLeft 0.5s ease-out forwards; }
+
+    .page-header { text-align: center; padding: 20px 0 8px; position: relative; z-index: 1; }
+    .page-header .title-line { display: flex; align-items: center; justify-content: center; gap: 8px; }
+
+    .custom-stepper { display: flex; justify-content: center; gap: 0; margin: 24px 0 32px; position: relative; z-index: 1; }
+    .step-pill { display: flex; align-items: center; gap: 10px; padding: 10px 22px; border-radius: 40px; font-weight: 600; font-size: 0.88rem; transition: all 0.35s ease; cursor: default; position: relative; background: var(--mud-palette-surface); border: 1.5px solid rgba(255,127,80,0.15); color: var(--mud-palette-text-secondary); white-space: nowrap; }
+    .step-pill.active { background: coral; border-color: coral; color: #fff; box-shadow: 0 6px 24px rgba(255,127,80,0.30); transform: scale(1.05); z-index: 2; }
+    .step-pill.done   { background: rgba(46,139,86,0.08); border-color: rgba(46,139,86,0.35); color: #2E7D32; z-index: 1; }
+    .step-num { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.8rem; font-weight: 700; background: rgba(255,127,80,0.12); transition: all 0.35s ease; }
+    .step-pill.active .step-num { background: rgba(255,255,255,0.25); color: #fff; }
+    .step-pill.done .step-num   { background: #2E7D32; color: #fff; }
+    .step-connector { width: 32px; height: 1.5px; background: rgba(255,127,80,0.2); align-self: center; margin: 0 4px; transition: background 0.35s ease; }
+    .step-connector.done { background: rgba(46,139,86,0.4); }
+
+    .step-panel { background: var(--mud-palette-surface); border: 1px solid rgba(255,127,80,0.1); border-radius: 20px; padding: 36px 32px; position: relative; z-index: 1; transition: all 0.3s ease; box-shadow: 0 4px 24px rgba(0,0,0,0.04); }
+
+    .obj-cards { display: flex; gap: 14px; flex-wrap: wrap; }
+    .obj-card { flex: 1; min-width: 160px; padding: 24px 18px; border-radius: 16px; text-align: center; cursor: pointer; border: 2px solid rgba(255,127,80,0.12); background: var(--mud-palette-surface); transition: all 0.25s ease; position: relative; }
+    .obj-card:hover { border-color: rgba(255,127,80,0.35); box-shadow: 0 8px 28px rgba(255,127,80,0.08); transform: translateY(-3px); }
+    .obj-card.selected { border-color: coral; background: rgba(255,127,80,0.06); box-shadow: 0 8px 32px rgba(255,127,80,0.18); animation: pulse 0.4s ease; }
+    .obj-card .obj-icon { font-size: 2rem; font-weight: 800; opacity: 0.7; margin-bottom: 8px; }
+    .obj-card .obj-title { font-weight: 700; font-size: 1rem; margin-bottom: 4px; }
+    .obj-card .obj-sub   { font-size: 0.78rem; color: var(--mud-palette-text-secondary); }
+    .obj-card .obj-check { position: absolute; top: 10px; right: 12px; opacity: 0; transform: scale(0); transition: all 0.25s ease; color: coral; font-size: 1.3rem; }
+    .obj-card.selected .obj-check { opacity: 1; transform: scale(1); }
+
+    .review-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .review-card { border-radius: 18px; padding: 24px; border: 1px solid rgba(255,127,80,0.1); background: rgba(255,127,80,0.015); }
+    .macro-pill { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid rgba(255,127,80,0.06); }
+    .macro-pill:last-child { border-bottom: none; }
+    .macro-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; margin-right: 8px; }
+    .macro-bar-wrap { height: 6px; background: rgba(255,127,80,0.08); border-radius: 3px; margin-top: 6px; overflow: hidden; }
+    .macro-bar-fill { height: 100%; border-radius: 3px; transition: width 0.8s ease; }
+
+    .timeline { position: relative; padding-left: 40px; }
+    .timeline::before { content: ''; position: absolute; left: 18px; top: 8px; bottom: 8px; width: 2px; background: linear-gradient(to bottom, coral, #2E7D32); border-radius: 1px; opacity: 0.3; }
+    .tl-item { position: relative; margin-bottom: 20px; animation: fadeInUp 0.5s ease-out forwards; opacity: 0; }
+    .tl-item:nth-child(1) { animation-delay: 0.05s; } .tl-item:nth-child(2) { animation-delay: 0.12s; } .tl-item:nth-child(3) { animation-delay: 0.19s; }
+    .tl-item:nth-child(4) { animation-delay: 0.26s; } .tl-item:nth-child(5) { animation-delay: 0.33s; } .tl-item:nth-child(6) { animation-delay: 0.40s; }
+    .tl-dot { position: absolute; left: -31px; top: 14px; width: 28px; height: 28px; border-radius: 50%; background: var(--mud-palette-surface); border: 2px solid coral; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; color: coral; z-index: 1; }
+    .tl-card { border: 1.5px solid rgba(255,127,80,0.12); border-radius: 14px; overflow: hidden; background: var(--mud-palette-surface); transition: all 0.25s ease; }
+    .tl-card:hover { border-color: rgba(255,127,80,0.35); box-shadow: 0 6px 24px rgba(255,127,80,0.08); }
+    .tl-header { padding: 12px 18px; background: rgba(255,127,80,0.04); border-bottom: 1px solid rgba(255,127,80,0.06); display: flex; justify-content: space-between; align-items: center; }
+    .tl-header h6 { margin: 0; font-weight: 700; }
+    .tl-body { padding: 12px 18px; }
+    .tl-table { width: 100%; font-size: 0.82rem; border-collapse: collapse; }
+    .tl-table th { text-align: left; padding: 6px 10px; font-weight: 600; font-size: 0.72rem; text-transform: uppercase; color: coral; border-bottom: 1px solid rgba(255,127,80,0.1); }
+    .tl-table td { padding: 7px 10px; border-bottom: 1px solid rgba(255,127,80,0.03); }
+    .tl-table tr:last-child td { border-bottom: none; } .tl-table .num { text-align: center; }
+    .tl-footer { padding: 10px 18px; background: rgba(255,127,80,0.03); border-top: 1px solid rgba(255,127,80,0.06); display: flex; gap: 14px; font-size: 0.78rem; font-weight: 600; flex-wrap: wrap; }
+
+    .floating-bar { position: sticky; bottom: 20px; z-index: 10; display: flex; justify-content: center; gap: 12px; margin-top: 28px; padding: 14px 20px; background: var(--mud-palette-surface); border: 1px solid rgba(255,127,80,0.15); border-radius: 18px; box-shadow: 0 8px 40px rgba(0,0,0,0.10); flex-wrap: wrap; }
+    .btn-flat { border-radius: 12px !important; padding: 11px 26px !important; font-weight: 700 !important; text-transform: none !important; font-size: 0.9rem !important; transition: all 0.25s ease !important; }
+    .btn-save { background: #2E7D32 !important; color: #fff !important; }
+    .btn-save:hover { background: #388E3C !important; box-shadow: 0 6px 18px rgba(46,139,86,0.35) !important; }
+    .btn-pdf  { background: #1565C0 !important; color: #fff !important; }
+    .btn-pdf:hover  { background: #1976D2 !important; box-shadow: 0 6px 18px rgba(21,101,192,0.35) !important; }
+    .btn-reset { background: transparent !important; color: var(--mud-palette-text-secondary) !important; border: 1.5px solid rgba(128,128,128,0.3) !important; }
+    .btn-reset:hover { border-color: coral !important; color: coral !important; }
+
+    @@media (max-width: 768px) {
+        .custom-stepper { flex-wrap: wrap; gap: 8px; } .step-pill { padding: 8px 16px; font-size: 0.78rem; } .step-connector { display: none; }
+        .review-grid { grid-template-columns: 1fr; } .obj-cards { flex-direction: column; }
+        .timeline { padding-left: 30px; } .tl-dot { left: -24px; width: 22px; height: 22px; font-size: 0.65rem; }
+    }
+</style>
+
+<div class="page-bg">
+<MudContainer MaxWidth="MaxWidth.ExtraLarge" Class="py-0 mb-8">
+
+    <div class="page-header anim-fade-up">
+        <div class="title-line">
+            <MudText Typo="Typo.h3" Style="font-weight:800;color:coral;font-family:Cambria" Inline="true">Gerador</MudText>
+            <MudText Typo="Typo.h3" Style="font-weight:800;font-family:Cambria" Inline="true">de Dietas</MudText>
+        </div>
+        <MudText Typo="Typo.body2" Color="Color.Inherit" Class="mt-1" Style="opacity:0.6;">
+            Calculo inteligente baseado em ciencia nutricional
+        </MudText>
+    </div>
+
+    @if (!_dietaGerada)
+    {
+        <div class="custom-stepper">
+            <div class="step-pill @(_activeStep == 0 ? "active" : _activeStep > 0 ? "done" : "")">
+                <span class="step-num">@(_activeStep > 0 ? "&#10003;" : "1")</span> Perfil
+            </div>
+            <div class="step-connector @(_activeStep > 0 ? "done" : "")"></div>
+            <div class="step-pill @(_activeStep == 1 ? "active" : _activeStep > 1 ? "done" : "")">
+                <span class="step-num">@(_activeStep > 1 ? "&#10003;" : "2")</span> Metas
+            </div>
+            <div class="step-connector @(_activeStep > 1 ? "done" : "")"></div>
+            <div class="step-pill @(_activeStep == 2 ? "active" : "")">
+                <span class="step-num">3</span> Revisao
+            </div>
+        </div>
+
+        @* STEP 1 *@
+        @if (_activeStep == 0)
+        {
+            <MudContainer MaxWidth="MaxWidth.Small" Class="px-0">
+                <div class="step-panel anim-fade-scale">
+                    <MudText Typo="Typo.h6" Style="font-weight:700;" Class="mb-1">Dados Corporais</MudText>
+                    <MudText Typo="Typo.body2" Color="Color.Inherit" Class="mb-4" Style="opacity:0.55;">
+                        Essas informacoes sao usadas para calcular seu metabolismo basal.
+                    </MudText>
+                    <MudGrid Spacing="3">
+                        <MudItem xs="12" sm="6">
+                            <MudTextField @bind-Value="_peso" Label="Peso" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentText="kg" Immediate="true" Margin="Margin.Dense" />
+                        </MudItem>
+                        <MudItem xs="12" sm="6">
+                            <MudTextField @bind-Value="_altura" Label="Altura" Variant="Variant.Outlined" Adornment="Adornment.End" AdornmentText="cm" Immediate="true" Margin="Margin.Dense" />
+                        </MudItem>
+                        <MudItem xs="12" sm="6">
+                            <MudTextField @bind-Value="_idade" Label="Idade" Variant="Variant.Outlined" Immediate="true" Margin="Margin.Dense" />
+                        </MudItem>
+                        <MudItem xs="12" sm="6">
+                            <MudSelect @bind-Value="_sexo" Label="Sexo" Variant="Variant.Outlined" Margin="Margin.Dense">
+                                <MudSelectItem Value="@("M")">Masculino</MudSelectItem>
+                                <MudSelectItem Value="@("F")">Feminino</MudSelectItem>
+                            </MudSelect>
+                        </MudItem>
+                    </MudGrid>
+                    <MudStack Row="true" Justify="Justify.FlexEnd" Class="mt-4">
+                        <MudButton Class="btn-flat" Style="background:coral !important; color:#fff !important;" OnClick="AvancarStep1">Proximo</MudButton>
+                    </MudStack>
+                </div>
+            </MudContainer>
+        }
+
+        @* STEP 2 *@
+        @if (_activeStep == 1)
+        {
+            <MudContainer MaxWidth="MaxWidth.Medium" Class="px-0">
+                <div class="step-panel anim-fade-scale">
+                    <MudText Typo="Typo.h6" Style="font-weight:700;" Class="mb-1">Seu Objetivo</MudText>
+                    <MudText Typo="Typo.body2" Color="Color.Inherit" Class="mb-4" Style="opacity:0.55;">
+                        Escolha o que melhor representa sua meta atual.
+                    </MudText>
+
+                    <div class="obj-cards mb-4">
+                        <div class="obj-card @(_objetivo == 0 ? "selected" : "")" @onclick="() => _objetivo = 0">
+                            <span class="obj-check">&#10003;</span>
+                            <div class="obj-icon">+</div>
+                            <div class="obj-title">Bulking</div>
+                            <div class="obj-sub">Ganho de massa muscular com superavit calorico</div>
+                        </div>
+                        <div class="obj-card @(_objetivo == 1 ? "selected" : "")" @onclick="() => _objetivo = 1">
+                            <span class="obj-check">&#10003;</span>
+                            <div class="obj-icon">-</div>
+                            <div class="obj-title">Cutting</div>
+                            <div class="obj-sub">Perda de gordura preservando massa magra</div>
+                        </div>
+                        <div class="obj-card @(_objetivo == 2 ? "selected" : "")" @onclick="() => _objetivo = 2">
+                            <span class="obj-check">&#10003;</span>
+                            <div class="obj-icon">~</div>
+                            <div class="obj-title">Manutencao</div>
+                            <div class="obj-sub">Equilibrio calorico para manter o peso</div>
+                        </div>
+                    </div>
+
+                    <MudGrid Spacing="3">
+                        <MudItem xs="12" sm="6">
+                            <MudSelect @bind-Value="_nivelAtividade" Label="Nivel de Atividade" Variant="Variant.Outlined" Margin="Margin.Dense">
+                                <MudSelectItem Value="1">Sedentario</MudSelectItem>
+                                <MudSelectItem Value="2">Leve (1-3 dias/sem)</MudSelectItem>
+                                <MudSelectItem Value="3">Moderado (3-5 dias/sem)</MudSelectItem>
+                                <MudSelectItem Value="4">Intenso (6-7 dias/sem)</MudSelectItem>
+                                <MudSelectItem Value="5">Atleta (2x/dia)</MudSelectItem>
+                            </MudSelect>
+                        </MudItem>
+                        <MudItem xs="12" sm="6">
+                            <MudSelect @bind-Value="_numRefeicoes" Label="Refeicoes por dia" Variant="Variant.Outlined" Margin="Margin.Dense">
+                                <MudSelectItem Value="3">3 refeicoes</MudSelectItem>
+                                <MudSelectItem Value="4">4 refeicoes</MudSelectItem>
+                                <MudSelectItem Value="5">5 refeicoes</MudSelectItem>
+                                <MudSelectItem Value="6">6 refeicoes</MudSelectItem>
+                            </MudSelect>
+                        </MudItem>
+                        <MudItem xs="12" sm="6">
+                            <MudSelect @bind-Value="_restricao" Label="Restricao Alimentar" Variant="Variant.Outlined" Margin="Margin.Dense">
+                                <MudSelectItem Value="0">Nenhuma</MudSelectItem>
+                                <MudSelectItem Value="1">Sem lactose</MudSelectItem>
+                                <MudSelectItem Value="2">Vegetariano</MudSelectItem>
+                            </MudSelect>
+                        </MudItem>
+                    </MudGrid>
+
+                    <MudStack Row="true" Justify="Justify.SpaceBetween" Class="mt-4">
+                        <MudButton Class="btn-flat btn-reset" OnClick="VoltarStep2" StartIcon="@Icons.Material.Filled.ArrowBack">Voltar</MudButton>
+                        <MudButton Class="btn-flat" Style="background:coral !important; color:#fff !important;" OnClick="AvancarStep2">Proximo</MudButton>
+                    </MudStack>
+                </div>
+            </MudContainer>
+        }
+
+        @* STEP 3 *@
+        @if (_activeStep == 2)
+        {
+            <MudContainer MaxWidth="MaxWidth.Large" Class="px-0">
+                <div class="step-panel anim-fade-scale">
+                    <MudText Typo="Typo.h6" Style="font-weight:700;" Class="mb-1">Revisao do Plano</MudText>
+                    <MudText Typo="Typo.body2" Color="Color.Inherit" Class="mb-4" Style="opacity:0.55;">
+                        Confira seus dados e as metas calculadas antes de gerar a dieta.
+                    </MudText>
+
+                    <div class="review-grid">
+                        <div class="review-card anim-slide-left" style="animation-delay:0.05s;">
+                            <MudText Typo="Typo.subtitle2" Style="font-weight:700;color:coral;" Class="mb-2">Seus Dados</MudText>
+                            <div class="macro-pill"><span style="opacity:0.65;">Peso</span><strong>@_peso kg</strong></div>
+                            <div class="macro-pill"><span style="opacity:0.65;">Altura</span><strong>@_altura cm</strong></div>
+                            <div class="macro-pill"><span style="opacity:0.65;">Idade</span><strong>@_idade anos</strong></div>
+                            <div class="macro-pill"><span style="opacity:0.65;">Sexo</span><strong>@(_sexo == "M" ? "Masculino" : "Feminino")</strong></div>
+                            <div class="macro-pill"><span style="opacity:0.65;">Atividade</span><strong>@NomeNivelAtividade(_nivelAtividade)</strong></div>
+                            <div class="macro-pill"><span style="opacity:0.65;">Objetivo</span><strong>@(_objetivo switch { 0 => "Bulking", 1 => "Cutting", _ => "Manutencao" })</strong></div>
+                            <div class="macro-pill"><span style="opacity:0.65;">Refeicoes/dia</span><strong>@_numRefeicoes</strong></div>
+                        </div>
+
+                        <div class="review-card anim-slide-left" style="animation-delay:0.15s;">
+                            <MudText Typo="Typo.subtitle2" Style="font-weight:700;color:#2E7D32;" Class="mb-2">Metas Calculadas</MudText>
+                            <div style="text-align:center;padding:12px 0;">
+                                <MudText Typo="Typo.h3" Style="font-weight:800;color:coral;">@_metaCalorias.ToString("F0")</MudText>
+                                <MudText Typo="Typo.caption" Color="Color.Inherit">kcal / dia</MudText>
+                            </div>
+                            <MudDivider Style="margin:8px 0;opacity:0.2;" />
+                            <div class="macro-pill"><span><span class="macro-dot" style="background:darkred;"></span>Proteinas</span><strong>@_metaProteina.ToString("F0")g</strong></div>
+                            <div class="macro-bar-wrap"><div class="macro-bar-fill" style="width:@((_metaProteina*4/_metaCalorias*100).ToString("F0"))%;background:darkred;"></div></div>
+                            <div class="macro-pill"><span><span class="macro-dot" style="background:sandybrown;"></span>Carboidratos</span><strong>@_metaCarbo.ToString("F0")g</strong></div>
+                            <div class="macro-bar-wrap"><div class="macro-bar-fill" style="width:@((_metaCarbo*4/_metaCalorias*100).ToString("F0"))%;background:sandybrown;"></div></div>
+                            <div class="macro-pill"><span><span class="macro-dot" style="background:saddlebrown;"></span>Gorduras</span><strong>@_metaGordura.ToString("F0")g</strong></div>
+                            <div class="macro-bar-wrap"><div class="macro-bar-fill" style="width:@((_metaGordura*9/_metaCalorias*100).ToString("F0"))%;background:saddlebrown;"></div></div>
+                            <div style="margin-top:12px; padding-top:10px; border-top:1px solid rgba(255,127,80,0.08);">
+                                <span style="font-size:0.8rem; opacity:0.55;">TMB: @_tmb.ToString("F0") kcal · TDEE: @_tdee.ToString("F0") kcal</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <MudStack Row="true" Justify="Justify.SpaceBetween" Class="mt-4">
+                        <MudButton Class="btn-flat btn-reset" OnClick="VoltarStep3" StartIcon="@Icons.Material.Filled.ArrowBack">Voltar</MudButton>
+                        <MudButton Class="btn-flat" Style="background:#2E7D32 !important; color:#fff !important; font-size:1.05rem !important; padding:13px 36px !important;"
+                                   StartIcon="@Icons.Material.Filled.AutoAwesome" OnClick="GerarDieta">Gerar Dieta</MudButton>
+                    </MudStack>
+                </div>
+            </MudContainer>
+        }
+    }
+    else
+    {
+        @* RESULTADO *@
+        <MudContainer MaxWidth="MaxWidth.Medium" Class="px-0 mt-4 mb-6 anim-fade-up">
+            <MudCard Elevation="0" Class="pa-4 mb-4" Style="border:1.5px solid rgba(255,127,80,0.15); border-radius:16px; background:rgba(255,127,80,0.02);">
+                <MudStack Row="true" Justify="Justify.SpaceBetween" AlignItems="AlignItems.Center" Style="flex-wrap:wrap; gap:8px;">
+                    <div>
+                        <MudText Typo="Typo.h6" Style="font-weight:700;">Seu Plano Alimentar</MudText>
+                        <MudText Typo="Typo.caption" Color="Color.Inherit" Style="opacity:0.55;">@_nomeObjetivo</MudText>
+                    </div>
+                    <div style="text-align:right;">
+                        <MudText Typo="Typo.h5" Style="font-weight:800;color:coral;">@_totalCaloriasGerado.ToString("F0") kcal</MudText>
+                        <MudText Typo="Typo.caption" Color="Color.Inherit">P:@_totalProteinaGerado.ToString("F0")g C:@_totalCarboGerado.ToString("F0")g G:@_totalGorduraGerado.ToString("F0")g</MudText>
+                    </div>
+                </MudStack>
+            </MudCard>
+
+            <div class="timeline">
+                @for (int i = 0; i < _refeicoesGeradas.Count; i++)
+                {
+                    var refeicao = _refeicoesGeradas[i];
+                    string horaStr = refeicao.HorarioSugerido.HasValue ? refeicao.HorarioSugerido.Value.ToString(@"hh\:mm") : "";
+                    <div class="tl-item">
+                        <div class="tl-dot">@(i + 1)</div>
+                        <div class="tl-card">
+                            <div class="tl-header"><h6 style="color:coral;">@refeicao.Nome</h6><span style="font-size:0.78rem;opacity:0.55;">@horaStr</span></div>
+                            <div class="tl-body">
+                                <table class="tl-table">
+                                    <thead><tr><th>Alimento</th><th class="num">Qtd</th><th class="num">P</th><th class="num">C</th><th class="num">G</th><th class="num">Kcal</th></tr></thead>
+                                    <tbody>
+                                        @foreach (var alim in refeicao.Alimentos)
+                                        {
+                                            <tr><td>@alim.Nome</td><td class="num">@alim.Quantidade.ToString("F0")@alim.UnidadeMedida</td><td class="num">@alim.Proteina.ToString("F0")</td><td class="num">@alim.Carboidrato.ToString("F0")</td><td class="num">@alim.Gordura.ToString("F0")</td><td class="num">@alim.Calorias.ToString("F0")</td></tr>
+                                        }
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="tl-footer">
+                                <span style="color:darkred;">P: @refeicao.TotalProteina.ToString("F0")g</span>
+                                <span style="color:sandybrown;">C: @refeicao.TotalCarboidrato.ToString("F0")g</span>
+                                <span style="color:saddlebrown;">G: @refeicao.TotalGordura.ToString("F0")g</span>
+                                <span style="color:#2E7D32;margin-left:auto;">@refeicao.TotalCalorias.ToString("F0") kcal</span>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+
+            <div class="floating-bar">
+                <MudButton Class="btn-flat btn-save" OnClick="SalvarDieta">Salvar Dieta</MudButton>
+                <MudButton Class="btn-flat btn-pdf" OnClick="ExportarPdf">Baixar PDF</MudButton>
+                <MudButton Class="btn-flat btn-reset" OnClick="NovaGeracao" StartIcon="@Icons.Material.Filled.Refresh">Recomecar</MudButton>
+            </div>
+        </MudContainer>
+    }
+</MudContainer>
+</div>
+
+@code {
+    private int _activeStep = 0;
+
+    private string _peso = "";
+    private string _altura = "";
+    private string _idade = "";
+    private string _sexo = "M";
+    private int _nivelAtividade = 3;
+    private int _objetivo = 0;
+    private int _numRefeicoes = 5;
+    private int _restricao = 0;
+
+    private bool _dietaGerada = false;
+    private double _tmb, _tdee, _metaCalorias, _metaProteina, _metaCarbo, _metaGordura, _metaFibra;
+    private string _nomeObjetivo = "";
+    private double _totalCaloriasGerado, _totalProteinaGerado, _totalCarboGerado, _totalGorduraGerado, _totalFibraGerado;
+    private List<RefeicaoViewModel> _refeicoesGeradas = new();
+
+    private void AvancarStep1()
+    {
+        if (!double.TryParse(_peso, out var peso) || !double.TryParse(_altura, out var altura) || !double.TryParse(_idade, out var idade))
+        { Snackbar.Add("Preencha todos os campos corretamente.", Severity.Warning); return; }
+        if (peso < 30 || peso > 250 || altura < 100 || altura > 250 || idade < 10 || idade > 100)
+        { Snackbar.Add("Verifique peso (30-250), altura (100-250) e idade (10-100).", Severity.Warning); return; }
+        _activeStep = 1;
+    }
+    private void VoltarStep2() => _activeStep = 0;
+    private void AvancarStep2() { CalcularMetas(); _activeStep = 2; }
+    private void VoltarStep3() => _activeStep = 1;
+
+    private string NomeNivelAtividade(int n) => n switch { 1 => "Sedentario", 2 => "Leve", 3 => "Moderado", 4 => "Intenso", 5 => "Atleta", _ => "-" };
+
+    private void CalcularMetas()
+    {
+        if (!double.TryParse(_peso, out var peso) || !double.TryParse(_altura, out var altura) || !double.TryParse(_idade, out var idade)) return;
+        _tmb = _sexo == "M" ? 88.36 + (13.4 * peso) + (4.8 * altura) - (5.7 * idade) : 447.6 + (9.2 * peso) + (3.1 * altura) - (4.3 * idade);
+        double fa = _nivelAtividade switch { 1 => 1.2, 2 => 1.375, 3 => 1.55, 4 => 1.725, 5 => 1.9, _ => 1.55 };
+        _tdee = _tmb * fa;
+        _metaCalorias = _objetivo switch { 0 => _tdee + 500, 1 => Math.Max(_tdee - 500, _tmb), _ => _tdee };
+        _nomeObjetivo = _objetivo switch { 0 => "Bulking (Ganho de Massa)", 1 => "Cutting (Perda de Gordura)", _ => "Manutencao" };
+        _metaProteina = peso * 2.0; _metaGordura = peso * 0.9;
+        _metaCarbo = Math.Max((_metaCalorias - _metaProteina * 4 - _metaGordura * 9) / 4, 50);
+        _metaFibra = _objetivo == 1 ? 35 : 28;
+    }
+
+    private class AlimentoBase { public string Nome = ""; public double Proteina, Carboidrato, Gordura, Fibra, Calorias; public string Categoria = ""; public List<string> Horarios = new(); public string UnidadeMedida = "g"; public double PorcaoPadrao = 100; }
+    private List<AlimentoBase> _alimentosBase = new();
+
+    protected override void OnInitialized() => InicializarBancoAlimentos();
+
+    private void InicializarBancoAlimentos() {
+        _alimentosBase = new List<AlimentoBase> {
+            new() { Nome = "Peito de Frango", Proteina = 31, Carboidrato = 0, Gordura = 3.6, Fibra = 0, Calorias = 165, Categoria = "proteina", Horarios = new(){"almoco","janta"}, PorcaoPadrao = 150 },
+            new() { Nome = "Ovos Inteiros", Proteina = 13, Carboidrato = 1.1, Gordura = 9.5, Fibra = 0, Calorias = 143, Categoria = "proteina", Horarios = new(){"cafe","ceia"}, UnidadeMedida = "unid", PorcaoPadrao = 2 },
+            new() { Nome = "Clara de Ovo", Proteina = 11, Carboidrato = 0.7, Gordura = 0.2, Fibra = 0, Calorias = 52, Categoria = "proteina", Horarios = new(){"cafe","lanche"}, UnidadeMedida = "unid", PorcaoPadrao = 4 },
+            new() { Nome = "Tilapia", Proteina = 26, Carboidrato = 0, Gordura = 2.7, Fibra = 0, Calorias = 128, Categoria = "proteina", Horarios = new(){"almoco","janta"}, PorcaoPadrao = 150 },
+            new() { Nome = "Salmao", Proteina = 22, Carboidrato = 0, Gordura = 12, Fibra = 0, Calorias = 208, Categoria = "proteina", Horarios = new(){"janta"}, PorcaoPadrao = 150 },
+            new() { Nome = "Carne Bovina Magra", Proteina = 26, Carboidrato = 0, Gordura = 6, Fibra = 0, Calorias = 158, Categoria = "proteina", Horarios = new(){"almoco"}, PorcaoPadrao = 150 },
+            new() { Nome = "Atum (lata)", Proteina = 23, Carboidrato = 0, Gordura = 0.8, Fibra = 0, Calorias = 99, Categoria = "proteina", Horarios = new(){"lanche","janta"}, PorcaoPadrao = 120 },
+            new() { Nome = "Whey Protein", Proteina = 75, Carboidrato = 10, Gordura = 5, Fibra = 0, Calorias = 385, Categoria = "proteina", Horarios = new(){"cafe","postreino","lanche"}, PorcaoPadrao = 30 },
+            new() { Nome = "Albumina", Proteina = 80, Carboidrato = 5, Gordura = 0.5, Fibra = 0, Calorias = 345, Categoria = "proteina", Horarios = new(){"ceia"}, PorcaoPadrao = 30 },
+            new() { Nome = "Iogurte Grego", Proteina = 10, Carboidrato = 4, Gordura = 0.7, Fibra = 0, Calorias = 59, Categoria = "proteina", Horarios = new(){"cafe","lanche","ceia"}, PorcaoPadrao = 170 },
+            new() { Nome = "Sobrecoxa de Frango", Proteina = 26, Carboidrato = 0, Gordura = 8, Fibra = 0, Calorias = 176, Categoria = "proteina", Horarios = new(){"almoco","janta"}, PorcaoPadrao = 150 },
+            new() { Nome = "Arroz Branco", Proteina = 2.7, Carboidrato = 28, Gordura = 0.3, Fibra = 0.5, Calorias = 130, Categoria = "carbo", Horarios = new(){"almoco","janta"}, PorcaoPadrao = 200 },
+            new() { Nome = "Arroz Integral", Proteina = 2.6, Carboidrato = 23, Gordura = 1, Fibra = 1.8, Calorias = 111, Categoria = "carbo", Horarios = new(){"almoco","janta"}, PorcaoPadrao = 200 },
+            new() { Nome = "Batata Doce", Proteina = 1.6, Carboidrato = 20, Gordura = 0.1, Fibra = 3, Calorias = 86, Categoria = "carbo", Horarios = new(){"almoco","janta","pretreino"}, PorcaoPadrao = 200 },
+            new() { Nome = "Aveia em Flocos", Proteina = 13, Carboidrato = 56, Gordura = 7, Fibra = 10, Calorias = 350, Categoria = "carbo", Horarios = new(){"cafe","pretreino"}, PorcaoPadrao = 40 },
+            new() { Nome = "Pao Integral", Proteina = 10, Carboidrato = 42, Gordura = 3.5, Fibra = 6, Calorias = 240, Categoria = "carbo", Horarios = new(){"cafe","lanche"}, UnidadeMedida = "fatias", PorcaoPadrao = 2 },
+            new() { Nome = "Macarrao Integral", Proteina = 5, Carboidrato = 31, Gordura = 0.9, Fibra = 3, Calorias = 140, Categoria = "carbo", Horarios = new(){"almoco","janta"}, PorcaoPadrao = 200 },
+            new() { Nome = "Mandioca", Proteina = 1.4, Carboidrato = 33, Gordura = 0.3, Fibra = 1.8, Calorias = 140, Categoria = "carbo", Horarios = new(){"almoco","janta"}, PorcaoPadrao = 200 },
+            new() { Nome = "Feijao Preto", Proteina = 4.5, Carboidrato = 14, Gordura = 0.5, Fibra = 8, Calorias = 77, Categoria = "carbo", Horarios = new(){"almoco"}, PorcaoPadrao = 100 },
+            new() { Nome = "Maltodextrina", Proteina = 0, Carboidrato = 95, Gordura = 0, Fibra = 0, Calorias = 380, Categoria = "carbo", Horarios = new(){"postreino"}, PorcaoPadrao = 30 },
+            new() { Nome = "Banana", Proteina = 1.3, Carboidrato = 23, Gordura = 0.3, Fibra = 2.6, Calorias = 92, Categoria = "fruta", Horarios = new(){"cafe","pretreino","lanche"}, UnidadeMedida = "unid", PorcaoPadrao = 1 },
+            new() { Nome = "Maca", Proteina = 0.3, Carboidrato = 14, Gordura = 0.2, Fibra = 2.4, Calorias = 56, Categoria = "fruta", Horarios = new(){"cafe","lanche"}, UnidadeMedida = "unid", PorcaoPadrao = 1 },
+            new() { Nome = "Morangos", Proteina = 0.7, Carboidrato = 7.7, Gordura = 0.3, Fibra = 2, Calorias = 32, Categoria = "fruta", Horarios = new(){"cafe","ceia","lanche"}, PorcaoPadrao = 150 },
+            new() { Nome = "Abacaxi", Proteina = 0.5, Carboidrato = 13, Gordura = 0.1, Fibra = 1.4, Calorias = 50, Categoria = "fruta", Horarios = new(){"pretreino","postreino"}, PorcaoPadrao = 150 },
+            new() { Nome = "Laranja", Proteina = 0.9, Carboidrato = 12, Gordura = 0.1, Fibra = 2.4, Calorias = 47, Categoria = "fruta", Horarios = new(){"cafe","lanche"}, UnidadeMedida = "unid", PorcaoPadrao = 1 },
+            new() { Nome = "Melancia", Proteina = 0.6, Carboidrato = 7.6, Gordura = 0.2, Fibra = 0.4, Calorias = 30, Categoria = "fruta", Horarios = new(){"pretreino"}, PorcaoPadrao = 200 },
+            new() { Nome = "Brocolis", Proteina = 2.8, Carboidrato = 4, Gordura = 0.4, Fibra = 2.6, Calorias = 34, Categoria = "vegetal", Horarios = new(){"almoco","janta"}, PorcaoPadrao = 100 },
+            new() { Nome = "Espinafre", Proteina = 2.9, Carboidrato = 3.6, Gordura = 0.4, Fibra = 2.2, Calorias = 23, Categoria = "vegetal", Horarios = new(){"almoco","janta"}, PorcaoPadrao = 80 },
+            new() { Nome = "Cenoura", Proteina = 0.9, Carboidrato = 6.8, Gordura = 0.2, Fibra = 2.8, Calorias = 34, Categoria = "vegetal", Horarios = new(){"almoco","janta"}, PorcaoPadrao = 80 },
+            new() { Nome = "Rucula", Proteina = 2.6, Carboidrato = 2.1, Gordura = 0.7, Fibra = 1.6, Calorias = 25, Categoria = "vegetal", Horarios = new(){"janta"}, PorcaoPadrao = 50 },
+            new() { Nome = "Beterraba", Proteina = 1.6, Carboidrato = 9.6, Gordura = 0.2, Fibra = 2.8, Calorias = 43, Categoria = "vegetal", Horarios = new(){"almoco"}, PorcaoPadrao = 80 },
+            new() { Nome = "Abobrinha", Proteina = 1.2, Carboidrato = 2.1, Gordura = 0.3, Fibra = 1, Calorias = 17, Categoria = "vegetal", Horarios = new(){"janta"}, PorcaoPadrao = 100 },
+            new() { Nome = "Azeite de Oliva", Proteina = 0, Carboidrato = 0, Gordura = 100, Fibra = 0, Calorias = 884, Categoria = "gordura", Horarios = new(){"almoco","janta"}, UnidadeMedida = "ml", PorcaoPadrao = 10 },
+            new() { Nome = "Pasta de Amendoim", Proteina = 25, Carboidrato = 20, Gordura = 50, Fibra = 5, Calorias = 588, Categoria = "gordura", Horarios = new(){"cafe","lanche"}, PorcaoPadrao = 20 },
+            new() { Nome = "Castanhas do Para", Proteina = 14, Carboidrato = 12, Gordura = 66, Fibra = 7.5, Calorias = 656, Categoria = "gordura", Horarios = new(){"lanche","ceia"}, PorcaoPadrao = 20 },
+            new() { Nome = "Abacate", Proteina = 2, Carboidrato = 8.5, Gordura = 15, Fibra = 6.7, Calorias = 160, Categoria = "gordura", Horarios = new(){"cafe","ceia","lanche"}, PorcaoPadrao = 80 },
+            new() { Nome = "Mix de Sementes", Proteina = 18, Carboidrato = 15, Gordura = 42, Fibra = 10, Calorias = 520, Categoria = "gordura", Horarios = new(){"ceia","lanche"}, PorcaoPadrao = 20 },
+        };
+    }
+
+    private void GerarDieta()
+    {
+        if (!double.TryParse(_peso, out var peso)) return;
+        CalcularMetas(); _refeicoesGeradas.Clear();
+        var nomes = ObterNomesRefeicoes(_numRefeicoes); var horarios = ObterHorarios(_numRefeicoes);
+        double ppR = _metaProteina / _numRefeicoes, cpR = _metaCarbo / _numRefeicoes, gpR = _metaGordura / _numRefeicoes, fpR = _metaFibra / _numRefeicoes;
+        _totalCaloriasGerado = _totalProteinaGerado = _totalCarboGerado = _totalGorduraGerado = _totalFibraGerado = 0;
+        var rnd = new Random();
+        for (int i = 0; i < _numRefeicoes; i++)
+        {
+            double mp = ppR, mc = cpR, mg = gpR;
+            if (i == 0) { mc *= 1.2; mg *= 0.8; } else if (i == _numRefeicoes - 1) { mc *= 0.5; mg *= 1.3; mp *= 1.1; } else if (i == _numRefeicoes - 2 && _numRefeicoes >= 5) { mc *= 1.1; }
+            var refe = new RefeicaoViewModel { Nome = nomes[i], HorarioSugerido = horarios[i], Ordem = i + 1, Alimentos = new() };
+            var als = SelecionarAlimentos(nomes[i], mp, mc, mg, fpR, rnd);
+            double sp = 0, sc = 0, sg = 0, sf = 0, sk = 0;
+            foreach (var a in als) { refe.Alimentos.Add(a); sp += a.Proteina; sc += a.Carboidrato; sg += a.Gordura; sf += a.Fibra; sk += a.Calorias; }
+            refe.TotalProteina = Math.Round(sp, 1); refe.TotalCarboidrato = Math.Round(sc, 1); refe.TotalGordura = Math.Round(sg, 1); refe.TotalFibra = Math.Round(sf, 1); refe.TotalCalorias = Math.Round(sk, 0);
+            _totalProteinaGerado += sp; _totalCarboGerado += sc; _totalGorduraGerado += sg; _totalFibraGerado += sf; _totalCaloriasGerado += sk;
+            _refeicoesGeradas.Add(refe);
+        }
+        _totalProteinaGerado = Math.Round(_totalProteinaGerado, 1); _totalCarboGerado = Math.Round(_totalCarboGerado, 1); _totalGorduraGerado = Math.Round(_totalGorduraGerado, 1); _totalFibraGerado = Math.Round(_totalFibraGerado, 1); _totalCaloriasGerado = Math.Round(_totalCaloriasGerado, 0);
+        _dietaGerada = true;
+    }
+
+    private List<AlimentoViewModel> SelecionarAlimentos(string nomeH, double mp, double mc, double mg, double mf, Random rnd)
+    {
+        var res = new List<AlimentoViewModel>();
+        string ch = nomeH.ToLower() switch { "cafe da manha" => "cafe", "almoco" => "almoco", "lanche da tarde" => "lanche", "lanche" => "lanche", "pre-treino" => "pretreino", "pos-treino" => "postreino", "janta" => "janta", "ceia" => "ceia", _ => "almoco" };
+        var disp = _alimentosBase.Where(a => a.Horarios.Contains(ch)).ToList();
+        if (_restricao == 1) disp = disp.Where(a => a.Nome != "Iogurte Grego").ToList();
+        else if (_restricao == 2) disp = disp.Where(a => a.Nome != "Peito de Frango" && a.Nome != "Tilapia" && a.Nome != "Salmao" && a.Nome != "Carne Bovina Magra" && a.Nome != "Atum (lata)" && a.Nome != "Sobrecoxa de Frango" && a.Nome != "Whey Protein" && a.Nome != "Albumina").ToList();
+        if (disp.Count == 0) disp = _alimentosBase.Where(a => a.Horarios.Contains("almoco")).ToList();
+        disp = disp.OrderBy(_ => rnd.Next()).ToList();
+        double ga = 0, ca = 0;
+        var pa = disp.FirstOrDefault(a => a.Categoria == "proteina"); var cb = disp.FirstOrDefault(a => a.Categoria == "carbo");
+        var vg = disp.FirstOrDefault(a => a.Categoria == "vegetal" || a.Categoria == "fruta"); var gd = disp.FirstOrDefault(a => a.Categoria == "gordura");
+        if (pa != null) { double f = Math.Clamp(mp / (pa.Proteina * (pa.PorcaoPadrao / 100.0)), 0.5, 2.0); double q = Math.Round(pa.PorcaoPadrao * f, 0); if (pa.UnidadeMedida != "g") q = Math.Round(q / 100, 0); var a = MakeVM(pa, q); res.Add(a); ca += a.Carboidrato; ga += a.Gordura; }
+        if (cb != null) { double cr = Math.Max(mc - ca, 10); double f = Math.Clamp(cr / (cb.Carboidrato * (cb.PorcaoPadrao / 100.0)), 0.3, 2.5); double q = Math.Round(cb.PorcaoPadrao * f, 0); if (cb.UnidadeMedida != "g") q = Math.Round(q / 100, 0); var a = MakeVM(cb, q); res.Add(a); ga += a.Gordura; }
+        if (vg != null) { double q = Math.Round(vg.PorcaoPadrao * 0.8, 0); if (vg.UnidadeMedida != "g") q = Math.Max(1, Math.Round(vg.PorcaoPadrao * 0.5, 0)); res.Add(MakeVM(vg, q)); }
+        if (gd != null && ga < mg * 1.1) { double gr = Math.Max(mg - ga, 2); double f = Math.Clamp(gr / (gd.Gordura * (gd.PorcaoPadrao / 100.0)), 0.3, 1.5); double q = Math.Round(gd.PorcaoPadrao * f, 0); if (gd.UnidadeMedida != "g") q = Math.Round(q / 100, 0); res.Add(MakeVM(gd, q)); }
+        return res;
+    }
+
+    private AlimentoViewModel MakeVM(AlimentoBase b, double qtd) {
+        double f = b.UnidadeMedida != "g" ? (qtd * (b.Nome switch { "Ovos Inteiros" => 100, "Clara de Ovo" => 100, "Banana" => 120, "Maca" => 150, "Laranja" => 180, _ => 100 })) / 100.0 : qtd / 100.0;
+        return new AlimentoViewModel { Nome = b.Nome, Quantidade = qtd, UnidadeMedida = b.UnidadeMedida, Proteina = Math.Round(b.Proteina * f, 1), Carboidrato = Math.Round(b.Carboidrato * f, 1), Gordura = Math.Round(b.Gordura * f, 1), Fibra = Math.Round(b.Fibra * f, 1), Calorias = Math.Round(b.Calorias * f, 0) };
+    }
+
+    private List<string> ObterNomesRefeicoes(int n) => n switch {
+        3 => new() { "Cafe da Manha", "Almoco", "Janta" }, 4 => new() { "Cafe da Manha", "Almoco", "Lanche da Tarde", "Janta" },
+        5 => new() { "Cafe da Manha", "Almoco", "Pre-Treino", "Pos-Treino", "Janta" }, _ => new() { "Cafe da Manha", "Almoco", "Pre-Treino", "Pos-Treino", "Janta", "Ceia" }
+    };
+    private List<TimeSpan> ObterHorarios(int n) => n switch {
+        3 => new() { new(7,0,0), new(12,0,0), new(19,30,0) }, 4 => new() { new(7,0,0), new(12,0,0), new(16,0,0), new(19,30,0) },
+        5 => new() { new(7,0,0), new(12,0,0), new(15,0,0), new(17,30,0), new(20,0,0) }, _ => new() { new(7,0,0), new(12,0,0), new(15,0,0), new(17,30,0), new(20,0,0), new(22,0,0) }
+    };
+
+    private void NovaGeracao() { _dietaGerada = false; _activeStep = 0; _refeicoesGeradas.Clear(); }
+
+    private async Task SalvarDieta() {
+        if (!AuthService.IsLoggedIn) { Snackbar.Add("Faca login para salvar.", Severity.Warning); return; }
+        try {
+            var req = new PlanoAlimentarCompletoRequest { Nome = $"Dieta {_nomeObjetivo} - {DateTime.Now:dd/MM}", Objetivo = _objetivo,
+                Descricao = $"Meta: {_metaCalorias:F0} kcal | P: {_metaProteina:F0}g C: {_metaCarbo:F0}g G: {_metaGordura:F0}g",
+                Refeicoes = _refeicoesGeradas.Select(r => new RefeicaoCompletaRequest { Nome = r.Nome, HorarioSugerido = r.HorarioSugerido, Ordem = r.Ordem,
+                    TotalProteina = r.TotalProteina, TotalCarboidrato = r.TotalCarboidrato, TotalGordura = r.TotalGordura, TotalFibra = r.TotalFibra, TotalCalorias = r.TotalCalorias,
+                    Alimentos = r.Alimentos.Select(a => new AlimentoRequestDto { Nome = a.Nome, Quantidade = a.Quantidade, UnidadeMedida = a.UnidadeMedida,
+                        Proteina = a.Proteina, Carboidrato = a.Carboidrato, Gordura = a.Gordura, Fibra = a.Fibra, Calorias = a.Calorias }).ToList() }).ToList() };
+            var ok = await PlanoAlimentarService.CriarCompletoAsync(req);
+            Snackbar.Add(ok != null ? "Dieta salva! Veja em 'Minhas Dietas'." : "Erro ao salvar.", ok != null ? Severity.Success : Severity.Error);
+        } catch (Exception ex) { Console.WriteLine($"Erro salvar: {ex.Message}"); Snackbar.Add("Erro ao salvar dieta.", Severity.Error); }
+    }
+
+    private async Task ExportarPdf() {
+        try {
+            var data = new { nome = $"Dieta {_nomeObjetivo}", descricao = $"Meta: {_metaCalorias:F0} kcal | P:{_metaProteina:F0}g C:{_metaCarbo:F0}g G:{_metaGordura:F0}g",
+                refeicoes = _refeicoesGeradas.Select(r => new { titulo = r.Nome, alimentos = r.Alimentos.Select(a => new { label = $"{a.Nome}: ", valor = $"{a.Quantidade:F0}{a.UnidadeMedida} | P:{a.Proteina:F0}g C:{a.Carboidrato:F0}g G:{a.Gordura:F0}g ({a.Calorias:F0} kcal)" }).ToList() }).ToList() };
+            var json = JsonSerializer.Serialize(data, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase, Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping });
+            await JS.InvokeVoidAsync("exportDietaPdf", json);
+        } catch (Exception ex) { Console.WriteLine($"Erro PDF: {ex.Message}"); Snackbar.Add("Erro ao exportar PDF.", Severity.Error); }
+    }
+
+    public class RefeicaoViewModel { public string Nome = ""; public TimeSpan? HorarioSugerido; public int Ordem; public double TotalProteina, TotalCarboidrato, TotalGordura, TotalFibra, TotalCalorias; public List<AlimentoViewModel> Alimentos = new(); }
+    public class AlimentoViewModel { public string Nome = ""; public double Quantidade; public string UnidadeMedida = "g"; public double Proteina, Carboidrato, Gordura, Fibra, Calorias; }
+}

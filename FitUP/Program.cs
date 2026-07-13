@@ -15,5 +15,6 @@ builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri("http://
 builder.Services.AddScoped<AuthService>();
 builder.Services.AddScoped<PlanoTreinoService>();
 builder.Services.AddScoped<BioimpedanciaService>();
+builder.Services.AddScoped<PlanoAlimentarService>();
 
 await builder.Build().RunAsync();

@@ -111,7 +111,8 @@
         }
         catch (Exception ex)
         {
-            Snackbar.Add($"Erro: {ex.Message}", Severity.Error);
+            Console.WriteLine($"Erro no esqueci senha: {ex}");
+            Snackbar.Add("Erro ao processar a solicitação. Verifique sua conexão.", Severity.Error);
         }
         finally
         {

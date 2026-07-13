@@ -198,7 +198,8 @@
         }
         catch (Exception ex)
         {
-            Snackbar.Add($"Erro de conexão: {ex.Message}", Severity.Error);
+            Console.WriteLine($"Erro no cadastro: {ex}");
+            Snackbar.Add("Erro ao criar conta. Verifique sua conexão e tente novamente.", Severity.Error);
         }
         finally
         {
