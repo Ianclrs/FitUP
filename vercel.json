@@ -1,5 +1,6 @@
 {
-  "installCommand": "curl -sSL https://dot.net/v1/dotnet-install.sh | bash /dev/stdin --channel 10.0 --install-dir /usr/local/share/dotnet && ln -sf /usr/local/share/dotnet/dotnet /usr/local/bin/dotnet && dotnet workload install wasm-tools-net10",
+  "framework": "aspnetcore",
+  "installCommand": "dotnet workload install wasm-tools-net10",
   "buildCommand": "dotnet publish FitUP/FitUP.csproj -c Release -o publish",
   "outputDirectory": "publish/wwwroot",
   "cleanUrls": true,
