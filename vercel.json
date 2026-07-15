@@ -1,4 +1,6 @@
 {
+  "installCommand": "dotnet workload install wasm-tools-net10 2>&1 || echo 'workload may already be installed'",
+  "buildCommand": "dotnet publish FitUP/FitUP.csproj -c Release -o publish",
   "outputDirectory": "publish/wwwroot",
   "cleanUrls": true,
   "headers": [
