@@ -1,7 +1,4 @@
 {
-  "framework": "aspnetcore",
-  "installCommand": "dotnet workload install wasm-tools-net10",
-  "buildCommand": "dotnet publish FitUP/FitUP.csproj -c Release -o publish",
   "outputDirectory": "publish/wwwroot",
   "cleanUrls": true,
   "headers": [
