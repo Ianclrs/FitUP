@@ -638,7 +638,7 @@
                 </MudGrid>
                 @if (_limitacoesSelecionadas.Contains("Outra"))
                 {
-                    <MudTextField @bind-Value="_outraLimitacaoDescricao" Label="Descreva brevemente sua limitação" Variant="Variant.Outlined" Class="mt-4" Style="width:100%;" />
+                    <MudTextField @bind-Value="_outraLimitacaoDescricao"  Label="Descreva brevemente sua limitação" Variant="Variant.Text" Class="mt-4" Style="width:100%;--mud-palette-primary:coral" />
                 }
                 <MudStack Row="true" Class="mt-6" Spacing="2" AlignItems="AlignItems.Center">
                     <MudButton Class="btn-voltar-fitup" Size="Size.Large" OnClick="PrevStep">
@@ -889,7 +889,7 @@
     };
     private readonly List<OptionItem> _nivelOptions = new()
     {
-        new(Icons.Material.Outlined.Grade, "Iniciante", "Menos de 6 meses de treino"),
+        new(Icons.Material.Outlined.Grade, "Iniciante", "Menos de 6 meses"),
         new(Icons.Material.Outlined.TrendingUp, "Intermediário", "6 meses a 2 anos"),
         new(Icons.Material.Outlined.EmojiEvents, "Avançado", "Mais de 2 anos de treino"),
     };
@@ -902,6 +902,7 @@
 
     private readonly List<OptionItem> _limitacaoOptions = new()
     {
+        new(Icons.Material.Outlined.CheckCircle, "Nenhuma", "Sem limitações no momento"),
         new(Icons.Material.Outlined.DirectionsWalk, "Joelho", "Desconforto ou lesão nos joelhos"),
         new(Icons.Material.Outlined.Accessibility, "Coluna", "Lombar, hérnia ou dor crônica"),
         new(Icons.Material.Outlined.SportsHandball, "Ombro", "Tendinite, bursite ou instabilidade"),
@@ -909,7 +910,6 @@
         new(Icons.Material.Outlined.PanTool, "Punho", "Síndrome do túnel do carpo"),
         new(Icons.Material.Outlined.AirlineSeatFlat, "Quadril", "Desconforto ou restrição articular"),
         new(Icons.Material.Outlined.DirectionsRun, "Tornozelo", "Entorses ou instabilidade"),
-        new(Icons.Material.Outlined.CheckCircle, "Nenhuma", "Sem limitações no momento"),
         new(Icons.Material.Outlined.Edit, "Outra", "Outra condição não listada"),
     };
 
@@ -945,7 +945,7 @@
         ["remada-unilateral"] = new("Remada Unilateral", 3, "8–10", "90s", "Costas"),
         ["pulldown"] = new("Pulldown Polia", 3, "8–10", "120s", "Costas"),
         ["crucifixo-inverso"] = new("Crucifixo Inverso", 3, "8–10", "90s", "Costas & Ombros"),
-        ["barra-fixa"] = new("Barra Fixa Pegada Larga", 4, "6–10", "90s", "Latíssimo do dorso"),
+        ["puxada-alta"] = new("Puxada Alta no Pulley", 4, "6–10", "90s", "Latíssimo do dorso"),
 
         @*Ombro*@
         ["desenvolvimento"] = new("Desenvolvimento Máquina ou Halter", 3, "8–12", "60s", "Deltoides"),
@@ -1024,7 +1024,7 @@
         ["Inferiores"] = new[] { "agachamento", "leg-press", "cadeira-extensora", "cadeira-flexora", "stiff", "elevacao-pelvica", "panturrilha", "abdominal", "agachamento-sumo", "agachamento-bulgaro", "agachamento-goblet", "agachamento-hack", "agachamento-smith", "mesa-flexora", "extensao-quadril", "afundo", "abdominal-supra", "abdominal-infra", "abdominal-bicicleta", "abdominal-cruzada", "prancha", "prancha-rotacao" },
         ["Ombros & Core"] = new[] { "desenvolvimento", "elevacao-lateral", "elevacao-frontal", "face-pull", "remada-alta", "prancha", "abdominal-bicicleta", "arnold-press", "abdominal", "abdominal-supra", "abdominal-infra", "abdominal-cruzada", "abdominal-alpinista", "prancha-rotacao" },
         ["Peito & Tríceps"] = new[] { "supino-inclinado", "supino-reto", "crucifixo-inclinado", "crucifixo-reto", "voador-frontal", "crossover-polia-alta", "crossover-polia-baixa", "triceps-testa", "triceps-frances", "triceps-pulley", "crossover-polia-media", "triceps-corda", "triceps-coice", "flexao-fechada", "mergulho", "supino-declinado" },
-        ["Costas & Bíceps"] = new[] { "barra-fixa", "remada-curvada", "remada-cavalinho", "remada-unilateral", "puxada-frontal", "terra", "rosca-direta", "rosca-martelo", "rosca-scott", "pulldown", "crucifixo-inverso", "rosca-alternada", "rosca-concentrada", "rosca-inclinada", "rosca-spider", "rosca-direta-polia" },
+        ["Costas & Bíceps"] = new[] { "puxada-alta", "remada-curvada", "remada-cavalinho", "remada-unilateral", "puxada-frontal", "terra", "rosca-direta", "rosca-martelo", "rosca-scott", "pulldown", "crucifixo-inverso", "rosca-alternada", "rosca-concentrada", "rosca-inclinada", "rosca-spider", "rosca-direta-polia" },
         ["Pernas & Glúteos"] = new[] { "agachamento", "leg-press", "cadeira-extensora", "stiff", "afundo", "agachamento-goblet", "cadeira-flexora", "panturrilha", "elevacao-pelvica", "extensao-quadril", "agachamento-sumo", "agachamento-bulgaro", "agachamento-hack", "agachamento-smith", "mesa-flexora", "abdominal", "abdominal-supra", "abdominal-infra", "abdominal-bicicleta", "abdominal-cruzada", "prancha", "prancha-rotacao" },
         ["Pernas & Ombros"] = new[] { "agachamento", "leg-press", "cadeira-extensora", "cadeira-flexora", "elevacao-lateral", "desenvolvimento", "elevacao-frontal", "remada-alta", "stiff", "elevacao-pelvica", "panturrilha", "face-pull", "arnold-press", "afundo" },
         ["Full Body Metabolic"] = new[] { "agachamento-salto", "flexao", "burpee", "mountain-climber", "afundo", "remada-halteres", "prancha-rotacao", "jumping-jacks" },

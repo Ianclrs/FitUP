@@ -2202,7 +2202,7 @@
                             <MudText Typo="Typo.h4" Style="font-family:cambria; font-weight:bold; color:coral" Class=" mb-2">@treino.Nome</MudText>
 
                             <MudCard Elevation="12" Class="mb-2" Style="border:1px solid coral">
-                                <MudText Typo="Typo.body1" Align="Align.Center" Class="white-text mb-2 ms-1 mt-2">@treino.Descricao</MudText>
+                                <MudText Typo="Typo.body1" Align="Align.Center" Class="white-text mb-2 ms-1 me-1 mt-2">@treino.Descricao</MudText>
 
                                 <MudText Style="font-size:0.75rem;font-weight:bold;text-transform:uppercase;letter-spacing:0.12em;color:coral" Class="mb-3 ms-2">
                                     Benefícios
@@ -2464,14 +2464,14 @@
         {
             Nome        = "Upper / Lower",
             Tagline     = "Equilíbrio entre volume e recuperação",
-            Descricao   = "Divide os treinos em membros superiores e inferiores, alternando ao longo da semana. Excelente para quem treina 4 vezes por semana.",
+            Descricao   = "É um estilo de treino onde divide o treino em dois blocos: Upper onde o foco é a parte superior do corpo, fazendo pelo menos um exercício para os músculos englobados e Lower que trabalha a parte inferior do corpo seguindo a mesma ideia do anterior, sendo feito no dia subsequente. Execelente para quem treina 4 vezes por semana.",
             Frequencia  = "4 dias/semana",
             Publico     = "Intermediários e avançados",
             Icone       = Icons.Material.Filled.FitnessCenter,
             Inverter    = false,
             CardGradient = "linear-gradient(135deg, #3a1f14 0%, #1c1008 100%)",
             Beneficios  = new() { "Boa frequência por grupamento", "Recuperação adequada", "Volume bem distribuído", "Fácil de progredir" },
-            Explicacao  = "Treine membros superiores em um dia e membros inferiores no outro. Permite alta frequência e excelente janela de descanso hipertrófico.",
+            Explicacao  = "O formato mais consagrado é o ciclo de 4 dias por semana. Isso deixa 3 dias inteiros para a recuperação sistêmica e muscular. Uma abordagem excelente é focar o treino 'A' em cargas maiores (força) e o treino 'B' em repetições um pouco mais altas (hipertrofia).",
             CronogramaSemanal = new()
             {
                 new() { Dia = "Segunda", Rotina = "Upper", Foco = "Peito, Costas, Ombros e Braços" },
@@ -2479,7 +2479,7 @@
                 new() { Dia = "Quarta", Rotina = "Descanso", Foco = "Recuperação Ativa / Cardio Leve" },
                 new() { Dia = "Quinta", Rotina = "Upper", Foco = "Peito, Costas, Ombros e Braços" },
                 new() { Dia = "Sexta", Rotina = "Lower", Foco = "Quadríceps, Posterior e Glúteos" },
-                new() { Dia = "Sábado", Rotina = "Descanso", Foco = "Repouso Total / Cardio Leve" },
+                new() { Dia = "Sábado", Rotina = "Descanso", Foco = "Recuperação Ativa / Cardio Leve" },
                 new() { Dia = "Domingo", Rotina = "Descanso", Foco = "Repouso Total" }
             }
         },
@@ -2487,14 +2487,14 @@
         {
             Nome        = "Full Body",
             Tagline     = "Corpo inteiro em cada sessão",
-            Descricao   = "A estratégia aqui é focar em exercícios compostos e multiarticulares (como agachamento, levantamento terra, supinos e remadas) que recrutam várias massas musculares ao mesmo tempo.",
+            Descricao   = "A premissa do Fullbody é estimular todos os grandes grupos musculares do corpo (peito, costas, pernas e ombros) em uma única sessão. Em vez de treinar de 4 a 6 vezes por semana, o foco muda para 3 vezes na semana, com dias de descanso total intercalados.",
             Frequencia  = "3 dias/semana",
             Publico     = "Iniciantes e intermediários",
             Icone       = Icons.Material.Filled.AccessibilityNew,
             Inverter    = true,
             CardGradient = "linear-gradient(135deg, #3d2010 0%, #1a0d06 100%)",
             Beneficios  = new() { "Alta frequência muscular", "Ótimo para iniciantes", "Eficiente para quem tem pouco tempo", "Queima calórica elevada" },
-            Explicacao  = "Foco em exercícios compostos (agachamento, supino, levantamento terra, remada) que recrutam múltiplos grupos musculares ao mesmo tempo. Alta eficiência para ganho de força e condicionamento geral.",
+            Explicacao  = "A distribuição de um Fullbody eficiente geralmente alterna o foco principal de cada dia para garantir que nenhuma região fique defasada ou sobrecarregada demais.",
             CronogramaSemanal = new()
             {
                 new() { Dia = "Segunda", Rotina = "Full Body", Foco = "Peito, Costas, Braço e Inferiores" },
@@ -2510,14 +2510,14 @@
         {
             Nome        = "Push Pull Legs",
             Tagline     = "Empurrar, Puxar e Pernas",
-            Descricao   = "Uma das divisões mais famosas e fisiológicas que existem. Ela separa o corpo pelos padrões de movimento biomecânicos, evitando que você use músculos auxiliares no dia errado.",
+            Descricao   = "Uma das divisões mais famosas e fisiológicas que existem. Ela separa o corpo pelos padrões de movimento biomecânicos, evitando que você use músculos auxiliares no dia errado. É o modelo favorito no fisiculturismo moderno porque organiza o corpo não por regiões geográficas (superior/inferior), mas pela função mecânica dos movimentos.",
             Frequencia  = "3 a 6 dias/semana",
             Publico     = "Intermediários e avançados",
             Icone       = Icons.Material.Filled.DirectionsRun,
             Inverter    = false,
             CardGradient = "linear-gradient(135deg, #2e1a0e 0%, #150b04 100%)",
             Beneficios  = new() { "Treinos focados e intensos", "Permite alta frequência", "Ótimo para hipertrofia", "Padrão de movimento lógico" },
-            Explicacao  = "Push: peito, ombros e tríceps. Pull: costas e bíceps. Legs: toda a musculatura das pernas. Separação por tipo de movimento que garante excelente recuperação e permite frequência elevada sem sobrecarga.",
+            Explicacao  = "Aqui, nós agrupamos os músculos que trabalham em sinergia no mesmo dia. Isso elimina completamente o problema de treinar um músculo hoje e descobrir que ele precisa ser usado como estabilizador ou auxiliar no treino de amanhã. Push: peito, ombros e tríceps. Pull: costas e bíceps. Legs: toda a musculatura das pernas. Separação por tipo de movimento que garante excelente recuperação e permite frequência elevada sem sobrecarga.",
             CronogramaSemanal = new()
             {
                 new() { Dia = "Segunda", Rotina = "Push (Empurrar)", Foco = "Peito e Tríceps" },
