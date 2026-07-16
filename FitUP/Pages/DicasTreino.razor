@@ -2267,6 +2267,120 @@
             </MudItem>
         }
     </MudGrid>
+
+    @* ========== SEÇÃO TÉCNICAS AVANÇADAS ========== *@
+    <MudStack AlignItems="AlignItems.Center" Spacing="0" Class="mb-16 mt-16">
+        <div class="d-flex align-center justify-center">
+            <MudText Typo="Typo.h4" Style="color:coral;font-family:Cambria;font-weight:bold">Técnicas</MudText>
+            <MudText Typo="Typo.h4" Class="ms-1" Style="font-family:Cambria; font-weight:bold">Avançadas</MudText>
+        </div>
+        <div class="d-flex flex-column align-center justify-center" style="width: 100%;">
+            <MudDivider Style="--mud-palette-divider:coral; max-width:400px; width:100%;" />
+            <MudCard Elevation="12" Style="max-width:500px; width:100%; min-height:73px; height:auto;" Class="rounded-sm">
+                <MudText Align="Align.Center" Class="pa-1">
+                    Leve seu treino ao próximo nível com métodos de intensidade avançada. 
+                    Drop Set, Rest-Pause, Bi-Set, Pirâmide e muito mais para quebrar platôs e maximizar a hipertrofia.
+                </MudText>
+            </MudCard>
+        </div>
+    </MudStack>
+
+    <MudGrid Spacing="5" Class="px-4">
+        @foreach (var tecnica in ListaTecnicas)
+        {
+            var idAncoraTec = tecnica.Nome.ToLower().Replace(" ", "-").Replace("/", "-");
+
+            <MudItem xs="12" id="@idAncoraTec" Class="mb-20 mt-20">
+                <MudGrid Class="@(tecnica.Inverter ? "flex-row-reverse align-center" : "align-center")">
+
+                    <MudItem xs="12" md="5">
+                        <MudPaper Elevation="4"
+                                  Class="training-card p-8 d-flex flex-column align-center justify-center"
+                                  Style="@($"background: {tecnica.CardGradient};")">
+                            <div class="icon-bubble">
+                                <MudIcon Icon="@tecnica.Icone" Style="font-size: 3rem; color: #fff;" />
+                            </div>
+                            <MudText Style="font-size:0.7rem;font-weight:700;letter-spacing:0.3em;text-transform:uppercase;color:rgba(255,255,255,0.6);" Class="mt-5">
+                                Técnica
+                            </MudText>
+                            <MudText Typo="Typo.h4" Class="mt-1 white-text font-bold text-center">@tecnica.Nome</MudText>
+                            <MudText Typo="Typo.body2" Style="color:rgba(255,255,255,0.75);" Class="mt-2 text-center">@tecnica.Tagline</MudText>
+                            <MudChip T="string" Color="Color.Surface" Variant="Variant.Text" Class="coral-text mt-2">
+                                @tecnica.Nivel
+                            </MudChip>
+                        </MudPaper>
+                    </MudItem>
+
+                    <MudItem xs="12" md="7" Class="d-flex flex-column justify-center">
+                        <div class="px-4">
+                            <MudText Typo="Typo.h4" Style="font-family:cambria; font-weight:bold; color:coral" Class="mb-2">@tecnica.Nome</MudText>
+
+                            <MudCard Elevation="12" Class="mb-2" Style="border:1px solid coral">
+                                <MudText Typo="Typo.body1" Align="Align.Center" Class="white-text mb-2 ms-1 me-1 mt-2">@tecnica.Descricao</MudText>
+
+                                <MudText Style="font-size:0.75rem;font-weight:bold;text-transform:uppercase;letter-spacing:0.12em;color:coral" Class="mb-3 ms-2">
+                                    Benefícios
+                                </MudText>
+                                <MudGrid Spacing="2" Class="mb-2">
+                                    @foreach (var b in tecnica.Beneficios)
+                                    {
+                                        <MudItem xs="12" sm="6">
+                                            <div class="d-flex align-start gap-2 ms-2">
+                                                <MudIcon Icon="@Icons.Material.Filled.CheckCircle"
+                                                         Style="color:coral;font-size:1.1rem;margin-top:2px;flex-shrink:0;" />
+                                                <MudText Typo="Typo.body2" Class="white-text">@b</MudText>
+                                            </div>
+                                        </MudItem>
+                                    }
+                                </MudGrid>
+                            </MudCard>
+
+                            <MudGrid Spacing="3">
+                                <MudItem xs="12" sm="6">
+                                    <div class="info-chip coral-border rounded mb-2 mud-theme-dark">
+                                        <div class="d-flex align-center gap-2 mb-1">
+                                            <MudIcon Icon="@Icons.Material.Filled.FlashOn"
+                                                     Style="color:coral;font-size:1rem;" />
+                                            <MudText Class="white-text" Style="font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;">
+                                                Quando Usar
+                                            </MudText>
+                                        </div>
+                                        <MudText Typo="Typo.body2" Class="white-text ms-1" Style="font-weight:600;">@tecnica.QuandoUsar</MudText>
+                                    </div>
+                                </MudItem>
+
+                                <MudItem xs="12" sm="6">
+                                    <div class="info-chip coral-border rounded mb-2 mud-theme-dark">
+                                        <div class="d-flex align-center gap-2 mb-1">
+                                            <MudIcon Icon="@Icons.Material.Filled.FitnessCenter"
+                                                     Style="color:coral;font-size:1rem" />
+                                            <MudText Class="white-text" Style="font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:0.1em;">
+                                                Nível
+                                            </MudText>
+                                        </div>
+                                        <MudText Typo="Typo.body2" Class="white-text" Style="font-weight:600;">@tecnica.Nivel</MudText>
+                                    </div>
+                                </MudItem>
+                            </MudGrid>
+                            <div class="d-flex gap-2">
+                                <MudButton Variant="Variant.Text"
+                                           Style="background-color:coral"
+                                           Class="scale-hover"
+                                           EndIcon="@Icons.Material.Filled.ArrowForward"
+                                           OnClick="@(async () => await AbrirDetalhesTecnica(tecnica))">
+                                    Saiba Mais
+                                </MudButton>
+                                <MudButton Style="background-color:coral" Class="scale-hover" OnClick="@(() => AbrirExemploTecnica(tecnica))">
+                                    Exemplo Prático
+                                </MudButton>
+                            </div>
+                        </div>
+                    </MudItem>
+                </MudGrid>
+            </MudItem>
+        }
+    </MudGrid>
+
 </MudContainer>
 
 <style>

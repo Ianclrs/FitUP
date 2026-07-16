@@ -69,7 +69,10 @@ html, body {
     align-items: center; /* Centraliza verticalmente */
     justify-content: center; /* Centraliza horizontalmente na tela */
     gap: 12px; /* Espaço entre o texto e a barra */
-    margin: 400px auto; /* Margem externa */
+    flex-wrap: wrap;
+    padding: 20px;
+    max-width: 90vw;
+    text-align: center;
 }
 
 /* O texto */
