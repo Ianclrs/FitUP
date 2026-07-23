@@ -45,7 +45,7 @@
         {
             <MudMenu @ref="_userMenu" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter" Class="mt-2 ms-2">
                 <ActivatorContent>
-                    <div class="user-menu-activator d-flex align-center" style="cursor:pointer;" @onclick="@(args => _userMenu.ToggleMenuAsync(args))" @onclick:stopPropagation="true">
+                    <div class="user-menu-activator d-flex align-center" style="cursor:pointer;">
                         <MudIcon Icon="@Icons.Material.Filled.AccountCircle" Size="Size.Large" Style="color:coral;" />
                         <MudText Class="d-none d-md-inline-block ms-2" Typo="Typo.body2" Style="color:coral; font-weight:600;">
                             @AuthService.NomeUsuario
@@ -89,7 +89,7 @@
         <NavMenu />
     </MudDrawer> 
     @*Imagem geral da pagina e responsivel nos tamanhos menores*@
-    <MudMainContent Style="@($"background: url('{(_isDarkMode ? _backgroundImageDark : _backgroundImageLight)}'); background: cover; background-attachment: fixed; display: flex; flex-direction: column; min-height: 100vh;")">
+<MudMainContent Style="@($"background: url('{(_isDarkMode ? _backgroundImageDark : _backgroundImageLight)}') center/cover fixed no-repeat; display: flex; flex-direction: column; min-height: 100vh;")">
 
         <div style="flex-grow: 1">
             @Body

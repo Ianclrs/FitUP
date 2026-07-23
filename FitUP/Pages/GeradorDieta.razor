@@ -6,6 +6,7 @@
 @inject PlanoAlimentarService PlanoAlimentarService
 @inject AuthService AuthService
 @inject ISnackbar Snackbar
+@inject HttpClient Http
 
 <PageTitle>Gerador de Dietas</PageTitle>
 
@@ -360,7 +361,7 @@
     private void CalcularMetas()
     {
         if (!double.TryParse(_peso, out var peso) || !double.TryParse(_altura, out var altura) || !double.TryParse(_idade, out var idade)) return;
-        _tmb = _sexo == "M" ? 88.36 + (13.4 * peso) + (4.8 * altura) - (5.7 * idade) : 447.6 + (9.2 * peso) + (3.1 * altura) - (4.3 * idade);
+        _tmb = _sexo == "M" ? 88.362 + (13.397 * peso) + (4.799 * altura) - (5.677 * idade) : 447.593 + (9.247 * peso) + (3.098 * altura) - (4.330 * idade);
         double fa = _nivelAtividade switch { 1 => 1.2, 2 => 1.375, 3 => 1.55, 4 => 1.725, 5 => 1.9, _ => 1.55 };
         _tdee = _tmb * fa;
         _metaCalorias = _objetivo switch { 0 => _tdee + 500, 1 => Math.Max(_tdee - 500, _tmb), _ => _tdee };
@@ -370,12 +371,49 @@
         _metaFibra = _objetivo == 1 ? 35 : 28;
     }
 
+    private class AlimentoJson { public string Nome { get; set; } = ""; public double Proteina { get; set; } public double Carboidrato { get; set; } public double Gordura { get; set; } public double Fibra { get; set; } public double Calorias { get; set; } public string Categoria { get; set; } = ""; public List<string> Horarios { get; set; } = new(); public string UnidadeMedida { get; set; } = "g"; public double PorcaoPadrao { get; set; } = 100; }
     private class AlimentoBase { public string Nome = ""; public double Proteina, Carboidrato, Gordura, Fibra, Calorias; public string Categoria = ""; public List<string> Horarios = new(); public string UnidadeMedida = "g"; public double PorcaoPadrao = 100; }
     private List<AlimentoBase> _alimentosBase = new();
 
-    protected override void OnInitialized() => InicializarBancoAlimentos();
+    protected override async Task OnInitializedAsync()
+    {
+        await CarregarAlimentosAsync();
+    }
 
-    private void InicializarBancoAlimentos() {
+    private async Task CarregarAlimentosAsync()
+    {
+        try
+        {
+            var json = await Http.GetStringAsync("data/alimentos.json");
+            var alimentosJson = JsonSerializer.Deserialize<List<AlimentoJson>>(json, new JsonSerializerOptions { PropertyNameCaseInsensitive = true });
+            if (alimentosJson != null && alimentosJson.Count > 0)
+            {
+                _alimentosBase = alimentosJson.Select(a => new AlimentoBase
+                {
+                    Nome = a.Nome,
+                    Proteina = a.Proteina,
+                    Carboidrato = a.Carboidrato,
+                    Gordura = a.Gordura,
+                    Fibra = a.Fibra,
+                    Calorias = a.Calorias,
+                    Categoria = a.Categoria,
+                    Horarios = a.Horarios ?? new(),
+                    PorcaoPadrao = a.PorcaoPadrao,
+                    UnidadeMedida = a.UnidadeMedida ?? "g"
+                }).ToList();
+                return;
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Erro ao carregar alimentos do JSON: {ex.Message}. Usando fallback hardcoded.");
+        }
+
+        // Fallback: dados hardcoded
+        InicializarBancoAlimentosFallback();
+    }
+
+    private void InicializarBancoAlimentosFallback() {
         _alimentosBase = new List<AlimentoBase> {
             new() { Nome = "Peito de Frango", Proteina = 31, Carboidrato = 0, Gordura = 3.6, Fibra = 0, Calorias = 165, Categoria = "proteina", Horarios = new(){"almoco","janta"}, PorcaoPadrao = 150 },
             new() { Nome = "Ovos Inteiros", Proteina = 13, Carboidrato = 1.1, Gordura = 9.5, Fibra = 0, Calorias = 143, Categoria = "proteina", Horarios = new(){"cafe","ceia"}, UnidadeMedida = "unid", PorcaoPadrao = 2 },
@@ -388,32 +426,6 @@
             new() { Nome = "Albumina", Proteina = 80, Carboidrato = 5, Gordura = 0.5, Fibra = 0, Calorias = 345, Categoria = "proteina", Horarios = new(){"ceia"}, PorcaoPadrao = 30 },
             new() { Nome = "Iogurte Grego", Proteina = 10, Carboidrato = 4, Gordura = 0.7, Fibra = 0, Calorias = 59, Categoria = "proteina", Horarios = new(){"cafe","lanche","ceia"}, PorcaoPadrao = 170 },
             new() { Nome = "Sobrecoxa de Frango", Proteina = 26, Carboidrato = 0, Gordura = 8, Fibra = 0, Calorias = 176, Categoria = "proteina", Horarios = new(){"almoco","janta"}, PorcaoPadrao = 150 },
-            new() { Nome = "Arroz Branco", Proteina = 2.7, Carboidrato = 28, Gordura = 0.3, Fibra = 0.5, Calorias = 130, Categoria = "carbo", Horarios = new(){"almoco","janta"}, PorcaoPadrao = 200 },
-            new() { Nome = "Arroz Integral", Proteina = 2.6, Carboidrato = 23, Gordura = 1, Fibra = 1.8, Calorias = 111, Categoria = "carbo", Horarios = new(){"almoco","janta"}, PorcaoPadrao = 200 },
-            new() { Nome = "Batata Doce", Proteina = 1.6, Carboidrato = 20, Gordura = 0.1, Fibra = 3, Calorias = 86, Categoria = "carbo", Horarios = new(){"almoco","janta","pretreino"}, PorcaoPadrao = 200 },
-            new() { Nome = "Aveia em Flocos", Proteina = 13, Carboidrato = 56, Gordura = 7, Fibra = 10, Calorias = 350, Categoria = "carbo", Horarios = new(){"cafe","pretreino"}, PorcaoPadrao = 40 },
-            new() { Nome = "Pao Integral", Proteina = 10, Carboidrato = 42, Gordura = 3.5, Fibra = 6, Calorias = 240, Categoria = "carbo", Horarios = new(){"cafe","lanche"}, UnidadeMedida = "fatias", PorcaoPadrao = 2 },
-            new() { Nome = "Macarrao Integral", Proteina = 5, Carboidrato = 31, Gordura = 0.9, Fibra = 3, Calorias = 140, Categoria = "carbo", Horarios = new(){"almoco","janta"}, PorcaoPadrao = 200 },
-            new() { Nome = "Mandioca", Proteina = 1.4, Carboidrato = 33, Gordura = 0.3, Fibra = 1.8, Calorias = 140, Categoria = "carbo", Horarios = new(){"almoco","janta"}, PorcaoPadrao = 200 },
-            new() { Nome = "Feijao Preto", Proteina = 4.5, Carboidrato = 14, Gordura = 0.5, Fibra = 8, Calorias = 77, Categoria = "carbo", Horarios = new(){"almoco"}, PorcaoPadrao = 100 },
-            new() { Nome = "Maltodextrina", Proteina = 0, Carboidrato = 95, Gordura = 0, Fibra = 0, Calorias = 380, Categoria = "carbo", Horarios = new(){"postreino"}, PorcaoPadrao = 30 },
-            new() { Nome = "Banana", Proteina = 1.3, Carboidrato = 23, Gordura = 0.3, Fibra = 2.6, Calorias = 92, Categoria = "fruta", Horarios = new(){"cafe","pretreino","lanche"}, UnidadeMedida = "unid", PorcaoPadrao = 1 },
-            new() { Nome = "Maca", Proteina = 0.3, Carboidrato = 14, Gordura = 0.2, Fibra = 2.4, Calorias = 56, Categoria = "fruta", Horarios = new(){"cafe","lanche"}, UnidadeMedida = "unid", PorcaoPadrao = 1 },
-            new() { Nome = "Morangos", Proteina = 0.7, Carboidrato = 7.7, Gordura = 0.3, Fibra = 2, Calorias = 32, Categoria = "fruta", Horarios = new(){"cafe","ceia","lanche"}, PorcaoPadrao = 150 },
-            new() { Nome = "Abacaxi", Proteina = 0.5, Carboidrato = 13, Gordura = 0.1, Fibra = 1.4, Calorias = 50, Categoria = "fruta", Horarios = new(){"pretreino","postreino"}, PorcaoPadrao = 150 },
-            new() { Nome = "Laranja", Proteina = 0.9, Carboidrato = 12, Gordura = 0.1, Fibra = 2.4, Calorias = 47, Categoria = "fruta", Horarios = new(){"cafe","lanche"}, UnidadeMedida = "unid", PorcaoPadrao = 1 },
-            new() { Nome = "Melancia", Proteina = 0.6, Carboidrato = 7.6, Gordura = 0.2, Fibra = 0.4, Calorias = 30, Categoria = "fruta", Horarios = new(){"pretreino"}, PorcaoPadrao = 200 },
-            new() { Nome = "Brocolis", Proteina = 2.8, Carboidrato = 4, Gordura = 0.4, Fibra = 2.6, Calorias = 34, Categoria = "vegetal", Horarios = new(){"almoco","janta"}, PorcaoPadrao = 100 },
-            new() { Nome = "Espinafre", Proteina = 2.9, Carboidrato = 3.6, Gordura = 0.4, Fibra = 2.2, Calorias = 23, Categoria = "vegetal", Horarios = new(){"almoco","janta"}, PorcaoPadrao = 80 },
-            new() { Nome = "Cenoura", Proteina = 0.9, Carboidrato = 6.8, Gordura = 0.2, Fibra = 2.8, Calorias = 34, Categoria = "vegetal", Horarios = new(){"almoco","janta"}, PorcaoPadrao = 80 },
-            new() { Nome = "Rucula", Proteina = 2.6, Carboidrato = 2.1, Gordura = 0.7, Fibra = 1.6, Calorias = 25, Categoria = "vegetal", Horarios = new(){"janta"}, PorcaoPadrao = 50 },
-            new() { Nome = "Beterraba", Proteina = 1.6, Carboidrato = 9.6, Gordura = 0.2, Fibra = 2.8, Calorias = 43, Categoria = "vegetal", Horarios = new(){"almoco"}, PorcaoPadrao = 80 },
-            new() { Nome = "Abobrinha", Proteina = 1.2, Carboidrato = 2.1, Gordura = 0.3, Fibra = 1, Calorias = 17, Categoria = "vegetal", Horarios = new(){"janta"}, PorcaoPadrao = 100 },
-            new() { Nome = "Azeite de Oliva", Proteina = 0, Carboidrato = 0, Gordura = 100, Fibra = 0, Calorias = 884, Categoria = "gordura", Horarios = new(){"almoco","janta"}, UnidadeMedida = "ml", PorcaoPadrao = 10 },
-            new() { Nome = "Pasta de Amendoim", Proteina = 25, Carboidrato = 20, Gordura = 50, Fibra = 5, Calorias = 588, Categoria = "gordura", Horarios = new(){"cafe","lanche"}, PorcaoPadrao = 20 },
-            new() { Nome = "Castanhas do Para", Proteina = 14, Carboidrato = 12, Gordura = 66, Fibra = 7.5, Calorias = 656, Categoria = "gordura", Horarios = new(){"lanche","ceia"}, PorcaoPadrao = 20 },
-            new() { Nome = "Abacate", Proteina = 2, Carboidrato = 8.5, Gordura = 15, Fibra = 6.7, Calorias = 160, Categoria = "gordura", Horarios = new(){"cafe","ceia","lanche"}, PorcaoPadrao = 80 },
-            new() { Nome = "Mix de Sementes", Proteina = 18, Carboidrato = 15, Gordura = 42, Fibra = 10, Calorias = 520, Categoria = "gordura", Horarios = new(){"ceia","lanche"}, PorcaoPadrao = 20 },
         };
     }
 
