@@ -368,7 +368,11 @@ else
         _isLoadingBio = true;
         try
         {
-            _registrosBio = await BioimpedanciaService.ListarAsync();
+            var result = await BioimpedanciaService.ListarAsync();
+            if (result.Success)
+                _registrosBio = result.Data ?? new();
+            else
+                Snackbar.Add(result.ErrorMessage, Severity.Error);
         }
         catch (Exception ex)
         {
@@ -385,15 +389,16 @@ else
     {
         try
         {
-            var ok = await BioimpedanciaService.RemoverAsync(registro.Id);
-            if (ok)
+
+            var result = await BioimpedanciaService.RemoverAsync(registro.Id);
+            if (result.Success)
             {
                 _registrosBio.Remove(registro);
                 Snackbar.Add("Registro removido.", Severity.Success);
             }
             else
             {
-                Snackbar.Add("Erro ao remover registro.", Severity.Error);
+                Snackbar.Add(result.ErrorMessage, Severity.Error);
             }
         }
         catch (Exception ex)
@@ -421,14 +426,15 @@ else
                 Nome = primeiroNome,
                 Sobrenome = sobrenome
             };
-            var ok = await AuthService.AtualizarPerfilAsync(request);
-            if (ok)
+
+            var result = await AuthService.AtualizarPerfilAsync(request);
+            if (result.Success)
             {
                 Snackbar.Add("Nome atualizado com sucesso!", Severity.Success);
             }
             else
             {
-                Snackbar.Add("Erro ao atualizar nome. Tente novamente.", Severity.Error);
+                Snackbar.Add(result.ErrorMessage, Severity.Error);
             }
         }
         catch (Exception ex)
@@ -456,15 +462,15 @@ else
                 Sobrenome = sobrenome,
                 Email = _emailModel.NovoEmail
             };
-            var ok = await AuthService.AtualizarPerfilAsync(request);
-            if (ok)
+            var result = await AuthService.AtualizarPerfilAsync(request);
+            if (result.Success)
             {
                 _emailModel.ConfirmarEmail = _emailModel.NovoEmail;
                 Snackbar.Add("E-mail atualizado com sucesso!", Severity.Success);
             }
             else
             {
-                Snackbar.Add("Erro ao atualizar e-mail. Tente novamente.", Severity.Error);
+                Snackbar.Add(result.ErrorMessage, Severity.Error);
             }
         }
         catch (Exception ex)
@@ -505,15 +511,16 @@ else
                 NovaSenha = _senhaModel.NovaSenha,
                 ConfirmarNovaSenha = _senhaModel.ConfirmarSenha
             };
-            var ok = await AuthService.AlterarSenhaAsync(request);
-            if (ok)
+
+            var result = await AuthService.AlterarSenhaAsync(request);
+            if (result.Success)
             {
                 Snackbar.Add("Senha alterada com sucesso!", Severity.Success);
                 _senhaModel = new SenhaModel();
             }
             else
             {
-                Snackbar.Add("Erro ao alterar senha. Verifique os dados.", Severity.Error);
+                Snackbar.Add(result.ErrorMessage, Severity.Error);
             }
         }
         catch (Exception ex)

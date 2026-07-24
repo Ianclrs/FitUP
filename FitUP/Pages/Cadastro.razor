@@ -233,14 +233,14 @@
 
             var result = await AuthService.RegistrarAsync(request);
 
-            if (result != null)
+            if (result.Success)
             {
                 Snackbar.Add("Conta criada com sucesso! Faça login.", Severity.Success);
                 NavigationManager.NavigateTo("/login");
             }
             else
             {
-                Snackbar.Add("Erro ao criar conta. Verifique os dados e tente novamente.", Severity.Error);
+                Snackbar.Add(result.ErrorMessage, Severity.Error);
             }
         }
         catch (Exception ex)

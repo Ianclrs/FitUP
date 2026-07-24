@@ -318,7 +318,12 @@
         _isLoading = true;
         try
         {
-            _treinos = await PlanoTreinoService.ListarAsync();
+
+            var result = await PlanoTreinoService.ListarAsync();
+            if (result.Success)
+                _treinos = result.Data ?? new();
+            else
+                Snackbar.Add(result.ErrorMessage, Severity.Error);
         }
         catch (Exception ex)
         {
@@ -342,8 +347,9 @@
     {
         try
         {
-            var sucesso = await PlanoTreinoService.RemoverAsync(treino.Id);
-            if (sucesso)
+
+            var result = await PlanoTreinoService.RemoverAsync(treino.Id);
+            if (result.Success)
             {
                 _treinos.Remove(treino);
                 if (_expandedTreinoId == treino.Id)
@@ -352,7 +358,7 @@
             }
             else
             {
-                Snackbar.Add("Erro ao remover treino.", Severity.Error);
+                Snackbar.Add(result.ErrorMessage, Severity.Error);
             }
         }
         catch (Exception ex)

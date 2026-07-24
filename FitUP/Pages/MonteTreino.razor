@@ -9,6 +9,7 @@
 @inject AuthService AuthService
 @inject PlanoTreinoService PlanoTreinoService
 @inject ISnackbar Snackbar
+@inject ExerciseCatalogService ExerciseCatalog
 @implements IDisposable
 
 <PageTitle>Monte o Seu Treino</PageTitle>
@@ -854,6 +855,11 @@
 </div>
 
 @code {
+    protected override async Task OnInitializedAsync()
+    {
+        await ExerciseCatalog.InitializeAsync();
+    }
+
     private Phase _phase = Phase.Quiz;
     private int _step;
     private string? _objetivo;
@@ -915,133 +921,9 @@
         new(Icons.Material.Outlined.Edit, "Outra", "Outra condição não listada"),
     };
 
-    private static readonly Dictionary<string, string[]> _limitacaoBloqueios = new()
+    private Dictionary<string, FitUP.Services.ExerciseItem> GetFilteredCatalog(string focus)
     {
-        ["Joelho"] = new[] { "agachamento", "agachamento-sumo", "agachamento-bulgaro", "agachamento-goblet", "agachamento-hack", "agachamento-smith", "leg-press", "afundo", "agachamento-salto", "burpee" },
-        ["Coluna"] = new[] { "terra", "stiff", "remada-curvada", "agachamento", "agachamento-sumo", "agachamento-smith", "remada-cavalinho", "back-extension" },
-        ["Ombro"] = new[] { "desenvolvimento", "elevacao-lateral", "elevacao-frontal", "arnold-press", "remada-alta", "supino-reto", "supino-inclinado", "supino-declinado", "flexao" },
-        ["Cotovelo"] = new[] { "rosca-direta", "rosca-simultanea", "rosca-alternada", "rosca-martelo", "rosca-scott", "rosca-concentrada", "rosca-inclinada", "rosca-spider", "rosca-direta-polia", "triceps-frances", "triceps-testa", "triceps-corda", "triceps-pulley", "triceps-coice", "flexao-fechada", "mergulho" },
-        ["Punho"] = new[] { "supino-reto", "supino-inclinado", "supino-declinado", "desenvolvimento", "flexao", "flexao-fechada", "barra-fixa", "mergulho", "burpee", "mountain-climber" },
-        ["Quadril"] = new[] { "agachamento-sumo", "agachamento-bulgaro", "stiff", "elevacao-pelvica", "afundo", "leg-press", "cadeira-extensora", "cadeira-flexora", "agachamento-salto" },
-        ["Tornozelo"] = new[] { "agachamento-salto", "burpee", "pulo-corda", "corrida-intervalada", "jumping-jacks", "mountain-climber", "afundo", "agachamento-bulgaro" },
-    };
-
-    private readonly Dictionary<string, ExerciseItem> _exerciseCatalog = new()
-    {
-        @*Peitoral*@
-        ["supino-reto"] = new("Supino Reto Máquina ou Barra", 4, "8–12", "60s", "Peitoral maior"),
-        ["supino-inclinado"] = new("Supino Inclinado Máquina ou Barra", 4, "8–12", "60s", "Peitoral superior"),
-        ["crucifixo-inclinado"] = new("Crucifixo Inclinado Máquina ou Halter", 3, "8–12", "60s", "Peitoral superior"),
-        ["crucifixo-reto"] = new("Crucifixo Reto", 3, "8–12", "60s", "Peitoral maior"),
-        ["voador-frontal"] = new("Voador Frontal", 3, "8–10", "60s", "Peitoral maior"),
-        ["crossover-polia-alta"] = new("Cross Over Polia Alta", 3, "8–12", "60s", "Peitoral superior"),
-        ["crossover-polia-baixa"] = new("Cross Over Polia Baixa", 3, "8–12", "60s", "Peitoral inferior"),
-        ["crossover-polia-media"] = new("Cross Over Polia Média", 3, "8–12", "60s", "Peitoral maior"),
-        ["flexao"] = new("Flexão de Braços", 3, "10–20", "45s", "Peito & Ombros"),
-        ["supino-declinado"] = new("Supino Declinado", 4, "8–12", "90s", "Peitoral inferior"),
-
-        @*Dorsal/Costas*@
-        ["puxada-frontal"] = new("Puxada Frontal", 4, "8–12", "60s", "Costas"),
-        ["remada-curvada"] = new("Remada Curvada com Barra", 4, "8–12", "75s", "Costas & Lombar"),
-        ["remada-cavalinho"] = new("Remada Cavalinho", 3, "5–6", "120s", "Costas"),
-        ["remada-unilateral"] = new("Remada Unilateral", 3, "8–10", "90s", "Costas"),
-        ["pulldown"] = new("Pulldown Polia", 3, "8–10", "120s", "Costas"),
-        ["crucifixo-inverso"] = new("Crucifixo Inverso", 3, "8–10", "90s", "Costas & Ombros"),
-        ["puxada-alta"] = new("Puxada Alta no Pulley", 4, "6–10", "90s", "Latíssimo do dorso"),
-
-        @*Ombro*@
-        ["desenvolvimento"] = new("Desenvolvimento Máquina ou Halter", 3, "8–12", "60s", "Deltoides"),
-        ["elevacao-lateral"] = new("Elevação Lateral Polia ou Halter", 3, "8–12", "60s", "Deltoides medial e posterior"),
-        ["elevacao-frontal"] = new("Elevação Frontal", 3, "8–12", "60s", "Deltoides frontal"),
-        ["arnold-press"] = new("Arnold Press", 3, "10–12", "90s", "Deltoides"),
-        ["remada-alta"] = new("Remada Alta", 4, "8–10", "60s", "Deltoides"),
-        ["face-pull"] = new("Face Pull", 4, "8–10", "90s", "Deltoides"),
-
-        @*Triceps*@
-        ["triceps-frances"] = new("Tríceps Francês Corda ou Halter", 3, "10–12", "60s", "Tríceps"),
-        ["triceps-testa"] = new("Tríceps Testa Corda ou Barra W", 3, "10–12", "60s", "Tríceps"),
-        ["triceps-corda"] = new("Tríceps Corda na Polia", 4, "8-12", "60s", "Tríceps"),
-        ["triceps-pulley"] = new("Tríceps Polia Alta", 4, "10–12", "60s", "Tríceps"),
-        ["triceps-coice"] = new("Tríceps Coice", 3, "10–12", "60s", "Tríceps"),
-        ["flexao-fechada"] = new("Flexão de Braços Pegada Fechada", 3, "10–20", "60s", "Tríceps & Peito"),
-        ["mergulho"] = new("Mergulho entre Bancos", 3, "10–12", "60s", "Tríceps & Peito"),
-
-        @*Biceps*@
-        ["rosca-direta"] = new("Rosca Direta com Barra", 3, "6–8", "60s", "Bíceps"),
-        ["rosca-simultanea"] = new("Rosca Simultânea com Barra ou Halter", 3, "10–12", "60s", "Bíceps"),
-        ["rosca-direta-polia"] = new("Rosca Direta na Polia", 3, "6–8", "60s", "Bíceps"),
-        ["rosca-concentrada"] = new("Rosca Concentrada", 3, "10–12", "60s", "Bíceps"),
-        ["rosca-inclinada"] = new("Rosca Inclinada", 3, "10–12", "60s", "Bíceps"),
-        ["rosca-spider"] = new("Rosca Spider", 3, "10–12", "60s", "Bíceps"),
-        ["rosca-alternada"] = new("Rosca Alternada", 3, "10–12", "60s", "Bíceps"),
-        ["rosca-scott"] = new("Rosca Scott", 3, "8–12", "60s", "Bíceps"),
-        ["rosca-martelo"] = new("Rosca Martelo", 3, "8–12", "60s", "Braquial & Braquiorradial"),
-
-        @*Abdomen*@
-        ["abdominal"] = new("Abdominal Reto", 3, "15–20", "45s", "Core"),
-        ["prancha"] = new("Prancha Isométrica", 3, "45–60s", "45s", "Core"),
-        ["abdominal-supra"] = new("Abdominal Supra", 3, "15–20", "60s", "Core"),
-        ["abdominal-infra"] = new("Abdominal Infra", 3, "15–20", "60s", "Core"),
-        ["abdominal-bicicleta"] = new("Abdominal Bicicleta", 3, "15–20", "60s", "Core"),
-        ["abdominal-cruzada"] = new("Abdominal Cruzada", 3, "15–20", "45s", "Core"),
-        ["abdominal-alpinista"] = new("Abdominal Alpinista", 3, "15–20", "60s", "Core"),
-        ["prancha-rotacao"] = new("Prancha com Rotação", 3, "10 cada", "40s", "Core"),
-
-        @*Posterior*@
-        ["stiff"] = new("Stiff com Barra", 3, "10–12", "90s", "Posterior & Glúteo"),
-        ["cadeira-flexora"] = new("Cadeira Flexora", 3, "12–15", "60s", "Posterior & Isquiotibiais"),
-        ["mesa-flexora"] = new("Mesa Flexora", 3, "10–12", "60s", "Posterior & Isquiotibiais"),
-        ["back-extension"] = new("Extensão de Coluna", 3, "8–10", "60s", "Posterior & Lombar"),
-        ["terra"] = new("Levantamento Terra", 4, "8–10", "120s", "Posterior"),
-
-        @*Quadriceps*@
-        ["agachamento"] = new("Agachamento Livre", 4, "6–10", "120s", "Quadríceps & Glúteo"),
-        ["agachamento-sumo"] = new("Agachamento Sumo", 4, "6–10", "120s", "Quadríceps & Glúteo"),
-        ["agachamento-bulgaro"] = new("Agachamento Bulgaro", 4, "6–10", "120s", "Quadríceps & Glúteo"),
-        ["cadeira-extensora"] = new("Cadeira Extensora", 3, "12–15", "60s", "Quadríceps"),
-        ["leg-press"] = new("Leg Press 45°", 4, "8–12", "60s", "Quadríceps"),
-        ["agachamento-goblet"] = new("Agachamento Goblet", 3, "20–25", "45s", "Quadríceps"),
-        ["agachamento-hack"] = new("Agachamento Hack", 4, "8–10", "60s", "Quadríceps"),
-        ["agachamento-smith"] = new("Agachamento Smith", 4, "8–12", "90s", "Quadríceps & Glúteo"),
-
-        @*Gluteo*@
-        ["elevacao-pelvica"] = new("Elevação Pélvica", 4, "8–12", "60s", "Glúteo"),
-        ["extensao-quadril"] = new("Extensão de Quadril na Polia", 4, "10–15", "45s", "Glúteo"),
-        ["afundo"] = new("Afundo Alternado", 4, "12 cada", "45s", "Quadríceps & Glúteo"),
-
-        ["panturrilha"] = new("Panturrilha em Pé", 4, "15–20", "45s", "Panturrilhas"),
-        ["agachamento-salto"] = new("Agachamento com Salto", 4, "15–20", "40s", "Full body"),
-        ["burpee"] = new("Burpee Modificado", 3, "10–12", "45s", "Full body"),
-        ["mountain-climber"] = new("Mountain Climber", 3, "20–25", "40s", "Core & Cardiovascular"),
-        ["kettlebell-swing"] = new("Kettlebell Swing", 4, "20–25", "60s", "Posterior chain"),
-        ["jumping-jacks"] = new("Jumping Jacks", 3, "30s", "30s", "Cardiovascular"),
-        ["corrida-intervalada"] = new("Corrida Intervalada", 5, "1 min forte", "1 min leve", "Cardiovascular"),
-        ["pulo-corda"] = new("Pulo de Corda", 3, "2 min", "60s", "Cardiovascular"),
-    };
-
-    private static readonly Dictionary<string, string[]> _focusMapping = new()
-    {
-        ["Full Body"] = new[] { "agachamento", "supino-reto", "puxada-frontal", "desenvolvimento", "rosca-direta", "triceps-corda", "abdominal" },
-        ["Superiores"] = new[] { "supino-inclinado", "puxada-frontal", "crucifixo-reto", "remada-curvada", "elevacao-lateral", "rosca-alternada", "triceps-frances", "crucifixo-inclinado", "voador-frontal", "crossover-polia-alta", "crossover-polia-baixa", "triceps-testa", "triceps-pulley", "barra-fixa", "remada-cavalinho", "pulldown", "crucifixo-inverso", "rosca-martelo", "rosca-scott", "rosca-direta-polia", "rosca-concentrada", "rosca-inclinada", "rosca-spider", "desenvolvimento", "elevacao-frontal", "arnold-press", "remada-alta", "face-pull" },
-        ["Inferiores"] = new[] { "agachamento", "leg-press", "cadeira-extensora", "cadeira-flexora", "stiff", "elevacao-pelvica", "panturrilha", "abdominal", "agachamento-sumo", "agachamento-bulgaro", "agachamento-goblet", "agachamento-hack", "agachamento-smith", "mesa-flexora", "extensao-quadril", "afundo", "abdominal-supra", "abdominal-infra", "abdominal-bicicleta", "abdominal-cruzada", "prancha", "prancha-rotacao" },
-        ["Ombros & Core"] = new[] { "desenvolvimento", "elevacao-lateral", "elevacao-frontal", "face-pull", "remada-alta", "prancha", "abdominal-bicicleta", "arnold-press", "abdominal", "abdominal-supra", "abdominal-infra", "abdominal-cruzada", "abdominal-alpinista", "prancha-rotacao" },
-        ["Peito & Tríceps"] = new[] { "supino-inclinado", "supino-reto", "crucifixo-inclinado", "crucifixo-reto", "voador-frontal", "crossover-polia-alta", "crossover-polia-baixa", "triceps-testa", "triceps-frances", "triceps-pulley", "crossover-polia-media", "triceps-corda", "triceps-coice", "flexao-fechada", "mergulho", "supino-declinado" },
-        ["Costas & Bíceps"] = new[] { "puxada-alta", "remada-curvada", "remada-cavalinho", "remada-unilateral", "puxada-frontal", "terra", "rosca-direta", "rosca-martelo", "rosca-scott", "pulldown", "crucifixo-inverso", "rosca-alternada", "rosca-concentrada", "rosca-inclinada", "rosca-spider", "rosca-direta-polia" },
-        ["Pernas & Glúteos"] = new[] { "agachamento", "leg-press", "cadeira-extensora", "stiff", "afundo", "agachamento-goblet", "cadeira-flexora", "panturrilha", "elevacao-pelvica", "extensao-quadril", "agachamento-sumo", "agachamento-bulgaro", "agachamento-hack", "agachamento-smith", "mesa-flexora", "abdominal", "abdominal-supra", "abdominal-infra", "abdominal-bicicleta", "abdominal-cruzada", "prancha", "prancha-rotacao" },
-        ["Pernas & Ombros"] = new[] { "agachamento", "leg-press", "cadeira-extensora", "cadeira-flexora", "elevacao-lateral", "desenvolvimento", "elevacao-frontal", "remada-alta", "stiff", "elevacao-pelvica", "panturrilha", "face-pull", "arnold-press", "afundo" },
-        ["Full Body Metabolic"] = new[] { "agachamento-salto", "flexao", "burpee", "mountain-climber", "afundo", "remada-halteres", "prancha-rotacao", "jumping-jacks" },
-        ["HIIT + Resistência"] = new[] { "afundo", "remada-halteres", "prancha-rotacao", "jumping-jacks", "burpee", "mountain-climber", "kettlebell-swing", "corrida-intervalada" },
-        ["Agachamento + Empurrar"] = new[] { "agachamento", "supino-reto", "desenvolvimento", "supino-inclinado", "leg-press", "triceps-corda" },
-        ["Terra + Puxar"] = new[] { "terra", "barra-fixa", "remada-cavalinho", "remada-curvada", "puxada-polia", "rosca-direta", "rosca-martelo" },
-        ["Resistência Muscular"] = new[] { "agachamento-goblet", "flexao", "remada-halteres", "prancha", "agachamento-salto", "panturrilha", "abdominal" },
-        ["Cardio + Força"] = new[] { "corrida-intervalada", "kettlebell-swing", "pulo-corda", "burpee", "jumping-jacks", "mountain-climber" },
-    };
-
-    private Dictionary<string, ExerciseItem> GetFilteredCatalog(string focus)
-    {
-        if (_focusMapping.TryGetValue(focus, out var keys))
-            return _exerciseCatalog.Where(kvp => keys.Contains(kvp.Key)).ToDictionary(kvp => kvp.Key, kvp => kvp.Value);
-        return _exerciseCatalog;
+        return ExerciseCatalog.GetFilteredCatalog(focus);
     }
 
     private int ProgressPct() => (int)Math.Round((double)_step / _stepLabels.Length * 100);
@@ -1078,7 +960,7 @@
         var blockedKeys = new HashSet<string>();
         foreach (var lim in _limitacoesSelecionadas)
         {
-            if (_limitacaoBloqueios.TryGetValue(lim, out var keys))
+            if (ExerciseCatalog.LimitacaoBloqueios.TryGetValue(lim, out var keys))
             {
                 foreach (var k in keys) blockedKeys.Add(k);
             }
@@ -1115,11 +997,8 @@
 
     private bool MatchesBlockedKey(ExerciseItem ex, HashSet<string> blockedKeys)
     {
-        foreach (var kvp in _exerciseCatalog)
-        {
-            if (kvp.Value.Name == ex.Name && blockedKeys.Contains(kvp.Key))
-                return true;
-        }
+        if (ExerciseCatalog.TryGetKeyByName(ex.Name, out var key))
+            return blockedKeys.Contains(key);
         return false;
     }
 
@@ -1230,14 +1109,15 @@
                 }).ToList()
             };
 
+
             var result = await PlanoTreinoService.CriarAsync(request);
-            if (result is not null)
+            if (result.Success)
             {
                 Snackbar.Add("Treino salvo com sucesso! Acesse 'Treinos Salvos' no menu do usuário.", Severity.Success);
             }
             else
             {
-                Snackbar.Add("Erro ao salvar o treino. Verifique sua conexão.", Severity.Error);
+                Snackbar.Add(result.ErrorMessage, Severity.Error);
             }
         }
         catch (Exception ex)
@@ -1304,7 +1184,8 @@
         var splits = workout.Splits.Take(Math.Min(_dias > 0 ? _dias : 3, workout.Splits.Count)).ToList();
         var split = splits.ElementAtOrDefault(_activeDay) ?? splits.First();
         var ex = split.Exercises[index];
-        var match = _exerciseCatalog.Where(kvp => kvp.Value.Name == ex.Name).Select(kvp => kvp.Key).FirstOrDefault();
+        ExerciseCatalog.TryGetKeyByName(ex.Name, out var match);
+        match ??= string.Empty;
         _selectedEditExerciseKey = match ?? string.Empty;
         _editSeries = ex.Series; _editReps = ex.Reps; _editRest = ex.Rest;
     }
@@ -1314,7 +1195,7 @@
         var splits = workout.Splits.Take(Math.Min(_dias > 0 ? _dias : 3, workout.Splits.Count)).ToList();
         var split = splits.ElementAtOrDefault(_activeDay) ?? splits.First();
         var ex = split.Exercises[index];
-        if (!string.IsNullOrWhiteSpace(_selectedEditExerciseKey) && _exerciseCatalog.TryGetValue(_selectedEditExerciseKey, out var sel)) { ex.Name = sel.Name; ex.Muscle = sel.Muscle; }
+        if (!string.IsNullOrWhiteSpace(_selectedEditExerciseKey) && ExerciseCatalog.Catalog.TryGetValue(_selectedEditExerciseKey, out var sel)) { ex.Name = sel.Name; ex.Muscle = sel.Muscle; }
         ex.Series = _editSeries; ex.Reps = _editReps; ex.Rest = _editRest;
         CancelExerciseEdit();
     }

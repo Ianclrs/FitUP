@@ -159,33 +159,73 @@ public class PlanoTreinoService
     /// <summary>
     /// Lista todos os planos de treino do usuário logado.
     /// </summary>
-    public async Task<List<PlanoTreinoDto>> ListarAsync()
+    public async Task<ApiResponse<List<PlanoTreinoDto>>> ListarAsync()
     {
-        var response = await _httpClient.GetAsync("api/planos-treino");
-        if (!response.IsSuccessStatusCode)
-            return new List<PlanoTreinoDto>();
+        try
+        {
+            var response = await _httpClient.GetAsync("api/planos-treino");
+            if (!response.IsSuccessStatusCode)
+                return ApiResponse<List<PlanoTreinoDto>>.Fail((int)response.StatusCode);
 
-        return await response.Content.ReadFromJsonAsync<List<PlanoTreinoDto>>() ?? new();
+            var data = await response.Content.ReadFromJsonAsync<List<PlanoTreinoDto>>();
+            return ApiResponse<List<PlanoTreinoDto>>.Ok(data ?? new List<PlanoTreinoDto>());
+        }
+        catch (HttpRequestException)
+        {
+            return ApiResponse<List<PlanoTreinoDto>>.NetworkError();
+        }
+        catch (TaskCanceledException)
+        {
+            return ApiResponse<List<PlanoTreinoDto>>.NetworkError("Tempo limite excedido. Verifique sua conexão.");
+        }
     }
 
     /// <summary>
     /// Cria um novo plano de treino para o usuário logado.
     /// </summary>
-    public async Task<PlanoTreinoDto?> CriarAsync(PlanoTreinoRequest request)
+    public async Task<ApiResponse<PlanoTreinoDto>> CriarAsync(PlanoTreinoRequest request)
     {
-        var response = await _httpClient.PostAsJsonAsync("api/planos-treino", request);
-        if (!response.IsSuccessStatusCode)
-            return null;
+        try
+        {
+            var response = await _httpClient.PostAsJsonAsync("api/planos-treino", request);
+            if (!response.IsSuccessStatusCode)
+                return ApiResponse<PlanoTreinoDto>.Fail((int)response.StatusCode);
 
-        return await response.Content.ReadFromJsonAsync<PlanoTreinoDto>();
+            var data = await response.Content.ReadFromJsonAsync<PlanoTreinoDto>();
+            return data is not null
+                ? ApiResponse<PlanoTreinoDto>.Ok(data, (int)response.StatusCode)
+                : ApiResponse<PlanoTreinoDto>.Fail((int)response.StatusCode);
+        }
+        catch (HttpRequestException)
+        {
+            return ApiResponse<PlanoTreinoDto>.NetworkError();
+        }
+        catch (TaskCanceledException)
+        {
+            return ApiResponse<PlanoTreinoDto>.NetworkError("Tempo limite excedido. Verifique sua conexão.");
+        }
     }
 
     /// <summary>
     /// Remove um plano de treino pelo ID.
     /// </summary>
-    public async Task<bool> RemoverAsync(Guid id)
+    public async Task<ApiResponse<bool>> RemoverAsync(Guid id)
     {
-        var response = await _httpClient.DeleteAsync($"api/planos-treino/{id}");
-        return response.IsSuccessStatusCode;
+        try
+        {
+            var response = await _httpClient.DeleteAsync($"api/planos-treino/{id}");
+            if (!response.IsSuccessStatusCode)
+                return ApiResponse<bool>.Fail((int)response.StatusCode);
+
+            return ApiResponse<bool>.Ok(true);
+        }
+        catch (HttpRequestException)
+        {
+            return ApiResponse<bool>.NetworkError();
+        }
+        catch (TaskCanceledException)
+        {
+            return ApiResponse<bool>.NetworkError("Tempo limite excedido. Verifique sua conexão.");
+        }
     }
 }

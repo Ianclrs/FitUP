@@ -210,16 +210,16 @@
                 NovaSenha = _model.NovaSenha
             };
 
-            var sucesso = await AuthService.RedefinirSenhaAsync(request);
+            var result = await AuthService.RedefinirSenhaAsync(request);
 
-            if (sucesso)
+            if (result.Success)
             {
                 _senhaRedefinida = true;
                 Snackbar.Add("Senha redefinida com sucesso!", Severity.Success);
             }
             else
             {
-                Snackbar.Add("Token inválido ou expirado.", Severity.Error);
+                Snackbar.Add(result.ErrorMessage, Severity.Error);
                 _tokenValido = false;
             }
         }

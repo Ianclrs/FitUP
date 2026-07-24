@@ -21,9 +21,6 @@
                               Immediate="true" />
             </EditForm>
 
-            <MudAlert Severity="Severity.Info" Class="mt-2" Style="font-size: 13px;">
-                Modo desenvolvimento: o link de redefinição será exibido na tela.
-            </MudAlert>
         </MudStack>
     </DialogContent>
     <DialogActions>
@@ -86,27 +83,16 @@
                 Email = _model.Email
             };
 
-            var response = await AuthService.EsqueciSenhaAsync(request);
+            var result = await AuthService.EsqueciSenhaAsync(request);
 
-            if (response is not null)
+            if (result.Success)
             {
-                try
-                {
-                    await JSRuntime.InvokeVoidAsync("navigator.clipboard.writeText", response.LinkRedefinicao);
-                    Snackbar.Add($"Link copiado! Acesse: {response.LinkRedefinicao}", Severity.Success,
-                        config => config.VisibleStateDuration = 10000);
-                }
-                catch
-                {
-                    Snackbar.Add($"Link: {response.LinkRedefinicao}", Severity.Info,
-                        config => config.VisibleStateDuration = 15000);
-                }
-
-                MudDialog.Close(DialogResult.Ok(response));
+                Snackbar.Add("Um e-mail com instruções para redefinir sua senha foi enviado. Verifique sua caixa de entrada.", Severity.Success);
+                MudDialog.Close(DialogResult.Ok(result.Data));
             }
             else
             {
-                Snackbar.Add("E-mail não encontrado.", Severity.Error);
+                Snackbar.Add(result.ErrorMessage, Severity.Error);
             }
         }
         catch (Exception ex)

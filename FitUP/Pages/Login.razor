@@ -189,16 +189,16 @@
                 Senha = loginModel.Password
             };
 
-            var response = await AuthService.LoginAsync(request);
+            var result = await AuthService.LoginAsync(request);
 
-            if (response is not null)
+            if (result.Success && result.Data is not null)
             {
-                Snackbar.Add($"Bem-vindo(a), {response.Nome}!", Severity.Success);
+                Snackbar.Add($"Bem-vindo(a), {result.Data.Nome}!", Severity.Success);
                 NavigationManager.NavigateTo("/");
             }
             else
             {
-                Snackbar.Add("E-mail ou senha inválidos. Tente novamente.", Severity.Error);
+                Snackbar.Add(result.ErrorMessage, Severity.Error);
             }
         }
         catch (Exception ex)

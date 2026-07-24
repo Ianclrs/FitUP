@@ -312,7 +312,12 @@
         _isLoading = true;
         try
         {
-            _dietas = await PlanoAlimentarService.ListarAsync();
+
+            var result = await PlanoAlimentarService.ListarAsync();
+            if (result.Success)
+                _dietas = result.Data ?? new();
+            else
+                Snackbar.Add(result.ErrorMessage, Severity.Error);
         }
         catch (Exception ex)
         {
@@ -336,8 +341,9 @@
     {
         try
         {
-            var sucesso = await PlanoAlimentarService.RemoverAsync(dieta.Id);
-            if (sucesso)
+
+            var result = await PlanoAlimentarService.RemoverAsync(dieta.Id);
+            if (result.Success)
             {
                 _dietas.Remove(dieta);
                 if (_expandedDietaId == dieta.Id)
@@ -346,7 +352,7 @@
             }
             else
             {
-                Snackbar.Add("Erro ao remover dieta.", Severity.Error);
+                Snackbar.Add(result.ErrorMessage, Severity.Error);
             }
         }
         catch (Exception ex)

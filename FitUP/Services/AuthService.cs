@@ -221,40 +221,67 @@ public class AuthService
         }
     }
 
-    public async Task<AuthResponse?> RegistrarAsync(RegistroRequest request)
+    public async Task<ApiResponse<AuthResponse>> RegistrarAsync(RegistroRequest request)
     {
-        var response = await _httpClient.PostAsJsonAsync("api/auth/registrar", request);
-        if (!response.IsSuccessStatusCode)
-            return null;
+        try
+        {
+            var response = await _httpClient.PostAsJsonAsync("api/auth/registrar", request);
+            if (!response.IsSuccessStatusCode)
+                return ApiResponse<AuthResponse>.Fail((int)response.StatusCode);
 
-        return await response.Content.ReadFromJsonAsync<AuthResponse>();
+            var data = await response.Content.ReadFromJsonAsync<AuthResponse>();
+            return data is not null
+                ? ApiResponse<AuthResponse>.Ok(data, (int)response.StatusCode)
+                : ApiResponse<AuthResponse>.Fail((int)response.StatusCode);
+        }
+        catch (HttpRequestException)
+        {
+            return ApiResponse<AuthResponse>.NetworkError();
+        }
+        catch (TaskCanceledException)
+        {
+            return ApiResponse<AuthResponse>.NetworkError("Tempo limite excedido. Verifique sua conexão.");
+        }
     }
 
-    public async Task<AuthResponse?> LoginAsync(LoginRequest request)
+    public async Task<ApiResponse<AuthResponse>> LoginAsync(LoginRequest request)
     {
-        var response = await _httpClient.PostAsJsonAsync("api/auth/login", request);
-        if (!response.IsSuccessStatusCode)
-            return null;
-
-        var authResponse = await response.Content.ReadFromJsonAsync<AuthResponse>();
-        if (authResponse is not null)
+        try
         {
-            // Atualiza estado em memória
-            NomeUsuario = authResponse.Nome;
-            EmailUsuario = authResponse.Email;
-            UsuarioId = authResponse.UsuarioId;
-            Token = authResponse.Token;
+            var response = await _httpClient.PostAsJsonAsync("api/auth/login", request);
+            if (!response.IsSuccessStatusCode)
+                return ApiResponse<AuthResponse>.Fail((int)response.StatusCode);
 
-            // Configura o header Authorization
-            _httpClient.DefaultRequestHeaders.Authorization =
-                new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", Token);
+            var authResponse = await response.Content.ReadFromJsonAsync<AuthResponse>();
+            if (authResponse is not null)
+            {
+                // Atualiza estado em memória
+                NomeUsuario = authResponse.Nome;
+                EmailUsuario = authResponse.Email;
+                UsuarioId = authResponse.UsuarioId;
+                Token = authResponse.Token;
 
-            // Persiste no localStorage
-            await PersistSessionAsync();
-            NotifyAuthStateChanged();
+                // Configura o header Authorization
+                _httpClient.DefaultRequestHeaders.Authorization =
+                    new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", Token);
+
+                // Persiste no localStorage
+                await PersistSessionAsync();
+                NotifyAuthStateChanged();
+
+                return ApiResponse<AuthResponse>.Ok(authResponse, (int)response.StatusCode);
+            }
+
+            return ApiResponse<AuthResponse>.Fail((int)response.StatusCode);
         }
-
-        return authResponse;
+        catch (HttpRequestException)
+        {
+            return ApiResponse<AuthResponse>.NetworkError();
+        }
+        catch (TaskCanceledException)
+        {
+            return ApiResponse<AuthResponse>.NetworkError("Tempo limite excedido. Verifique sua conexão.");
+        }
     }
 
     /// <summary>
@@ -281,51 +308,104 @@ public class AuthService
     /// <summary>
     /// Atualiza nome e/ou e-mail do usuário logado.
     /// </summary>
-    public async Task<bool> AtualizarPerfilAsync(AtualizarPerfilRequest request)
+    public async Task<ApiResponse<bool>> AtualizarPerfilAsync(AtualizarPerfilRequest request)
     {
-        var response = await _httpClient.PutAsJsonAsync("api/usuario/me", request);
-        if (!response.IsSuccessStatusCode)
-            return false;
+        try
+        {
+            var response = await _httpClient.PutAsJsonAsync("api/usuario/me", request);
+            if (!response.IsSuccessStatusCode)
+                return ApiResponse<bool>.Fail((int)response.StatusCode);
 
-        // Atualiza estado em memória
-        if (!string.IsNullOrWhiteSpace(request.Nome))
-            NomeUsuario = request.Nome;
-        if (!string.IsNullOrWhiteSpace(request.Email))
-            EmailUsuario = request.Email;
+            // Atualiza estado em memória
+            if (!string.IsNullOrWhiteSpace(request.Nome))
+                NomeUsuario = request.Nome;
+            if (!string.IsNullOrWhiteSpace(request.Email))
+                EmailUsuario = request.Email;
 
-        await PersistSessionAsync();
-        NotifyAuthStateChanged();
-        return true;
+            await PersistSessionAsync();
+            NotifyAuthStateChanged();
+            return ApiResponse<bool>.Ok(true);
+        }
+        catch (HttpRequestException)
+        {
+            return ApiResponse<bool>.NetworkError();
+        }
+        catch (TaskCanceledException)
+        {
+            return ApiResponse<bool>.NetworkError("Tempo limite excedido. Verifique sua conexão.");
+        }
     }
 
     /// <summary>
     /// Altera a senha do usuário logado.
     /// </summary>
-    public async Task<bool> AlterarSenhaAsync(AlterarSenhaRequest request)
+    public async Task<ApiResponse<bool>> AlterarSenhaAsync(AlterarSenhaRequest request)
     {
-        var response = await _httpClient.PutAsJsonAsync("api/usuario/me/alterar-senha", request);
-        return response.IsSuccessStatusCode;
+        try
+        {
+            var response = await _httpClient.PutAsJsonAsync("api/usuario/me/alterar-senha", request);
+            if (!response.IsSuccessStatusCode)
+                return ApiResponse<bool>.Fail((int)response.StatusCode);
+
+            return ApiResponse<bool>.Ok(true);
+        }
+        catch (HttpRequestException)
+        {
+            return ApiResponse<bool>.NetworkError();
+        }
+        catch (TaskCanceledException)
+        {
+            return ApiResponse<bool>.NetworkError("Tempo limite excedido. Verifique sua conexão.");
+        }
     }
 
     /// <summary>
     /// Solicita redefinição de senha (esqueci minha senha).
     /// </summary>
-    public async Task<EsqueciSenhaResponseDto?> EsqueciSenhaAsync(EsqueciSenhaRequestDto request)
+    public async Task<ApiResponse<EsqueciSenhaResponseDto>> EsqueciSenhaAsync(EsqueciSenhaRequestDto request)
     {
-        var response = await _httpClient.PostAsJsonAsync("api/auth/esqueci-senha", request);
-        if (!response.IsSuccessStatusCode)
-            return null;
+        try
+        {
+            var response = await _httpClient.PostAsJsonAsync("api/auth/esqueci-senha", request);
+            if (!response.IsSuccessStatusCode)
+                return ApiResponse<EsqueciSenhaResponseDto>.Fail((int)response.StatusCode);
 
-        return await response.Content.ReadFromJsonAsync<EsqueciSenhaResponseDto>();
+            var data = await response.Content.ReadFromJsonAsync<EsqueciSenhaResponseDto>();
+            return data is not null
+                ? ApiResponse<EsqueciSenhaResponseDto>.Ok(data, (int)response.StatusCode)
+                : ApiResponse<EsqueciSenhaResponseDto>.Fail((int)response.StatusCode);
+        }
+        catch (HttpRequestException)
+        {
+            return ApiResponse<EsqueciSenhaResponseDto>.NetworkError();
+        }
+        catch (TaskCanceledException)
+        {
+            return ApiResponse<EsqueciSenhaResponseDto>.NetworkError("Tempo limite excedido. Verifique sua conexão.");
+        }
     }
 
     /// <summary>
     /// Redefine a senha usando o token recebido.
     /// </summary>
-    public async Task<bool> RedefinirSenhaAsync(RedefinirSenhaRequestDto request)
+    public async Task<ApiResponse<bool>> RedefinirSenhaAsync(RedefinirSenhaRequestDto request)
     {
-        var response = await _httpClient.PostAsJsonAsync("api/auth/redefinir-senha", request);
-        return response.IsSuccessStatusCode;
+        try
+        {
+            var response = await _httpClient.PostAsJsonAsync("api/auth/redefinir-senha", request);
+            if (!response.IsSuccessStatusCode)
+                return ApiResponse<bool>.Fail((int)response.StatusCode);
+
+            return ApiResponse<bool>.Ok(true);
+        }
+        catch (HttpRequestException)
+        {
+            return ApiResponse<bool>.NetworkError();
+        }
+        catch (TaskCanceledException)
+        {
+            return ApiResponse<bool>.NetworkError("Tempo limite excedido. Verifique sua conexão.");
+        }
     }
 
     private async Task PersistSessionAsync()

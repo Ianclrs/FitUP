@@ -108,27 +108,67 @@ public class BioimpedanciaService
         _httpClient = httpClient;
     }
 
-    public async Task<List<RegistroBioimpedanciaDto>> ListarAsync()
+    public async Task<ApiResponse<List<RegistroBioimpedanciaDto>>> ListarAsync()
     {
-        var response = await _httpClient.GetAsync("api/bioimpedancia");
-        if (!response.IsSuccessStatusCode)
-            return new List<RegistroBioimpedanciaDto>();
+        try
+        {
+            var response = await _httpClient.GetAsync("api/bioimpedancia");
+            if (!response.IsSuccessStatusCode)
+                return ApiResponse<List<RegistroBioimpedanciaDto>>.Fail((int)response.StatusCode);
 
-        return await response.Content.ReadFromJsonAsync<List<RegistroBioimpedanciaDto>>() ?? new();
+            var data = await response.Content.ReadFromJsonAsync<List<RegistroBioimpedanciaDto>>();
+            return ApiResponse<List<RegistroBioimpedanciaDto>>.Ok(data ?? new List<RegistroBioimpedanciaDto>());
+        }
+        catch (HttpRequestException)
+        {
+            return ApiResponse<List<RegistroBioimpedanciaDto>>.NetworkError();
+        }
+        catch (TaskCanceledException)
+        {
+            return ApiResponse<List<RegistroBioimpedanciaDto>>.NetworkError("Tempo limite excedido. Verifique sua conexão.");
+        }
     }
 
-    public async Task<RegistroBioimpedanciaDto?> CriarAsync(RegistroBioimpedanciaRequest request)
+    public async Task<ApiResponse<RegistroBioimpedanciaDto>> CriarAsync(RegistroBioimpedanciaRequest request)
     {
-        var response = await _httpClient.PostAsJsonAsync("api/bioimpedancia", request);
-        if (!response.IsSuccessStatusCode)
-            return null;
+        try
+        {
+            var response = await _httpClient.PostAsJsonAsync("api/bioimpedancia", request);
+            if (!response.IsSuccessStatusCode)
+                return ApiResponse<RegistroBioimpedanciaDto>.Fail((int)response.StatusCode);
 
-        return await response.Content.ReadFromJsonAsync<RegistroBioimpedanciaDto>();
+            var data = await response.Content.ReadFromJsonAsync<RegistroBioimpedanciaDto>();
+            return data is not null
+                ? ApiResponse<RegistroBioimpedanciaDto>.Ok(data, (int)response.StatusCode)
+                : ApiResponse<RegistroBioimpedanciaDto>.Fail((int)response.StatusCode);
+        }
+        catch (HttpRequestException)
+        {
+            return ApiResponse<RegistroBioimpedanciaDto>.NetworkError();
+        }
+        catch (TaskCanceledException)
+        {
+            return ApiResponse<RegistroBioimpedanciaDto>.NetworkError("Tempo limite excedido. Verifique sua conexão.");
+        }
     }
 
-    public async Task<bool> RemoverAsync(Guid id)
+    public async Task<ApiResponse<bool>> RemoverAsync(Guid id)
     {
-        var response = await _httpClient.DeleteAsync($"api/bioimpedancia/{id}");
-        return response.IsSuccessStatusCode;
+        try
+        {
+            var response = await _httpClient.DeleteAsync($"api/bioimpedancia/{id}");
+            if (!response.IsSuccessStatusCode)
+                return ApiResponse<bool>.Fail((int)response.StatusCode);
+
+            return ApiResponse<bool>.Ok(true);
+        }
+        catch (HttpRequestException)
+        {
+            return ApiResponse<bool>.NetworkError();
+        }
+        catch (TaskCanceledException)
+        {
+            return ApiResponse<bool>.NetworkError("Tempo limite excedido. Verifique sua conexão.");
+        }
     }
 }

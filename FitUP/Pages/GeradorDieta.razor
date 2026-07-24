@@ -497,8 +497,11 @@
                     TotalProteina = r.TotalProteina, TotalCarboidrato = r.TotalCarboidrato, TotalGordura = r.TotalGordura, TotalFibra = r.TotalFibra, TotalCalorias = r.TotalCalorias,
                     Alimentos = r.Alimentos.Select(a => new AlimentoRequestDto { Nome = a.Nome, Quantidade = a.Quantidade, UnidadeMedida = a.UnidadeMedida,
                         Proteina = a.Proteina, Carboidrato = a.Carboidrato, Gordura = a.Gordura, Fibra = a.Fibra, Calorias = a.Calorias }).ToList() }).ToList() };
-            var ok = await PlanoAlimentarService.CriarCompletoAsync(req);
-            Snackbar.Add(ok != null ? "Dieta salva! Veja em 'Minhas Dietas'." : "Erro ao salvar.", ok != null ? Severity.Success : Severity.Error);
+            var result = await PlanoAlimentarService.CriarCompletoAsync(req);
+            if (result.Success)
+                Snackbar.Add("Dieta salva! Veja em 'Minhas Dietas'.", Severity.Success);
+            else
+                Snackbar.Add(result.ErrorMessage, Severity.Error);
         } catch (Exception ex) { Console.WriteLine($"Erro salvar: {ex.Message}"); Snackbar.Add("Erro ao salvar dieta.", Severity.Error); }
     }
 

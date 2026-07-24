@@ -189,33 +189,73 @@ public class PlanoAlimentarService
     /// <summary>
     /// Lista todos os planos alimentares do usuário logado.
     /// </summary>
-    public async Task<List<PlanoAlimentarDto>> ListarAsync()
+    public async Task<ApiResponse<List<PlanoAlimentarDto>>> ListarAsync()
     {
-        var response = await _httpClient.GetAsync("api/planos-alimentares");
-        if (!response.IsSuccessStatusCode)
-            return new List<PlanoAlimentarDto>();
+        try
+        {
+            var response = await _httpClient.GetAsync("api/planos-alimentares");
+            if (!response.IsSuccessStatusCode)
+                return ApiResponse<List<PlanoAlimentarDto>>.Fail((int)response.StatusCode);
 
-        return await response.Content.ReadFromJsonAsync<List<PlanoAlimentarDto>>() ?? new();
+            var data = await response.Content.ReadFromJsonAsync<List<PlanoAlimentarDto>>();
+            return ApiResponse<List<PlanoAlimentarDto>>.Ok(data ?? new List<PlanoAlimentarDto>());
+        }
+        catch (HttpRequestException)
+        {
+            return ApiResponse<List<PlanoAlimentarDto>>.NetworkError();
+        }
+        catch (TaskCanceledException)
+        {
+            return ApiResponse<List<PlanoAlimentarDto>>.NetworkError("Tempo limite excedido. Verifique sua conexão.");
+        }
     }
 
     /// <summary>
     /// Cria um novo plano alimentar completo (com refeições e alimentos).
     /// </summary>
-    public async Task<PlanoAlimentarDto?> CriarCompletoAsync(PlanoAlimentarCompletoRequest request)
+    public async Task<ApiResponse<PlanoAlimentarDto>> CriarCompletoAsync(PlanoAlimentarCompletoRequest request)
     {
-        var response = await _httpClient.PostAsJsonAsync("api/planos-alimentares", request);
-        if (!response.IsSuccessStatusCode)
-            return null;
+        try
+        {
+            var response = await _httpClient.PostAsJsonAsync("api/planos-alimentares", request);
+            if (!response.IsSuccessStatusCode)
+                return ApiResponse<PlanoAlimentarDto>.Fail((int)response.StatusCode);
 
-        return await response.Content.ReadFromJsonAsync<PlanoAlimentarDto>();
+            var data = await response.Content.ReadFromJsonAsync<PlanoAlimentarDto>();
+            return data is not null
+                ? ApiResponse<PlanoAlimentarDto>.Ok(data, (int)response.StatusCode)
+                : ApiResponse<PlanoAlimentarDto>.Fail((int)response.StatusCode);
+        }
+        catch (HttpRequestException)
+        {
+            return ApiResponse<PlanoAlimentarDto>.NetworkError();
+        }
+        catch (TaskCanceledException)
+        {
+            return ApiResponse<PlanoAlimentarDto>.NetworkError("Tempo limite excedido. Verifique sua conexão.");
+        }
     }
 
     /// <summary>
     /// Remove um plano alimentar pelo ID.
     /// </summary>
-    public async Task<bool> RemoverAsync(Guid id)
+    public async Task<ApiResponse<bool>> RemoverAsync(Guid id)
     {
-        var response = await _httpClient.DeleteAsync($"api/planos-alimentares/{id}");
-        return response.IsSuccessStatusCode;
+        try
+        {
+            var response = await _httpClient.DeleteAsync($"api/planos-alimentares/{id}");
+            if (!response.IsSuccessStatusCode)
+                return ApiResponse<bool>.Fail((int)response.StatusCode);
+
+            return ApiResponse<bool>.Ok(true);
+        }
+        catch (HttpRequestException)
+        {
+            return ApiResponse<bool>.NetworkError();
+        }
+        catch (TaskCanceledException)
+        {
+            return ApiResponse<bool>.NetworkError("Tempo limite excedido. Verifique sua conexão.");
+        }
     }
 }

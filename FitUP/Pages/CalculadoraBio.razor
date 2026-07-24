@@ -460,13 +460,13 @@
             };
 
             var result = await BioimpedanciaService.CriarAsync(request);
-            if (result is not null)
+            if (result.Success)
             {
                 Snackbar.Add("Resultado salvo com sucesso! Acesse seu Perfil para ver o histórico.", Severity.Success);
             }
             else
             {
-                Snackbar.Add("Erro ao salvar o resultado. Verifique sua conexão.", Severity.Error);
+                Snackbar.Add(result.ErrorMessage, Severity.Error);
             }
         }
         catch (Exception ex)

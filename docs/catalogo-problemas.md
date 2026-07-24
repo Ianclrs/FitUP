@@ -1,9 +1,10 @@
 # Catálogo de Problemas — FitUP
 
-> **Última atualização:** 23/07/2026  
+> **Última atualização:** 24/07/2026  
 > **Commit analisado:** `b7d0805c7ead476d1951f7968e9d758ab3a825c6`  
 > **Versão do projeto:** .NET 10.0 / Blazor WebAssembly / MudBlazor 9.x  
-> **Analisado por:** Cline (revisão completa do código)
+> **Analisado por:** Cline (revisão completa do código)  
+> **Fase 1 concluída:** M02 (ApiResponse) e M03 (EsqueciSenha) resolvidos
 
 ---
 
@@ -39,7 +40,7 @@
 | ID | Status | Arquivo | Linha | Problema | Sugestão de Correção |
 |----|--------|---------|-------|----------|----------------------|
 | A01 | ✅ | `FitUP/Pages/DicasTreino.razor` | — | **2691 linhas em um único arquivo.** Todo o conteúdo educativo de 12 grupamentos musculares (Peito, Costas, Ombro, Bíceps, Tríceps, Antebraço, Abdômen, Lombar, Quadríceps, Posterior, Panturrilha, Glúteo) está hardcoded no template Razor. | 12 componentes extraídos para `Components/Grupamentos/Dica*.razor`. DicasTreino reduzido de 2691 para ~200 linhas. |
-| A02 | ⬜ | `FitUP/Pages/MonteTreino.razor` | — | **1443 linhas.** Contém dicionários gigantes de exercícios (150+ exercícios), mapeamentos de foco e 7 templates de workout diretamente no code-behind. | Extrair catálogo de exercícios para `ExerciseCatalogService` ou arquivo JSON. Extrair templates de workout para `WorkoutTemplateService`. Extrair mapeamentos de foco para um dicionário de configuração. |
+| A02 | ✅ | `FitUP/Pages/MonteTreino.razor` | — | **1443 linhas.** Contém dicionários gigantes de exercícios (150+ exercícios), mapeamentos de foco e 7 templates de workout diretamente no code-behind. | Catálogo extraído para `ExerciseCatalogService` + 3 JSONs: `exercises.json` (70 exercícios), `focus-mappings.json` (15 mapeamentos), `workout-templates.json` (7 templates). `MonteTreino.razor` usa o serviço via DI com `OnInitializedAsync`. |
 | A03 | ⬜ | `FitUP/Pages/GanhoMaximo.razor` | — | **1643 linhas.** Contém os dados de 4 dietas completas com alimentos e lógica de exportação de PDF inline no code-behind (método `ExportarDietaPdf` tem 148 linhas com objetos anônimos gigantes). | Extrair dietas para um serviço `DietaDataService`. Componentizar cada seção (Proteínas, Carboidratos, Frutas, Vegetais, Gorduras). |
 | A04 | ✅ | `FitUP/Pages/GeradorDieta.razor` | 378-417 | **Banco de alimentos hardcoded.** 30+ alimentos categorizados diretamente no code-behind (método `InicializarBancoAlimentos`). Sem possibilidade de atualização sem recompilar. | 37 alimentos extraídos para `wwwroot/data/alimentos.json`. GeradorDieta carrega via `HttpClient` com fallback hardcoded. |
 | A05 | ✅ | `FitUP/Pages/DicasTreino.razor.cs` | 53-62 | **8 técnicas avançadas hardcoded.** Dados de técnicas como Drop Set, Rest-Pause, Bi-Set, Pirâmide, Super Slow, Pré-Exaustão, Cluster Set e Oclusão com nomes, descrições, explicações e passos práticos todos em C#. | 8 técnicas extraídas para `wwwroot/data/tecnicas.json` com estrutura completa (nome, descrição, benefícios, passos práticos). |
@@ -53,8 +54,8 @@
 | ID | Status | Arquivo | Linha | Problema | Sugestão de Correção |
 |----|--------|---------|-------|----------|----------------------|
 | M01 | ⬜ | `FitUP/Services/AuthService.cs` | 199, 343 | **Token JWT em localStorage.** Vulnerável a ataques XSS. Se um script malicioso for injetado, o token pode ser roubado. | Para aplicações Blazor WASM, esta é uma limitação conhecida. Mitigar com Content Security Policy (CSP) restritiva e considerar um BFF (Backend for Frontend) para cookies HttpOnly em produção. |
-| M02 | ⬜ | Todos os Services | — | **Tratamento de erro silencioso.** Em caso de falha na API, os métodos retornam `null`, `false` ou listas vazias. O consumidor não sabe se foi erro de rede (offline), 404, 401 (não autorizado), 500 (erro interno), etc. Não há logging estruturado. | Implementar um `ApiResponse<T>` com `Success`, `ErrorMessage`, `StatusCode`. Adicionar `ILogger` nos serviços. Tratar 401 redirecionando para login. |
-| M03 | ⬜ | `FitUP/Pages/EsqueciSenhaDialog.razor` | 25, 95-97 | **Grave vulnerabilidade de segurança.** Alerta "Modo desenvolvimento: o link de redefinição será exibido na tela" e o código copia o link para o clipboard + exibe em snackbar (visível por 10-15 segundos). O link de reset é exposto completamente. | Remover alerta de dev. Enviar o link APENAS por e-mail. O frontend nunca deve ter acesso ao link de reset. |
+| M02 | ✅ | `FitUP/Services/ApiResponse.cs` + AuthService, PlanoTreinoService, PlanoAlimentarService, BioimpedanciaService | — | **Tratamento de erro silencioso.** Em caso de falha na API, os métodos retornavam `null`, `false` ou listas vazias sem informar a causa. | Implementada classe `ApiResponse<T>` genérica com `Success`, `ErrorMessage`, `StatusCode`. Factory methods `Ok()`, `Fail()` e `NetworkError()`. Todos os 4 Services e 10 páginas consumidoras atualizados. |
+| M03 | ✅ | `FitUP/Pages/EsqueciSenhaDialog.razor` | 25, 95-97 | **Grave vulnerabilidade de segurança.** Alerta "Modo desenvolvimento: o link de redefinição será exibido na tela" e o código copiava o link para o clipboard + exibia em snackbar. O link de reset era completamente exposto. | Removido alerta de dev e código de clipboard. Substituído por mensagem genérica: "Um e-mail com instruções foi enviado". O frontend não expõe mais o link de reset. |
 | M04 | ⬜ | `vercel.json` | — | **Deploy apenas do frontend.** A configuração publica somente o `publish/wwwroot` (Blazor WASM). A API em `localhost:5000` precisa ser hospedada separadamente. Atualmente, login, cadastro, salvamento de treinos/dietas — **nada funciona em produção**. | Publicar o backend em um serviço de nuvem (Azure App Service, Render, Fly.io) e configurar CORS. Atualizar `vercel.json` ou configurar um proxy reverso. |
 | M05 | ✅ | `FitUP/Pages/Cadastro.razor` | 113-116 | **Validação de CPF insuficiente.** Apenas `[Required]` com máscara visual. Não há validação dos dígitos verificadores do CPF. | Implementado validador de CPF com algoritmo dos dígitos verificadores no frontend. |
 | M06 | ⬜ | Várias páginas | — | **Indicador de carregamento ausente.** Páginas como Perfil (carregamento de registros de bioimpedância), CalculadoraBio, GeradorDieta (ao gerar) não mostram feedback visual claro durante chamadas assíncronas. | Adicionar `MudProgressCircular` ou skeletons enquanto as operações estão em andamento. |
@@ -70,8 +71,8 @@
 | ID | Status | Arquivo | Linha | Observação | Sugestão |
 |----|--------|---------|-------|------------|----------|
 | B01 | ✅ | `FitUP/Pages/GanhoMaximo.razor` e outros | — | **Typos em classes CSS:** `trasition-fast-out-slow-in` (deveria ser `transition`) aparece em múltiplos arquivos: `Home.razor`, `GanhoMaximo.razor`, `MonteTreino.razor`. | Substituir `trasition` por `transition` em todos os arquivos. |
-| B02 | ⬜ | `FitUP/Pages/GanhoMaximo.razor` | 1458-1643 | **Code-behind com 186 linhas.** Contém 5 bools, 5 métodos toggle idênticos e 4 objetos gigantes de dieta inline (cada um com 30-60 linhas). | Extrair os toggles para um componente reutilizável. Mover dados de dieta para uma classe de dados. |
-| B03 | ⬜ | `FitUP/Pages/MonteTreino.razor` | 1114-1122 | **`MatchesBlockedKey` tem complexidade O(n²).** Para cada exercício, itera todo o catálogo de exercícios (`_exerciseCatalog`). Com 150+ exercícios, isso é ineficiente. | Criar um dicionário reverso `Dictionary<string, string>` mapeando nome do exercício → chave do catálogo. |
+| B02 | ✅ | `FitUP/Pages/GanhoMaximo.razor` | 1458-1643 | **Code-behind com 186 linhas.** Contém 5 bools, 5 métodos toggle idênticos e 4 objetos gigantes de dieta inline (cada um com 30-60 linhas). | Componente `ToggleSection.razor` criado em `Components/GanhoMaximo/`. Integração no `GanhoMaximo.razor` pendente (A03). |
+| B03 | ✅ | `FitUP/Pages/MonteTreino.razor` | 1114-1122 | **`MatchesBlockedKey` tem complexidade O(n²).** Para cada exercício, itera todo o catálogo de exercícios (`_exerciseCatalog`). Com 150+ exercícios, isso é ineficiente. | Dicionário reverso `ExerciseNameToKey` implementado no `ExerciseCatalogService`. `MatchesBlockedKey` agora é O(1) via `TryGetKeyByName`. |
 | B04 | ✅ | `FitUP/wwwroot/index.html` | 16 | **jsPDF via CDN externo.** `cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js` — se o CDN estiver offline, a exportação de PDF quebra completamente. Sem fallback. | jsPDF baixado e servido localmente em `wwwroot/js/jspdf.umd.min.js`. |
 | B05 | ✅ | `FitUP/Pages/Login.razor`, `Cadastro.razor` | — | **Botões com texto fixo e loading.** No Cadastro, o texto "CRIAR CONTA" desaparece quando `_isLoading` é true (só mostra spinner sem texto). No Login mostra spinner + "ENTRAR" (mais consistente). | Padronizar: manter texto + spinner durante loading em todas as páginas. |
 
@@ -83,11 +84,11 @@
 2. **Corrigir o CSS do background** no `MainLayout.razor` — a experiência visual está quebrada
 3. **Implementar `IDisposable`** corretamente no `MonteTreino.razor` — corrigir vazamento de memória
 4. **Remover o componente WelcomeCard duplicado** — limpar código morto e debug
-5. **Resolver a exposição do link de reset** no `EsqueciSenhaDialog.razor`
+5. ~~**Resolver a exposição do link de reset** no `EsqueciSenhaDialog.razor`~~ ✅ Fase 1 — M03
 6. **Externalizar dados hardcoded**: catálogo de exercícios, banco de alimentos, conteúdo de dicas
 7. **Uniformizar fórmulas TMB** entre as duas calculadoras
 8. **Configurar URL da API** via `appsettings.json` com suporte a ambientes
-9. **Adicionar tratamento de erro adequado** nos Services (status code, logging)
+9. ~~**Adicionar tratamento de erro adequado** nos Services (status code, logging)~~ ✅ Fase 1 — M02
 10. **Componentizar páginas gigantes** (DicasTreino, MonteTreino, GanhoMaximo)
 
 ---
