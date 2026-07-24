@@ -1,0 +1,28 @@
+@using MudBlazor  
+  
+<MudButton Class="transition-fast-out-slow-in scale-hover"
+           OnClick="Toggle"
+           Style="@GetButtonStyle()">
+    @Title  
+</MudButton>  
+  
+@if (IsVisible)  
+{  
+    @ChildContent  
+}  
+  
+@code {  
+    [Parameter] public string Title { get; set; } = "";  
+    [Parameter] public string BackgroundColor { get; set; } = "coral";  
+    [Parameter] public bool IsVisible { get; set; }  
+    [Parameter] public EventCallback<bool> IsVisibleChanged { get; set; }  
+    [Parameter] public RenderFragment? ChildContent { get; set; }  
+  
+    private string GetButtonStyle() => $"background-color:{BackgroundColor};font-weight:bold;font-family:Cambria";
+
+    private void Toggle()
+    {  
+        IsVisible = !IsVisible;  
+        IsVisibleChanged.InvokeAsync(IsVisible);  
+    }  
+}  

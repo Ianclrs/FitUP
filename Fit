@@ -12,7 +12,7 @@
 }
 
 @code {
-    [Parameter] public string Title { get; set; } = string.Empty;
+    [Parameter] public string Title { get; set; } = "";
     [Parameter] public string BackgroundColor { get; set; } = "coral";
     [Parameter] public bool IsVisible { get; set; }
     [Parameter] public EventCallback<bool> IsVisibleChanged { get; set; }
