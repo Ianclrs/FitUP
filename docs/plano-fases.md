@@ -50,7 +50,7 @@ Este documento organiza as modificações pendentes do FitUp em **4 fases de imp
 |----|--------|-----------|-----------|---------|
 | **A02** | ✅ | `MonteTreino.razor` → `Services/ExerciseCatalogService.cs`, `wwwroot/data/exercises.json` | Extrair catálogo de 150+ exercícios, templates de workout e mapeamentos de foco para serviços e arquivos JSON. | 🔴 Alto |
 | **B03** | ✅ | `MonteTreino.razor` | Substituir `MatchesBlockedKey` O(n²) por `Dictionary<string, string>` reverso mapeando nome do exercício → chave do catálogo. | 🟢 Baixo |
-| **A03** | ⬜ | `GanhoMaximo.razor` → `Services/DietaDataService.cs`, `Components/GanhoMaximo/` | Extrair 4 dietas completas para serviço de dados. Componentizar cada seção (ProteinasSection, CarboidratosSection, FrutasSection, VegetaisSection, GordurasSection). | 🔴 Alto |
+| **A03** | ✅ | `GanhoMaximo.razor` → `Services/DietaDataService.cs`, `Components/GanhoMaximo/` | Extrair 4 dietas completas para serviço de dados. Componentizar cada seção (ProteinasSection, CarboidratosSection, FrutasSection, VegetaisSection, GordurasSection). | 🔴 Alto |
 | **B02** | ✅ | `GanhoMaximo.razor` → `Components/GanhoMaximo/ToggleSection.razor` | Criar componente reutilizável para os 5 toggles idênticos (Proteínas, Carboidratos, Frutas, Vegetais, Gorduras). | 🟡 Médio |
 
 ### Validação Pós-Conclusão
@@ -60,8 +60,8 @@ Este documento organiza as modificações pendentes do FitUp em **4 fases de imp
 - [x] MonteTreino: catálogo de exercícios movido para `ExerciseCatalogService` + arquivos JSON em `wwwroot/data/`
 - [x] MonteTreino: `MatchesBlockedKey` otimizado de O(n²) para O(1) via `ExerciseNameToKey` (dicionário reverso)
 - [x] Componente `ToggleSection.razor` criado em `Components/GanhoMaximo/` para reutilização nos toggles
-- [ ] GanhoMaximo: refatoração pendente — integração com ToggleSection e componentes de seção (A03)
-- [ ] GanhoMaximo: exportação PDF continua funcionando
+- [x] GanhoMaximo: refatoração concluída — `GanhoMaximo.razor` reduzido de 1643 → ~140 linhas usando `ToggleSection`, 5 componentes de seção e `DietaDataService`
+- [x] GanhoMaximo: exportação PDF refatorada para consumir `DietaDataService.GetById()` — mantém mesma estrutura JSON
 - [x] Arquivos JSON externos são carregados corretamente (sem 404) com fallback hardcoded no serviço
 
 ---
@@ -114,9 +114,9 @@ Este documento organiza as modificações pendentes do FitUp em **4 fases de imp
 
 | Status | Quantidade |
 |--------|------------|
-| ⬜ Pendente | 7 |
+| ⬜ Pendente | 6 |
 | 🔄 Em andamento | 0 |
-| ✅ Concluído | 5 |
+| ✅ Concluído | 6 |
 
 ---
 
@@ -127,6 +127,7 @@ Este documento organiza as modificações pendentes do FitUp em **4 fases de imp
 | 24/07/2026 | — | — | Cline | Criação do plano de fases |
 | 24/07/2026 | Fase 1 | M03, M02 | Cline | Fase 1 concluída: EsqueciSenhaDialog corrigido, ApiResponse<T> implementado em todos os Services, 10 páginas atualizadas. Build: 0 erros. |
 | 24/07/2026 | Fase 2 | A02, B03, B02 | Cline | Fase 2 parcial: ExerciseCatalogService criado com 3 JSONs (exercises, focus-mappings, workout-templates). MonteTreino.razor refatorado — catálogo e mapeamentos movidos para o serviço. MatchesBlockedKey otimizado O(1). ToggleSection.razor criado. OnInitializedAsync adicionado para correção de bug (catálogo vazio). Build: 0 erros. |
+| 25/07/2026 | Fase 2 | A03 | Cline | **Fase 2 concluída!** DietaDataService criado com 4 dietas. 5 componentes de seção criados (ProteinasSection, CarboidratosSection, FrutasSection, VegetaisSection, GordurasSection). ToggleSection integrado com @bind-IsVisible. GanhoMaximo.razor reduzido de 1643 → ~140 linhas. ExportarDietaPdf refatorado para consumir DietaDataService.GetById(). Build: 0 erros, 4 avisos (pré-existentes). |
 
 ---
 

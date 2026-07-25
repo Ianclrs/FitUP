@@ -1,0 +1,191 @@
+@using MudBlazor
+
+<MudContainer MaxWidth="MaxWidth.Large" Class="px-2 mt-2 mb-6">
+    @*Primeiro texto*@
+    <MudGrid Justify="Justify.Center" Class="align-center" Spacing="1">
+        <MudItem xs="12" md="7" Class="d-flex flex-column">
+            <MudCard Elevation="12" Class="mt-1 mb-2 ms-2 rounded" Style="background-color:darkcyan;width:130px; height:42px">
+                <MudText Class="ms-1" Style="font-weight:bold; font-family:Cambria" Typo="Typo.h4" Align="Align.Left">FRUTAS</MudText>
+            </MudCard>
+            <MudPaper Elevation="15" Class="d-flex flex-column pa-2" Height="100%" Style="border: 1px solid darkcyan">
+                <MudText Typo="Typo.body1" Class="pa-1">
+                    <h3><strong>Frutas: Micronutrientes e Antioxidantes:</strong></h3> Frutas fornecem frutose para o estoque de glicogênio hepático e são ricas em <b>fito químicos e antioxidantes</b> . Estes combatem os radicais livres gerados pelo estresse oxidativo do treino intenso, acelerando a recuperação celular. As frutas são, muitas vezes, o "ponto cego" de quem faz musculação. Existe um mito de que o açúcar das frutas (frutose) engorda ou atrapalha a definição, mas a ciência da nutrição esportiva mostra o contrário: elas são fundamentais para o <b>metabolismo energético</b> e a <b>recuperação oxidativa</b>.
+                </MudText>
+            </MudPaper>
+        </MudItem>
+
+        <MudItem xs="12" md="5" Class="d-flex flex-column align-center justify-center">
+            <MudPaper MaxWidth="420px" Class="rounded-lg">
+                <MudImage Src="img-gm/vfrutas.png"
+                          Alt="frutas"
+                          Elevation="15"
+                          Class="rounded-lg mt-0 mt-md-0"
+                          Style="width: 100%; max-width: 420px; object-fit: cover;" />
+                <MudText Typo="Typo.caption" Class="mt-2 text-center" Style="color:coral; max-width:420px">
+                    <ul style="color:var(--mud-palette-text-primary); padding-left: 20px;">
+                        <li class="mb-1"><b>Frutas Vermelhas:</b> São ricas em antioxidantes, como as antocianinas, além de possuírem muita vitamina C e fibras. Juntas, essas substâncias combatem o envelhecimento precoce, reduzem a inflamação, protegem o coração e ajudam no controle do peso e do açúcar no sangue.</li>
+                    </ul>
+                </MudText>
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+    <MudDivider Class="my-4" Style="--mud-palette-divider: darkcyan" />
+    @*Segundo texto*@
+    <MudGrid Justify="Justify.Center" Class="align-center" Spacing="1">
+        <MudItem xs="12" md="7" Class="d-flex flex-column">
+            <MudPaper Elevation="15" Class="d-flex flex-column pa-2" Height="100%" Style="border: 1px solid darkcyan">
+                <MudText Typo="Typo.body1" Class="pa-1">
+                    <h3><strong>O Metabolismo da Frutose e o Glicogênio Hepático:</strong></h3> Diferente da glicose (arroz, batata), a frutose é metabolizada quase exclusivamente no fígado para repor o glicogênio hepático.
+                </MudText>
+                <MudText Typo="Typo.button" Class="ms-3" Style="color:darkcyan">
+                    <li><b>Por que isso importa?</b></li>
+                </MudText>
+                <MudText Typo="Typo.body1" Class="pa-1">
+                    O glicogênio hepático é o responsável por manter seus níveis de açúcar no sangue (glicemia) estáveis. Se o fígado está "abastecido", o corpo sinaliza um estado de saciedade e preserva o glicogênio dos músculos para o treino.
+                </MudText>
+                <MudText Typo="Typo.button" Class="ms-3" Style="color:darkcyan">
+                    <li><b>O limite:</b></li>
+                </MudText>
+                <MudText Typo="Typo.body1" Class="pa-1">
+                    O fígado tem uma capacidade limitada. Por isso, não usamos frutas como fonte única de carbo, mas como um complemento estratégico.
+                </MudText>
+            </MudPaper>
+        </MudItem>
+
+        <MudItem xs="12" md="5" Class="d-flex flex-column align-center justify-center">
+            <MudPaper MaxWidth="420px" Class="rounded-lg">
+                <MudImage Src="img-gm/abacaxi.png"
+                          Alt="frutas"
+                          Elevation="15"
+                          Class="rounded-lg mt-0 mt-md-0"
+                          Style="width: 100%; max-width: 420px; object-fit: cover;" />
+                <MudText Typo="Typo.caption" Class="mt-2 text-center" Style="color:coral; max-width:420px">
+                    <ul style="color:var(--mud-palette-text-primary); padding-left: 20px;">
+                        <li class="mb-1"><b>Abacaxí e Mamão:</b> Juntos potêncializam o sistema digestivo. O mamão é rico em papaína, que digere proteínas, enquanto o abacaxí fornece bromelina, que reduz o inchaço e a inflamação.</li>
+                    </ul>
+                </MudText>
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+    <MudDivider Class="my-4" Style="--mud-palette-divider: darkcyan" />
+    @*Terceiro texto*@
+    <MudGrid Justify="Justify.Center" Class="align-center" Spacing="1">
+        <MudItem xs="12" md="7" Class="d-flex flex-column">
+            <MudPaper Elevation="15" Class="d-flex flex-column pa-2" Height="100%" Style="border: 1px solid darkcyan">
+                <MudText Typo="Typo.body1" Class="pa-1">
+                    <h3><strong>Densidade de Micronutrientes e Enzimas:</strong></h3> Frutas não são apenas açúcar; são pacotes biológicos de suporte:
+                </MudText>
+                <MudText Typo="Typo.button" Class="ms-3" Style="color:darkcyan">
+                    <li><b>Antioxidantes:</b></li>
+                </MudText>
+                <MudText Typo="Typo.body1" Class="pa-1">
+                    O treino de alta intensidade gera radicais livres. Frutas cítricas e vermelhas são ricas em Vitamina C e antocianinas, que combatem a inflamação excessiva, permitindo que você treine pesado novamente mais rápido.
+                </MudText>
+                <MudText Typo="Typo.button" Class="ms-3" Style="color:darkcyan">
+                    <li><b>Enzimas Digestivas:</b></li>
+                </MudText>
+                <MudText Typo="Typo.body1" Class="pa-1">
+                    Algumas frutas auxiliam diretamente na quebra de outros macros. O abacaxi contém bromelina e o mamão contém papaína, ambas enzimas que facilitam a digestão das proteínas, evitando o estufamento de dietas hipercalóricas.
+                </MudText>
+                <MudText Typo="Typo.body1" Class="ms-1">
+                    Frutas Estratégicas para o Atleta :
+                </MudText>
+                <MudSimpleTable Style="border: 2px solid #008B8B;" Bordered="true" Hover="true">
+                    <thead>
+                        <tr>
+                            <th><b>Fruta</b></th>
+                            <th><b>Função Principal</b></th>
+                            <th><b>Momento Ideal</b></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><b>Banana</b></td>
+                            <td>Rica em potássio e carboidratos de absorção média.</td>
+                            <td>Pré-treino (evita cãibras e dá energia).</td>
+                        </tr>
+                        <tr>
+                            <td><b>Abacaxi / Mamão</b></td>
+                            <td>Melhora a digestão proteica e reduz inflamação.</td>
+                            <td>Pós-almoço ou Pós-jantar.</td>
+                        </tr>
+                        <tr>
+                            <td><b>Frutas Vermelhas</b></td>
+                            <td>Baixíssimo índice glicêmico e altíssimos antioxidantes.</td>
+                            <td>Em cutting (perda de gordura) ou ceia.</td>
+                        </tr>
+                        <tr>
+                            <td><b>Laranja / Kiwi</b></td>
+                            <td>Altíssima Vitamina C para suporte imunológico e colágeno.</td>
+                            <td>Manhã ou logo após o treino.</td>
+                        </tr>
+                        <tr>
+                            <td><b>Melancia</b></td>
+                            <td>Rica em citrulina, que auxilia na vasodilatação (pump).</td>
+                            <td>1h antes do treino.</td>
+                        </tr>
+                    </tbody>
+                </MudSimpleTable>
+            </MudPaper>
+        </MudItem>
+
+        <MudItem xs="12" md="5" Class="d-flex flex-column align-center justify-center">
+            <MudPaper MaxWidth="420px" Class="rounded-lg">
+                <MudImage Src="img-gm/melancia.png"
+                          Alt="frutas"
+                          Elevation="15"
+                          Class="rounded-lg mt-0 mt-md-0"
+                          Style="width: 100%; max-width: 420px; object-fit: cover;" />
+                <MudText Typo="Typo.caption" Class="mt-2 text-center" Style="color:coral; max-width:420px">
+                    <ul style="color:var(--mud-palette-text-primary); padding-left: 20px;">
+                        <li class="mb-1"><b>Melancia:</b> É uma fruta super-hidratante e nutritiva, composta por cerca de 91% de água. Rica em vitaminas A e C, potássio e licopeno, ela auxilia no emagrecimento, melhora a saúde do coração, regula a pressão arterial e reduz dores musculares após exercícios.</li>
+                    </ul>
+                </MudText>
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+    <MudDivider Class="my-4" Style="--mud-palette-divider: darkcyan" />
+    @*Ultimo texto*@
+    <MudGrid Justify="Justify.Center" Class="align-center" Spacing="1">
+        <MudItem xs="12" md="7" Class="d-flex flex-column">
+            <MudPaper Elevation="15" Class="d-flex flex-column pa-2" Height="100%" Style="border: 1px solid darkcyan">
+                <MudText Typo="Typo.body1" Class="pa-1">
+                    <h3><strong>O Impacto das Fibras (Pectina e Solúveis):</strong></h3>As frutas fornecem fibras que controlam a velocidade com que o açúcar entra no sangue. Comer a fruta inteira (com bagaço e casca, quando possível) é sempre superior ao suco, pois a fibra reduz o impacto insulínico e melhora a saúde da sua microbiota intestinal.
+                </MudText>
+                <MudText Typo="Typo.button" Class="ms-3" Style="color:darkcyan">
+                    <li><b>Nota Técnica:</b></li>
+                </MudText>
+                <MudText Typo="Typo.body1" Class="pa-1">
+                    Um intestino saudável é o que garante que os <b>2g/kg de proteína</b> que você come sejam realmente absorvidos e não apenas eliminados.
+                </MudText>
+                <MudText Typo="Typo.button" Class="ms-3" Style="color:darkcyan">
+                    <li><b>Indicação e Quantidade:</b></li>
+                </MudText>
+                <MudText Typo="Typo.body1" Class="pa-1">
+                    Para quem busca hipertrofia e performance: consuma de <b>2 a 4 porções</b> de frutas variadas por dia.
+                </MudText>
+                <MudText Typo="Typo.button" Class="ms-3" Style="color:darkcyan">
+                    <li><b>Dica de Ouro:</b></li>
+                </MudText>
+                <MudText Typo="Typo.body1" Class="pa-1">
+                    Tente "comer o arco-íris". Cada cor de fruta representa um fitoquímico diferente (Licopeno no vermelho, Betacaroteno no laranja, etc.).
+                </MudText>
+            </MudPaper>
+        </MudItem>
+
+        <MudItem xs="12" md="5" Class="d-flex flex-column align-center justify-center">
+            <MudPaper MaxWidth="420px" Class="rounded-lg">
+                <MudImage Src="img-gm/orange.png"
+                          Alt="frutas"
+                          Elevation="15"
+                          Class="rounded-lg mt-0 mt-md-0"
+                          Style="width: 100%; max-width: 420px; object-fit: cover;" />
+                <MudText Typo="Typo.caption" Class="mt-2 text-center" Style="color:coral; max-width:420px">
+                    <ul style="color:var(--mud-palette-text-primary); padding-left: 20px;">
+                        <li class="mb-1"><b>Laranja:</b> Fortalece a imunidade, melhora a digestão e protege o coração. Rica em vitamina C e fibras (como a pectina), a fruta auxilia no controle do colesterol e da pressão alta, além de ajudar na absorção de ferro e na prevenção da anemia.</li>
+                    </ul>
+                </MudText>
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+</MudContainer>

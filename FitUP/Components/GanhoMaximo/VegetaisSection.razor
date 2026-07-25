@@ -1,0 +1,167 @@
+@using MudBlazor
+
+<MudContainer MaxWidth="MaxWidth.Large" Class="px-2 mt-2 mb-6">
+    @*Primeiro texto*@
+    <MudGrid Justify="Justify.Center" Class="align-center" Spacing="1">
+        <MudItem xs="12" md="7" Class="d-flex flex-column">
+            <MudCard Elevation="12" Class="mt-1 mb-2 rounded" Style="background-color:seagreen;width:163px; height:42px">
+                <MudText Class="ms-1" Style="font-weight:bold; font-family:Cambria" Typo="Typo.h4" Align="Align.Left">VEGETAIS</MudText>
+            </MudCard>
+            <MudPaper Elevation="15" Class="d-flex flex-column pa-2" Height="100%" Style="border: 1px solid seagreen">
+                <MudText Typo="Typo.body1" Class="pa-1">
+                    <h3><strong>Vegetais: Densidade e Fibras:</strong></h3> Os vegetais garantem a saúde intestinal através das fibras, permitindo que você absorva melhor os macronutrientes.
+                    Além disso, vegetais como o brócolis e o espinafre contêm minerais como magnésio e cálcio, fundamentais para a contração muscular.
+                    Na nutrição esportiva de elite, não olhamos para os vegetais apenas como "salada", mas como moduladores metabólicos. Eles são a base que permite que todo o resto (proteínas, carbos e gorduras) funcione sem sobrecarregar o seu sistema.
+                </MudText>
+                <MudText Typo="Typo.body1" Class="pa-1">
+                    <b>A função dos vegetais:</b> Eles são predominantemente alcalinizantes. Ao consumir vegetais, você neutraliza essa carga ácida, o que é vital para a saúde óssea e para manter a eficiência das enzimas que promovem a síntese proteica. Um corpo excessivamente ácido pode aumentar a excreção de nitrogênio e cálcio, prejudicando a performance.
+                </MudText>
+            </MudPaper>
+        </MudItem>
+
+        <MudItem xs="12" md="5" Class="d-flex flex-column align-center justify-center">
+            <MudPaper MaxWidth="420px" Class="rounded-lg">
+                <MudImage Src="img-gm/brocolis.png"
+                          Alt="vegetais"
+                          Elevation="15"
+                          Class="rounded-lg mt-0 mt-md-0"
+                          Style="width: 100%; max-width: 420px; object-fit: cover;" />
+                <MudText Typo="Typo.caption" Class="mt-2 text-center" Style="color:coral; max-width:420px">
+                    <ul style="color:var(--mud-palette-text-primary); padding-left: 20px;">
+                        <li class="mb-1"><b>Brócolis:</b> É um superalimento de baixa caloria rico em fibras, vitaminas C, K, ácido fólico e minerais. Ele fortalece a imunidade, melhora a saúde intestinal, protege os ossos, auxilia no controle do peso e glicose, e contém antioxidantes poderosos, como o sulforafano, que ajudam a combater inflamações e prevenir doenças crônicas.</li>
+                    </ul>
+                </MudText>
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+    <MudDivider Class="my-4" Style="--mud-palette-divider: seagreen" />
+    @*Segundo texto*@
+    <MudGrid Justify="Justify.Center" Class="align-center" Spacing="1">
+        <MudItem xs="12" md="7" Class="d-flex flex-column">
+            <MudPaper Elevation="15" Class="d-flex flex-column pa-2" Height="100%" Style="border: 1px solid seagreen">
+                <MudText Typo="Typo.body1" Class="pa-1">
+                    <h3><strong>Micronutrientes e Contração Muscular:</strong></h3> Os vegetais são as minas de ouro de minerais que a maioria dos atletas esquece:
+                </MudText>
+                <MudText Typo="Typo.button" Class="ms-3" Style="color:seagreen">
+                    <li><b>Magnésio e Cálcio:</b></li>
+                </MudText>
+                <MudText Typo="Typo.body1" Class="pa-1">
+                    Cruciais para a transmissão do impulso nervoso e para a contração/relaxamento muscular. Sem eles, você terá tremores, cãibras e perda de força.
+                </MudText>
+                <MudText Typo="Typo.button" Class="ms-3" Style="color:seagreen">
+                    <li><b>Potássio:</b></li>
+                </MudText>
+                <MudText Typo="Typo.body1" Class="pa-1">
+                    Trabalha junto com o sódio para regular a hidratação intracelular (o "pump" muscular).
+                </MudText>
+                <MudText Typo="Typo.button" Class="ms-3" Style="color:seagreen">
+                    <li><b>Nitratos Naturais:</b></li>
+                </MudText>
+                <MudText Typo="Typo.body1" Class="pa-1">
+                    Vegetais como o espinafre e a beterraba são ricos em nitratos que aumentam a produção de Óxido Nítrico, melhorando o fluxo sanguíneo e a entrega de oxigênio aos músculos durante o treino.
+                </MudText>
+                <MudText Typo="Typo.body1" Class="pa-1">
+                    <h3><b>Saúde Intestinal e Microbiota</b></h3> Você não é o que você come, você é o que você absorve.
+                </MudText>
+                <MudText Typo="Typo.button" Class="ms-1" Style="color:seagreen">
+                    <b>Fibras Insolúveis e Solúveis:</b>
+                </MudText>
+                <MudText Typo="Typo.body1" Class="pa-1">
+                    Os vegetais limpam as paredes intestinais e servem de alimento para as bactérias boas (probióticos). Um intestino inflamado por falta de vegetais impede a absorção eficiente de aminoácidos e pode causar letargia.
+                </MudText>
+            </MudPaper>
+        </MudItem>
+
+        <MudItem xs="12" md="5" Class="d-flex flex-column align-center justify-center">
+            <MudPaper MaxWidth="420px" Class="rounded-lg">
+                <MudImage Src="img-gm/cenoura.png"
+                          Alt="vegetais"
+                          Elevation="15"
+                          Class="rounded-lg mt-0 mt-md-0"
+                          Style="width: 100%; max-width: 420px; object-fit: cover;" />
+                <MudText Typo="Typo.caption" Class="mt-2 text-center" Style="color:coral; max-width:420px">
+                    <ul style="color:var(--mud-palette-text-primary); padding-left: 20px;">
+                        <li class="mb-1"><b>Cenoura:</b> Rica em fibras, antioxidantes e betacaroteno (convertido em vitamina A). Ela melhora a visão noturna, fortalece o sistema imunológico, regula o intestino e promove uma pele radiante e saudável.</li>
+                    </ul>
+                </MudText>
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+    <MudDivider Class="my-4" Style="--mud-palette-divider: seagreen" />
+    @*Ultimo texto*@
+    <MudGrid Justify="Justify.Center" Class="align-center" Spacing="1">
+        <MudItem xs="12" md="7" Class="d-flex flex-column">
+            <MudPaper Elevation="15" Class="d-flex flex-column pa-2" Height="100%" Style="border: 1px solid seagreen">
+                <MudText Typo="Typo.body1" Class="pa-1">
+                    <h3><strong>Vegetais Estratégicos para Musculação:</strong></h3>
+                </MudText>
+                <MudSimpleTable Style="border: 2px solid #2e8b57;" Bordered="true" Hover="true">
+                    <thead>
+                        <tr>
+                            <th><b>Vegetal</b></th>
+                            <th><b>Benefício Técnico</b></th>
+                            <th><b>Componente Chave</b></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><b>Brócolis / Couve-flor</b></td>
+                            <td>Auxilia na modulação do estrogênio.</td>
+                            <td>Indol-3-Carbinol</td>
+                        </tr>
+                        <tr>
+                            <td><b>Espinafre</b></td>
+                            <td>Melhora a eficiência mitocondrial e oxigenação.</td>
+                            <td>Nitratos e Ecdisterona natural</td>
+                        </tr>
+                        <tr>
+                            <td><b>Aspargos</b></td>
+                            <td>Atua como um diurético natural suave, ajudando na definição.</td>
+                            <td>Asparagina</td>
+                        </tr>
+                        <tr>
+                            <td><b>Cenoura</b></td>
+                            <td>Saúde da pele e suporte ao sistema imune (essencial no bulking).</td>
+                            <td>Betacaroteno</td>
+                        </tr>
+                        <tr>
+                            <td><b>Abobrinha/Berinjela</b></td>
+                            <td>Volume alimentar com baixíssima caloria.</td>
+                            <td>Fibras e Água</td>
+                        </tr>
+                    </tbody>
+                </MudSimpleTable>
+                <MudText Typo="Typo.button" Class="ms-1">
+                    <h3><b>Indicação e Quantidade:</b></h3>
+                </MudText>
+                <MudText Typo="Typo.button" Class="ms-3" Style="color:seagreen">
+                    <li><b>A Regra do Prato Colorido:</b></li>
+                </MudText>
+                <MudText Typo="Typo.body1" Class="pa-1">
+                    Pelo menos metade do seu prato nas grandes refeições (almoço e jantar) deve ser composta por vegetais.
+                </MudText>
+                <MudText Typo="Typo.button" Class="ms-3" Style="color:seagreen">
+                    <li><b>Variedade:</b></li>
+                </MudText>
+                <MudText Typo="Typo.body1" Class="pa-1">
+                    Não coma apenas alface. Busque vegetais crucíferos (brócolis, couve), folhosos escuros (rúcula, espinafre) e raízes (cenoura, beterraba).
+                </MudText>
+            </MudPaper>
+        </MudItem>
+
+        <MudItem xs="12" md="5" Class="d-flex flex-column align-center justify-center">
+            <MudPaper MaxWidth="420px" Class="rounded-lg">
+                <MudImage Src="img-gm/espinafre.png"
+                          Alt="vegetais"
+                          Elevation="15"
+                          Class="rounded-lg mt-0 mt-md-0"
+                          Style="width: 100%; max-width: 420px; object-fit: cover;" />
+                <MudText Typo="Typo.caption" Class="mt-2 text-center" Style="color:coral; max-width:420px">
+                    <ul style="color:var(--mud-palette-text-primary); padding-left: 20px;">
+                        <li class="mb-1"><b>Espinafre:</b> Baixa caloria rico em vitaminas A, C e K, ácido fólico, ferro e cálcio. Ele protege a visão contra doenças degenerativas, auxilia no controle da pressão arterial e melhora a saúde intestinal graças à sua alta quantidade de fibras.</li>
+                    </ul>
+                </MudText>
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+</MudContainer>

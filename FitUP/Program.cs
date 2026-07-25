@@ -21,5 +21,6 @@ builder.Services.AddScoped<PlanoTreinoService>();
 builder.Services.AddScoped<BioimpedanciaService>();
 builder.Services.AddScoped<PlanoAlimentarService>();
 builder.Services.AddScoped<ExerciseCatalogService>();
+builder.Services.AddSingleton<DietaDataService>();
 
 await builder.Build().RunAsync();

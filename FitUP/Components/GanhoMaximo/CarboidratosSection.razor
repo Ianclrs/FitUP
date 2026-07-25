@@ -1,0 +1,214 @@
+@using MudBlazor
+
+<MudContainer MaxWidth="MaxWidth.Large" Class="px-2 mt-2 mb-6">
+    @*Primeiro texto*@
+    <MudGrid Justify="Justify.Center" Class="align-center" Spacing="1">
+        <MudItem xs="12" md="7" Class="d-flex flex-column">
+            <MudCard Elevation="12" Class="mt-1 mb-2 rounded" Style="background-color:sandybrown;width:261px; height:42px">
+                <MudText Class="ms-1" Style="font-weight:bold; font-family:Cambria" Typo="Typo.h4" Align="Align.Left">CARBOIDRATOS</MudText>
+            </MudCard>
+            <MudPaper Elevation="15" Class="d-flex flex-column pa-2" Height="100%" Style="border: 1px solid sandybrown">
+                <MudText Typo="Typo.body1" Class="pa-1">
+                    <h3><strong>Carboidratos: A Moeda Energética:</strong></h3> No meio da musculação, infelizmente, o carboidrato é muitas vezes demonizado, mas para quem busca hipertrofia, ele é o seu melhor aliado. Sem carboidratos,
+                    você não treina com intensidade, não sinaliza crescimento e não recupera o
+                    tecido adequadamente. Os carboidratos são convertidos em <b>glicose</b>, que é armazenada nos músculos e no fígado sob a forma de <b>glicogênio</b>. Eles são o combustível primário para treinos de alta intensidade (via glicolítica). Além disso, o carboidrato tem um efeito "poupador de proteína", impedindo que o corpo use seus músculos como fonte de energia.
+                </MudText>
+            </MudPaper>
+        </MudItem>
+
+        <MudItem xs="12" md="5" Class="d-flex flex-column align-center justify-center">
+            <MudPaper MaxWidth="420px" Class="rounded-lg">
+                <MudImage Src="img-gm/pao.png"
+                          Alt="Carboidrato"
+                          Elevation="15"
+                          Class="rounded-lg mt-0 mt-md-0"
+                          Style="width: 100%; max-width: 420px; object-fit: cover;" />
+                <MudText Typo="Typo.caption" Class="mt-2 text-center" Style="color:coral; max-width:420px">
+                    <ul style="color:var(--mud-palette-text-primary); padding-left: 20px;">
+                        <li class="mb-1"><b>Pão de Forma:</b> Um dos carboidratos mais utilizados e comuns, é uma excelente fonte de energia, carboidratos e vitaminas do complexo B. Variedades integrais oferecem saciedade prolongada e ajudam a regular o açúcar no sangue. É uma opção prática para o dia a dia, sendo fácil de armazenar e porcionar..</li>
+                    </ul>
+                </MudText>
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+    <MudDivider Class="my-4" Style="--mud-palette-divider: sandybrown" />
+    @*Segundo texto*@
+    <MudGrid Justify="Justify.Center" Class="align-center" Spacing="1">
+        <MudItem xs="12" md="7" Class="d-flex flex-column">
+            <MudPaper Elevation="15" Class="d-flex flex-column pa-2" Height="100%" Style="border: 1px solid sandybrown">
+                <MudText Typo="Typo.body1" Class="pa-1">
+                    <h3><strong>A Bioenergética do Carboidrato:</strong></h3> Tecnicamente, os carboidratos são moléculas orgânicas formadas por carbono, hidrogênio e oxigênio. No organismo, eles desempenham o papel de glicogênio muscular e hepático.
+                </MudText>
+                <MudText Typo="Typo.button" Class="ms-3" Style="color:sandybrown">
+                    <li><b>O "Poupador de Proteínas":</b></li>
+                </MudText>
+                <MudText Typo="Typo.body1" Class="pa-1">
+                    Quando os níveis de glicogênio estão altos, o corpo entende que tem energia de sobra e não precisa converter aminoácidos (músculos) em glicose para sobreviver. Ou seja, o carboidrato protege sua massa muscular.
+                </MudText>
+                <MudText Typo="Typo.button" Class="ms-3" Style="color:sandybrown">
+                    <li><b>Volumização Celular:</b></li>
+                </MudText>
+                <MudText Typo="Typo.body1" Class="pa-1">
+                    Cada grama de glicogênio armazenado no músculo carrega consigo cerca de 3g a 4g de água. Isso é o que dá o aspecto de "músculo cheio" e denso que o fisiculturista busca.
+                </MudText>
+            </MudPaper>
+        </MudItem>
+
+        <MudItem xs="12" md="5" Class="d-flex flex-column align-center justify-center">
+            <MudPaper MaxWidth="420px" Class="rounded-lg">
+                <MudImage Src="img-gm/arroz.png"
+                          Alt="Carboidrato"
+                          Elevation="15"
+                          Class="rounded-lg mt-0 mt-md-0"
+                          Style="width: 100%; max-width: 420px; object-fit: cover;" />
+                <MudText Typo="Typo.caption" Class="mt-2 text-center" Style="color:coral; max-width:420px">
+                    <ul style="color:var(--mud-palette-text-primary); padding-left: 20px;">
+                        <li class="mb-1"><b>Arroz:</b> O arroz fornece energia rápida e é fonte de vitaminas do complexo B e minerais essenciais. Sua versão integral destaca-se por ser rica em fibras, promovendo saciedade, melhorando o trânsito intestinal e evitando picos de glicose.</li>
+                    </ul>
+                </MudText>
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+    <MudDivider Class="my-4" Style="--mud-palette-divider: sandybrown" />
+    @*Terceiro texto*@
+    <MudGrid Justify="Justify.Center" Class="align-center" Spacing="1">
+        <MudItem xs="12" md="7" Class="d-flex flex-column">
+            <MudPaper Elevation="15" Class="d-flex flex-column pa-2" Height="100%" Style="border: 1px solid sandybrown">
+                <MudText Typo="Typo.body1" Class="pa-1">
+                    <h3><strong>Índice Glicêmico (IG) vs. Carga Glicêmica (CG):</strong></h3> Para um entusiasta na musculação, entender a velocidade com que o açúcar entra no sangue é estratégico:
+                </MudText>
+                <MudText Typo="Typo.button" Class="ms-3" Style="color:sandybrown">
+                    <li><b>Baixo/Médio IG:</b></li>
+                </MudText>
+                <MudText Typo="Typo.body1" Class="pa-1">
+                    (Batata doce, Aveia, Arroz Integral, Macarrão Integral): Liberam energia de forma gradual. São a base da dieta para manter a insulina estável e evitar picos de fome ou acúmulo de gordura.
+                </MudText>
+                <MudText Typo="Typo.button" Class="ms-3" Style="color:sandybrown">
+                    <li><b>Alto IG:</b></li>
+                </MudText>
+                <MudText Typo="Typo.body1" Class="ms-1">
+                    (Arroz Branco, Malto/Dextrose, Pão Branco, Mel): Causam um pico rápido de insulina. Isso é perigoso em momentos de sedentarismo, mas extremamente útil no pós-treino para "abrir as portas" das células e empurrar nutrientes para dentro do músculo.
+                </MudText>
+            </MudPaper>
+        </MudItem>
+
+        <MudItem xs="12" md="5" Class="d-flex flex-column align-center justify-center">
+            <MudPaper MaxWidth="420px" Class="rounded-lg">
+                <MudImage Src="img-gm/aveia.png"
+                          Alt="Carboidrato"
+                          Elevation="15"
+                          Class="rounded-lg mt-0 mt-md-0"
+                          Style="width: 100%; max-width: 420px; object-fit: cover;" />
+                <MudText Typo="Typo.caption" Class="mt-2 text-center" Style="color:coral; max-width:420px">
+                    <ul style="color:var(--mud-palette-text-primary); padding-left: 20px;">
+                        <li class="mb-1"><b>Aveia:</b> A aveia é um cereal superalimento rico em fibras, destacando-se a betaglucana. Ela reduz o colesterol ruim (LDL), estabiliza a glicose no sangue, promove saciedade prolongada, melhora o funcionamento do intestino e fortalece a imunidade.</li>
+                    </ul>
+                </MudText>
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+    <MudDivider Class="my-4" Style="--mud-palette-divider: sandybrown" />
+    @*Ultimo texto*@
+    <MudGrid Justify="Justify.Center" Class="align-center" Spacing="1">
+        <MudItem xs="12" md="7" Class="d-flex flex-column">
+            <MudPaper Elevation="15" Class="d-flex flex-column pa-2" Height="100%" Style="border: 1px solid sandybrown">
+                <MudText Typo="Typo.body1" Class="pa-1">
+                    <h3><strong>Estratégias de Ciclagem e Timing:</strong></h3> A manipulação dos carboidratos é a ferramenta mais poderosa para mudar a composição corporal:
+                </MudText>
+                <MudText Typo="Typo.button" Class="ms-3" Style="color:sandybrown">
+                    <li><b>Pré-Treino (O estoquista):</b></li>
+                </MudText>
+                <MudText Typo="Typo.body1" Class="pa-1">
+                    Deve ser consumido entre 1h30 a 2h antes, preferencialmente de baixo/médio IG, para garantir que durante a última série do agachamento você ainda tenha força.
+                </MudText>
+                <MudText Typo="Typo.button" Class="ms-3" Style="color:sandybrown">
+                    <li><b>Intra-Treino (O suporte):</b></li>
+                </MudText>
+                <MudText Typo="Typo.body1" Class="pa-1">
+                    Em treinos muito longos (acima de 1h15), carboidratos líquidos (como a Ciclodextrina) ajudam a manter a performance e diminuir o cortisol.
+                </MudText>
+                <MudText Typo="Typo.button" Class="ms-3" Style="color:sandybrown">
+                    <li><b>Pós-Treino (A reposição):</b></li>
+                </MudText>
+                <MudText Typo="Typo.body1" Class="pa-1">
+                    É o momento de repor o que foi gasto. Carboidratos de fácil digestão aqui aceleram a recuperação e interrompem o processo catabólico do treino.
+                </MudText>
+                <MudText Typo="Typo.body1" Class="ms-1">
+                    Melhores Fontes para Cada Objetivo:
+                </MudText>
+                <MudSimpleTable Style="border: 2px solid #f4a460;" Bordered="true" Hover="true">
+                    <thead>
+                        <tr>
+                            <th><b>Fonte</b></th>
+                            <th><b>Por que usar?</b></th>
+                            <th><b>Melhor Momento</b></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><b>Aveia</b></td>
+                            <td>Rica em fibras (beta-glucanas) e vitaminas do complexo B.</td>
+                            <td>Café da manhã / Pré-treino.</td>
+                        </tr>
+                        <tr>
+                            <td><b>Arroz Branco</b></td>
+                            <td>Baixíssima fibra, digestão rápida, excelente para bater calorias sem estufar.</td>
+                            <td>Almoço / Pós-treino</td>
+                        </tr>
+                        <tr>
+                            <td><b>Batata Doce</b></td>
+                            <td>Baixo IG e rica em Vitamina A. Clássica pela saciedade.</td>
+                            <td>Refeições ao longo do dia.</td>
+                        </tr>
+                        <tr>
+                            <td><b>Frutas (Banana/Uva)</b></td>
+                            <td>Fonte de frutose e glicose. Repõe o glicogênio hepático rapidamente.</td>
+                            <td>Pré ou Pós-treino imediato</td>
+                        </tr>
+                        <tr>
+                            <td><b>Macarrão (Grão Duro)</b></td>
+                            <td>Ótima densidade calórica para quem tem dificuldade em ganhar peso.</td>
+                            <td>Almoço.</td>
+                        </tr>
+                    </tbody>
+                </MudSimpleTable>
+                <MudText Typo="Typo.body1" Class="pa-1">
+                    <h3><strong>Indicação de Consumo:</strong></h3> Diferente da proteína, que é mais estável, o carboidrato é totalmente dependente do seu nível de atividade e objetivo:
+                </MudText>
+                <MudText Typo="Typo.button" Class="ms-3" Style="color:sandybrown">
+                    <li><b>Em Cutting (Definição):</b></li>
+                </MudText>
+                <MudText Typo="Typo.body1" Class="pa-1">
+                    Geralmente entre 2g a 3g por kg.
+                </MudText>
+                <MudText Typo="Typo.button" Class="ms-3" Style="color:sandybrown">
+                    <li><b>Em Bulking (Ganho de Massa):</b></li>
+                </MudText>
+                <MudText Typo="Typo.body1" Class="pa-1">
+                    Pode chegar a 5g, 7g ou até mais por kg, dependendo do metabolismo.
+                </MudText>
+                <MudText Typo="Typo.button" Class="ms-3" Style="color:sandybrown">
+                    <li><b>Dica:</b></li>
+                </MudText>
+                <MudText Typo="Typo.body1" Class="pa-1">
+                    Se você treina pernas hoje (o treino que mais consome energia), seus carboidratos devem estar mais altos do que no dia de descanso. Aprenda a "merecer" seu carboidrato.
+                </MudText>
+            </MudPaper>
+        </MudItem>
+
+        <MudItem xs="12" md="5" Class="d-flex flex-column align-center justify-center">
+            <MudPaper MaxWidth="420px" Class="rounded-lg">
+                <MudImage Src="img-gm/batatad.png"
+                          Alt="Carboidrato"
+                          Elevation="15"
+                          Class="rounded-lg mt-0 mt-md-0"
+                          Style="width: 100%; max-width: 420px; object-fit: cover;" />
+                <MudText Typo="Typo.caption" Class="mt-2 text-center" Style="color:coral; max-width:420px">
+                    <ul style="color:var(--mud-palette-text-primary); padding-left: 20px;">
+                        <li class="mb-1"><b>Batata-Doce:</b> É rica em carboidratos complexos, fibras e vitaminas A, C e E. Seus principais benefícios incluem o fornecimento de energia gradual (ideal para treinos), controle da saciedade e regulação do intestino.</li>
+                    </ul>
+                </MudText>
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+</MudContainer>

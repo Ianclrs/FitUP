@@ -1,0 +1,212 @@
+@using MudBlazor
+
+<MudContainer MaxWidth="MaxWidth.Large" Class="px-2 mt-2 mb-6">
+    <MudCard Elevation="12" Class="mt-1 mb-2 rounded" Style="background-color:darkred;width:193px; height:42px">
+        <MudText Class="ms-1" Style="font-weight:bold; font-family:Cambria" Typo="Typo.h4" Align="Align.Left">PROTEINAS</MudText>
+    </MudCard>
+    @*Primeiro texto*@
+    <MudGrid Justify="Justify.Center" Class="align-center" Spacing="1">
+        <MudItem xs="12" md="7" Class="d-flex flex-column">
+            <MudPaper Elevation="15" Class="d-flex flex-column pa-2" Height="100%" Style="border: 1px solid darkred">
+                <MudText Typo="Typo.body1" Class="pa-1">
+                    <h3><strong>Proteínas: O Bloco de Construção:</strong></h3> Tecnicamente, as proteínas são polímeros de aminoácidos ligados por ligações peptídicas. Na musculação, sua principal função é o reparo tecidual e a síntese proteica muscular. Sem o aporte adequado de aminoácidos essenciais (que o corpo não produz), o balanço nitrogenado torna-se negativo, levando ao catabolismo.<br />
+                    No contexto da musculação avançada, a proteína deve ser analisada sob a ótica da biodisponibilidade, do perfil de aminoácidos e da cinética de absorção.
+                    O corpo vive em um estado constante de renovação.<br />
+                </MudText>
+                <MudText Typo="Typo.button" Class="ms-3" Style="color:darkred">
+                    <li><b>O Turnover Proteico:</b></li>
+                </MudText>
+                <MudText Typo="Typo.body1" Class="pa-1">
+                    É a relação entre a síntese de novas proteínas e a degradação das existentes.
+                </MudText>
+                <MudText Typo="Typo.button" Class="ms-3" Style="color:darkred">
+                    <li><b>Balanço Nitrogenado Positivo:</b></li>
+                </MudText>
+                <MudText Typo="Typo.body1" Class="pa-1">
+                    ocorre quando a ingestão de nitrogênio (via proteína) é maior que a excreção. É o estado obrigatório para a hipertrofia.
+                    A proteína é o único macronutriente que contém nitrogênio. Se você não consome o suficiente, o corpo retira esse nitrogênio do tecido muscular para manter funções vitais (como órgãos e sistema imune), gerando o catabolismo.
+                </MudText>
+            </MudPaper>
+        </MudItem>
+
+        <MudItem xs="12" md="5" Class="d-flex flex-column align-center justify-center">
+            <MudPaper MaxWidth="420px" Class="rounded-lg">
+                <MudImage Src="img-gm/carne.png"
+                          Alt="Proteina"
+                          Elevation="15"
+                          Class="rounded-lg mt-0 mt-md-0"
+                          Style="width: 100%; max-width: 420px; object-fit: cover;" />
+                <MudText Typo="Typo.caption" Class="mt-2 text-center" Style="color:coral; max-width:420px">
+                    <ul style="color:var(--mud-palette-text-primary); padding-left: 20px;">
+                        <li class="mb-1"><b>Carne Vermelha:</b> Uma das principais fontes de nutrientes como proteína, tendo ferro, zinco e vitamina B12.</li>
+                    </ul>
+                </MudText>
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+    <MudDivider Class="my-4" Style="--mud-palette-divider: darkred" />
+    @*Segundo texto*@
+    <MudGrid Justify="Justify.Center" Class="align-center" Spacing="1">
+        <MudItem xs="12" md="7" Class="d-flex flex-column">
+            <MudPaper Elevation="15" Class="d-flex flex-column pa-2" Height="100%" Style="border: 1px solid darkred">
+                <MudText Typo="Typo.body1" Class="pa-1">
+                    <h3><strong>Aminoáciodos: A Hierarquia:</strong></h3>As proteínas são compostas por 20 aminoácidos, mas para quem busca performance, o foco deve estar nos <b>Aminoácidos Essenciais (EAAs)</b>.
+                </MudText>
+                <MudText Typo="Typo.button" Class="ms-3" Style="color:darkred">
+                    <li><b>EAAs (Essential Amino Acids):</b></li>
+                </MudText>
+                <MudText Typo="Typo.body1" Class="pa-1">
+                    São 9 aminoácidos que o corpo não produz, sendo eles: leucina, isoleucina, valina, lisina, fenilalanina, treonina, histidina, triptofano e metionina. Sem eles, a síntese muscular simplesmente para.
+                </MudText>
+                <MudText Typo="Typo.button" Class="ms-3" Style="color:darkred">
+                    <li><b>O "Gatilho" da Leucina:</b></li>
+                </MudText>
+                <MudText Typo="Typo.body1" Class="pa-1">
+                    Dentre os BCAAs, a Leucina é o aminoácido mais importante para a musculação. Ela atua como uma chave mestre que liga a via mTOR( é uma proteína quinase central que regula o crescimento celular, metabolismo e síntese proteica em resposta a nutrientes), a principal via de sinalização de crescimento celular no corpo.
+                </MudText>
+                <MudText Typo="Typo.button" Class="ms-3" Style="color:darkred">
+                    <li><b>Dica Técnica:</b></li>
+                </MudText>
+                <MudText Typo="Typo.body1" Class="pa-1">
+                    Para disparar a síntese proteica, uma refeição deve conter entre <b>2,5g a 3g de Leucina</b>.
+                </MudText>
+            </MudPaper>
+        </MudItem>
+
+        <MudItem xs="12" md="5" Class="d-flex flex-column align-center justify-center">
+            <MudPaper MaxWidth="420px" Class="rounded-lg">
+                <MudImage Src="img-gm/peixe.png"
+                          Alt="Proteina"
+                          Elevation="15"
+                          Class="rounded-lg mt-0 mt-md-0"
+                          Style="width: 100%; max-width: 420px; object-fit: cover;" />
+                <MudText Typo="Typo.caption" Class="mt-2 text-center" Style="color:coral; max-width:420px">
+                    <ul style="color:var(--mud-palette-text-primary); padding-left: 20px;">
+                        <li class="mb-1"><b>Peixe:</b> É uma ótima fonte de proteína com fácil digestão, sendo rica em ômega 3.</li>
+                    </ul>
+                </MudText>
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+    <MudDivider Class="my-4" Style="--mud-palette-divider: darkred" />
+    @*Terceiro texto*@
+    <MudGrid Justify="Justify.Center" Class="align-center" Spacing="1">
+        <MudItem xs="12" md="7" Class="d-flex flex-column">
+            <MudPaper Elevation="15" Class="d-flex flex-column pa-2" Height="100%" Style="border: 1px solid darkred">
+                <MudText Typo="Typo.body1" Class="pa-1">
+                    <h3><strong>Classificação por Velocidade de Absorção:</strong></h3> Dependendo do seu momento do dia, o tipo de proteína importa:
+                </MudText>
+                <MudText Typo="Typo.button" Class="ms-3" Style="color:darkred">
+                    <li><b>Absorção Rápida (Whey Protein Isolado/Hidrolisado):</b></li>
+                </MudText>
+                <MudText Typo="Typo.body1" Class="pa-1">
+                    Ideal para momentos onde o corpo precisa de aminoácidos no sangue rapidamente, como no pós-treino ou logo ao acordar.
+                </MudText>
+                <MudText Typo="Typo.button" Class="ms-3" Style="color:darkred">
+                    <li><b>Absorção Lenta (Caseína, Albumina ou Proteína da Carne Vermelha):</b></li>
+                </MudText>
+                <MudText Typo="Typo.body1" Class="pa-1">
+                    Possuem uma digestão mais demorada, liberando aminoácidos de forma gradual. Excelentes para a ceia (antes de dormir) para evitar longos períodos de jejum sem suporte proteico.
+                </MudText>
+                <MudText Typo="Typo.body1" Class="ms-1">
+                    Melhores Fontes para a Musculação (Tabela de Referência)
+                </MudText>
+                <MudSimpleTable Style="border: 2px solid #8B0000;" Bordered="true" Hover="true">
+                    <thead>
+                        <tr>
+                            <th><b>Fonte</b></th>
+                            <th><b>Vantagem Técnica</b></th>
+                            <th><b>Uso Sugerido</b></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><b>Ovos Inteiros</b></td>
+                            <td>Maior Valor Biológico (VB 100). Gordura da gema ajuda na produção hormonal.</td>
+                            <td>Café da manhã ou Ceia.</td>
+                        </tr>
+                        <tr>
+                            <td><b>Peito de Frango</b></td>
+                            <td>Altíssima densidade proteica com quase zero de gordura.</td>
+                            <td>Refeições principais (Almoço/Jantar).</td>
+                        </tr>
+                        <tr>
+                            <td><b>Peixes (Tilápia/Atum)</b></td>
+                            <td>Digestão muito leve e rápida. Ótimo para quem faz muitas refeições.</td>
+                            <td>Refeições intermediárias.</td>
+                        </tr>
+                        <tr>
+                            <td><b>Carne Bovina Magra</b></td>
+                            <td>Rica em Creatina natural, Zinco e Vitamina B12.</td>
+                            <td>Almoço (máximo 1x ao dia pela digestão lenta).</td>
+                        </tr>
+                        <tr>
+                            <td><b>Proteínas Vegetais (Soja/Ervilha)</b></td>
+                            <td>Boa opção para variação de microbiota, mas exigem combinação (Arroz + Feijão) para fechar o perfil de aminoácidos.</td>
+                            <td>Variação de cardápio.</td>
+                        </tr>
+                    </tbody>
+                </MudSimpleTable>
+            </MudPaper>
+        </MudItem>
+
+        <MudItem xs="12" md="5" Class="d-flex flex-column align-center justify-center">
+            <MudPaper MaxWidth="420px" Class="rounded-lg">
+                <MudImage Src="img-gm/ovo.png"
+                          Alt="Proteina"
+                          Elevation="15"
+                          Class="rounded-lg mt-0 mt-md-0"
+                          Style="width: 100%; max-width: 420px; object-fit: cover;" />
+                <MudText Typo="Typo.caption" Class="mt-2 text-center" Style="color:coral; max-width:420px">
+                    <ul style="color:var(--mud-palette-text-primary); padding-left: 20px;">
+                        <li class="mb-1"><b>Ovos:</b> É um dos alimentos mais versáteis e completos para ganho de massa muscular, rico em proteína e nutrientes como colina e luteína.</li>
+                    </ul>
+                </MudText>
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+    <MudDivider Class="my-4" Style="--mud-palette-divider: darkred" />
+    @*Ultimo texto*@
+    <MudGrid Justify="Justify.Center" Class="align-center" Spacing="1">
+        <MudItem xs="12" md="7" Class="d-flex flex-column">
+            <MudPaper Elevation="15" Class="d-flex flex-column pa-2" Height="100%" Style="border: 1px solid darkred">
+                <MudText Typo="Typo.body1" Class="pa-1">
+                    <h3><strong>Estratégias de Distribuição:</strong></h3>Não adianta comer 200g de proteína em uma única refeição. O corpo possui um limite de oxidação e utilização por vez para fins de hipertrofia.
+                </MudText>
+                <MudText Typo="Typo.button" Class="ms-3" Style="color:darkred">
+                    <li><b>Fracionamento:</b></li>
+                </MudText>
+                <MudText Typo="Typo.body1" Class="pa-1">
+                    O ideal é dividir sua meta diária em <b>4 a 6 refeições</b> contendo de 20g a 40g de proteína cada. Isso mantém a síntese proteica elevada (o chamado "Janela Anabólica") durante as 24 horas do dia.
+                </MudText>
+                <MudText Typo="Typo.button" Class="ms-3" Style="color:darkred">
+                    <li><b>O Mito da Janela de 30 min:</b></li>
+                </MudText>
+                <MudText Typo="Typo.body1" Class="pa-1">
+                    A janela pós-treino existe, mas dura horas. O mais importante é garantir que, em até 2h após o treino, você tenha ingerido uma fonte de proteína de alta qualidade combinada com carboidratos para repor o glicogênio.
+                </MudText>
+                <MudText Typo="Typo.button" Class="ms-3" Style="color:darkred">
+                    <li><b>Resumo:</b></li>
+                </MudText>
+                <MudText Typo="Typo.body1" Class="pa-1">
+                    Trate a proteína como o seu "salário muscular". Se você não deposita o suficiente e com frequência, sua conta (músculos) não cresce. Procure variar as fontes para evitar sensibilidades alimentares e garantir um espectro completo de micronutrientes.
+                </MudText>
+            </MudPaper>
+        </MudItem>
+
+        <MudItem xs="12" md="5" Class="d-flex flex-column align-center justify-center">
+            <MudPaper MaxWidth="420px" Class="rounded-lg">
+                <MudImage Src="img-gm/whey.png"
+                          Alt="Proteina"
+                          Elevation="15"
+                          Class="rounded-lg mt-0 mt-md-0"
+                          Style="width: 100%; max-width: 420px; object-fit: cover;" />
+                <MudText Typo="Typo.caption" Class="mt-2 text-center" Style="color:coral; max-width:420px">
+                    <ul style="color:var(--mud-palette-text-primary); padding-left: 20px;">
+                        <li class="mb-1"><b>Whey:</b> É a proteína extraída do soro do leite, tendo alto valor biológico e rápida absorção, ideal para ganho de massa magra, recuperação pós-treino e saciedade.</li>
+                    </ul>
+                </MudText>
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+</MudContainer>

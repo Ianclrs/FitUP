@@ -1,0 +1,195 @@
+@using MudBlazor
+
+<MudContainer MaxWidth="MaxWidth.Large" Class="px-2 mt-2 mb-6">
+    <MudCard Elevation="12" Class="mt-1 mb-2 rounded" Style="background-color:saddlebrown;width:188px; height:42px">
+        <MudText Class="ms-1" Style="font-weight:bold; font-family:Cambria" Typo="Typo.h4" Align="Align.Left">GORDURAS</MudText>
+    </MudCard>
+    @*Primeiro texto*@
+    <MudGrid Justify="Justify.Center" Class="align-center" Spacing="1">
+        <MudItem xs="12" md="7" Class="d-flex flex-column">
+            <MudPaper Elevation="15" Class="d-flex flex-column pa-2" Height="100%" Style="border: 1px solid saddlebrown">
+                <MudText Typo="Typo.body1" Class="pa-1">
+                    <h3><strong>Gorduras: O Suporte Hormonal:</strong></h3> As gorduras (ou lipídios) são, talvez, o macronutriente mais incompreendido na musculação. Muitos atletas as evitam por medo do ganho de gordura corporal, mas, do ponto de vista fisiológico, elas são o "painel de controle" do seu organismo. Sem gordura, sua engenharia hormonal desmorona. Lipídios são essenciais para a <b>produção de hormônios esteroides</b>, como a testosterona, e para a absorção de vitaminas lipossolúveis (A, D, E, K). Uma dieta com gordura excessivamente baixa pode arruinar seu perfil hormonal e prejudicar a recuperação.
+                </MudText>
+                <MudText Typo="Typo.body1" Class="pa-1">
+                    <b>A Função Hormonal e Estrutural:</b> Diferente dos carboidratos que servem como energia rápida, as gorduras têm um papel regulador e estrutural:
+                </MudText>
+                <MudText Typo="Typo.button" Class="ms-3" Style="color:saddlebrown">
+                    <li><b>Precursoras de Hormônios:</b></li>
+                </MudText>
+                <MudText Typo="Typo.body1" Class="pa-1">
+                    O colesterol (um tipo de lipídio) é a matéria-prima básica para a síntese de testosterona. Dietas extremamente baixas em gordura (abaixo de 15% das calorias totais) resultam invariavelmente em queda na libido, fadiga e perda de massa muscular devido ao crash hormonal.
+                </MudText>
+                <MudText Typo="Typo.button" Class="ms-3" Style="color:saddlebrown">
+                    <li><b>Saúde das Membranas:</b></li>
+                </MudText>
+                <MudText Typo="Typo.body1" Class="pa-1">
+                    Cada célula do seu músculo é envolvida por uma bicamada lipídica. Gorduras de boa qualidade garantem que essa membrana seja fluida, facilitando a entrada de nutrientes e a sinalização da insulina.
+                </MudText>
+                <MudText Typo="Typo.button" Class="ms-3" Style="color:saddlebrown">
+                    <li><b>Absorção de Vitaminas:</b></li>
+                </MudText>
+                <MudText Typo="Typo.body1" Class="pa-1">
+                    As vitaminas <b>A, D, E e K</b> são lipossolúveis. Se você come uma salada rica em nutrientes mas não adiciona uma fonte de gordura, seu corpo não consegue absorver o que está ali.
+                </MudText>
+            </MudPaper>
+        </MudItem>
+
+        <MudItem xs="12" md="5" Class="d-flex flex-column align-center justify-center">
+            <MudPaper MaxWidth="420px" Class="rounded-lg">
+                <MudImage Src="img-gm/pamendoim.png"
+                          Alt="gordura"
+                          Elevation="15"
+                          Class="rounded-lg mt-0 mt-md-0"
+                          Style="width: 100%; max-width: 420px; object-fit: cover;" />
+                <MudText Typo="Typo.caption" Class="mt-2 text-center" Style="color:coral; max-width:420px">
+                    <ul style="color:var(--mud-palette-text-primary); padding-left: 20px;">
+                        <li class="mb-1"><b>Pasta de Amendoim:</b> Na sua versão integral, é rica em gorduras boas, proteínas e antioxidantes. No entanto, por ser densamente calórica, deve ser consumida com moderação para evitar ganho de peso. Em excesso, também pode causar desconfortos digestivos, além de oferecer alto risco para alérgicos.</li>
+                    </ul>
+                </MudText>
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+    <MudDivider Class="my-4" Style="--mud-palette-divider: saddlebrown" />
+    @*Segundo texto*@
+    <MudGrid Justify="Justify.Center" Class="align-center" Spacing="1">
+        <MudItem xs="12" md="7" Class="d-flex flex-column">
+            <MudPaper Elevation="15" Class="d-flex flex-column pa-2" Height="100%" Style="border: 1px solid saddlebrown">
+                <MudText Typo="Typo.body1" Class="pa-1">
+                    <h3><strong>Tipos de Gorduras: Onde Focar:</strong></h3>
+                </MudText>
+                <MudText Typo="Typo.button" Class="ms-3" Style="color:saddlebrown">
+                    <li><b>Gorduras Monoinsaturadas (Azeite de Oliva, Abacate, Oleaginosas):</b></li>
+                </MudText>
+                <MudText Typo="Typo.body1" Class="pa-1">
+                    São as "queridinhas" da dieta. Ajudam na saúde cardiovascular e não promovem inflamação, sendo excelentes para manter o aporte calórico alto no bulking.
+                </MudText>
+                <MudText Typo="Typo.button" Class="ms-3" Style="color:saddlebrown">
+                    <li><b>Gorduras Poli-insaturadas (Ômega-3 e Ômega-6):</b></li>
+                </MudText>
+                <MudText Typo="Typo.body1" Class="pa-1">
+                    O Ômega-3 (peixes gordos, linhaça) é altamente anti-inflamatório. Ele auxilia na recuperação muscular e melhora a sensibilidade à insulina.
+                </MudText>
+                <MudText Typo="Typo.button" Class="ms-3" Style="color:saddlebrown">
+                    <li><b>Gorduras Saturadas (Gordura animal, Óleo de Coco):</b></li>
+                </MudText>
+                <MudText Typo="Typo.body1" Class="pa-1">
+                    Devem ser consumidas com moderação. Embora importantes para a testosterona, o excesso pode aumentar a resistência à insulina e marcadores inflamatórios.
+                </MudText>
+                <MudText Typo="Typo.button" Class="ms-3" Style="color:saddlebrown">
+                    <li><b>Gorduras Trans (Processados, Margarina):</b></li>
+                </MudText>
+                <MudText Typo="Typo.body1" Class="pa-1">
+                    Estas devem ser zero na sua dieta. Elas destroem a saúde metabólica e aumentam a gordura visceral.
+                </MudText>
+                <MudText Typo="Typo.body1" Class="pa-1">
+                    <h3><b>Estratégia de Digestão e "Emptying" Gástrico</b></h3> Um ponto técnico vital para quem treina pesado é a velocidade de esvaziamento gástrico. As gorduras retardam a digestão. Isso é ótimo em certos momentos e péssimo em outros:
+                </MudText>
+                <MudText Typo="Typo.button" Class="ms-1" Style="color:saddlebrown">
+                    <b>Evite no Pré e Pós-Treino imediato:</b>
+                </MudText>
+                <MudText Typo="Typo.body1" Class="pa-1">
+                    Nestes horários, queremos que os aminoácidos e a glicose cheguem ao músculo o mais rápido possível. A gordura "atrasaria a entrega".
+                </MudText>
+                <MudText Typo="Typo.button" Class="ms-1" Style="color:saddlebrown">
+                    <b>Use na Ceia ou Refeições Afastadas do Treino:</b>
+                </MudText>
+                <MudText Typo="Typo.body1" Class="pa-1">
+                    Ao adicionar gordura na última refeição, você garante uma liberação mais lenta de aminoácidos durante o sono, combatendo o catabolismo noturno.
+                </MudText>
+            </MudPaper>
+        </MudItem>
+
+        <MudItem xs="12" md="5" Class="d-flex flex-column align-center justify-center">
+            <MudPaper MaxWidth="420px" Class="rounded-lg">
+                <MudImage Src="img-gm/mixsementes.png"
+                          Alt="gordura"
+                          Elevation="15"
+                          Class="rounded-lg mt-0 mt-md-0"
+                          Style="width: 100%; max-width: 420px; object-fit: cover;" />
+                <MudText Typo="Typo.caption" Class="mt-2 text-center" Style="color:coral; max-width:420px">
+                    <ul style="color:var(--mud-palette-text-primary); padding-left: 20px;">
+                        <li class="mb-1"><b>Mix de Sementes:</b> Melhora o funcionamento intestinal, aumenta a saciedade, controla o açúcar no sangue e protege o coração. Rico em fibras, proteínas e gorduras boas, também fortalece a imunidade e reduz inflamações.</li>
+                    </ul>
+                </MudText>
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+    <MudDivider Class="my-4" Style="--mud-palette-divider: saddlebrown" />
+    @*Ultimo texto*@
+    <MudGrid Justify="Justify.Center" Class="align-center" Spacing="1">
+        <MudItem xs="12" md="7" Class="d-flex flex-column">
+            <MudPaper Elevation="15" Class="d-flex flex-column pa-2" Height="100%" Style="border: 1px solid saddlebrown">
+                <MudText Typo="Typo.body1" Class="pa-1">
+                    <h3><strong>Melhores Fontes e Indicações:</strong></h3>
+                </MudText>
+                <MudSimpleTable Style="border: 2px solid #8B4513;" Bordered="true" Hover="true">
+                    <thead>
+                        <tr>
+                            <th><b>Fonte</b></th>
+                            <th><b>Benefício para o Atleta</b></th>
+                            <th><b>Recomendação</b></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><b>Azeite de Oliva Extra Virgem</b></td>
+                            <td>Rico em polifenóis e gordura monoinsaturada.</td>
+                            <td>1 a 2 colheres de sopa no almoço/jantar.</td>
+                        </tr>
+                        <tr>
+                            <td><b>Abacate</b></td>
+                            <td>Ótima fonte de potássio (evita cãibras) e gorduras boas.</td>
+                            <td>Excelente em shakes ou com ovos.</td>
+                        </tr>
+                        <tr>
+                            <td><b>Pasta de Amendoim</b></td>
+                            <td>Alta densidade calórica e prática para bater macros.</td>
+                            <td>Cuidado com o excesso (muito calórica).</td>
+                        </tr>
+                        <tr>
+                            <td><b>Ovos Inteiros</b></td>
+                            <td>A gema contém colina e gorduras saturadas essenciais.</td>
+                            <td>2 a 4 ovos por dia (ajustando os macros).</td>
+                        </tr>
+                        <tr>
+                            <td><b>Castanhas/Nozes</b></td>
+                            <td>Ricas em minerais como Zinco e Magnésio.</td>
+                            <td>Ótimo lanche intermediário.</td>
+                        </tr>
+                    </tbody>
+                </MudSimpleTable>
+                <MudText Typo="Typo.button" Class="ms-1">
+                    <h3><b>Indicação e Consumo:</b></h3> A gordura é o macronutriente mais denso: <b>9 kcal por grama</b> (contra 4 kcal das proteínas e carboidratos). Por isso, qualquer erro na pesagem pode estagnar sua perda de gordura.
+                </MudText>
+                <MudText Typo="Typo.button" Class="ms-3" Style="color:saddlebrown">
+                    <li><b>Padrão Ouro:</b></li>
+                </MudText>
+                <MudText Typo="Typo.body1" Class="pa-1">
+                    Entre <b>0,8g e 1,2g por kg de peso</b>.
+                </MudText>
+                <MudText Typo="Typo.button" Class="ms-3" Style="color:saddlebrown">
+                    <li><b>Exemplo:</b></li>
+                </MudText>
+                <MudText Typo="Typo.body1" Class="pa-1">
+                    Se você pesa 80kg, deve ingerir cerca de 64g a 80g de gordura por dia.
+                </MudText>
+            </MudPaper>
+        </MudItem>
+
+        <MudItem xs="12" md="5" Class="d-flex flex-column align-center justify-center">
+            <MudPaper MaxWidth="420px" Class="rounded-lg">
+                <MudImage Src="img-gm/ococo.png"
+                          Alt="gordura"
+                          Elevation="15"
+                          Class="rounded-lg mt-0 mt-md-0"
+                          Style="width: 100%; max-width: 420px; object-fit: cover;" />
+                <MudText Typo="Typo.caption" Class="mt-2 text-center" Style="color:coral; max-width:420px">
+                    <ul style="color:var(--mud-palette-text-primary); padding-left: 20px;">
+                        <li class="mb-1"><b>Óleo de Coco:</b>  É rico em triglicerídeos de cadeia média (TCM) e ácido láurico, que oferecem ação antimicrobiana, auxiliam na hidratação profunda de pele e cabelos, e possuem efeito termogênico. Contudo, por ser rico em gordura saturada, seu consumo alimentar exige moderação para evitar alterações no colesterol.</li>
+                    </ul>
+                </MudText>
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+</MudContainer>
