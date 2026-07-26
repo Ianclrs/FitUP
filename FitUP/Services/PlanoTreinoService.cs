@@ -151,32 +151,34 @@ public class PlanoTreinoService
 {
     private readonly HttpClient _httpClient;
 
-    public PlanoTreinoService(HttpClient httpClient)
+    public PlanoTreinoService(IHttpClientFactory httpClientFactory)
     {
-        _httpClient = httpClient;
+        _httpClient = httpClientFactory.CreateClient("Api");
     }
 
     /// <summary>
     /// Lista todos os planos de treino do usuário logado.
     /// </summary>
-    public async Task<ApiResponse<List<PlanoTreinoDto>>> ListarAsync()
+    public async Task<ApiResponse<PagedResponse<PlanoTreinoDto>>> ListarAsync(int page = 1, int pageSize = 10)
     {
         try
         {
-            var response = await _httpClient.GetAsync("api/planos-treino");
+            var response = await _httpClient.GetAsync($"api/planos-treino?page={page}&pageSize={pageSize}");
             if (!response.IsSuccessStatusCode)
-                return ApiResponse<List<PlanoTreinoDto>>.Fail((int)response.StatusCode);
+                return ApiResponse<PagedResponse<PlanoTreinoDto>>.Fail((int)response.StatusCode);
 
-            var data = await response.Content.ReadFromJsonAsync<List<PlanoTreinoDto>>();
-            return ApiResponse<List<PlanoTreinoDto>>.Ok(data ?? new List<PlanoTreinoDto>());
+            var data = await response.Content.ReadFromJsonAsync<PagedResponse<PlanoTreinoDto>>();
+            return data is not null
+                ? ApiResponse<PagedResponse<PlanoTreinoDto>>.Ok(data, (int)response.StatusCode)
+                : ApiResponse<PagedResponse<PlanoTreinoDto>>.Fail((int)response.StatusCode);
         }
         catch (HttpRequestException)
         {
-            return ApiResponse<List<PlanoTreinoDto>>.NetworkError();
+            return ApiResponse<PagedResponse<PlanoTreinoDto>>.NetworkError();
         }
         catch (TaskCanceledException)
         {
-            return ApiResponse<List<PlanoTreinoDto>>.NetworkError("Tempo limite excedido. Verifique sua conexão.");
+            return ApiResponse<PagedResponse<PlanoTreinoDto>>.NetworkError("Tempo limite excedido. Verifique sua conexão.");
         }
     }
 

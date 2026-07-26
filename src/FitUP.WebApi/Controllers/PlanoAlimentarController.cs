@@ -22,13 +22,26 @@ public class PlanoAlimentarController : ControllerBase
         Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
     /// <summary>
-    ///     Lista todos os planos alimentares do usuário logado.
+    ///     Lista todos os planos alimentares do usuário logado (com paginação).
     /// </summary>
     [HttpGet]
-    public async Task<IActionResult> Listar()
+    public async Task<IActionResult> Listar([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
     {
         var planos = await _planoAlimentarService.ListarPorUsuarioAsync(UsuarioIdLogado);
-        return Ok(planos);
+        var total = planos.Count();
+        var items = planos
+            .OrderByDescending(p => p.CriadoEm)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToList();
+
+        return Ok(new
+        {
+            items,
+            totalCount = total,
+            page,
+            pageSize
+        });
     }
 
     /// <summary>

@@ -349,6 +349,10 @@ else
     // ---- Bioimpedância ----
     private List<RegistroBioimpedanciaDto> _registrosBio = new();
     private bool _isLoadingBio;
+    private int _bioPage = 1;
+    private int _bioTotalPages = 1;
+    private int _bioTotalCount;
+    private const int _bioPageSize = 5;
 
     protected override async Task OnInitializedAsync()
     {
@@ -363,14 +367,19 @@ else
         await CarregarRegistrosBio();
     }
 
-    private async Task CarregarRegistrosBio()
+    private async Task CarregarRegistrosBio(int page = 1)
     {
         _isLoadingBio = true;
         try
         {
-            var result = await BioimpedanciaService.ListarAsync();
-            if (result.Success)
-                _registrosBio = result.Data ?? new();
+            var result = await BioimpedanciaService.ListarAsync(page, _bioPageSize);
+            if (result.Success && result.Data != null)
+            {
+                _registrosBio = result.Data.Items;
+                _bioPage = result.Data.Page;
+                _bioTotalPages = result.Data.TotalPages;
+                _bioTotalCount = result.Data.TotalCount;
+            }
             else
                 Snackbar.Add(result.ErrorMessage, Severity.Error);
         }
@@ -455,11 +464,8 @@ else
         _isSavingEmail = true;
         try
         {
-            var (primeiroNome, sobrenome) = SepararNomeSobrenome(_nomeModel.Nome);
             var request = new AtualizarPerfilRequest
             {
-                Nome = primeiroNome,
-                Sobrenome = sobrenome,
                 Email = _emailModel.NovoEmail
             };
             var result = await AuthService.AtualizarPerfilAsync(request);
@@ -484,16 +490,16 @@ else
         }
     }
 
-    private static (string nome, string sobrenome) SepararNomeSobrenome(string nomeCompleto)
+    private static (string? nome, string? sobrenome) SepararNomeSobrenome(string nomeCompleto)
     {
         if (string.IsNullOrWhiteSpace(nomeCompleto))
-            return (string.Empty, string.Empty);
+            return (null, null);
 
         nomeCompleto = nomeCompleto.Trim();
         var ultimoEspaco = nomeCompleto.LastIndexOf(' ');
 
         if (ultimoEspaco <= 0)
-            return (nomeCompleto, string.Empty);
+            return (nomeCompleto, null);
 
         return (nomeCompleto[..ultimoEspaco], nomeCompleto[(ultimoEspaco + 1)..]);
     }

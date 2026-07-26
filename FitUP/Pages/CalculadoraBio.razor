@@ -230,10 +230,18 @@
                     </MudForm>
                 </MudCardContent>
                 <MudCardActions Class="pa-0">
-                    <MudButton Class="calc-btn scale-hover" FullWidth="true" OnClick="Calcular">
-                        <MudIcon Size="Size.Small" Class="me-2" />
-                        Calcular Resultados
-                    </MudButton>
+                        <MudButton Class="calc-btn scale-hover" FullWidth="true" OnClick="Calcular" Disabled="@_isCalculating">
+                            @if (_isCalculating)
+                            {
+                                <MudProgressCircular Size="Size.Small" Color="Color.Inherit" Indeterminate="true" Class="me-2" />
+                                <span>Calculando...</span>
+                            }
+                            else
+                            {
+                                <MudIcon Size="Size.Small" Class="me-2" />
+                                <span>Calcular Resultados</span>
+                            }
+                        </MudButton>
                 </MudCardActions>
             </MudCard>
         </MudItem>
@@ -373,6 +381,7 @@
 @code {
     private MudForm form = default!;
     private bool ResultadoCalculado { get; set; }
+    private bool _isCalculating;
     private bool _isSaving;
 
     private BioimpedanciaModel Model { get; set; } = new();
@@ -386,6 +395,9 @@
     private async Task Calcular()
     {
         if (form is null) return;
+
+        _isCalculating = true;
+        await Task.Delay(300); // feedback visual para operação instantânea
 
         await form.ValidateAsync();
 
@@ -428,6 +440,7 @@
             GET = get
         };
 
+        _isCalculating = false;
         ResultadoCalculado = true;
     }
 

@@ -1,4 +1,33 @@
+using System.Text.Json.Serialization;
+
 namespace FitUP.Services;
+
+/// <summary>
+/// Resposta paginada para listagens.
+/// </summary>
+public class PagedResponse<T>
+{
+    [JsonPropertyName("items")]
+    public List<T> Items { get; set; } = new();
+
+    [JsonPropertyName("totalCount")]
+    public int TotalCount { get; set; }
+
+    [JsonPropertyName("page")]
+    public int Page { get; set; }
+
+    [JsonPropertyName("pageSize")]
+    public int PageSize { get; set; }
+
+    [JsonIgnore]
+    public int TotalPages => (int)Math.Ceiling((double)TotalCount / PageSize);
+
+    [JsonIgnore]
+    public bool HasNextPage => Page < TotalPages;
+
+    [JsonIgnore]
+    public bool HasPreviousPage => Page > 1;
+}
 
 /// <summary>
 /// Resposta padronizada para chamadas à API, encapsulando sucesso/erro e status HTTP.

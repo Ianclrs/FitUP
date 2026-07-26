@@ -108,7 +108,16 @@
         </MudText>
     </div>
 
-    @if (!_dietaGerada)
+    @if (_isLoadingAlimentos)
+    {
+        <MudContainer MaxWidth="MaxWidth.Small" Class="px-4">
+            <div class="step-panel anim-fade-scale" style="text-align:center;padding:60px;">
+                <MudProgressCircular Color="Color.Primary" Indeterminate="true" Size="Size.Medium" />
+                <MudText Typo="Typo.body2" Color="Color.Inherit" Class="mt-4" Style="opacity:0.6;">Carregando banco de alimentos...</MudText>
+            </div>
+        </MudContainer>
+    }
+    else if (!_dietaGerada)
     {
         <div class="custom-stepper">
             <div class="step-pill @(_activeStep == 0 ? "active" : _activeStep > 0 ? "done" : "")">
@@ -317,9 +326,29 @@
             </div>
 
             <div class="floating-bar">
-                <MudButton Class="btn-flat btn-save" Style="background-color:seagreen" OnClick="SalvarDieta">Salvar Dieta</MudButton>
-                <MudButton Class="btn-flat btn-pdf" Style="background-color:coral" OnClick="ExportarPdf">Baixar PDF</MudButton>
-                <MudButton Class="btn-flat btn-reset" OnClick="NovaGeracao" StartIcon="@Icons.Material.Filled.Refresh">Recomecar</MudButton>
+                <MudButton Class="btn-flat btn-save" Style="background-color:seagreen" OnClick="SalvarDieta" Disabled="@_isSavingDieta">
+                    @if (_isSavingDieta)
+                    {
+                        <MudProgressCircular Size="Size.Small" Color="Color.Inherit" Indeterminate="true" Class="me-2" />
+                        <span>Salvando...</span>
+                    }
+                    else
+                    {
+                        <span>Salvar Dieta</span>
+                    }
+                </MudButton>
+                <MudButton Class="btn-flat btn-pdf" Style="background-color:coral" OnClick="ExportarPdf" Disabled="@_isExporting">
+                    @if (_isExporting)
+                    {
+                        <MudProgressCircular Size="Size.Small" Color="Color.Inherit" Indeterminate="true" Class="me-2" />
+                        <span>Exportando...</span>
+                    }
+                    else
+                    {
+                        <span>Baixar PDF</span>
+                    }
+                </MudButton>
+                <MudButton Class="btn-flat btn-reset" OnClick="NovaGeracao" StartIcon="@Icons.Material.Filled.Refresh" Disabled="@(_isSavingDieta || _isExporting)">Recomecar</MudButton>
             </div>
         </MudContainer>
     }
@@ -339,6 +368,9 @@
     private int _restricao = 0;
 
     private bool _dietaGerada = false;
+    private bool _isLoadingAlimentos = true;
+    private bool _isSavingDieta;
+    private bool _isExporting;
     private double _tmb, _tdee, _metaCalorias, _metaProteina, _metaCarbo, _metaGordura, _metaFibra;
     private string _nomeObjetivo = "";
     private double _totalCaloriasGerado, _totalProteinaGerado, _totalCarboGerado, _totalGorduraGerado, _totalFibraGerado;
@@ -382,6 +414,7 @@
 
     private async Task CarregarAlimentosAsync()
     {
+        _isLoadingAlimentos = true;
         try
         {
             var json = await Http.GetStringAsync("data/alimentos.json");
@@ -401,6 +434,7 @@
                     PorcaoPadrao = a.PorcaoPadrao,
                     UnidadeMedida = a.UnidadeMedida ?? "g"
                 }).ToList();
+                _isLoadingAlimentos = false;
                 return;
             }
         }
@@ -411,6 +445,7 @@
 
         // Fallback: dados hardcoded
         InicializarBancoAlimentosFallback();
+        _isLoadingAlimentos = false;
     }
 
     private void InicializarBancoAlimentosFallback() {
@@ -490,6 +525,7 @@
 
     private async Task SalvarDieta() {
         if (!AuthService.IsLoggedIn) { Snackbar.Add("Faca login para salvar.", Severity.Warning); return; }
+        _isSavingDieta = true;
         try {
             var req = new PlanoAlimentarCompletoRequest { Nome = $"Dieta {_nomeObjetivo} - {DateTime.Now:dd/MM}", Objetivo = _objetivo,
                 Descricao = $"Meta: {_metaCalorias:F0} kcal | P: {_metaProteina:F0}g C: {_metaCarbo:F0}g G: {_metaGordura:F0}g",
@@ -503,15 +539,18 @@
             else
                 Snackbar.Add(result.ErrorMessage, Severity.Error);
         } catch (Exception ex) { Console.WriteLine($"Erro salvar: {ex.Message}"); Snackbar.Add("Erro ao salvar dieta.", Severity.Error); }
+        finally { _isSavingDieta = false; }
     }
 
     private async Task ExportarPdf() {
+        _isExporting = true;
         try {
             var data = new { nome = $"Dieta {_nomeObjetivo}", descricao = $"Meta: {_metaCalorias:F0} kcal | P:{_metaProteina:F0}g C:{_metaCarbo:F0}g G:{_metaGordura:F0}g",
                 refeicoes = _refeicoesGeradas.Select(r => new { titulo = r.Nome, alimentos = r.Alimentos.Select(a => new { label = $"{a.Nome}: ", valor = $"{a.Quantidade:F0}{a.UnidadeMedida} | P:{a.Proteina:F0}g C:{a.Carboidrato:F0}g G:{a.Gordura:F0}g ({a.Calorias:F0} kcal)" }).ToList() }).ToList() };
             var json = JsonSerializer.Serialize(data, new JsonSerializerOptions { PropertyNamingPolicy = JsonNamingPolicy.CamelCase, Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping });
             await JS.InvokeVoidAsync("exportDietaPdf", json);
         } catch (Exception ex) { Console.WriteLine($"Erro PDF: {ex.Message}"); Snackbar.Add("Erro ao exportar PDF.", Severity.Error); }
+        finally { _isExporting = false; }
     }
 
     public class RefeicaoViewModel { public string Nome = ""; public TimeSpan? HorarioSugerido; public int Ordem; public double TotalProteina, TotalCarboidrato, TotalGordura, TotalFibra, TotalCalorias; public List<AlimentoViewModel> Alimentos = new(); }

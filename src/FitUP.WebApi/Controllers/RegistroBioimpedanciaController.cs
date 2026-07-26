@@ -22,13 +22,26 @@ public class RegistroBioimpedanciaController : ControllerBase
         Guid.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)!);
 
     /// <summary>
-    ///     Lista todos os registros de bioimpedância do usuário logado.
+    ///     Lista todos os registros de bioimpedância do usuário logado (com paginação).
     /// </summary>
     [HttpGet]
-    public async Task<IActionResult> Listar()
+    public async Task<IActionResult> Listar([FromQuery] int page = 1, [FromQuery] int pageSize = 5)
     {
         var registros = await _bioimpedanciaService.ListarPorUsuarioAsync(UsuarioIdLogado);
-        return Ok(registros);
+        var total = registros.Count();
+        var items = registros
+            .OrderByDescending(r => r.DataRegistro)
+            .Skip((page - 1) * pageSize)
+            .Take(pageSize)
+            .ToList();
+
+        return Ok(new
+        {
+            items,
+            totalCount = total,
+            page,
+            pageSize
+        });
     }
 
     /// <summary>

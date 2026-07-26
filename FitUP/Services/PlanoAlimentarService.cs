@@ -181,32 +181,34 @@ public class PlanoAlimentarService
 {
     private readonly HttpClient _httpClient;
 
-    public PlanoAlimentarService(HttpClient httpClient)
+    public PlanoAlimentarService(IHttpClientFactory httpClientFactory)
     {
-        _httpClient = httpClient;
+        _httpClient = httpClientFactory.CreateClient("Api");
     }
 
     /// <summary>
     /// Lista todos os planos alimentares do usuário logado.
     /// </summary>
-    public async Task<ApiResponse<List<PlanoAlimentarDto>>> ListarAsync()
+    public async Task<ApiResponse<PagedResponse<PlanoAlimentarDto>>> ListarAsync(int page = 1, int pageSize = 10)
     {
         try
         {
-            var response = await _httpClient.GetAsync("api/planos-alimentares");
+            var response = await _httpClient.GetAsync($"api/planos-alimentares?page={page}&pageSize={pageSize}");
             if (!response.IsSuccessStatusCode)
-                return ApiResponse<List<PlanoAlimentarDto>>.Fail((int)response.StatusCode);
+                return ApiResponse<PagedResponse<PlanoAlimentarDto>>.Fail((int)response.StatusCode);
 
-            var data = await response.Content.ReadFromJsonAsync<List<PlanoAlimentarDto>>();
-            return ApiResponse<List<PlanoAlimentarDto>>.Ok(data ?? new List<PlanoAlimentarDto>());
+            var data = await response.Content.ReadFromJsonAsync<PagedResponse<PlanoAlimentarDto>>();
+            return data is not null
+                ? ApiResponse<PagedResponse<PlanoAlimentarDto>>.Ok(data, (int)response.StatusCode)
+                : ApiResponse<PagedResponse<PlanoAlimentarDto>>.Fail((int)response.StatusCode);
         }
         catch (HttpRequestException)
         {
-            return ApiResponse<List<PlanoAlimentarDto>>.NetworkError();
+            return ApiResponse<PagedResponse<PlanoAlimentarDto>>.NetworkError();
         }
         catch (TaskCanceledException)
         {
-            return ApiResponse<List<PlanoAlimentarDto>>.NetworkError("Tempo limite excedido. Verifique sua conexão.");
+            return ApiResponse<PagedResponse<PlanoAlimentarDto>>.NetworkError("Tempo limite excedido. Verifique sua conexão.");
         }
     }
 

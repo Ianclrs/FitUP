@@ -1,10 +1,10 @@
 # Catálogo de Problemas — FitUP
 
-> **Última atualização:** 24/07/2026  
+> **Última atualização:** 26/07/2026  
 > **Commit analisado:** `b7d0805c7ead476d1951f7968e9d758ab3a825c6`  
-> **Versão do projeto:** .NET 10.0 / Blazor WebAssembly / MudBlazor 9.x  
+> **Versão do projeto:** .NET 10.0 / Blazor WebAssembly / MudBlazor 9.7.0  
 > **Analisado por:** Cline (revisão completa do código)  
-> **Fase 1 concluída:** M02 (ApiResponse) e M03 (EsqueciSenha) resolvidos
+> **Fases concluídas:** Fase 1, Fase 2, Fase 3
 
 ---
 

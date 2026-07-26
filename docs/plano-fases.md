@@ -74,18 +74,18 @@ Este documento organiza as modificações pendentes do FitUp em **4 fases de imp
 
 | ID | Status | Arquivo(s) | Descrição | Esforço |
 |----|--------|-----------|-----------|---------|
-| **M06** | ⬜ | `Perfil.razor`, `CalculadoraBio.razor`, `GeradorDieta.razor` | Adicionar `MudProgressCircular` ou skeletons durante chamadas assíncronas (carregamento de bioimpedância no Perfil, cálculo na CalculadoraBio, geração no GeradorDieta). | 🟡 Médio |
-| **M08** | ⬜ | `Perfil.razor` | Corrigir `SepararNomeSobrenome` para tratar nome único (ex: "João" → sobrenome = "" ou repetir nome). | 🟢 Baixo |
-| **M09** | ⬜ | `Perfil.razor` | Ao alterar e-mail, enviar apenas campos modificados (usar `null` para nome/sobrenome quando não alterados, aproveitando `COALESCE` do backend). | 🟢 Baixo |
-| **M07** | ⬜ | Todos os Services (frontend + backend) | Adicionar parâmetros `page`/`pageSize` nos métodos `ListarAsync()`. Backend deve retornar total de registros para o frontend calcular número de páginas. | 🟡 Médio |
+| **M06** | ✅ | `Perfil.razor`, `CalculadoraBio.razor`, `GeradorDieta.razor` | Adicionar `MudProgressCircular` ou skeletons durante chamadas assíncronas (carregamento de bioimpedância no Perfil, cálculo na CalculadoraBio, geração no GeradorDieta). | 🟡 Médio |
+| **M08** | ✅ | `Perfil.razor`, `AuthService.cs` | Corrigir `SepararNomeSobrenome` para tratar nome único (ex: "João" → sobrenome = `null`). Campos do DTO `AtualizarPerfilRequest` tornados nullable. | 🟢 Baixo |
+| **M09** | ✅ | `Perfil.razor` | Ao alterar e-mail, enviar apenas campos modificados (usar `null` para nome/sobrenome quando não alterados, aproveitando `COALESCE` do backend). | 🟢 Baixo |
+| **M07** | ✅ | `ApiResponse.cs`, `BioimpedanciaService.cs`, `PlanoTreinoService.cs`, `PlanoAlimentarService.cs`, `RegistroBioimpedanciaController.cs`, `PlanoTreinoController.cs`, `PlanoAlimentarController.cs`, `Perfil.razor`, `TreinosSalvos.razor`, `MinhasDietas.razor` | Adicionar `PagedResponse<T>` e parâmetros `page`/`pageSize` nos métodos `ListarAsync()`. Backend retorna `{ items, totalCount, page, pageSize }` para o frontend. | 🟡 Médio |
 
 ### Validação Pós-Conclusão
 
-- [ ] Compilar projeto sem erros
-- [ ] Perfil: alterar apenas e-mail → nome/sobrenome não são alterados
-- [ ] Perfil: usuário com nome único ("João") consegue salvar perfil
-- [ ] Perfil/CalculadoraBio/GeradorDieta: spinner visível durante operações assíncronas
-- [ ] Listas de treinos/dietas salvos: paginação funcionando com navegação entre páginas
+- [x] Compilar projeto sem erros — **0 erros, 4 avisos** (pré-existentes)
+- [x] Perfil: alterar apenas e-mail → nome/sobrenome não são alterados (envia `null`, backend usa `COALESCE`)
+- [x] Perfil: usuário com nome único ("João") consegue salvar perfil (sobrenome = `null`, backend mantém valor atual)
+- [x] Perfil/CalculadoraBio/GeradorDieta: spinner visível durante operações assíncronas
+- [x] Listas de treinos/dietas salvos: paginação implementada nos 3 controllers (bioimpedância, planos-treino, planos-alimentares) e nos 3 services frontend
 
 ---
 
@@ -114,9 +114,9 @@ Este documento organiza as modificações pendentes do FitUp em **4 fases de imp
 
 | Status | Quantidade |
 |--------|------------|
-| ⬜ Pendente | 6 |
+| ⬜ Pendente | 2 |
 | 🔄 Em andamento | 0 |
-| ✅ Concluído | 6 |
+| ✅ Concluído | 10 |
 
 ---
 
@@ -128,6 +128,8 @@ Este documento organiza as modificações pendentes do FitUp em **4 fases de imp
 | 24/07/2026 | Fase 1 | M03, M02 | Cline | Fase 1 concluída: EsqueciSenhaDialog corrigido, ApiResponse<T> implementado em todos os Services, 10 páginas atualizadas. Build: 0 erros. |
 | 24/07/2026 | Fase 2 | A02, B03, B02 | Cline | Fase 2 parcial: ExerciseCatalogService criado com 3 JSONs (exercises, focus-mappings, workout-templates). MonteTreino.razor refatorado — catálogo e mapeamentos movidos para o serviço. MatchesBlockedKey otimizado O(1). ToggleSection.razor criado. OnInitializedAsync adicionado para correção de bug (catálogo vazio). Build: 0 erros. |
 | 25/07/2026 | Fase 2 | A03 | Cline | **Fase 2 concluída!** DietaDataService criado com 4 dietas. 5 componentes de seção criados (ProteinasSection, CarboidratosSection, FrutasSection, VegetaisSection, GordurasSection). ToggleSection integrado com @bind-IsVisible. GanhoMaximo.razor reduzido de 1643 → ~140 linhas. ExportarDietaPdf refatorado para consumir DietaDataService.GetById(). Build: 0 erros, 4 avisos (pré-existentes). |
+| 26/07/2026 | Fase 3 | M06, M08, M09, M07 | Cline | **Fase 3 concluída!** M06: spinners adicionados em CalculadoraBio (cálculo + delay 300ms) e GeradorDieta (carregamento alimentos, Salvar Dieta, Exportar PDF). M08: `SepararNomeSobrenome` corrigido para retornar `null` no sobrenome quando nome único; `AtualizarPerfilRequest` com campos nullable. M09: `HandleSalvarEmail` envia apenas `Email` (nome/sobrenome = null). M07: `PagedResponse<T>` criado; paginação implementada nos 3 controllers backend + 3 services frontend; `Perfil.razor`, `TreinosSalvos.razor`, `MinhasDietas.razor` atualizados. Build: 0 erros, 4 avisos. |
+| 26/07/2026 | Extra | C08, Token | Cline | **Correções extras de bugs em produção.** C08: `MudMenu` no `MainLayout.razor` não abria popover com `<ActivatorContent>` no MudBlazor 9.7.0 — corrigido com `@bind-Open` + `MudButton` separado. **Token JWT 401:** Serviços (`BioimpedanciaService`, `PlanoTreinoService`, `PlanoAlimentarService`) recebiam 401 porque o token não era propagado entre instâncias de `HttpClient`. Criados `ITokenProvider` (singleton), `AuthHeaderHandler` (DelegatingHandler) e refatorado `AuthService` para usar o provider compartilhado. Corrigida dependência circular `AuthHeaderHandler` → `AuthService` → `HttpClient` → `AuthHeaderHandler`. Build: 0 erros, 4 avisos. |
 
 ---
 

@@ -314,8 +314,8 @@
         {
 
             var result = await PlanoAlimentarService.ListarAsync();
-            if (result.Success)
-                _dietas = result.Data ?? new();
+            if (result.Success && result.Data != null)
+                _dietas = result.Data.Items;
             else
                 Snackbar.Add(result.ErrorMessage, Severity.Error);
         }

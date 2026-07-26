@@ -103,29 +103,31 @@ public class BioimpedanciaService
 {
     private readonly HttpClient _httpClient;
 
-    public BioimpedanciaService(HttpClient httpClient)
+    public BioimpedanciaService(IHttpClientFactory httpClientFactory)
     {
-        _httpClient = httpClient;
+        _httpClient = httpClientFactory.CreateClient("Api");
     }
 
-    public async Task<ApiResponse<List<RegistroBioimpedanciaDto>>> ListarAsync()
+    public async Task<ApiResponse<PagedResponse<RegistroBioimpedanciaDto>>> ListarAsync(int page = 1, int pageSize = 5)
     {
         try
         {
-            var response = await _httpClient.GetAsync("api/bioimpedancia");
+            var response = await _httpClient.GetAsync($"api/bioimpedancia?page={page}&pageSize={pageSize}");
             if (!response.IsSuccessStatusCode)
-                return ApiResponse<List<RegistroBioimpedanciaDto>>.Fail((int)response.StatusCode);
+                return ApiResponse<PagedResponse<RegistroBioimpedanciaDto>>.Fail((int)response.StatusCode);
 
-            var data = await response.Content.ReadFromJsonAsync<List<RegistroBioimpedanciaDto>>();
-            return ApiResponse<List<RegistroBioimpedanciaDto>>.Ok(data ?? new List<RegistroBioimpedanciaDto>());
+            var data = await response.Content.ReadFromJsonAsync<PagedResponse<RegistroBioimpedanciaDto>>();
+            return data is not null
+                ? ApiResponse<PagedResponse<RegistroBioimpedanciaDto>>.Ok(data, (int)response.StatusCode)
+                : ApiResponse<PagedResponse<RegistroBioimpedanciaDto>>.Fail((int)response.StatusCode);
         }
         catch (HttpRequestException)
         {
-            return ApiResponse<List<RegistroBioimpedanciaDto>>.NetworkError();
+            return ApiResponse<PagedResponse<RegistroBioimpedanciaDto>>.NetworkError();
         }
         catch (TaskCanceledException)
         {
-            return ApiResponse<List<RegistroBioimpedanciaDto>>.NetworkError("Tempo limite excedido. Verifique sua conexão.");
+            return ApiResponse<PagedResponse<RegistroBioimpedanciaDto>>.NetworkError("Tempo limite excedido. Verifique sua conexão.");
         }
     }
 

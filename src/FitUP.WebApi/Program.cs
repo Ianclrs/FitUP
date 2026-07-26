@@ -83,6 +83,15 @@ builder.Services.AddCors(options =>
               .AllowAnyMethod()
               .AllowCredentials();
     });
+
+    // Política permissiva para desenvolvimento local (qualquer porta do frontend Blazor)
+    options.AddPolicy("AllowLocalDev", policy =>
+    {
+        policy.SetIsOriginAllowed(origin => new Uri(origin).Host == "localhost")
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .AllowCredentials();
+    });
 });
 
 // ─── Services (DI) ─────────────────────────────────────────────
@@ -105,7 +114,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseCors("AllowFrontend");
+app.UseCors(app.Environment.IsDevelopment() ? "AllowLocalDev" : "AllowFrontend");
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();

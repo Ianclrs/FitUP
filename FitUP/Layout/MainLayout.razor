@@ -11,7 +11,9 @@
         left: auto !important;
     }
 
-
+    .mud-menu-popover {
+        z-index: 1300 !important;
+    }
 </style>
 
 <MudThemeProvider Theme="@_theme" IsDarkMode="_isDarkMode" /> 
@@ -43,36 +45,35 @@
         @*Botões condicionais: logado vs não logado*@
         @if (AuthService.IsLoggedIn)
         {
-            <MudMenu @ref="_userMenu" AnchorOrigin="Origin.BottomCenter" TransformOrigin="Origin.TopCenter" Class="mt-2 ms-2">
-                <ActivatorContent>
-                    <div class="user-menu-activator d-flex align-center" style="cursor:pointer;">
-                        <MudIcon Icon="@Icons.Material.Filled.AccountCircle" Size="Size.Large" Style="color:coral;" />
-                        <MudText Class="d-none d-md-inline-block ms-2" Typo="Typo.body2" Style="color:coral; font-weight:600;">
-                            @AuthService.NomeUsuario
-                        </MudText>
-                    </div>
-                </ActivatorContent>
-                <ChildContent>
-                    <div>
-                        <MudMenuItem Href="/perfil">
-                            <MudText Typo="Typo.subtitle2" Align="Align.Center" Style="font-weight: bold; font-size:0.9rem">
-                                Meu Perfil
-                            </MudText>
-                        </MudMenuItem>
-                        <MudDivider Style="--mud-palette-divider:coral" />
-                        <MudMenuItem Href="/MeusTreinos">
-                            <MudText Typo="Typo.subtitle2" Align="Align.Center" Style="font-weight:bold; font-size:0.9rem">
-                                Meus Treinos
-                            </MudText>
-                        </MudMenuItem>
-                        <MudDivider Style="--mud-palette-divider:coral" />
-                        <MudMenuItem OnClick="@(async () => await LogoutAsync())">
-                            <MudText Typo="Typo.subtitle2" Align="Align.Center" Style="font-weight:bold; font-size:0.9rem">
-                                Sair
-                            </MudText>
-                        </MudMenuItem>
-                    </div>
-                </ChildContent>
+            <MudButton StartIcon="@Icons.Material.Filled.AccountCircle"
+                       Variant="Variant.Text"
+                       Style="color:coral;text-transform:none;font-weight:600;"
+                       Size="Size.Small"
+                       Class="mt-2 ms-2"
+                       OnClick="@(() => _menuOpen = !_menuOpen)">
+                @AuthService.NomeUsuario
+            </MudButton>
+            <MudMenu @bind-Open="_menuOpen"
+                     AnchorOrigin="Origin.BottomCenter"
+                     TransformOrigin="Origin.TopCenter"
+                     Style="min-width:180px;">
+                <MudMenuItem Href="/perfil">
+                    <MudText Typo="Typo.subtitle2" Align="Align.Center" Style="font-weight:bold;font-size:0.9rem">
+                        Meu Perfil
+                    </MudText>
+                </MudMenuItem>
+                <MudDivider Style="--mud-palette-divider:coral" />
+                <MudMenuItem Href="/MeusTreinos">
+                    <MudText Typo="Typo.subtitle2" Align="Align.Center" Style="font-weight:bold;font-size:0.9rem">
+                        Meus Treinos
+                    </MudText>
+                </MudMenuItem>
+                <MudDivider Style="--mud-palette-divider:coral" />
+                <MudMenuItem OnClick="@(async () => await LogoutAsync())">
+                    <MudText Typo="Typo.subtitle2" Align="Align.Center" Style="font-weight:bold;font-size:0.9rem">
+                        Sair
+                    </MudText>
+                </MudMenuItem>
             </MudMenu>
         }
         else
@@ -135,9 +136,9 @@
 
 @code {
     private bool _open = false;
+    private bool _menuOpen = false;
     private bool _isDarkMode = true;
     private MudTheme? _theme;
-    private MudMenu _userMenu = default!;
 
     private string _backgroundImageDark = "img/Home.png";
     private string _backgroundImageLight = "img/HomeL.png";

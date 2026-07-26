@@ -50,10 +50,10 @@ public class RegistroRequest
 public class AtualizarPerfilRequest
 {
     [JsonPropertyName("nome")]
-    public string Nome { get; set; } = string.Empty;
+    public string? Nome { get; set; }
 
     [JsonPropertyName("sobrenome")]
-    public string Sobrenome { get; set; } = string.Empty;
+    public string? Sobrenome { get; set; }
 
     [JsonPropertyName("email")]
     public string? Email { get; set; }
@@ -169,24 +169,30 @@ public class AuthService
 {
     private readonly HttpClient _httpClient;
     private readonly IJSRuntime _jsRuntime;
+    private readonly ITokenProvider _tokenProvider;
 
     private const string StorageKey = "fitup_user";
+    private const string VersionKey = "fitup_app_version";
 
-    public bool IsLoggedIn => !string.IsNullOrWhiteSpace(NomeUsuario) && !string.IsNullOrWhiteSpace(Token);
+    // Altere esta string sempre que quiser forçar logout de todos os usuários
+    private static readonly string AppVersion = DateTime.UtcNow.ToString("yyyyMMdd_HHmmss");
+
+    public bool IsLoggedIn => !string.IsNullOrWhiteSpace(NomeUsuario) && !string.IsNullOrWhiteSpace(_tokenProvider.Token);
     public string NomeUsuario { get; private set; } = string.Empty;
     public string EmailUsuario { get; private set; } = string.Empty;
     public string UsuarioId { get; private set; } = string.Empty;
-    public string Token { get; private set; } = string.Empty;
+    public string Token => _tokenProvider.Token;
 
     /// <summary>
     /// Evento disparado quando o estado de autenticação muda.
     /// </summary>
     public event Action? AuthStateChanged;
 
-    public AuthService(HttpClient httpClient, IJSRuntime jsRuntime)
+    public AuthService(IHttpClientFactory httpClientFactory, IJSRuntime jsRuntime, ITokenProvider tokenProvider)
     {
-        _httpClient = httpClient;
+        _httpClient = httpClientFactory.CreateClient("Api");
         _jsRuntime = jsRuntime;
+        _tokenProvider = tokenProvider;
     }
 
     /// <summary>
@@ -196,6 +202,15 @@ public class AuthService
     {
         try
         {
+            // Verifica se a versão do app mudou (recompilação) → invalida sessão antiga
+            var savedVersion = await _jsRuntime.InvokeAsync<string>("localStorage.getItem", VersionKey);
+            if (savedVersion != AppVersion)
+            {
+                await _jsRuntime.InvokeVoidAsync("localStorage.removeItem", StorageKey);
+                await _jsRuntime.InvokeVoidAsync("localStorage.setItem", VersionKey, AppVersion);
+                return;
+            }
+
             var json = await _jsRuntime.InvokeAsync<string>("localStorage.getItem", StorageKey);
             if (string.IsNullOrWhiteSpace(json))
                 return;
@@ -207,7 +222,7 @@ public class AuthService
             NomeUsuario = state.Nome;
             EmailUsuario = state.Email;
             UsuarioId = state.UsuarioId;
-            Token = state.Token;
+            _tokenProvider.SetToken(state.Token);
 
             // Reconfigura o header Authorization
             _httpClient.DefaultRequestHeaders.Authorization =
@@ -259,7 +274,7 @@ public class AuthService
                 NomeUsuario = authResponse.Nome;
                 EmailUsuario = authResponse.Email;
                 UsuarioId = authResponse.UsuarioId;
-                Token = authResponse.Token;
+                _tokenProvider.SetToken(authResponse.Token);
 
                 // Configura o header Authorization
                 _httpClient.DefaultRequestHeaders.Authorization =
@@ -292,7 +307,7 @@ public class AuthService
         NomeUsuario = string.Empty;
         EmailUsuario = string.Empty;
         UsuarioId = string.Empty;
-        Token = string.Empty;
+        _tokenProvider.Clear();
 
         _httpClient.DefaultRequestHeaders.Authorization = null;
 

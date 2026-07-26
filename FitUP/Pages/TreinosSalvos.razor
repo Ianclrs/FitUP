@@ -320,8 +320,8 @@
         {
 
             var result = await PlanoTreinoService.ListarAsync();
-            if (result.Success)
-                _treinos = result.Data ?? new();
+            if (result.Success && result.Data != null)
+                _treinos = result.Data.Items;
             else
                 Snackbar.Add(result.ErrorMessage, Severity.Error);
         }
