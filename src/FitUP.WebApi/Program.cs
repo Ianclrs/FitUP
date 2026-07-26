@@ -1,4 +1,5 @@
 using System.Text;
+using System.Text.RegularExpressions;
 using FitUP.WebApi.Service;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -73,15 +74,32 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-// CORS — permitir chamadas do front-end Blazor
+// CORS — origens configuráveis via appsettings.json
+var allowedOriginPatterns = builder.Configuration.GetSection("Cors:AllowedOriginPatterns").Get<string[]>()
+    ?? new[] { "http://localhost:*", "https://localhost:*", "https://*.vercel.app" };
+
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowFrontend", policy =>
+    // Política de produção: validação flexível com suporte a wildcards (*)
+    options.AddPolicy("AllowProduction", policy =>
     {
-        policy.WithOrigins("http://localhost:5059", "https://localhost:7211")
-              .AllowAnyHeader()
-              .AllowAnyMethod()
-              .AllowCredentials();
+        policy.SetIsOriginAllowed(origin =>
+        {
+            if (string.IsNullOrEmpty(origin))
+                return false;
+
+            foreach (var pattern in allowedOriginPatterns)
+            {
+                // Converte padrão wildcard (*) para regex
+                var regexPattern = "^" + Regex.Escape(pattern).Replace("\\*", ".*") + "$";
+                if (Regex.IsMatch(origin, regexPattern, RegexOptions.IgnoreCase))
+                    return true;
+            }
+            return false;
+        })
+        .AllowAnyHeader()
+        .AllowAnyMethod()
+        .AllowCredentials();
     });
 
     // Política permissiva para desenvolvimento local (qualquer porta do frontend Blazor)
@@ -114,7 +132,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-app.UseCors(app.Environment.IsDevelopment() ? "AllowLocalDev" : "AllowFrontend");
+app.UseCors(app.Environment.IsDevelopment() ? "AllowLocalDev" : "AllowProduction");
 app.UseAuthentication();
 app.UseAuthorization();
 app.MapControllers();
