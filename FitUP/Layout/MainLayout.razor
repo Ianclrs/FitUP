@@ -14,6 +14,10 @@
     .mud-menu-popover {
         z-index: 1300 !important;
     }
+
+    html, body {
+        background: transparent !important;
+    }
 </style>
 
 <MudThemeProvider Theme="@_theme" IsDarkMode="_isDarkMode" /> 
@@ -45,36 +49,13 @@
         @*Botões condicionais: logado vs não logado*@
         @if (AuthService.IsLoggedIn)
         {
-            <MudButton StartIcon="@Icons.Material.Filled.AccountCircle"
-                       Variant="Variant.Text"
-                       Style="color:coral;text-transform:none;font-weight:600;"
-                       Size="Size.Small"
+            <MudButton OnClick="@UserDrawerToggle"
                        Class="mt-2 ms-2"
-                       OnClick="@(() => _menuOpen = !_menuOpen)">
+                       Style="color:coral; text-transform:none; font-weight:bold;"
+                       StartIcon="@Icons.Material.Filled.AccountCircle"
+                       Size="Size.Small">
                 @AuthService.NomeUsuario
             </MudButton>
-            <MudMenu @bind-Open="_menuOpen"
-                     AnchorOrigin="Origin.BottomCenter"
-                     TransformOrigin="Origin.TopCenter"
-                     Style="min-width:180px;">
-                <MudMenuItem Href="/perfil">
-                    <MudText Typo="Typo.subtitle2" Align="Align.Center" Style="font-weight:bold;font-size:0.9rem">
-                        Meu Perfil
-                    </MudText>
-                </MudMenuItem>
-                <MudDivider Style="--mud-palette-divider:coral" />
-                <MudMenuItem Href="/MeusTreinos">
-                    <MudText Typo="Typo.subtitle2" Align="Align.Center" Style="font-weight:bold;font-size:0.9rem">
-                        Meus Treinos
-                    </MudText>
-                </MudMenuItem>
-                <MudDivider Style="--mud-palette-divider:coral" />
-                <MudMenuItem OnClick="@(async () => await LogoutAsync())">
-                    <MudText Typo="Typo.subtitle2" Align="Align.Center" Style="font-weight:bold;font-size:0.9rem">
-                        Sair
-                    </MudText>
-                </MudMenuItem>
-            </MudMenu>
         }
         else
         {
@@ -82,15 +63,58 @@
             <MudButton Href="Cadastrar" Class="mt-2 ms-2 d-md-inline-flex" Style="background-color:coral; font-weight: bold" Size="Size.Small">Cadastrar</MudButton>
         }
 
-        <MudIconButton Icon="@(DarkLightModeButtonIcon)" Style="color:coral" Class="mt-2"OnClick="@DarkModeToggle" />
+        <MudIconButton Icon="@(DarkLightModeButtonIcon)" Style="color:coral" Class="mt-2" OnClick="@DarkModeToggle" />
     </MudAppBar>
 
     @*Função do menu de navegação onde ira aparecer quando tiver o botão Menu ativo. p*@
-    <MudDrawer  @bind-Open="_open" ClipMode="DrawerClipMode.Always" Elevation="0" Variant="@DrawerVariant.Temporary" Style="background-color:transparent;backdrop-filter:blur(1px)">
+    <MudDrawer @bind-Open="_open" ClipMode="DrawerClipMode.Always" Elevation="0" Variant="@DrawerVariant.Temporary" Style="background-color:transparent;backdrop-filter:blur(1px)">
         <NavMenu />
-    </MudDrawer> 
-    @*Imagem geral da pagina e responsivel nos tamanhos menores*@
-<MudMainContent Style="@($"background: url('{(_isDarkMode ? _backgroundImageDark : _backgroundImageLight)}') center/cover fixed no-repeat; display: flex; flex-direction: column; min-height: 100vh;")">
+    </MudDrawer>
+
+    @*Gaveteiro do usuário logado*@
+    <MudDrawer @bind-Open="_userDrawerOpen"
+               ClipMode="DrawerClipMode.Always"
+               Elevation="0"
+               Variant="@DrawerVariant.Temporary"
+               Anchor="Anchor.End"
+               Style="background-color:transparent;backdrop-filter:blur(2px); min-width:250px;">
+        <div class="pa-4" style="color:white;">
+            <div class="d-flex align-center mb-4">
+                <MudIcon Icon="@Icons.Material.Filled.AccountCircle" Style="color:coral" Size="Size.Large" />
+                <div class="ml-3">
+                    <MudText Typo="Typo.h6" Style="color:coral; font-weight:bold;">@AuthService.NomeUsuario</MudText>
+                    <MudText Typo="Typo.body2" Style="color:#aaa;">@AuthService.EmailUsuario</MudText>
+                </div>
+            </div>
+
+            <MudDivider Style="--mud-palette-divider:coral" Class="mb-3" />
+
+            <MudMenuItem OnClick="@(() => { _userDrawerOpen = false; NavigationManager.NavigateTo("/perfil", forceLoad: false); })" Style="color:white;">
+                <MudText Typo="Typo.subtitle2" Style="font-weight:bold;font-size:0.95rem;">
+                    Meu Perfil
+                </MudText>
+            </MudMenuItem>
+
+            <MudDivider Style="--mud-palette-divider:coral" Class="my-1" />
+
+            <MudMenuItem OnClick="@(() => { _userDrawerOpen = false; NavigationManager.NavigateTo("/MeusTreinos", forceLoad: false); })" Style="color:white;">
+                <MudText Typo="Typo.subtitle2" Style="font-weight:bold;font-size:0.95rem;">
+                    Meus Treinos
+                </MudText>
+            </MudMenuItem>
+
+            <MudDivider Style="--mud-palette-divider:coral" Class="my-1" />
+
+            <MudMenuItem OnClick="@(async () => { _userDrawerOpen = false; await LogoutAsync(); })" Style="color:white;">
+                <MudText Typo="Typo.subtitle2" Style="font-weight:bold;font-size:0.95rem;">
+                    Sair
+                </MudText>
+            </MudMenuItem>
+        </div>
+    </MudDrawer>
+    @*Imagem geral da pagina - background fixo na viewport, independente da pagina*@
+<div style="@_backgroundStyle"></div>
+<MudMainContent Style="display: flex; flex-direction: column; min-height: 100vh;">
 
         <div style="flex-grow: 1">
             @Body
@@ -136,7 +160,6 @@
 
 @code {
     private bool _open = false;
-    private bool _menuOpen = false;
     private bool _isDarkMode = true;
     private MudTheme? _theme;
 
@@ -170,6 +193,13 @@
     private void DrawerToggle()
     {
         _open = !_open;
+    }
+
+    private bool _userDrawerOpen = false;
+
+    private void UserDrawerToggle()
+    {
+        _userDrawerOpen = !_userDrawerOpen;
     }
 
     private void DarkModeToggle()
@@ -235,6 +265,8 @@
         Tertiary = "#8B4513",
         Dark = "#1f1d1b"
     };
+
+    private string _backgroundStyle => $"position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: -1; background: url('{(_isDarkMode ? _backgroundImageDark : _backgroundImageLight)}') center/cover no-repeat;";
 
     public string DarkLightModeButtonIcon => _isDarkMode switch
     {
