@@ -40,6 +40,36 @@
       ]
     },
     {
+      "source": "/_content/(.*)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
+    },
+    {
+      "source": "/img/(.*\\.(png|jpg|jpeg|webp|svg|ico))",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
+    },
+    {
+      "source": "/img-dt/(.*\\.(png|jpg|jpeg|webp))",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
+    },
+    {
+      "source": "/img-gm/(.*\\.(png|jpg|jpeg|webp))",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
+    },
+    {
+      "source": "/css/(.*\\.css)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
+    },
+    {
       "source": "/(.*\\.wasm)",
       "headers": [
         { "key": "Content-Type", "value": "application/wasm" }
@@ -54,8 +84,11 @@
     { "source": "/img-dt/(.*)", "destination": "/img-dt/$1" },
     { "source": "/img-gm/(.*)", "destination": "/img-gm/$1" },
     { "source": "/js/(.*)", "destination": "/js/$1" },
+    { "source": "/data/(.*)", "destination": "/data/$1" },
     { "source": "/sample-data/(.*)", "destination": "/sample-data/$1" },
     { "source": "/FitUP.styles.css", "destination": "/FitUP.styles.css" },
-    { "source": "/((?!_framework|_content|css|img|img-dt|img-gm|js|sample-data|FitUP\\.styles\\.css).*)", "destination": "/index.html" }
+    { "source": "/manifest.json", "destination": "/manifest.json" },
+    { "source": "/service-worker.js", "destination": "/service-worker.js" },
+    { "source": "/((?!_framework|_content|css|img|img-dt|img-gm|js|data|sample-data|FitUP\\.styles\\.css|manifest\\.json|service-worker\\.js).*)", "destination": "/index.html" }
   ]
 }

@@ -1,8 +1,12 @@
 // FitUP - Exportação de Treino para PDF
-// Depende de: jsPDF (window.jspdf)
+// Depende de: jsPDF (window.jspdf) — carregado dinamicamente via pdfLoader.js
 
-function exportFitUpPdf(workoutJson) {
+async function exportFitUpPdf(workoutJson) {
     try {
+        // Garante que o jsPDF está carregado (lazy load)
+        if (window.fitUpPdfLoader) {
+            await window.fitUpPdfLoader.ensureJsPdf();
+        }
         const data = JSON.parse(workoutJson);
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });
@@ -192,8 +196,12 @@ function exportFitUpPdf(workoutJson) {
 // ──────────────────────────────────────────────────────────
 // FitUP - Exportação de Dieta para PDF
 // ──────────────────────────────────────────────────────────
-function exportDietaPdf(dietaJson) {
+async function exportDietaPdf(dietaJson) {
     try {
+        // Garante que o jsPDF está carregado (lazy load)
+        if (window.fitUpPdfLoader) {
+            await window.fitUpPdfLoader.ensureJsPdf();
+        }
         const data = JSON.parse(dietaJson);
         const { jsPDF } = window.jspdf;
         const doc = new jsPDF({ orientation: 'portrait', unit: 'mm', format: 'a4' });

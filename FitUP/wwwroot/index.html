@@ -5,16 +5,19 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>FitUP</title>
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' blob:; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self'; connect-src 'self' http://localhost:* https:; frame-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self';" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' blob:; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https:; font-src 'self' data: https://use.typekit.net; connect-src 'self' http://localhost:* https:; frame-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self';" />
     <base href="/" />
     <link rel="preload" id="webassembly" />
     <link rel="stylesheet" href="_content/MudBlazor/MudBlazor.min.css" />
     <link rel="stylesheet" href="css/app.css" />
     <link rel="icon" type="image/png" href="img/Logo32.png" />
+    <!-- PWA: manifest e theme-color para instalação na tela inicial -->
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#FF7A2F" />
     <link href="FitUP.styles.css" rel="stylesheet" />
     <script type="importmap"></script>
-    <!-- jsPDF para exportação de PDF (local) -->
-    <script src="js/jspdf.umd.min.js"></script>
+    <!-- Lazy loader do jsPDF (~300 KB) — carregado sob demanda apenas nas páginas de exportação -->
+    <script src="js/pdfLoader.js"></script>
     <!-- helper de exportação FitUP -->
     <script src="js/pdfExport.js"></script>
 </head>
@@ -36,6 +39,16 @@
     </div>
     <script src="_content/MudBlazor/MudBlazor.min.js"></script>
     <script src="_framework/blazor.webassembly#[.{fingerprint}].js"></script>
+    <!-- PWA: registra service worker para cache offline e instalação -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/service-worker.js').then(function (reg) {
+                console.log('FitUP SW registered:', reg.scope);
+            }).catch(function (err) {
+                console.warn('FitUP SW registration failed:', err);
+            });
+        }
+    </script>
 </body>
 
 </html>

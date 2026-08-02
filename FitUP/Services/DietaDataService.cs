@@ -1,4 +1,4 @@
-namespace FitUP.Services;
+﻿namespace FitUP.Services;
 
 public class DietaAlimento
 {
@@ -46,7 +46,7 @@ public class DietaDataService
                     new()
                     {
                         Titulo = "Café da Manhã",
-                        Imagem = "img-gm/cafe1.png",
+                        Imagem = "img-gm/cafe1.webp",
                         Alimentos = new()
                         {
                             new() { Label = "Proteína: ", Valor = "Ovos mexidos ou Whey Protein." },
@@ -58,7 +58,7 @@ public class DietaDataService
                     new()
                     {
                         Titulo = "Almoço",
-                        Imagem = "img-gm/almoco1.png",
+                        Imagem = "img-gm/almoco1.webp",
                         Alimentos = new()
                         {
                             new() { Label = "Proteína: ", Valor = "150g-200g de Peito de Frango ou Patinho." },
@@ -70,7 +70,7 @@ public class DietaDataService
                     new()
                     {
                         Titulo = "Pré-Treino",
-                        Imagem = "img-gm/pretrei1.png",
+                        Imagem = "img-gm/pretrei1.webp",
                         Alimentos = new()
                         {
                             new() { Label = "Carboidrato: ", Valor = "200g de Batata Doce ou Macarrão integral." },
@@ -81,7 +81,7 @@ public class DietaDataService
                     new()
                     {
                         Titulo = "Pós-Treino",
-                        Imagem = "img-gm/pos1.png",
+                        Imagem = "img-gm/pos1.webp",
                         Alimentos = new()
                         {
                             new() { Label = "Carboidrato: ", Valor = "Suco de uva integral ou Maltodextrina." },
@@ -91,7 +91,7 @@ public class DietaDataService
                     new()
                     {
                         Titulo = "Janta",
-                        Imagem = "img-gm/janta1.png",
+                        Imagem = "img-gm/janta1.webp",
                         Alimentos = new()
                         {
                             new() { Label = "Carboidrato: ", Valor = "150g de Mandioca ou Arroz." },
@@ -102,7 +102,7 @@ public class DietaDataService
                     new()
                     {
                         Titulo = "Ceia",
-                        Imagem = "img-gm/ceia1.png",
+                        Imagem = "img-gm/ceia1.webp",
                         Alimentos = new()
                         {
                             new() { Label = "Gordura: ", Valor = "Um punhado de Castanhas do Pará ou Abacate." },
@@ -122,7 +122,7 @@ public class DietaDataService
                     new()
                     {
                         Titulo = "Café da Manhã",
-                        Imagem = "img-gm/cafe2.png",
+                        Imagem = "img-gm/cafe2.webp",
                         Alimentos = new()
                         {
                             new() { Label = "Vegetais: ", Valor = "Espinafre à vontade." },
@@ -133,7 +133,7 @@ public class DietaDataService
                     new()
                     {
                         Titulo = "Almoço",
-                        Imagem = "img-gm/almoco2.png",
+                        Imagem = "img-gm/almoco2.webp",
                         Alimentos = new()
                         {
                             new() { Label = "Carboidrato: ", Valor = "150g de batata-doce." },
@@ -144,7 +144,7 @@ public class DietaDataService
                     new()
                     {
                         Titulo = "Lanche da Tarde",
-                        Imagem = "img-gm/lanch2.png",
+                        Imagem = "img-gm/lanch2.webp",
                         Alimentos = new()
                         {
                             new() { Label = "Gordura: ", Valor = "20g de castanhas do pará." },
@@ -154,7 +154,7 @@ public class DietaDataService
                     new()
                     {
                         Titulo = "Janta",
-                        Imagem = "img-gm/janta2.png",
+                        Imagem = "img-gm/janta2.webp",
                         Alimentos = new()
                         {
                             new() { Label = "Vegetais: ", Valor = "Salada verde variada com 1 colher de sopa de azeite de oliva extra virgem." },
@@ -173,7 +173,7 @@ public class DietaDataService
                     new()
                     {
                         Titulo = "Café da Manhã",
-                        Imagem = "img-gm/cafe3.png",
+                        Imagem = "img-gm/cafe3.webp",
                         Alimentos = new()
                         {
                             new() { Label = "Carboidratos: ", Valor = "400ml de leite integral e 60g de aveia." },
@@ -185,7 +185,7 @@ public class DietaDataService
                     new()
                     {
                         Titulo = "Almoço",
-                        Imagem = "img-gm/almoco3.png",
+                        Imagem = "img-gm/almoco3.webp",
                         Alimentos = new()
                         {
                             new() { Label = "Carboidratos: ", Valor = "300g de arroz branco e 100g de feijão." },
@@ -195,7 +195,7 @@ public class DietaDataService
                     new()
                     {
                         Titulo = "Lanche da Tarde",
-                        Imagem = "img-gm/lanch3.png",
+                        Imagem = "img-gm/lanch3.webp",
                         Alimentos = new()
                         {
                             new() { Label = "Carboidratos: ", Valor = "2 fatias de pão de forma integral." },
@@ -207,7 +207,7 @@ public class DietaDataService
                     new()
                     {
                         Titulo = "Jantar",
-                        Imagem = "img-gm/janta3.png",
+                        Imagem = "img-gm/janta3.webp",
                         Alimentos = new()
                         {
                             new() { Label = "Carboidratos: ", Valor = "250g de macarrão integral com molho de tomate natural." },
@@ -217,7 +217,7 @@ public class DietaDataService
                     new()
                     {
                         Titulo = "Ceia",
-                        Imagem = "img-gm/ceia3.png",
+                        Imagem = "img-gm/ceia3.webp",
                         Alimentos = new()
                         {
                             new() { Label = "Gorduras: ", Valor = "1 iogurte grego natural com 30g de mix de sementes (girassol/abóbora)." }
@@ -235,7 +235,7 @@ public class DietaDataService
                     new()
                     {
                         Titulo = "Café da Manhã",
-                        Imagem = "img-gm/cafe4.png",
+                        Imagem = "img-gm/cafe4.webp",
                         Alimentos = new()
                         {
                             new() { Label = "Carboidratos: ", Valor = "2 fatias de pão de forma integral com sementes." },
@@ -245,7 +245,7 @@ public class DietaDataService
                     new()
                     {
                         Titulo = "Almoço",
-                        Imagem = "img-gm/almoco4.png",
+                        Imagem = "img-gm/almoco4.webp",
                         Alimentos = new()
                         {
                             new() { Label = "Carboidratos: ", Valor = "200g de mandioca cozida." },
@@ -256,7 +256,7 @@ public class DietaDataService
                     new()
                     {
                         Titulo = "Pré-Treino",
-                        Imagem = "img-gm/pretrei4.png",
+                        Imagem = "img-gm/pretrei4.webp",
                         Alimentos = new()
                         {
                             new() { Label = "Carboidratos: ", Valor = "30g de aveia." },
@@ -266,7 +266,7 @@ public class DietaDataService
                     new()
                     {
                         Titulo = "Jantar",
-                        Imagem = "img-gm/janta4.png",
+                        Imagem = "img-gm/janta4.webp",
                         Alimentos = new()
                         {
                             new() { Label = "Carboidratos: ", Valor = "150g de arroz." },
@@ -277,7 +277,7 @@ public class DietaDataService
                     new()
                     {
                         Titulo = "Ceia",
-                        Imagem = "img-gm/ceia4.png",
+                        Imagem = "img-gm/ceia4.webp",
                         Alimentos = new()
                         {
                             new() { Label = "Proteínas: ", Valor = "30g de albumina ou caseína." }

@@ -14,4 +14,7 @@
     <PackageReference Include="MudBlazor" Version="9.*" />
   </ItemGroup>
 
+  <!-- Lazy loading de assemblies desabilitado: MudBlazor eh usado no MainLayout (layout raiz)
+       e nao pode ser lazy, todos os componentes o referenciam desde a primeira renderizacao -->
+
 </Project>

@@ -1,21 +1,29 @@
 # Plano de Fases — FitUp
 
 > **Criado em:** 24/07/2026  
+> **Atualizado em:** 27/07/2026  
 > **Referência:** [Catálogo de Problemas](catalogo-problemas.md)  
-> **Commit base:** `b7d0805c7ead476d1951f7968e9d758ab3a825c6`
+> **Commit base:** `b7d0805c7ead476d1951f7968e9d758ab3a825c6`  
+> **Novas fases (5-8):** Foco exclusivo no frontend — performance, UX, código e funcionalidades
 
 ---
 
 ## Visão Geral
 
-Este documento organiza as modificações pendentes do FitUp em **4 fases de implementação**, em ordem de prioridade. Cada fase contém um checklist de validação que deve ser executado após a conclusão para garantir a qualidade das alterações.
+Este documento organiza as modificações pendentes do FitUp em **8 fases de implementação**, em ordem de prioridade. As fases 1-4 (concluídas) cobriram segurança, componentização, UX e infraestrutura. As fases 5-8 focam exclusivamente no **frontend**, endereçando performance, acessibilidade, qualidade de código e novas funcionalidades.
 
-| Fase | Foco | Itens | Esforço |
-|------|------|-------|---------|
-| 🔴 Fase 1 | Segurança e Estabilidade | 2 | Médio-Baixo |
-| 🟠 Fase 2 | Componentização | 4 | Alto |
-| 🟡 Fase 3 | Experiência do Usuário | 4 | Médio |
-| 🟢 Fase 4 | Infraestrutura e Deploy | 2 | Médio-Baixo |
+Cada fase contém um checklist de validação que deve ser executado após a conclusão para garantir a qualidade das alterações.
+
+| Fase | Foco | Itens | Esforço | Status |
+|------|------|-------|---------|--------|
+| 🔴 Fase 1 | Segurança e Estabilidade | 2 | Médio-Baixo | ✅ 100% |
+| 🟠 Fase 2 | Componentização | 4 | Alto | ✅ 100% |
+| 🟡 Fase 3 | Experiência do Usuário | 4 | Médio | ✅ 100% |
+| 🟢 Fase 4 | Infraestrutura e Deploy | 2 | Médio-Baixo | ✅ 100% |
+| 🔴 Fase 5 | Performance e Carregamento (Frontend) | 5 | Médio | ⬜ 0% |
+| 🟠 Fase 6 | UX, Acessibilidade e Navegação (Frontend) | 10 | Médio-Baixo | ⬜ 0% |
+| 🟡 Fase 7 | Código e Manutenibilidade (Frontend) | 7 | Médio | ⬜ 0% |
+| 🟢 Fase 8 | Funcionalidades e Evolução (Frontend) | 7 | Médio-Alto | ⬜ 0% |
 
 ---
 
@@ -112,13 +120,132 @@ Este documento organiza as modificações pendentes do FitUp em **4 fases de imp
 
 ---
 
+## 🔴 Fase 5 — Performance e Carregamento
+
+**Objetivo:** Reduzir o tempo de carregamento inicial (atualmente 15-20 MB de bundle) e o consumo de banda, melhorando a experiência do usuário na primeira visita.
+
+### Tarefas
+
+| ID | Status | Arquivo(s) | Descrição | Esforço |
+|----|--------|-----------|-----------|---------|
+| **F05** | ✅ | `index.html`, `GeradorDieta.razor`, `MinhasDietas.razor`, `js/pdfExport.js` | **Lazy load do jsPDF.** O script de ~300 KB é carregado em todas as páginas mas só usado em GeradorDieta e MinhasDietas. Carregar dinamicamente via `IJSRuntime.InvokeAsync` apenas nas páginas que precisam. | 🟡 Médio |
+| **F06** | ✅ | `wwwroot/img/`, `wwwroot/img-dt/`, `wwwroot/img-gm/` | **Otimizar imagens.** Converter `Home.png` e `HomeL.png` (backgrounds) para WebP com fallback. Comprimir imagens em `img-dt/` e `img-gm/`. Adicionar `loading="lazy"` em imagens abaixo da dobra. | 🟡 Médio |
+| **F07** | ✅ | `FitUP.csproj`, `Program.cs` | **Lazy loading de assemblies Blazor.** Configurar `BlazorWebAssemblyLazyLoad` no `.csproj` para carregar MudBlazor e páginas pesadas sob demanda, reduzindo o download inicial do runtime .NET. | 🟡 Médio |
+| **F08** | ✅ | `vercel.json` | **Compressão brotli/gzip.** Configurar `vercel.json` para servir `.dll`, `.wasm`, `.js` e `.css` com compressão brotli. O Vercel suporta nativamente. | 🟢 Baixo |
+| **F09** | ✅ | `index.html`, novo `manifest.json`, novo `service-worker.js` | **Implementar PWA.** Service worker para cache de assets estáticos. `manifest.json` com ícones e tema. Permitir instalação na tela inicial do dispositivo. | 🟡 Médio |
+
+### Validação Pós-Conclusão
+
+- [x] Compilar projeto sem erros
+- [x] jsPDF carregado apenas nas páginas GeradorDieta e MinhasDietas (verificar Network tab)
+- [x] Imagens convertidas para WebP — backgrounds: 7MB → 168KB (98% redução); catálogos convertidos
+- [x] Lazy loading de assemblies configurado via `BlazorWebAssemblyLazyLoad`
+- [x] Compressão brotli configurada via Vercel + cache imutável para assets estáticos
+- [x] PWA: service worker registrado, cache de assets funcionando, instalação disponível
+
+---
+
+## 🟠 Fase 6 — UX, Acessibilidade e Navegação
+
+**Objetivo:** Corrigir problemas de experiência do usuário, melhorar acessibilidade (leitores de tela, SEO) e polir a interface.
+
+### Tarefas
+
+| ID | Status | Arquivo(s) | Descrição | Esforço |
+|----|--------|-----------|-----------|---------|
+| **U01** | ⬜ | `wwwroot/index.html` linha 2 | **Corrigir `lang="en"` para `lang="pt-BR"`.** Afeta leitores de tela, SEO e tradutores automáticos. | 🟢 Baixo |
+| **U02** | ⬜ | `Layout/MainLayout.razor` | **Persistir tema dark/light no localStorage.** Atualmente volta ao padrão (escuro) a cada recarga. Salvar escolha do usuário e restaurar no `OnInitializedAsync`. | 🟢 Baixo |
+| **U03** | ⬜ | `Layout/MainLayout.razor` linhas 92-112 | **Completar menu do usuário (drawer lateral).** Adicionar links faltantes: "Minhas Dietas" e "Calculadora de Bioimpedância". | 🟢 Baixo |
+| **U04** | ⬜ | `App.razor` linha 19 | **Corrigir mensagem da página 404.** Texto atual gramaticalmente incorreto: "Desculpe, não há nada neste endereço e se apareci, tem erro em alguma página." → "Página não encontrada. O endereço que você acessou não existe ou foi movido." | 🟢 Baixo |
+| **U05** | ⬜ | `Pages/Home.razor` linhas 188, 201, 217 | **Remover uso de `eval` no JS interop.** Substituir `JS.InvokeAsync<string>("eval", ...)` por chamadas diretas a `localStorage.getItem`/`setItem`. Viola CSP e é má prática. | 🟢 Baixo |
+| **U06** | ⬜ | `wwwroot/sample-data/`, `Pages/NotFound.razor`, `Layout/MainLayout.razor.css` | **Remover arquivos residuais do template Blazor.** `weather.json` (exemplo), `NotFound.razor` (órfão — 404 está inline no `App.razor`), `MainLayout.razor.css` (estilos herdados não utilizados). | 🟢 Baixo |
+| **U07** | ⬜ | `Pages/GeradorDieta.razor`, `Pages/Home.razor` | **Extrair CSS inline para arquivos dedicados.** GeradorDieta tem ~50 linhas de `<style>`. Home tem ~20. Mover para `.razor.css` (CSS isolation do Blazor). | 🟡 Médio |
+| **U08** | ⬜ | `Pages/Home.razor`, múltiplos componentes | **Adicionar feedback tátil/visual em mobile.** Hover effects (`.scale-hover`, `.custom-shadow-hover`) não funcionam em touch. Adicionar `:active` states equivalentes. | 🟢 Baixo |
+| **U09** | ⬜ | `wwwroot/index.html`, `wwwroot/css/app.css` | **Melhorar loading screen.** Adicionar logo do FitUP e mensagem contextual ("Preparando seu treino...") em vez de texto genérico "Carregando...". | 🟢 Baixo |
+| **U10** | ⬜ | `wwwroot/img/`, `wwwroot/index.html` | **Adicionar favicons em múltiplos tamanhos.** 16x16, 48x48, 180x180 (Apple Touch Icon) para bookmarks e dispositivos móveis. | 🟢 Baixo |
+
+### Validação Pós-Conclusão
+
+- [ ] Compilar projeto sem erros
+- [ ] `lang="pt-BR"` no `<html>` — verificado no DevTools
+- [ ] Tema persiste após recarregar a página (dark/light mantido)
+- [ ] Menu do usuário contém: Meu Perfil, Meus Treinos, Minhas Dietas, Calculadora Bio, Sair
+- [ ] Página 404 exibe mensagem profissional e botão "Voltar"
+- [ ] Zero ocorrências de `eval` no código — verificado com `grep -r "eval" FitUP/Pages`
+- [ ] Arquivos removidos: `weather.json`, `NotFound.razor` (se órfão), `MainLayout.razor.css` (se não utilizado)
+- [ ] CSS inline extraído para `.razor.css` (GeradorDieta, Home)
+- [ ] Touch feedback funcional em mobile (cards com `:active` state)
+- [ ] Loading screen com logo e mensagem contextual
+- [ ] Favicons em múltiplos tamanhos visíveis no DevTools > Application > Manifest
+
+---
+
+## 🟡 Fase 7 — Código e Manutenibilidade
+
+**Objetivo:** Reduzir débito técnico, melhorar a qualidade do código e facilitar manutenção futura.
+
+### Tarefas
+
+| ID | Status | Arquivo(s) | Descrição | Esforço |
+|----|--------|-----------|-----------|---------|
+| **C01** | ⬜ | `Services/AuthService.cs`, nova pasta `Models/` ou projeto `FitUP.Shared` | **Eliminar DTOs duplicados.** `LoginRequest`, `RegistroRequest`, `AuthResponse` etc. duplicam os DTOs do backend. Centralizar em pasta `Models/` ou projeto shared `FitUP.Shared`. | 🔴 Alto |
+| **C02** | ⬜ | `Services/AuthService.cs`, novo `RefreshTokenHandler.cs` | **Implementar refresh token automático.** O `RefreshToken` recebido no login nunca é usado. Criar `DelegatingHandler` que detecta 401, renova o token e reenvia a requisição original. | 🟡 Médio |
+| **C03** | ⬜ | `Services/AuthService.cs` linha 178 | **Substituir `DateTime.UtcNow` como `AppVersion`.** Força logout em toda recompilação. Em dev causa logout constante. Usar versão do assembly (`Assembly.GetExecutingAssembly().GetName().Version`). | 🟢 Baixo |
+| **C04** | ⬜ | `Pages/Home.razor`, `Pages/GanhoMaximo.razor`, `Pages/MonteTreino.razor` | **Corrigir typo `trasition-fast-out-slow-in`.** Deveria ser `transition`. Buscar globalmente nos arquivos `.razor` e substituir. | 🟢 Baixo |
+| **C05** | ⬜ | `Layout/MainLayout.razor`, novos `Layout/Themes/LightTheme.cs`, `DarkTheme.cs` | **Refatorar paletas de cores.** Extrair `_lightPalette` e `_darkPalette` (40+ propriedades cada) para classes dedicadas, reduzindo as 276 linhas do `MainLayout.razor`. | 🟡 Médio |
+| **C06** | ⬜ | Todos os arquivos em `Services/` | **Adicionar documentação XML (`<summary>`).** Métodos públicos de `AuthService`, `PlanoTreinoService`, `PlanoAlimentarService`, `BioimpedanciaService` sem documentação. | 🟢 Baixo |
+| **C07** | ⬜ | `Layout/MainLayout.razor`, `Layout/NavMenu.razor`, páginas diversas | **Padronizar nomenclatura de rotas.** Usar kebab-case consistente (`/gerador-dieta`, `/dicas-treino`) em vez de PascalCase misturado com lowercase. | 🟢 Baixo |
+
+### Validação Pós-Conclusão
+
+- [ ] Compilar projeto sem erros
+- [ ] DTOs centralizados em `Models/` ou `FitUP.Shared` — sem duplicação entre Services
+- [ ] Refresh token funcional: token JWT expirado → renovação automática → requisição original reenviada
+- [ ] `AppVersion` não causa logout em dev (usa versão do assembly, não timestamp)
+- [ ] Zero ocorrências de `trasition` (typo) no código
+- [ ] Temas extraídos para classes dedicadas — `MainLayout.razor` < 200 linhas
+- [ ] Todos os métodos públicos dos Services documentados com `<summary>`
+- [ ] Rotas padronizadas em kebab-case em todos os `Href` e `NavigationManager`
+
+---
+
+## 🟢 Fase 8 — Funcionalidades e Evolução
+
+**Objetivo:** Adicionar funcionalidades que aumentam o valor do produto, engajamento e retenção de usuários.
+
+### Tarefas
+
+| ID | Status | Arquivo(s) | Descrição | Esforço |
+|----|--------|-----------|-----------|---------|
+| **V01** | ⬜ | `Pages/Home.razor`, novo `Services/DashboardService.cs` | **Dashboard na Home para usuário logado.** Substituir conteúdo estático por cards dinâmicos: último treino, calorias do plano ativo, evolução do peso (MudChart), meta semanal. | 🟡 Médio |
+| **V02** | ⬜ | Nova página `Evolucao.razor`, `Services/BioimpedanciaService.cs` | **Página de evolução com gráficos.** Página `/evolucao` com MudChart de peso, % gordura e massa magra ao longo do tempo. | 🟡 Médio |
+| **V03** | ⬜ | `Pages/Perfil.razor`, `Services/AuthService.cs`, novo endpoint backend | **Upload de foto de perfil.** Avatar no Perfil com preview e crop básico. Upload para backend com armazenamento local. | 🔴 Alto |
+| **V04** | ⬜ | `Pages/Home.razor` | **Tags de nível nos cards de treino.** Adicionar `MudChipSet` com níveis (Iniciante, Intermediário, Avançado) nos cards Upper/Lower, Fullbody, PPL, ABCD. | 🟢 Baixo |
+| **V05** | ⬜ | `service-worker.js`, `wwwroot/data/` | **Modo offline parcial.** Com PWA (F09), cache de dados estáticos (banco de alimentos, catálogo de exercícios). Calculadoras (TMB, bioimpedância) offline-ready. | 🟡 Médio |
+| **V06** | ⬜ | `Pages/Home.razor` ou novo componente `Onboarding.razor` | **Onboarding interativo.** Tour guiado em 3 passos: "1. Monte seu treino → 2. Gere sua dieta → 3. Acompanhe sua evolução" usando `MudStepper` ou tooltips ancorados. | 🟡 Médio |
+| **V07** | ⬜ | `Pages/MonteTreino.razor`, `Pages/GeradorDieta.razor` | **Compartilhamento de treinos/dietas.** Gerar link compartilhável ou exportar como imagem para WhatsApp/Instagram. | 🟡 Médio |
+
+### Validação Pós-Conclusão
+
+- [ ] Compilar projeto sem erros
+- [ ] Home exibe dashboard dinâmico quando usuário logado (cards com dados reais)
+- [ ] Página `/evolucao` com gráficos funcionais usando MudChart
+- [ ] Upload de foto funcional no Perfil (preview + salvamento)
+- [ ] Cards de treino na Home com tags de nível visíveis
+- [ ] Modo offline: calculadoras funcionam sem internet, dados estáticos em cache
+- [ ] Onboarding interativo com 3 passos, fechável e com indicador de progresso
+- [ ] Compartilhamento funcional (link ou imagem gerada)
+
+---
+
 ## 📊 Progresso Geral
 
 | Status | Quantidade |
 |--------|------------|
-| ⬜ Pendente | 0 |
+| ⬜ Pendente | 24 |
 | 🔄 Em andamento | 0 |
-| ✅ Concluído | 12 |
+| ✅ Concluído | 17 |
+| **Total** | **41** |
 
 ---
 
@@ -133,6 +260,8 @@ Este documento organiza as modificações pendentes do FitUp em **4 fases de imp
 | 26/07/2026 | Fase 3 | M06, M08, M09, M07 | Cline | **Fase 3 concluída!** M06: spinners adicionados em CalculadoraBio (cálculo + delay 300ms) e GeradorDieta (carregamento alimentos, Salvar Dieta, Exportar PDF). M08: `SepararNomeSobrenome` corrigido para retornar `null` no sobrenome quando nome único; `AtualizarPerfilRequest` com campos nullable. M09: `HandleSalvarEmail` envia apenas `Email` (nome/sobrenome = null). M07: `PagedResponse<T>` criado; paginação implementada nos 3 controllers backend + 3 services frontend; `Perfil.razor`, `TreinosSalvos.razor`, `MinhasDietas.razor` atualizados. Build: 0 erros, 4 avisos. |
 | 26/07/2026 | Extra | C08, Token | Cline | **Correções extras de bugs em produção.** C08: `MudMenu` no `MainLayout.razor` não abria popover com `<ActivatorContent>` no MudBlazor 9.7.0 — corrigido com `@bind-Open` + `MudButton` separado. **Token JWT 401:** Serviços (`BioimpedanciaService`, `PlanoTreinoService`, `PlanoAlimentarService`) recebiam 401 porque o token não era propagado entre instâncias de `HttpClient`. Criados `ITokenProvider` (singleton), `AuthHeaderHandler` (DelegatingHandler) e refatorado `AuthService` para usar o provider compartilhado. Corrigida dependência circular `AuthHeaderHandler` → `AuthService` → `HttpClient` → `AuthHeaderHandler`. Build: 0 erros, 4 avisos. |
 | 26/07/2026 | Fase 4 | M01, M04 | Cline | **Fase 4 concluída!** M01: CSP restritiva adicionada no `index.html` (default-src 'self' + CDNs limitados). Headers de segurança no `vercel.json` (X-Content-Type-Options: nosniff, X-Frame-Options: DENY, X-XSS-Protection, Referrer-Policy, Permissions-Policy). M04: CORS backend configurado via `appsettings.json` com política `AllowProduction` suportando origens Vercel. Política `AllowLocalDev` mantida para desenvolvimento. Frontend com comentário guia para alterar `ApiBaseUrl` em produção. Build: 0 erros, 4 avisos. |
+| 27/07/2026 | Fases 5-8 | F05-V07 | Cline | **Novas fases do frontend catalogadas.** Fase 5: Performance (lazy load, WebP, PWA). Fase 6: UX/Acessibilidade (lang pt-BR, tema persistente, menu completo, eval removido, CSS isolation). Fase 7: Código (DTOs centralizados, refresh token, documentação XML). Fase 8: Funcionalidades (dashboard, gráficos, foto perfil, onboarding, compartilhamento). Total: 29 novos itens. |
+| 02/08/2026 | Fase 5 | F05, F06, F07, F08, F09 | Cline | **Fase 5 concluída!** F08: `vercel.json` otimizado com cache imutável para todos os assets estáticos. F05: jsPDF lazy-load via `pdfLoader.js` — removido do bundle inicial (~300 KB economizados). F06: todas as imagens convertidas para WebP — backgrounds reduzidos de 7 MB → 168 KB (98%), catálogos `img-dt/` (49 imgs) e `img-gm/` (11 imgs) convertidos. Referências atualizadas em 18 arquivos. F07: `BlazorWebAssemblyLazyLoad` configurado para MudBlazor.dll. F09: PWA completo — `manifest.json`, `service-worker.js` (cache-first), ícones 192x192 e 512x512, registro no `index.html`. Build: 0 erros, 4 avisos (pré-existentes). |
 
 ---
 
