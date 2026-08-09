@@ -2,6 +2,7 @@
 @inherits LayoutComponentBase
 @inject FitUP.Services.AuthService AuthService
 @inject NavigationManager NavigationManager
+@inject IJSRuntime JS
 
 <style>
     .mud-snackbar-container {
@@ -105,6 +106,22 @@
 
             <MudDivider Style="--mud-palette-divider:coral" Class="my-1" />
 
+            <MudMenuItem OnClick="@(() => { _userDrawerOpen = false; NavigationManager.NavigateTo("/MinhasDietas", forceLoad: false); })" Style="color:white;">
+                <MudText Typo="Typo.subtitle2" Style="font-weight:bold;font-size:0.95rem;">
+                    Minhas Dietas
+                </MudText>
+            </MudMenuItem>
+
+            <MudDivider Style="--mud-palette-divider:coral" Class="my-1" />
+
+            <MudMenuItem OnClick="@(() => { _userDrawerOpen = false; NavigationManager.NavigateTo("/CalculadoraBio", forceLoad: false); })" Style="color:white;">
+                <MudText Typo="Typo.subtitle2" Style="font-weight:bold;font-size:0.95rem;">
+                    Calculadora Bio
+                </MudText>
+            </MudMenuItem>
+
+            <MudDivider Style="--mud-palette-divider:coral" Class="my-1" />
+
             <MudMenuItem OnClick="@(async () => { _userDrawerOpen = false; await LogoutAsync(); })" Style="color:white;">
                 <MudText Typo="Typo.subtitle2" Style="font-weight:bold;font-size:0.95rem;">
                     Sair
@@ -172,6 +189,17 @@
 
         await AuthService.RestoreSessionAsync();
 
+        // Restaurar tema do localStorage
+        try
+        {
+            var savedTheme = await JS.InvokeAsync<string>("localStorage.getItem", "fitup_theme");
+            if (savedTheme == "light")
+            {
+                _isDarkMode = false;
+            }
+        }
+        catch { /* ignora erro de JS interop */ }
+
         _theme = new()
         {
             PaletteLight = _lightPalette,
@@ -202,9 +230,14 @@
         _userDrawerOpen = !_userDrawerOpen;
     }
 
-    private void DarkModeToggle()
+    private async void DarkModeToggle()
     {
         _isDarkMode = !_isDarkMode;
+        try
+        {
+            await JS.InvokeVoidAsync("localStorage.setItem", "fitup_theme", _isDarkMode ? "dark" : "light");
+        }
+        catch { /* ignora erro de JS interop */ }
     }
 
     private async Task LogoutAsync()

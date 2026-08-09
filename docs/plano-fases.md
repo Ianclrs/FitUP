@@ -1,4 +1,4 @@
-# Plano de Fases — FitUp
+﻿# Plano de Fases — FitUp
 
 > **Criado em:** 24/07/2026  
 > **Atualizado em:** 27/07/2026  
@@ -20,8 +20,8 @@ Cada fase contém um checklist de validação que deve ser executado após a con
 | 🟠 Fase 2 | Componentização | 4 | Alto | ✅ 100% |
 | 🟡 Fase 3 | Experiência do Usuário | 4 | Médio | ✅ 100% |
 | 🟢 Fase 4 | Infraestrutura e Deploy | 2 | Médio-Baixo | ✅ 100% |
-| 🔴 Fase 5 | Performance e Carregamento (Frontend) | 5 | Médio | ⬜ 0% |
-| 🟠 Fase 6 | UX, Acessibilidade e Navegação (Frontend) | 10 | Médio-Baixo | ⬜ 0% |
+| 🔴 Fase 5 | Performance e Carregamento (Frontend) | 5 | Médio | ✅ 100% |
+| 🟠 Fase 6 | UX, Acessibilidade e Navegação (Frontend) | 10 | Médio-Baixo | ✅ 100% |
 | 🟡 Fase 7 | Código e Manutenibilidade (Frontend) | 7 | Médio | ⬜ 0% |
 | 🟢 Fase 8 | Funcionalidades e Evolução (Frontend) | 7 | Médio-Alto | ⬜ 0% |
 
@@ -153,30 +153,30 @@ Cada fase contém um checklist de validação que deve ser executado após a con
 
 | ID | Status | Arquivo(s) | Descrição | Esforço |
 |----|--------|-----------|-----------|---------|
-| **U01** | ⬜ | `wwwroot/index.html` linha 2 | **Corrigir `lang="en"` para `lang="pt-BR"`.** Afeta leitores de tela, SEO e tradutores automáticos. | 🟢 Baixo |
-| **U02** | ⬜ | `Layout/MainLayout.razor` | **Persistir tema dark/light no localStorage.** Atualmente volta ao padrão (escuro) a cada recarga. Salvar escolha do usuário e restaurar no `OnInitializedAsync`. | 🟢 Baixo |
-| **U03** | ⬜ | `Layout/MainLayout.razor` linhas 92-112 | **Completar menu do usuário (drawer lateral).** Adicionar links faltantes: "Minhas Dietas" e "Calculadora de Bioimpedância". | 🟢 Baixo |
-| **U04** | ⬜ | `App.razor` linha 19 | **Corrigir mensagem da página 404.** Texto atual gramaticalmente incorreto: "Desculpe, não há nada neste endereço e se apareci, tem erro em alguma página." → "Página não encontrada. O endereço que você acessou não existe ou foi movido." | 🟢 Baixo |
-| **U05** | ⬜ | `Pages/Home.razor` linhas 188, 201, 217 | **Remover uso de `eval` no JS interop.** Substituir `JS.InvokeAsync<string>("eval", ...)` por chamadas diretas a `localStorage.getItem`/`setItem`. Viola CSP e é má prática. | 🟢 Baixo |
-| **U06** | ⬜ | `wwwroot/sample-data/`, `Pages/NotFound.razor`, `Layout/MainLayout.razor.css` | **Remover arquivos residuais do template Blazor.** `weather.json` (exemplo), `NotFound.razor` (órfão — 404 está inline no `App.razor`), `MainLayout.razor.css` (estilos herdados não utilizados). | 🟢 Baixo |
-| **U07** | ⬜ | `Pages/GeradorDieta.razor`, `Pages/Home.razor` | **Extrair CSS inline para arquivos dedicados.** GeradorDieta tem ~50 linhas de `<style>`. Home tem ~20. Mover para `.razor.css` (CSS isolation do Blazor). | 🟡 Médio |
-| **U08** | ⬜ | `Pages/Home.razor`, múltiplos componentes | **Adicionar feedback tátil/visual em mobile.** Hover effects (`.scale-hover`, `.custom-shadow-hover`) não funcionam em touch. Adicionar `:active` states equivalentes. | 🟢 Baixo |
-| **U09** | ⬜ | `wwwroot/index.html`, `wwwroot/css/app.css` | **Melhorar loading screen.** Adicionar logo do FitUP e mensagem contextual ("Preparando seu treino...") em vez de texto genérico "Carregando...". | 🟢 Baixo |
-| **U10** | ⬜ | `wwwroot/img/`, `wwwroot/index.html` | **Adicionar favicons em múltiplos tamanhos.** 16x16, 48x48, 180x180 (Apple Touch Icon) para bookmarks e dispositivos móveis. | 🟢 Baixo |
+| **U01** | ✅ | `wwwroot/index.html` linha 2 | **Corrigir `lang="en"` para `lang="pt-BR"`.** Afeta leitores de tela, SEO e tradutores automáticos. | 🟢 Baixo |
+| **U02** | ✅ | `Layout/MainLayout.razor` | **Persistir tema dark/light no localStorage.** Atualmente volta ao padrão (escuro) a cada recarga. Salvar escolha do usuário e restaurar no `OnInitializedAsync`. | 🟢 Baixo |
+| **U03** | ✅ | `Layout/MainLayout.razor` linhas 92-112 | **Completar menu do usuário (drawer lateral).** Adicionar links faltantes: "Minhas Dietas" e "Calculadora de Bioimpedância". | 🟢 Baixo |
+| **U04** | ✅ | `App.razor` linha 19 | **Corrigir mensagem da página 404.** Texto atual gramaticalmente incorreto: "Desculpe, não há nada neste endereço e se apareci, tem erro em alguma página." → "Página não encontrada. O endereço que você acessou não existe ou foi movido." | 🟢 Baixo |
+| **U05** | ✅ | `Pages/Home.razor` linhas 188, 201, 217 | **Remover uso de `eval` no JS interop.** Substituir `JS.InvokeAsync<string>("eval", ...)` por chamadas diretas a `localStorage.getItem`/`setItem`. Viola CSP e é má prática. | 🟢 Baixo |
+| **U06** | ✅ | `wwwroot/sample-data/`, `Pages/NotFound.razor`, `Layout/MainLayout.razor.css` | **Remover arquivos residuais do template Blazor.** `weather.json` (exemplo), `NotFound.razor` (órfão — 404 está inline no `App.razor`), `MainLayout.razor.css` (estilos herdados não utilizados). | 🟢 Baixo |
+| **U07** | ✅ | `Pages/GeradorDieta.razor`, `Pages/Home.razor` | **Extrair CSS inline para arquivos dedicados.** GeradorDieta tem ~50 linhas de `<style>`. Home tem ~20. Mover para `.razor.css` (CSS isolation do Blazor). | 🟡 Médio |
+| **U08** | ✅ | `Pages/Home.razor`, múltiplos componentes | **Adicionar feedback tátil/visual em mobile.** Hover effects (`.scale-hover`, `.custom-shadow-hover`) não funcionam em touch. Adicionar `:active` states equivalentes. | 🟢 Baixo |
+| **U09** | ✅ | `wwwroot/index.html`, `wwwroot/css/app.css` | **Melhorar loading screen.** Adicionar logo do FitUP e mensagem contextual ("Preparando seu treino...") em vez de texto genérico "Carregando...". | 🟢 Baixo |
+| **U10** | ✅ | `wwwroot/img/`, `wwwroot/index.html` | **Adicionar favicons em múltiplos tamanhos.** 16x16, 48x48, 180x180 (Apple Touch Icon) para bookmarks e dispositivos móveis. | 🟢 Baixo |
 
 ### Validação Pós-Conclusão
 
-- [ ] Compilar projeto sem erros
-- [ ] `lang="pt-BR"` no `<html>` — verificado no DevTools
-- [ ] Tema persiste após recarregar a página (dark/light mantido)
-- [ ] Menu do usuário contém: Meu Perfil, Meus Treinos, Minhas Dietas, Calculadora Bio, Sair
-- [ ] Página 404 exibe mensagem profissional e botão "Voltar"
-- [ ] Zero ocorrências de `eval` no código — verificado com `grep -r "eval" FitUP/Pages`
-- [ ] Arquivos removidos: `weather.json`, `NotFound.razor` (se órfão), `MainLayout.razor.css` (se não utilizado)
-- [ ] CSS inline extraído para `.razor.css` (GeradorDieta, Home)
-- [ ] Touch feedback funcional em mobile (cards com `:active` state)
-- [ ] Loading screen com logo e mensagem contextual
-- [ ] Favicons em múltiplos tamanhos visíveis no DevTools > Application > Manifest
+- [x] Compilar projeto sem erros
+- [x] `lang="pt-BR"` no `<html>` — verificado no DevTools
+- [x] Tema persiste após recarregar a página (dark/light mantido)
+- [x] Menu do usuário contém: Meu Perfil, Meus Treinos, Minhas Dietas, Calculadora Bio, Sair
+- [x] Página 404 exibe mensagem profissional e botão "Voltar"
+- [x] Zero ocorrências de `eval` no código — Home.razor limpo
+- [x] Arquivos removidos: `weather.json`, `MainLayout.razor.css`
+- [x] CSS inline extraído para `.razor.css` (GeradorDieta, Home) + classes globais em `app.css`
+- [x] Touch feedback funcional em mobile (cards com `:active` state em `app.css`)
+- [x] Loading screen com logo e mensagem contextual
+- [x] Favicons em múltiplos tamanhos visíveis no DevTools > Application > Manifest
 
 ---
 
@@ -262,6 +262,8 @@ Cada fase contém um checklist de validação que deve ser executado após a con
 | 26/07/2026 | Fase 4 | M01, M04 | Cline | **Fase 4 concluída!** M01: CSP restritiva adicionada no `index.html` (default-src 'self' + CDNs limitados). Headers de segurança no `vercel.json` (X-Content-Type-Options: nosniff, X-Frame-Options: DENY, X-XSS-Protection, Referrer-Policy, Permissions-Policy). M04: CORS backend configurado via `appsettings.json` com política `AllowProduction` suportando origens Vercel. Política `AllowLocalDev` mantida para desenvolvimento. Frontend com comentário guia para alterar `ApiBaseUrl` em produção. Build: 0 erros, 4 avisos. |
 | 27/07/2026 | Fases 5-8 | F05-V07 | Cline | **Novas fases do frontend catalogadas.** Fase 5: Performance (lazy load, WebP, PWA). Fase 6: UX/Acessibilidade (lang pt-BR, tema persistente, menu completo, eval removido, CSS isolation). Fase 7: Código (DTOs centralizados, refresh token, documentação XML). Fase 8: Funcionalidades (dashboard, gráficos, foto perfil, onboarding, compartilhamento). Total: 29 novos itens. |
 | 02/08/2026 | Fase 5 | F05, F06, F07, F08, F09 | Cline | **Fase 5 concluída!** F08: `vercel.json` otimizado com cache imutável para todos os assets estáticos. F05: jsPDF lazy-load via `pdfLoader.js` — removido do bundle inicial (~300 KB economizados). F06: todas as imagens convertidas para WebP — backgrounds reduzidos de 7 MB → 168 KB (98%), catálogos `img-dt/` (49 imgs) e `img-gm/` (11 imgs) convertidos. Referências atualizadas em 18 arquivos. F07: `BlazorWebAssemblyLazyLoad` configurado para MudBlazor.dll. F09: PWA completo — `manifest.json`, `service-worker.js` (cache-first), ícones 192x192 e 512x512, registro no `index.html`. Build: 0 erros, 4 avisos (pré-existentes). |
+| | 09/08/2026 | Fase 6 | U01-U10 | Cline | **Fase 6 concluída!** U01: `lang="pt-BR"`. U02: tema dark/light persistido no localStorage. U03: menu do usuário completo (Minhas Dietas + Calculadora Bio). U04: página 404 corrigida. U05: `eval()` removido do Home.razor. U06: removidos `weather.json` e `MainLayout.razor.css`. U07: CSS inline extraído — `GeradorDieta.razor.css` (~78 linhas), `Home.razor.css`, classes globais em `app.css`. U08: `:active` states para feedback tátil mobile. U09: loading screen com logo + "Preparando seu treino...". U10: favicons 16x16, 48x48, 180x180. Build: 0 erros, 4 avisos (pré-existentes). |
+
 
 ---
 

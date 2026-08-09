@@ -109,25 +109,6 @@
         </MudItem>
     </MudGrid>
     <div class="d-flex flex-wrap gap-5 justify-center mt-0">
-        <style>
-            .custom-shadow-hover {
-                box-shadow: 0 0 0 rgba(0,0,0,0);
-                transition: box-shadow 0.3s ease-in-out, transform 0.3s ease-in-out;
-            }
-            .custom-shadow-hover:hover {
-                box-shadow: 0 0 177px -12px rgba(255, 107, 53, 0.45) !important;
-            }
-            .scale-hover:hover {
-                transform: scale(1.05);
-                transition: 0.3s ease-in-out;
-            }
-            .animate-fade-in { animation: fadeIn 0.6s ease-out; }
-            @@keyframes fadeIn {
-                from { opacity: 0; transform: translateY(20px); }
-                to   { opacity: 1; transform: translateY(0); }
-            }
-        </style>
-
         <MudCard Elevation="0" Style="width: 280px" Class="rounded-xl transition-fast-out-slow-in scale-hover custom-shadow-hover">
             <MudCardMedia Image="img/H.Lower.png" Height="150" />
             <MudCardContent>
@@ -185,8 +166,8 @@
         // Verifica localStorage: tem sessão de usuário?
         try
         {
-            var userJson = await JS.InvokeAsync<string>("eval", "localStorage.getItem('fitup_user') || ''");
-            if (userJson.Length > 10) // tem algo que parece uma sessão válida
+            var userJson = await JS.InvokeAsync<string>("localStorage.getItem", "fitup_user");
+            if (!string.IsNullOrEmpty(userJson) && userJson.Length > 10)
             {
                 _showCard = false;
                 StateHasChanged();
@@ -198,7 +179,7 @@
         // Verifica localStorage: card já foi fechado antes?
         try
         {
-            var dismissed = await JS.InvokeAsync<string>("eval", "localStorage.getItem('fitup_welcome_home') || ''");
+            var dismissed = await JS.InvokeAsync<string>("localStorage.getItem", "fitup_welcome_home");
             if (dismissed == "1")
             {
                 _showCard = false;
@@ -214,7 +195,7 @@
         StateHasChanged();
         try
         {
-            await JS.InvokeVoidAsync("eval", "localStorage.setItem('fitup_welcome_home', '1')");
+            await JS.InvokeVoidAsync("localStorage.setItem", "fitup_welcome_home", "1");
         }
         catch { }
     }
