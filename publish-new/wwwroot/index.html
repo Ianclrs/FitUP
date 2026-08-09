@@ -10,7 +10,13 @@
     <link href="_framework/dotnet.w1wcaq478c.js" rel="preload" as="script" fetchpriority="high" crossorigin="anonymous" integrity="sha256-vOCpHfgBsBPos+hXU7pqaxiOzMI9GijB7bok3uy1WMY=" />
     <link rel="stylesheet" href="_content/MudBlazor/MudBlazor.min.css" />
     <link rel="stylesheet" href="css/app.css" />
-    <link rel="icon" type="image/png" href="img/Logo32.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="img/logof1-32.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="img/logof1-192.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="img/logof1-512.png" />
+    <link rel="apple-touch-icon" href="img/logof1-512.png" />
+    <!-- PWA: manifest e theme-color para instalação na tela inicial -->
+    <link rel="manifest" href="/manifest.json" />
+    <meta name="theme-color" content="#FF7A2F" />
     <link href="FitUP.styles.css" rel="stylesheet" />
     <script type="importmap">{
   "imports": {
@@ -54,6 +60,16 @@
     </div>
     <script src="_content/MudBlazor/MudBlazor.min.js"></script>
     <script src="_framework/blazor.webassembly.w3qd1tpl0e.js"></script>
+    <!-- PWA: registra service worker para cache offline e instalação -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/service-worker.js').then(function (reg) {
+                console.log('FitUP SW registered:', reg.scope);
+            }).catch(function (err) {
+                console.warn('FitUP SW registration failed:', err);
+            });
+        }
+    </script>
 </body>
 
 </html>

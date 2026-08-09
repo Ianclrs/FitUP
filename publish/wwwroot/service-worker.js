@@ -7,7 +7,7 @@ const STATIC_ASSETS = [
   '/manifest.json',
   '/css/app.css',
   '/FitUP.styles.css',
-  '/js/pdfLoader.js',
+  '/js/jspdf.umd.min.js',
   '/js/pdfExport.js',
   '/data/exercises.json',
   '/data/focus-mappings.json',
@@ -17,9 +17,9 @@ const STATIC_ASSETS = [
   '/img/logof1-192.png',
   '/img/logof1-512.png',
   '/img/logof1-1024.png',
-  // backgrounds (WebP otimizados)
-  '/img/Home.webp',
-  '/img/HomeL.webp',
+  // backgrounds
+  '/img/Home.png',
+  '/img/HomeL.png',
 ];
 
 // ── Install: faz cache imediato dos assets estáticos críticos ──
